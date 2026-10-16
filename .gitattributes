@@ -1,2 +1,2 @@
-data/** -text
-SOURCES.lock -text
+data/** -text -whitespace
+SOURCES.lock -text whitespace=cr-at-eol

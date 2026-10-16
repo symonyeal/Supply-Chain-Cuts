@@ -26,6 +26,10 @@ lower bound plus a crude-sampled residual failure probability. The derivation an
 binomial interval are in MODEL. Importance sampling and crude MC remain comparisons;
 all estimates are shown with L. The capacities, rates and failure event are unchanged.
 
+W2 clarification (2026-10-16): the user approved the dated policy-severity design. Its
+registered first-full-year export response informs an explicitly labelled partial-loss
+scenario through the existing per-node loss fractions. Export response is not production.
+
 Agreed with the user, 2026-10-15, through brainstorming Sections 1–5. Evidence base:
 `docs/RESEARCH.md` (primary sources, verified 2026-10-15). This spec is canonical; where
 `PROMPT.md` differs, this file wins.

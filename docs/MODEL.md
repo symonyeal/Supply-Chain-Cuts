@@ -169,3 +169,32 @@ retains coverage. Zero observed residuals imply a zero sample standard error but
 positive upper interval width, not a proof that P(F) = L. The interval covers sampling
 uncertainty conditional on fixed rates, durations and capacities; it does not cover data
 or scenario uncertainty. The legacy IS and crude MC results remain comparisons.
+
+## Export severity (W2, approved 2026-10-16)
+
+The dated policy-severity design specifies sampling and identification. For event e,
+normalize export quantities by each exporter's t0−1 volume. At relative year j, let
+d[e,j] be the treated exporter's change from −1 minus the mean control change. Equal
+event weights estimate beta[m,j] by the mean d[e,j] over events of type m. This equals
+the stacked exporter-within-event and year-within-event fixed-effects regression when
+each event gives half its weight to the treated exporter and half to its controls,
+divided equally among controls. The panel is balanced over relative years −2,−1,0,+1;
+−1 is omitted. This weighting specifies the approved design's equal event weights.
+
+In a country bootstrap, the same country multiplicity is used for its treated events
+and every appearance as a control. Reweight the controls within each event, then the
+events by their treated-country multiplicities. Report valid bootstrap draws; a draw
+with no treated events or no controls supplies no coefficient for that group.
+
+Partial disruption replaces the capacity factor by 1 − f[v] 1{t <= D[v]}, with f in [0,1].
+The capacity-conversion scenario assigns f_m = clip(−beta[m,+1],0,1), with full loss for
+unidentified types. Product-specific measure mixtures and their pooled fallbacks are
+empirical scenario marks, independent of legal duration. Paired states use identical
+onsets, durations and measure marks for full loss, central f and both interval endpoints.
+Since capacity under partial loss is at least capacity under full loss, its feasible set
+contains the full-loss feasible set and its shortfall cannot exceed the latter.
+
+Estimate each failure probability by its observed fraction, with a binomial interval.
+The paired reduction indicator is 1{full failure, partial survival}, also Bernoulli;
+its interval tests S3 directly. These trade responses and their conversion to capacity
+remain conditional scenarios, not measured production losses.

@@ -91,6 +91,13 @@ def bracket(V, p, rho, durations, weights, cuts, k=3, complete=False):
                             for S in cuts], "attribution_overlaps": True}
 
 
+def binomial_interval(m, n):
+    """Exact central 95% binomial confidence limits (Clopper and Pearson, 1934)."""
+    lo = float(beta.ppf(0.025, m, n-m+1)) if m else 0.0
+    hi = float(beta.ppf(0.975, m+1, n-m)) if m < n else 1.0
+    return [lo, hi]
+
+
 def residual_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,
                       seed=0, complete=False, k=3):
     """P(fail) = L + P(fail without an enumerated cut), MODEL §Annual probability.
@@ -125,13 +132,65 @@ def residual_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,
             cache[key] = R["phi"] > theta + 1e-7
         m += cache[key]
     r = m/n
-    lo = float(beta.ppf(0.025, m, n-m+1)) if m else 0.0
-    hi = float(beta.ppf(0.975, m+1, n-m)) if m < n else 1.0
+    lo, hi = binomial_interval(m, n)
     return {"L": L, "estimate": L + r, "se": float(np.sqrt(r*(1-r)/(n-1))),
             "ci95": [L + lo, min(1.0, L + hi)], "residual_estimate": r,
             "residual_events": int(m), "zero_residuals": m == 0, "lp_states": len(cache),
             "n": n, "seed": seed, "complete": complete, "k": k,
             "method": "lower_bound_plus_residual", "interval_method": "clopper_pearson_binomial"}
+
+
+def partial_sampling(M, p, rho, durations, weights, mixtures, losses, alpha=0.25,
+                     n=20000, seed=7):
+    """Paired full and marked partial losses; samplewise monotonicity certifies S3.
+
+    INPUT   mixtures[v] .. conditional measure probabilities at node v
+            losses ...... named scenarios, each mapping measure type to loss fraction
+    OUTPUT  probabilities, binomial intervals, paired reductions and maximum phi violation
+    """
+    if n < 2 or len(mixtures) != len(M["V"]):
+        raise ValueError("At least two samples and one measure mixture per node required")
+    _, w, groups, s, q = _parameters(M["V"], p, rho, durations, weights)
+    rng = np.random.default_rng(seed)
+    H = rng.random((n, len(s))) < s
+    onset = rng.random((n, len(q))) < q
+    for j, I in enumerate(groups):
+        onset[:, I] |= H[:, j, None]
+    D = rng.choice(durations, size=onset.shape, p=w)*onset
+    marks = [rng.choice(list(m), n, p=list(m.values())) for m in mixtures]
+    values = {name: np.array([[f.get(m, 1.0) for m in column] for column in marks]).T
+              for name, f in losses.items()}
+    if any(not np.isfinite(f).all() or (f < 0).any() or (f > 1).any() for f in values.values()):
+        raise ValueError("Loss fractions must lie in [0,1]")
+    names = ["full", *losses]
+    F = {name: np.zeros(n, bool) for name in names}
+    cache, violation = {}, 0.0
+    for i, d in enumerate(D):
+        phi = {}
+        for name in names:
+            f = np.ones(len(d)) if name == "full" else values[name][i]
+            key = tuple((v, int(d[v]), float(f[v])) for v in np.flatnonzero(d))
+            if key not in cache:
+                R = solve(M, d, dual=False, f=f)
+                if R["status"] != "optimal":
+                    return {"status": R["status"], "samples_completed": i}
+                cache[key] = R["phi"]
+            phi[name] = cache[key]
+            F[name][i] = phi[name] > alpha*M["total"] + 1e-7
+            violation = max(violation, phi[name] - phi["full"])
+    out = {"status": "optimal", "n": n, "seed": seed, "alpha": alpha,
+           "method": "paired_partial_loss_mc", "max_monotonicity_violation": violation,
+           "monotone": violation <= 1e-7, "lp_states": len(cache), "scenarios": {}}
+    for name, z in F.items():
+        m = int(z.sum())
+        r = m/n
+        row = {"estimate": r, "se": float(np.sqrt(r*(1-r)/(n-1))),
+               "ci95": binomial_interval(m, n), "failures": m}
+        if name != "full":
+            delta = int(np.count_nonzero(F["full"] & ~z))
+            row.update(reduction=delta/n, reduction_ci95=binomial_interval(delta, n))
+        out["scenarios"][name] = row
+    return out
 
 
 def importance_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,
