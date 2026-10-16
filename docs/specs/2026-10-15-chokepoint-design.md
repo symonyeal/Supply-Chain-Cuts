@@ -1,5 +1,14 @@
 # Chokepoint-Lab: design
 
+Implementation clarifications (2026-10-15): [MODEL](../MODEL.md) specifies the dual sign,
+immediate-duration predecessor certificates and upper-orthant exclusions. Exact-state
+no-goods alone do not remove longer-duration supersets. Enumeration reports completeness
+only after solver-proven exhaustion; time limits remain incomplete. A missing supplier
+does not remove the corresponding material balance. Joint Li-ion/PV output is normalised
+by sector annual demand before aggregating shortages. Policy licensing onsets are not
+observed full production outages; absent measured severities, risk is a scenario. The
+strict 25% boundary over a 24-month horizon is retained.
+
 Agreed with the user, 2026-10-15, through brainstorming Sections 1–5. Evidence base:
 `docs/RESEARCH.md` (primary sources, verified 2026-10-15). This spec is canonical; where
 `PROMPT.md` differs, this file wins.
