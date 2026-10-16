@@ -23,7 +23,7 @@ def read(u, a, b):
     return urllib.request.urlopen(q, timeout=180)
 
 
-def freeze(u, x, offset, hs):
+def freeze(u, x, offset, hs, retrieved="2026-10-15"):
     """Freeze one archive member, selecting original rows by HS6 only."""
     a = offset + x.header_offset
     with read(u, a, a + 29) as r:
@@ -32,14 +32,15 @@ def freeze(u, x, offset, hs):
     z = zlib.decompressobj(-15)
     digest = hashlib.sha256()
     subset = x.filename.startswith("BACI_")
-    name = f"BACI_HS{hs}_Y2024_V202601_selected.csv" if subset else x.filename
+    name = x.filename.removesuffix(".csv") + "_selected.csv" if subset else x.filename
     p = OUT / name
     pending = b""
-    n = 0
+    n, size, crc = 0, 0, 0
     with read(u, a, a + x.compress_size - 1) as r, p.open("wb") as f:
         while b := r.read(1024 * 1024):
             b = z.decompress(b) if x.compress_type == zipfile.ZIP_DEFLATED else b
             digest.update(b)
+            size, crc = size + len(b), zlib.crc32(b, crc)
             if subset:
                 rows = (pending + b).split(b"\n")
                 pending = rows.pop()
@@ -51,8 +52,10 @@ def freeze(u, x, offset, hs):
                 f.write(b)
         if pending and pending.split(b",")[3].strip(b'"').decode() in K:
             f.write(pending)
+    if size != x.file_size or crc != x.CRC:
+        raise ValueError(f"Archive member length/CRC mismatch: {x.filename}")
     return {"path": p.relative_to(ROOT).as_posix(), "url": u,
-            "retrieved": "2026-10-15", "license": "Etalab-2.0",
+            "retrieved": retrieved, "license": "Etalab-2.0",
             "license_url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/doc/baci_webpage.html",
             "sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "bytes": p.stat().st_size,
             "archive_member": x.filename, "archive_member_sha256": digest.hexdigest(),
