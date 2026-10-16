@@ -1,6 +1,7 @@
 # Policy severity: proposed research design
 
-Status: awaiting review. Implements NEXT.md W2; no new severity results have been computed.
+Status: approved by the user, 2026-10-16. Implements NEXT.md W2; no new severity results
+have been computed at registration.
 
 ## Question and proposed answer
 

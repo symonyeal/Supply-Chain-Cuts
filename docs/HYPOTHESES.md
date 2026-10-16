@@ -58,3 +58,35 @@ Steelman: crude MC already agrees with the bracket; residual sampling earns its 
 by recovering known probabilities and reducing measured error on these instances. Variance
 reduction is not asserted for every network. Zero observed residuals are not proof of zero
 residual probability; use an exact binomial interval, not a collapsed normal interval.
+
+## W2: export severity and partial losses (2026-10-16)
+
+Registered before historical acquisition or severity computation. The user approved
+`specs/2026-10-16-policy-severity-design.md` on this date. The primary outcome is export
+volume in the first full calendar year after onset, relative to the previous calendar
+year and untreated, surveyed exporters of the same concorded HS6. Annual data cannot
+identify a response within exactly twelve months. Exports are not production.
+
+| Leaf | Falsifiable answer | Kill condition |
+| --- | --- | --- |
+| S1 | Quotas/prohibitions reduce export volume by >= 50%; separate and combined estimates | Upper 95% loss limit < 50% kills; lower >= 50% supports; otherwise inconclusive |
+| S2 | Export taxes reduce volume by < 20% | Lower 95% loss limit >= 20% kills; upper < 20% supports; otherwise inconclusive |
+| S3 | Assigned partial losses lower failure by >= 5 percentage points in each sector at alpha = 25% | Upper 95% paired-difference limit < 5 points kills; lower >= 5 supports; otherwise inconclusive |
+
+Estimate a stacked event study with exporter-within-event and year-within-event effects,
+relative years -2, 0, +1 and omitted -1; normalized volume Q/Q_(t0-1); equal event and
+within-event control weights. Use BACI HS12 2012–2023, onset years 2014–2022, isolated
+measure types and verified concordances. Missing quantity is not zero. Controls require
+survey coverage and no active restriction or onset in the event window. Country-cluster
+bootstrap: 2,000 draws, seed 6. Fewer than five isolated events leaves a claim untestable;
+fewer than ten treated countries makes inference weak. A pretrend interval excluding
+zero leaves the response descriptive and the causal claim untestable.
+
+Premortem: pretrends, simultaneous measures, untreated-control contamination, trade
+diversion, incomplete quantities or a concordance change explain the observed response.
+Record each exclusion and identification check. Steelman: a legal onset removes little
+export volume, and any export response need not be a capacity loss. Thus f_m = clip(-beta,
+0,1) is an explicit scenario assumption, with interval-endpoint sensitivities. Unknown
+measure effects retain full loss; pooled measure mixes for unexposed nodes are labelled.
+Use 20,000 paired draws per sector, seed 7, at alpha = 25%, h = sigma = 0; samplewise
+partial shortfall <= full shortfall is a mandatory certificate independent of S3.
