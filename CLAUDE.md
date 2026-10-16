@@ -35,6 +35,21 @@ Code transcribes the mathematics: symbol names from the documents, the problem s
 each public docstring, loops whose condition is the stopping rule, comments that cite the
 source. Mathematical outcomes are return values, not exceptions.
 
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on `symonyeal/Chokepoint-Lab`, via `gh`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five default roles, each label equal to its name. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `CONTEXT.md` and `docs/adr/` at the root, created when needed. See
+`docs/agents/domain.md`.
+
 ## Before a change is finished
 
 ```text
