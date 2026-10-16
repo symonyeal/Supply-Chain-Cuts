@@ -40,6 +40,14 @@ with natural hazards matched to production sites.
 
 ## 2026-10-16
 
+- **Preserve input bytes in Git (#3).** Four committed CSVs differed from their frozen
+  hashes solely because of CRLF conversion (`results/input-bytes-1e7ce2f/checks.json`).
+  Their already-verified local bytes are restored to the index; raw files and their
+  frozen hashes are unchanged. Git attributes disable conversion for data and the lock.
+- **XLS reader for the UN concordance (W2).** The primary workbook is an XLS file, not
+  an XLSX; no XLS reader was installed. Added xlrd 2.0.2 (96 kB download). Its one-to-one
+  numerical facts are frozen separately; the unlicensed raw workbook stays local.
+
 - **Lower bound plus residual is the reported estimator (W1).** The original joint
   alpha = 10% IS point was 0.684868 below exact L = 0.715669; crude MC was 0.722750.
   New seeded residual draws give 0.715669 (95% interval 0.715669–0.715853). At alpha =

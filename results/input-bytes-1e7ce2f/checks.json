@@ -1,0 +1,59 @@
+{
+ "mismatches": [
+  {
+   "path": "data/raw/usgs/MCS2026_Commodities_Data.csv",
+   "newline_only": true
+  },
+  {
+   "path": "data/raw/usgs/myb2023_cobalt_refinery.csv",
+   "newline_only": true
+  },
+  {
+   "path": "data/sites/raw/2024MYBv3_Facilities_table.csv",
+   "newline_only": true
+  },
+  {
+   "path": "data/sites/raw/Outlook 2025 Data Release 031125.csv",
+   "newline_only": true
+  }
+ ],
+ "not_yet_committed": [
+  "data/raw/baci/BACI_HS12_Y2012_V202601_selected.csv",
+  "data/raw/baci/BACI_HS12_Y2013_V202601_selected.csv",
+  "data/raw/baci/BACI_HS12_Y2014_V202601_selected.csv",
+  "data/raw/baci/BACI_HS12_Y2015_V202601_selected.csv",
+  "data/raw/baci/BACI_HS12_Y2016_V202601_selected.csv",
+  "data/raw/baci/BACI_HS12_Y2017_V202601_selected.csv",
+  "data/raw/baci/BACI_HS12_Y2018_V202601_selected.csv",
+  "data/raw/baci/BACI_HS12_Y2019_V202601_selected.csv",
+  "data/raw/baci/BACI_HS12_Y2020_V202601_selected.csv",
+  "data/raw/baci/BACI_HS12_Y2021_V202601_selected.csv",
+  "data/raw/baci/BACI_HS12_Y2022_V202601_selected.csv",
+  "data/raw/baci/BACI_HS12_Y2023_V202601_selected.csv"
+ ],
+ "verified": [
+  "data/events/raw/oecd-report-2026.pdf",
+  "data/raw/baci/BACI_HS12_Y2024_V202601_selected.csv",
+  "data/raw/baci/BACI_HS22_Y2024_V202601_selected.csv",
+  "data/raw/baci/country_codes_V202601.csv",
+  "data/raw/baci/product_codes_HS12_V202601.csv",
+  "data/raw/baci/product_codes_HS22_V202601.csv",
+  "data/raw/cochilco/lithium_chemicals_2024.csv",
+  "data/raw/fraunhofer/silicon_usage_2024.csv",
+  "data/raw/miit/production_2024.csv",
+  "data/raw/usgs/MCS2026_Commodities_Data.xml",
+  "data/raw/usgs/mcs2026_commodity_metadata.json",
+  "data/raw/usgs/myb1-2023-cobalt.xlsx",
+  "data/raw/xu2020/bom_mid_size_bev.csv",
+  "data/raw/xu2020/specific_energy.csv",
+  "data/raw/xu2020/supplement.pdf",
+  "data/sites/raw/2024_MYBv3_metadata.xml",
+  "data/sites/raw/Mines, smelters, refineries, and recycling facilities in the United States.xml",
+  "data/sites/raw/Mines, smelters, refineries, and recycling facilities in the United States_worksheet.xlsx",
+  "data/sites/raw/Outlook 2025 datarelease March2025.xml",
+  "data/sites/raw/usgs-african-minerals.html",
+  "data/sites/raw/usgs-global-facilities-metadata.json",
+  "data/sites/raw/usgs-outlook-metadata.json",
+  "data/sites/raw/usgs-us-facilities-metadata.json"
+ ]
+}
