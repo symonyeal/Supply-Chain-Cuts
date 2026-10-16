@@ -52,3 +52,16 @@ def test_rates_planted_marginal_and_no_missing_as_zero():
     assert R["basis"][0] == "pooled_no_exposure"
     P = prequential(V, Y, np.arange(1725, 2025), train_end=2019)
     assert np.isfinite(P["model_log_loss"])
+
+
+def test_rates_planted_rho():
+    """Country shocks at rho = 0.5 (s = rho min p) are recovered from multi-onset years."""
+    rng = np.random.default_rng(8)
+    C, P, T, p, rho = 40, 3, 150, 0.12, 0.5
+    V = [(str(c), q) for c in range(C) for q in "abc"[:P]]
+    s, q = rho*p, (p - rho*p)/(1 - rho*p)
+    shock = rng.random((C, T)) < s
+    Y = (rng.random((C*P, T)) < q) | np.repeat(shock, P, axis=0)
+    R = fit_rates(V, Y.astype(float))
+    assert abs(np.mean(R["p"]) - p) < 0.015
+    assert abs(R["rho"] - rho) < 0.15

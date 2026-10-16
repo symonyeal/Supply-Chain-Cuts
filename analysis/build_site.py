@@ -23,6 +23,53 @@ def plain(o, nd=5):
     return o
 
 
+def pc(x, d=1):
+    return "–" if x is None else f"{100*x:.{d}f}%"
+
+
+def test_rows(t):
+    """Registered tests (docs/HYPOTHESES.md): leaf, kill condition, result, verdict."""
+    h1, h2, h3, a1, d1 = (t[k] for k in ("H1_china_graphite_singleton",
+                                         "H2_china_midstream_share_of_L", "H3_annual_failure",
+                                         "A1_spearman", "D1_prequential"))
+    est, b2 = h3["IS"], t["B2_capacity_basis"]["a0.25"]
+    r = {k: (None if a1[k] is None else round(a1[k], 2)) for k in ("hhi", "top_share")}
+    single = ", ".join(map(str, h1["durations"])) or "no"
+    c1 = "; ".join(f"NCM {k.split('_')[0][3:]}: {len(v['vanish_co_ni'])} vanish"
+                   for k, v in t["C1_chemistry"].items() if k.endswith("a0.25"))
+    res = {
+        "h1": f"singleton at {single} months; a 6-month loss cannot exceed 25% of 24 months",
+        "h2": f"{pc(h2['without_graphite'])} (with graphite {pc(h2['with_graphite'])})",
+        "h3": (f"L = {pc(h3['L'])}, U = {pc(h3['U'])}, IS {pc(est['estimate'])} "
+               f"[{pc(est['ci95'][0])}, {pc(est['ci95'][1])}]"),
+        "a1": f"ρ_S = {r['hhi']} with HHI, {r['top_share']} with top share",
+        "b2": f"α = 25%: {len(b2['vanish'])} vanish, {len(b2['appear'])} appear",
+        "d1": (f"model {d1['model_log_loss']:.3f} vs constant {d1['constant_log_loss']:.3f} "
+               f"on {d1['test_node_years']} node-years, 2020–2024"),
+    }
+    mid = ("holds" if h2["without_graphite"] >= 0.8 else
+           "holds only with graphite" if h2["with_graphite"] >= 0.8 else "killed")
+    conc = max(a1["hhi"] or 0, a1["top_share"] or 0) >= 0.9
+    return [
+        ["Day-1 (i)", "China graphite is a singleton cut at α = 25%, D ≥ 6 months", res["h1"],
+         "6-month part rejected; 12-month part holds" if h1["durations"] == [12] else "killed"],
+        ["Day-1 (ii)", "cut sets with a Chinese midstream node carry ≥ 80% of L", res["h2"], mid],
+        ["Day-1 (iii)", "annual P(fail) in [1%, 10%]", res["h3"],
+         "killed" if h3["L"] > 0.10 or est["ci95"][1] < 0.01 else "holds"],
+        ["A1", "Spearman(attribution, concentration) ≥ 0.9 ⇒ concentration suffices", res["a1"],
+         "killed: concentration suffices" if conc else "survives: the network adds information"],
+        ["B1", "a cut set resting on a re-export node is withdrawn",
+         f"{len(t['B1_reexport']['withdrawn'])} cut sets withdrawn at α = 25%", "applied"],
+        ["B2", "cut sets that change on the trade basis are basis-dependent", res["b2"],
+         "applied"],
+        ["C1", "Co/Ni cut sets that vanish at some NCM share are conditional on the mix", c1,
+         "applied"],
+        ["D1", "no out-of-sample log-loss gain ⇒ probabilities are scenarios", res["d1"],
+         "survives: rates predict" if d1["improves"] else "killed: probabilities are scenarios"],
+        ["E1", "tornado over α, D, h, σ, L", "see the controls above", "no kill condition"],
+    ]
+
+
 def load(run):
     d = ROOT / "results" / run
     cuts = {x.stem: json.loads(x.read_text(encoding="utf-8")) for x in (d / "cuts").glob("*.json")}
@@ -67,7 +114,7 @@ def build(run, pv_run=None):
             k: risk["hard"][k] for k in ("L", "U", "IS")},
         "hazards": risk["hazards"], "checks": {k: checks[k] for k in (
             "exports_vs_production", "reexport_flags", "site_coverage")},
-        "attribution": risk["attribution"],
+        "attribution": risk["attribution"], "testRows": test_rows(risk["tests"]),
     }
     if pv_run:
         _, _, prisk, _ = load(pv_run)

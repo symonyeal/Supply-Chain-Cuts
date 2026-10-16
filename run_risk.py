@@ -71,16 +71,23 @@ def main():
     root, run = Path("."), Path("results") / sys.argv[1]
     C = {x.stem: json.loads(x.read_text(encoding="utf-8")) for x in sorted((run / "cuts")
                                                                             .glob("*.json"))}
-    N = build()
+    sector = next(iter(C.values()))["network"]["sector"]
+    N = build(sector=sector)
     V = [(x["country"], x["product"]) for x in N["nodes"]]
     n = len(V)
     assert all(R["nodes"] == [list(v) for v in V] for k, R in C.items() if k.startswith("base"))
-    Y, onsets, used = node_years(V, root)
-    rates = fit_rates(V, Y)
+    # PV has exposure only for polysilicon: fit on the joint node set so its pool is the
+    # all-product pool of the Li-ion fit plus polysilicon; Li-ion keeps the registered fit.
+    W = V if sector == "liion" else [(x["country"], x["product"])
+                                     for x in build(sector="joint")["nodes"]]
+    Y, onsets, used = node_years(W, root)
+    rates = fit_rates(W, Y)
+    I = [W.index(v) for v in V]
+    rates.update({k: [rates[k][i] for i in I] for k in ("p", "exposure", "onsets", "basis")})
     p, rho = np.array(rates["p"]), rates["rho"]
     law = duration_weights(used, DURATIONS)
-    D1 = prequential(V, Y, YEARS, train_end=2019)
-    out = {"stamp": stamp(root), "nodes": [list(v) for v in V], "rates": rates,
+    D1 = prequential(W, Y, YEARS, train_end=2019)
+    out = {"stamp": stamp(root), "sector": sector, "nodes": [list(v) for v in V], "rates": rates,
            "onsets": onsets, "durations": law, "D1": D1, "configs": {}}
     for key, R in C.items():
         if not key.startswith("base"):
@@ -97,16 +104,28 @@ def main():
     cuts = [dense(S, n) for S in head["cuts"]]
     M = model(N, durations=DURATIONS)
     out["IS"], out["MC"] = {}, {}
-    for a in (0.10, 0.25, 0.50):
+    for a in (a for a in (0.10, 0.25, 0.50) if f"base_a{a}_h0_s0_L6_D12" in out["configs"]):
         S = [dense(x, n) for x in out["configs"][f"base_a{a}_h0_s0_L6_D12"]["cuts"]]
         out["IS"][a] = importance_sampling(M, p, rho, DURATIONS, law["weights"], S, alpha=a,
                                            n=20000, pilot=2000, seed=1, complete=True, k=K)
         out["MC"][a] = importance_sampling(M, p, rho, DURATIONS, law["weights"], S, alpha=a,
                                            n=20000, seed=2, complete=True, k=K, crude=True)
-    # Registered tests at the headline: alpha = 0.25, D_J = 12, h = sigma = 0.
     L = head["L"]
     attr = dict(zip((tuple(map(tuple, S)) for S in head["cuts"]), head["attribution"],
                     strict=True))
+    by_product, by_country = defaultdict(float), defaultdict(float)
+    for S, x in attr.items():
+        for q in {V[v][1] for v, _ in S}:
+            by_product[q] += x
+        for c in {V[v][0] for v, _ in S}:
+            by_country[c] += x
+    out["attribution"] = {"product": dict(by_product), "country": dict(by_country)}
+    if sector != "liion":                    # the registered tests concern Li-ion (v0.1.0)
+        (run / "risk.json").write_text(json.dumps(out, indent=1, default=float),
+                                       encoding="utf-8")
+        print(sector, "L", L, "U", head["U"], "IS", out["IS"][0.25]["estimate"])
+        return
+    # Registered tests at the headline: alpha = 0.25, D_J = 12, h = sigma = 0.
     graphite = [S for S in head["cuts"] if len(S) == 1 and V[S[0][0]] == ("CHN", "graphite")]
     mid = [S for S in cuts if any(d and V[v][0] == "CHN" and V[v][1] in MIDSTREAM
                                   for v, d in enumerate(S))]
@@ -115,12 +134,6 @@ def main():
     Dl, w = list(DURATIONS), law["weights"]
     share_mid = exact_union(V, p, rho, Dl, w, mid)/L if L else None
     share_midg = exact_union(V, p, rho, Dl, w, midg)/L if L else None
-    by_product, by_country = defaultdict(float), defaultdict(float)
-    for S, x in attr.items():
-        for q in {V[v][1] for v, _ in S}:
-            by_product[q] += x
-        for c in {V[v][0] for v, _ in S}:
-            by_country[c] += x
     products = sorted(N["hhi"])
     a = [by_product.get(q, 0.0) for q in products]
     rank = {m: (None if np.ptp(a) == 0 else float(spearmanr(a, [N[m][q] for q in products])
@@ -170,9 +183,7 @@ def main():
                                              cuts, alpha=0.25, n=20000, pilot=2000, seed=3,
                                              complete=True, k=K),
                    "registered": False}
-    out.update(tests=tests, attribution={"product": dict(by_product),
-                                         "country": dict(by_country)},
-               hazards=hazards(N, root))
+    out.update(tests=tests, hazards=hazards(N, root))
     (run / "risk.json").write_text(json.dumps(out, indent=1, default=float) + "\n",
                                    encoding="utf-8")
     print("L", L, "U", head["U"], "IS", out["IS"][0.25]["estimate"], out["IS"][0.25]["ci95"])

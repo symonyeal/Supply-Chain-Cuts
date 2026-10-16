@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chokepoint Lab</title>
+<meta name="description" content="Which minimal sets of country–product losses stop global lithium-ion cell production, and how likely they are each year: exact network interdiction with a hazard-rate bracket.">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@4.1.1/plotly.min.js"></script>
+<script src="data.js"></script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#top">Chokepoint Lab</a>
+  <nav><a href="#cuts">Cut sets</a><a href="#layers">Layers</a><a href="#risk">Risk</a><a href="#attribution">Attribution</a><a href="#tests">Tests</a><a href="#hazards">Hazards</a><a href="#provenance">Provenance</a></nav>
+</div></header>
+
+<main class="wrap" id="top">
+  <section class="hero">
+    <h1>Losing any one of <span data-f="nsingle"></span> Chinese nodes for a year stops more than a quarter of two years' lithium-ion cell output</h1>
+    <p class="lede">A cut set is a minimal set of (country, product) losses after which the least achievable shortfall, with
+      shipments rerouted, inventory drawn and spare capacity ramped, exceeds α of demand over 24 months. All
+      <span data-f="ncuts"></span> minimal cut sets of up to three losses are enumerated exactly at α = 25%. The singletons are China's
+      <span data-f="singles"></span>. How often such losses occur is a conditional scenario, not a forecast: recorded
+      export-policy onsets do not predict out of sample.</p>
+    <div class="facts" id="facts"></div>
+  </section>
+
+  <section id="cuts">
+    <h2>Every minimal cut set of at most three losses, with its shortfall and its share of the risk</h2>
+    <p class="note">φ(S) is the least cumulative shortfall over 24 months when the nodes in S are out for the stated months,
+      as a share of demand; a cut set fails (φ &gt; α) and every immediate predecessor (one loss shortened by one level)
+      does not. Each φ is a primal LP value with a matching dual (gap ≤ 10⁻⁶). P(S ⊆ Z)/L is the share of the exact lower
+      bound L carried by S; shares overlap. Durations are 3, 6 or 12 months; h is months of input stock; σ the spare-capacity
+      fraction reached after L months. Basis: <span class="tag">production</span> statistic,
+      <span class="tag trade">trade</span> export proxy, <span class="tag imputed">imputed</span> from the bill of materials.</p>
+    <div class="sticky-ctl"><div class="ctl">
+      <span><label>shortfall threshold</label><span class="seg" id="c-alpha"></span></span>
+      <span><label>longest outage</label><span class="seg" id="c-dj"></span></span>
+      <span><label>stock</label><span class="seg" id="c-h"></span></span>
+      <span><label>spare capacity</label><span class="seg" id="c-sigma"></span></span>
+      <span><label>ramp</label><span class="seg" id="c-L"></span></span>
+      <input type="search" id="c-q" placeholder="find a country or product">
+      <button class="reset" id="c-reset">reset</button>
+    </div></div>
+    <p id="cuts-summary"></p>
+    <div class="table-wrap"><table id="cuts-table"></table></div>
+  </section>
+
+  <section id="layers">
+    <h2>A layer can be cut by one loss only where one origin supplies more than the slack: cells, cathode, anode, graphite, lithium chemicals and refined cobalt</h2>
+    <p class="note">Each bar is a country's 2024 output in years of the layer's requirement per year; a layer's total is its supply
+      ratio S. A twelve-month loss of a node fails at α = 25% only if the rest of its layer falls below half the requirement over
+      the year. Copper, aluminium and manganese hold 25–165 years of requirement because the model lets every tonne serve
+      batteries: it has no competing demand, which makes upstream cuts harder to reach than in reality. Sources and bases:
+      <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/docs/DATA.md">DATA.md</a>.</p>
+    <div id="layers-chart" class="chart"></div>
+  </section>
+
+  <section id="risk">
+    <h2>If every recorded export restriction were a full outage, failure would come about every other year (<span data-f="IS"></span>); counting only quotas and bans, <span data-f="hard"></span></h2>
+    <p class="note">Onsets 2012–2024 from the OECD Inventory and national acts, pooled by product with empirical-Bayes priors; a
+      country shock with ρ = <span data-f="rho"></span> makes losses in one country coincide; <span data-f="w12"></span> of
+      spells last 12 months. L is the exact probability of containing an enumerated cut; U = L + P(more than three losses) =
+      <span data-f="U"></span> is too loose to use, since about <span data-f="sump"></span> nodes are hit per year. The point estimate
+      is importance sampling with 95% Monte Carlo interval [<span data-f="ISlo"></span>, <span data-f="IShi"></span>], checked
+      against crude Monte Carlo (<span data-f="MC"></span>). The registered predictive test failed (log-loss
+      <span data-f="d1m"></span> against <span data-f="d1c"></span> for a constant), so these are scenarios under stated rates.</p>
+    <div id="risk-chart" class="chart"></div>
+  </section>
+
+  <section id="attribution">
+    <h2>China appears in the cut sets that carry most of the risk</h2>
+    <p class="note">Share of L carried by cut sets containing a node of the country, at α = 25%, D ≤ 12 months, h = σ = 0. A cut
+      set with nodes in two countries counts for both.</p>
+    <div id="attr-chart" class="chart"></div>
+  </section>
+
+  <section id="tests">
+    <h2>Registered tests: the network adds information beyond concentration, and the probability claims are scenarios</h2>
+    <p class="note">Kill conditions were committed in <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/docs/HYPOTHESES.md">HYPOTHESES.md</a>
+      before any probability was computed. Outcomes and the cut sets they withdraw or qualify:
+      <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/docs/FINDINGS.md">FINDINGS.md</a>.</p>
+    <div class="table-wrap"><table id="tests-table"></table></div>
+  </section>
+
+  <section id="hazards">
+    <h2>Natural hazards enter only as a scenario: no production site has located capacity</h2>
+    <p class="note">Located capacity covers 0% of every layer, below the registered 70% threshold, so hazards are not matched to
+      sites. Instead each country with nodes loses a fixed fraction of all its capacity; the table lists the losses that fail at
+      α = 25%, with the years 2012–2024 in which GDACS issued an orange or red alert for the country. An alert is not a loss.</p>
+    <div class="table-wrap"><table id="haz-table"></table></div>
+  </section>
+
+  <section id="provenance">
+    <h2>Every number on this page is read from one result bundle</h2>
+    <p class="note">Run <code data-f="run"></code>, code revision <code data-f="revision"></code>, source lock
+      <code data-f="lock"></code>. Raw inputs are frozen with URL, date, SHA-256 and licence in
+      <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/SOURCES.lock">SOURCES.lock</a>; derivations are in
+      <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/docs/MODEL.md">MODEL.md</a>. Data: CEPII BACI (Etalab 2.0),
+      USGS (public domain), MIIT, Cochilco, Xu et al. 2020 (CC BY 4.0), OECD Inventory of Export Restrictions, GDACS.
+      No investment or price claim is made.</p>
+  </section>
+</main>
+
+<footer class="wrap note">Data: <code>site/data.js</code>, written by <code>python analysis/build_site.py RUN_ID</code>.</footer>
+<script src="app.js"></script>
+</body>
+</html>
