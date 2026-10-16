@@ -11,7 +11,8 @@ production, and how likely are they each year?
 output if they last a year:** cells, cathode material (CAM), anode material (AAM), cathode
 precursor (pCAM, imputed), graphite, lithium carbonate and refined cobalt. Three of them,
 cells, CAM and AAM, survive every registered test of capacity basis, re-export removal and
-chemistry mix. In all, 37 minimal sets of at most three losses do so; the rest combine the
+chemistry mix, and they are the only cut sets left when every plant holds three months of
+input stock. In all, 37 minimal sets of at most three losses do so; the rest combine the
 DRC's cobalt mines with smaller miners, or Australia's and Chile's lithium mines with a third.
 Over the 24-month horizon no combination of outages of six months or less can remove more
 than a quarter, and outages of up to a year cannot remove more than half.
