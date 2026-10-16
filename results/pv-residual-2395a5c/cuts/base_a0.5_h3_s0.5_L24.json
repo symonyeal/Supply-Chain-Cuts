@@ -1,0 +1,89 @@
+{
+ "task": "base_a0.5_h3_s0.5_L24",
+ "config": {
+  "alpha": 0.5,
+  "h": 3,
+  "sigma": 0.5,
+  "L": 24
+ },
+ "network": {
+  "sector": "pv",
+  "ncm": 0.5,
+  "basis": "production"
+ },
+ "nodes": [
+  [
+   "CHN",
+   "module"
+  ],
+  [
+   "IND",
+   "module"
+  ],
+  [
+   "MYS",
+   "module"
+  ],
+  [
+   "NLD",
+   "module"
+  ],
+  [
+   "THA",
+   "module"
+  ],
+  [
+   "VNM",
+   "module"
+  ],
+  [
+   "CHN",
+   "polysilicon"
+  ],
+  [
+   "DEU",
+   "polysilicon"
+  ],
+  [
+   "USA",
+   "polysilicon"
+  ],
+  [
+   "CHN",
+   "pv_cell"
+  ],
+  [
+   "THA",
+   "pv_cell"
+  ],
+  [
+   "CHN",
+   "wafer"
+  ],
+  [
+   "JPN",
+   "wafer"
+  ],
+  [
+   "SGP",
+   "wafer"
+  ],
+  [
+   "VNM",
+   "wafer"
+  ]
+ ],
+ "theta": 1.0,
+ "total": 2.0,
+ "cuts": [],
+ "complete": true,
+ "method": "lattice",
+ "seconds": 0.5201204000040889,
+ "lp_calls": 33,
+ "certificates": [],
+ "brute_full": {
+  "cuts": [],
+  "seconds": 8.626996899954975,
+  "equals_lattice": true
+ }
+}

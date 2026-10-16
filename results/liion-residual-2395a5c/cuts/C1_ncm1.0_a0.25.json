@@ -1,0 +1,737 @@
+{
+ "task": "C1_ncm1.0_a0.25",
+ "config": {
+  "alpha": 0.25,
+  "h": 0,
+  "sigma": 0,
+  "L": 6
+ },
+ "network": {
+  "sector": "liion",
+  "ncm": 1.0,
+  "basis": "production"
+ },
+ "nodes": [
+  [
+   "CHN",
+   "aam"
+  ],
+  [
+   "HUN",
+   "aam"
+  ],
+  [
+   "KOR",
+   "aam"
+  ],
+  [
+   "POL",
+   "aam"
+  ],
+  [
+   "USA",
+   "aam"
+  ],
+  [
+   "ARE",
+   "aluminium"
+  ],
+  [
+   "AUS",
+   "aluminium"
+  ],
+  [
+   "BHR",
+   "aluminium"
+  ],
+  [
+   "BRA",
+   "aluminium"
+  ],
+  [
+   "CAN",
+   "aluminium"
+  ],
+  [
+   "CHN",
+   "aluminium"
+  ],
+  [
+   "IND",
+   "aluminium"
+  ],
+  [
+   "ISL",
+   "aluminium"
+  ],
+  [
+   "MYS",
+   "aluminium"
+  ],
+  [
+   "NOR",
+   "aluminium"
+  ],
+  [
+   "RUS",
+   "aluminium"
+  ],
+  [
+   "USA",
+   "aluminium"
+  ],
+  [
+   "CHN",
+   "cam"
+  ],
+  [
+   "HUN",
+   "cam"
+  ],
+  [
+   "KOR",
+   "cam"
+  ],
+  [
+   "POL",
+   "cam"
+  ],
+  [
+   "USA",
+   "cam"
+  ],
+  [
+   "CHN",
+   "cell"
+  ],
+  [
+   "DEU",
+   "cell"
+  ],
+  [
+   "HUN",
+   "cell"
+  ],
+  [
+   "KOR",
+   "cell"
+  ],
+  [
+   "POL",
+   "cell"
+  ],
+  [
+   "USA",
+   "cell"
+  ],
+  [
+   "BRA",
+   "graphite"
+  ],
+  [
+   "CHN",
+   "graphite"
+  ],
+  [
+   "DEU",
+   "graphite"
+  ],
+  [
+   "IND",
+   "graphite"
+  ],
+  [
+   "MDG",
+   "graphite"
+  ],
+  [
+   "MOZ",
+   "graphite"
+  ],
+  [
+   "TZA",
+   "graphite"
+  ],
+  [
+   "ARG",
+   "li_carbonate"
+  ],
+  [
+   "CHL",
+   "li_carbonate"
+  ],
+  [
+   "CHN",
+   "li_carbonate"
+  ],
+  [
+   "AUS",
+   "mine_co"
+  ],
+  [
+   "CAN",
+   "mine_co"
+  ],
+  [
+   "COD",
+   "mine_co"
+  ],
+  [
+   "CUB",
+   "mine_co"
+  ],
+  [
+   "IDN",
+   "mine_co"
+  ],
+  [
+   "MDG",
+   "mine_co"
+  ],
+  [
+   "PHL",
+   "mine_co"
+  ],
+  [
+   "RUS",
+   "mine_co"
+  ],
+  [
+   "ARG",
+   "mine_li"
+  ],
+  [
+   "AUS",
+   "mine_li"
+  ],
+  [
+   "BRA",
+   "mine_li"
+  ],
+  [
+   "CAN",
+   "mine_li"
+  ],
+  [
+   "CHL",
+   "mine_li"
+  ],
+  [
+   "CHN",
+   "mine_li"
+  ],
+  [
+   "ZWE",
+   "mine_li"
+  ],
+  [
+   "AUS",
+   "mine_mn"
+  ],
+  [
+   "BRA",
+   "mine_mn"
+  ],
+  [
+   "CHN",
+   "mine_mn"
+  ],
+  [
+   "CIV",
+   "mine_mn"
+  ],
+  [
+   "GAB",
+   "mine_mn"
+  ],
+  [
+   "GHA",
+   "mine_mn"
+  ],
+  [
+   "IND",
+   "mine_mn"
+  ],
+  [
+   "ZAF",
+   "mine_mn"
+  ],
+  [
+   "AUS",
+   "mine_ni"
+  ],
+  [
+   "BRA",
+   "mine_ni"
+  ],
+  [
+   "CAN",
+   "mine_ni"
+  ],
+  [
+   "CHN",
+   "mine_ni"
+  ],
+  [
+   "IDN",
+   "mine_ni"
+  ],
+  [
+   "NCL",
+   "mine_ni"
+  ],
+  [
+   "PHL",
+   "mine_ni"
+  ],
+  [
+   "RUS",
+   "mine_ni"
+  ],
+  [
+   "CHN",
+   "pcam"
+  ],
+  [
+   "DEU",
+   "pcam"
+  ],
+  [
+   "HUN",
+   "pcam"
+  ],
+  [
+   "KOR",
+   "pcam"
+  ],
+  [
+   "POL",
+   "pcam"
+  ],
+  [
+   "USA",
+   "pcam"
+  ],
+  [
+   "AUS",
+   "refined_co"
+  ],
+  [
+   "CAN",
+   "refined_co"
+  ],
+  [
+   "CHN",
+   "refined_co"
+  ],
+  [
+   "FIN",
+   "refined_co"
+  ],
+  [
+   "JPN",
+   "refined_co"
+  ],
+  [
+   "MDG",
+   "refined_co"
+  ],
+  [
+   "NOR",
+   "refined_co"
+  ],
+  [
+   "AUS",
+   "refined_cu"
+  ],
+  [
+   "CAN",
+   "refined_cu"
+  ],
+  [
+   "CHL",
+   "refined_cu"
+  ],
+  [
+   "CHN",
+   "refined_cu"
+  ],
+  [
+   "COD",
+   "refined_cu"
+  ],
+  [
+   "DEU",
+   "refined_cu"
+  ],
+  [
+   "IDN",
+   "refined_cu"
+  ],
+  [
+   "IND",
+   "refined_cu"
+  ],
+  [
+   "JPN",
+   "refined_cu"
+  ],
+  [
+   "KAZ",
+   "refined_cu"
+  ],
+  [
+   "KOR",
+   "refined_cu"
+  ],
+  [
+   "MEX",
+   "refined_cu"
+  ],
+  [
+   "PER",
+   "refined_cu"
+  ],
+  [
+   "POL",
+   "refined_cu"
+  ],
+  [
+   "RUS",
+   "refined_cu"
+  ],
+  [
+   "USA",
+   "refined_cu"
+  ],
+  [
+   "AUS",
+   "refined_ni"
+  ],
+  [
+   "CAN",
+   "refined_ni"
+  ],
+  [
+   "CHN",
+   "refined_ni"
+  ],
+  [
+   "DEU",
+   "refined_ni"
+  ],
+  [
+   "FIN",
+   "refined_ni"
+  ],
+  [
+   "FRA",
+   "refined_ni"
+  ],
+  [
+   "GBR",
+   "refined_ni"
+  ],
+  [
+   "IDN",
+   "refined_ni"
+  ],
+  [
+   "JPN",
+   "refined_ni"
+  ],
+  [
+   "MDG",
+   "refined_ni"
+  ],
+  [
+   "NLD",
+   "refined_ni"
+  ],
+  [
+   "NOR",
+   "refined_ni"
+  ],
+  [
+   "RUS",
+   "refined_ni"
+  ],
+  [
+   "ZAF",
+   "refined_ni"
+  ]
+ ],
+ "theta": 0.5,
+ "total": 2.0,
+ "cuts": [
+  [
+   [
+    0,
+    12
+   ]
+  ],
+  [
+   [
+    17,
+    12
+   ]
+  ],
+  [
+   [
+    22,
+    12
+   ]
+  ],
+  [
+   [
+    29,
+    12
+   ]
+  ],
+  [
+   [
+    37,
+    12
+   ]
+  ],
+  [
+   [
+    40,
+    12
+   ]
+  ],
+  [
+   [
+    47,
+    12
+   ],
+   [
+    50,
+    12
+   ],
+   [
+    51,
+    12
+   ]
+  ],
+  [
+   [
+    69,
+    12
+   ]
+  ],
+  [
+   [
+    76,
+    12
+   ],
+   [
+    77,
+    6
+   ],
+   [
+    78,
+    12
+   ]
+  ],
+  [
+   [
+    77,
+    6
+   ],
+   [
+    78,
+    12
+   ],
+   [
+    79,
+    12
+   ]
+  ],
+  [
+   [
+    77,
+    12
+   ]
+  ]
+ ],
+ "complete": true,
+ "method": "lattice",
+ "seconds": 19.08563999994658,
+ "lp_calls": 3644,
+ "certificates": [
+  {
+   "phi": 0.8852284505693611,
+   "dual": 0.8852284505693612,
+   "gap": 1.1102230246251565e-16,
+   "predecessors": [
+    {
+     "v": 0,
+     "D": 6,
+     "phi": 0.44261422528468053
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.8852284505693612,
+   "dual": 0.8852284505693612,
+   "gap": 0.0,
+   "predecessors": [
+    {
+     "v": 17,
+     "D": 6,
+     "phi": 0.4426142252846806
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.8679264216441692,
+   "dual": 0.8679264216441692,
+   "gap": 0.0,
+   "predecessors": [
+    {
+     "v": 22,
+     "D": 6,
+     "phi": 0.4339632108220846
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.7174715237549916,
+   "dual": 0.7174715237549916,
+   "gap": 0.0,
+   "predecessors": [
+    {
+     "v": 29,
+     "D": 6,
+     "phi": 0.3587357618774958
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.5006930871875567,
+   "dual": 0.5006930871875567,
+   "gap": 0.0,
+   "predecessors": [
+    {
+     "v": 37,
+     "D": 6,
+     "phi": 0.25034654359377834
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.6537975188252583,
+   "dual": 0.6537975188252584,
+   "gap": 1.1102230246251565e-16,
+   "predecessors": [
+    {
+     "v": 40,
+     "D": 6,
+     "phi": 0.32689875941262914
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.8679264216441692,
+   "dual": 0.8679264216441692,
+   "gap": 0.0,
+   "predecessors": [
+    {
+     "v": 69,
+     "D": 6,
+     "phi": 0.4339632108220846
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.8373110354176871,
+   "dual": 0.8373110354176873,
+   "gap": 1.1102230246251565e-16,
+   "predecessors": [
+    {
+     "v": 77,
+     "D": 6,
+     "phi": 0.41865551770884357
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.589886894213522,
+   "dual": 0.5898868942135221,
+   "gap": 1.1102230246251565e-16,
+   "predecessors": [
+    {
+     "v": 47,
+     "D": 6,
+     "phi": 0.294943447106761
+    },
+    {
+     "v": 50,
+     "D": 6,
+     "phi": 0.38449432075019996
+    },
+    {
+     "v": 51,
+     "D": 6,
+     "phi": 0.4159962491954947
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.5067269682505324,
+   "dual": 0.5067269682505325,
+   "gap": 1.1102230246251565e-16,
+   "predecessors": [
+    {
+     "v": 76,
+     "D": 6,
+     "phi": 0.49295690411364634
+    },
+    {
+     "v": 77,
+     "D": 3,
+     "phi": 0.29739920939611064
+    },
+    {
+     "v": 78,
+     "D": 6,
+     "phi": 0.4764613071165741
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.5008316150419794,
+   "dual": 0.5008316150419794,
+   "gap": 0.0,
+   "predecessors": [
+    {
+     "v": 77,
+     "D": 3,
+     "phi": 0.2915038561875576
+    },
+    {
+     "v": 78,
+     "D": 6,
+     "phi": 0.47056595390802103
+    },
+    {
+     "v": 79,
+     "D": 6,
+     "phi": 0.4900092275093698
+    }
+   ],
+   "certified": true
+  }
+ ]
+}

@@ -1,0 +1,192 @@
+{
+ "task": "base_a0.1_h1_s0.5_L24",
+ "config": {
+  "alpha": 0.1,
+  "h": 1,
+  "sigma": 0.5,
+  "L": 24
+ },
+ "network": {
+  "sector": "pv",
+  "ncm": 0.5,
+  "basis": "production"
+ },
+ "nodes": [
+  [
+   "CHN",
+   "module"
+  ],
+  [
+   "IND",
+   "module"
+  ],
+  [
+   "MYS",
+   "module"
+  ],
+  [
+   "NLD",
+   "module"
+  ],
+  [
+   "THA",
+   "module"
+  ],
+  [
+   "VNM",
+   "module"
+  ],
+  [
+   "CHN",
+   "polysilicon"
+  ],
+  [
+   "DEU",
+   "polysilicon"
+  ],
+  [
+   "USA",
+   "polysilicon"
+  ],
+  [
+   "CHN",
+   "pv_cell"
+  ],
+  [
+   "THA",
+   "pv_cell"
+  ],
+  [
+   "CHN",
+   "wafer"
+  ],
+  [
+   "JPN",
+   "wafer"
+  ],
+  [
+   "SGP",
+   "wafer"
+  ],
+  [
+   "VNM",
+   "wafer"
+  ]
+ ],
+ "theta": 0.2,
+ "total": 2.0,
+ "cuts": [
+  [
+   [
+    0,
+    3
+   ]
+  ],
+  [
+   [
+    6,
+    6
+   ]
+  ],
+  [
+   [
+    9,
+    6
+   ]
+  ],
+  [
+   [
+    11,
+    6
+   ]
+  ]
+ ],
+ "complete": true,
+ "method": "lattice",
+ "seconds": 2.8825815999880433,
+ "lp_calls": 184,
+ "certificates": [
+  {
+   "phi": 0.21095484417443458,
+   "dual": 0.21095484417443455,
+   "gap": 2.7755575615628914e-17,
+   "predecessors": [
+    {
+     "v": 0,
+     "D": 0,
+     "phi": 0.0
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.2046083434688647,
+   "dual": 0.2046083434688647,
+   "gap": 0.0,
+   "predecessors": [
+    {
+     "v": 6,
+     "D": 3,
+     "phi": 0.0
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.39201201183118783,
+   "dual": 0.3920120118311878,
+   "gap": 5.551115123125783e-17,
+   "predecessors": [
+    {
+     "v": 9,
+     "D": 3,
+     "phi": 0.154314821382127
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.3114761415079531,
+   "dual": 0.3114761415079531,
+   "gap": 0.0,
+   "predecessors": [
+    {
+     "v": 11,
+     "D": 3,
+     "phi": 0.07233947980126873
+    }
+   ],
+   "certified": true
+  }
+ ],
+ "brute_full": {
+  "cuts": [
+   [
+    [
+     0,
+     3
+    ]
+   ],
+   [
+    [
+     6,
+     6
+    ]
+   ],
+   [
+    [
+     9,
+     6
+    ]
+   ],
+   [
+    [
+     11,
+     6
+    ]
+   ]
+  ],
+  "seconds": 30.123932000016794,
+  "equals_lattice": true
+ }
+}

@@ -38,6 +38,20 @@ with natural hazards matched to production sites.
 - **Not done**: Comtrade China tariff lines (optional key not supplied), e-Stat Japan cells
   (appId not supplied), BGS (licence).
 
+## 2026-10-16
+
+- **Lower bound plus residual is the reported estimator (W1).** The original joint
+  alpha = 10% IS point was 0.684868 below exact L = 0.715669; crude MC was 0.722750.
+  New seeded residual draws give 0.715669 (95% interval 0.715669–0.715853). At alpha =
+  25%, sample residual SEs are 0, 0 and 0.000335 for Li-ion, PV and joint, against crude
+  SEs 0.003535, 0.003057 and 0.002849. The three comparison certificates confirm every
+  legacy risk number, network and cut-file byte is unchanged. Zero residuals receive
+  a positive-width binomial interval; probabilities remain scenarios.
+- **Severity study uses the first full calendar year after onset (W2).** Approved by
+  the user; annual trade cannot identify a response within exactly twelve months.
+  Controls, exclusions and conversion to capacity scenarios are in the dated design.
+  No severity result existed when S1–S3 were registered at `aac556d`.
+
 ## Open
 
 - Natural-hazard site data: located capacity is 0% in every layer (no frozen site table has

@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — residual estimator
+
+- Estimate annual scenario failure as exact L plus sampled residual failures, with an
+  exact-binomial interval even when no residual failure is observed. IS and crude MC
+  remain comparisons; original bundles are unchanged.
+- Three new `*-residual-2395a5c` bundles, with legacy-result and sampling certificates.
+- The site and answer use the residual estimate and show L. On the shared network at
+  alpha = 10%, estimate 0.715669, L = 0.715669, interval 0.715669–0.715853.
+- W2 severity design approved and S1–S3 registered before historical BACI acquisition.
+
 ## v0.2.0 — PV on the shared network
 
 - PV chain polysilicon → wafer → cell → module (BACI HS22 2024; MIIT 2024 China

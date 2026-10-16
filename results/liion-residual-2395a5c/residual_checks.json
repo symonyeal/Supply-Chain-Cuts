@@ -1,0 +1,65 @@
+{
+ "stamp": {
+  "revision": "0c643b6893bea599cc88cbaa07cf5197d4739eaa",
+  "dirty": [],
+  "sources": 74,
+  "absent_local_only": [],
+  "lock_sha256": "7908f1c27af448f8e90a886d6343943f818fc86c0ef18d14d34008be21eec7a5",
+  "python": "3.14.7",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1"
+ },
+ "original_bundle": "liion-60eb399",
+ "bundle": "liion-residual-2395a5c",
+ "legacy_risk_equal": true,
+ "network_equal": true,
+ "cut_bytes_equal": true,
+ "estimates": {
+  "0.1": {
+   "L": 0.5967622637553792,
+   "estimate": 0.5968122637553792,
+   "ci95": [
+    0.5967635296449771,
+    0.5970408140875537
+   ],
+   "se": 5e-05,
+   "MC": 0.59585,
+   "MC_se": 0.0034700491260278798,
+   "difference": 0.0009622637553792224,
+   "combined_se": 0.0034704093327800473,
+   "agrees_with_MC": true,
+   "smaller_se": true
+  },
+  "0.25": {
+   "L": 0.4856812707186481,
+   "estimate": 0.4856812707186481,
+   "ci95": [
+    0.4856812707186481,
+    0.48586569768261
+   ],
+   "se": 0.0,
+   "MC": 0.48805,
+   "MC_se": 0.0035346123619468457,
+   "difference": 0.0023687292813519,
+   "combined_se": 0.0035346123619468457,
+   "agrees_with_MC": true,
+   "smaller_se": true
+  },
+  "0.5": {
+   "L": 0.0,
+   "estimate": 0.0,
+   "ci95": [
+    0.0,
+    0.0001844269639618992
+   ],
+   "se": 0.0,
+   "MC": 0.0,
+   "MC_se": 0.0,
+   "difference": 0.0,
+   "combined_se": 0.0,
+   "agrees_with_MC": true,
+   "smaller_se": true
+  }
+ },
+ "R4": true
+}

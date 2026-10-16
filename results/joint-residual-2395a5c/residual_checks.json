@@ -1,0 +1,51 @@
+{
+ "stamp": {
+  "revision": "a36b1821b8a97eaa54522fc111a98536aac04ce5",
+  "dirty": [],
+  "sources": 74,
+  "absent_local_only": [],
+  "lock_sha256": "7908f1c27af448f8e90a886d6343943f818fc86c0ef18d14d34008be21eec7a5",
+  "python": "3.14.7",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1"
+ },
+ "original_bundle": "joint-ba89465",
+ "bundle": "joint-residual-2395a5c",
+ "legacy_risk_equal": true,
+ "network_equal": true,
+ "cut_bytes_equal": true,
+ "estimates": {
+  "0.1": {
+   "L": 0.7156685720046623,
+   "estimate": 0.7156685720046623,
+   "ci95": [
+    0.7156685720046623,
+    0.7158529989686242
+   ],
+   "se": 0.0,
+   "MC": 0.72275,
+   "MC_se": 0.003165378785570979,
+   "difference": 0.00708142799533773,
+   "combined_se": 0.003165378785570979,
+   "agrees_with_MC": true,
+   "smaller_se": true
+  },
+  "0.25": {
+   "L": 0.2038280411830003,
+   "estimate": 0.2060780411830003,
+   "ci95": [
+    0.20546966554548357,
+    0.20683757280544773
+   ],
+   "se": 0.00033504102379317853,
+   "MC": 0.20395,
+   "MC_se": 0.002849232489862676,
+   "difference": 0.0021280411830003065,
+   "combined_se": 0.002868863584925823,
+   "agrees_with_MC": true,
+   "smaller_se": true
+  }
+ },
+ "R4": true,
+ "R3": true
+}
