@@ -108,6 +108,7 @@ pruned. A partial state that contains a found cut is skipped: no state below it 
 minimal. After the singletons are known, a slot may not use a node at or above its
 singleton duration, for the same reason. On random networks of four layers the two
 enumerators return identical lists (`tests/test_cuts.py`). On the 108-node Li-ion network
+(before the country-name fix of `97e5fe7`; 111 nodes after, with the same 37 cuts)
 at alpha = 0.25, h = sigma = 0, k = 3, plain lattice search took 427 s and 107,416 LPs;
 with the two minimality rules, 13.8 s and 3,714 LPs, with the same 37 cuts (2026-10-15).
 

@@ -45,7 +45,7 @@ def node_years(V, root=Path("."), hard=False):
 
     INPUT  V ..... (country, product) nodes
            hard .. count only quotas and prohibitions (OECD M3, M4; prohibiting acts)
-    OUTPUT Y, onset ids by 'c:p:year', and the onset records used (for durations)
+    OUTPUT Y, onset ids by 'c:p:year', and the records that create an onset (for durations)
     """
     root = Path(root)
     pm = json.loads((root / "data/events/product_map.json").read_text(encoding="utf-8"))

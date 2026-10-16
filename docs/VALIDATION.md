@@ -16,4 +16,4 @@ duality gap, a known optimum from a source), never an output snapshot.
 | Network invariants | R_p = Σ a R_q, φ(0) = 0 for Li-ion, PV, joint; basis labels; MYB and MIIT values (`tests/test_net.py`) | passing |
 | Events | Derived onsets = research table except Zimbabwe 2022 (`run_data.py`) | passing |
 | Data | MIIT parts vs total; exports vs production (DATA.md); Comtrade tariff lines | done; Comtrade not measured |
-| Headline numbers | Fresh-subagent recomputation from raw data | see FINDINGS |
+| Headline numbers | Fresh-subagent recomputation from raw data, sharing no code: 111 nodes, layer shares and S, the 7 singletons at 12 months and none at 6, the COD–IDN pair, all 37 cuts failing and minimal, 884/61 node-years, ρ, L = 0.485766 exact and by 2,000,000 Monte Carlo draws | passing (2026-10-15); one documented definitional difference in duration counts (DATA.md) |

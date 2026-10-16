@@ -93,9 +93,12 @@ all-product prior. The derivation reproduces the research table
 `observed_node_years.csv` exactly except one onset it missed: Zimbabwe lithium ore, 2022
 (SI 213/2022, effective 2022-12-16).
 
-Spell lengths of the onset records bin onto (3, 6, 12) months as 4, 3 and 169; 8 censored
-spells shorter than six months are reported and unused. Durations are legal-measure
-lengths, not observed outages.
+Spell lengths come from the records that create an onset, i.e. that fall in a surveyed
+node-year; they bin onto (3, 6, 12) months as 4, 3 and 169, and 8 censored spells shorter
+than six months are reported and unused. Durations are legal-measure lengths, not observed
+outages. The independent recomputation counted every in-window record instead and found 170
+in the 12-month bin; the extra record is a 2016 Viet Nam lithium export tax
+(OECD-a43d88b43b745c9f) in an unsurveyed node-year. It changes L by 8.6e-5.
 
 ## Natural hazards
 

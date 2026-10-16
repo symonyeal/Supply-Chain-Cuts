@@ -14,7 +14,7 @@ years of requirement and the LP is aggregated exactly over blocks of constant da
 ([MODEL](../MODEL.md), Lemma A). Refined cobalt uses USGS MYB 2023 Table 8 refinery
 production (public domain), replacing the BGS source while its licence is unresolved;
 China LiOH is converted to LCE as the monohydrate (GB/T 26008-2020). The MILP did not prove
-exhaustion within 600 s on the 108-node network, so full-network cut lists come from the
+exhaustion within 600 s on the 108-node network (24 monthly periods), so full-network cut lists come from the
 lattice search in `brute.py` (Lemma B), which shares no code with `cuts.py`; the MILP
 certifies agreement on the pruned network over the sweep and on the full network where it
 completes. Products without event exposure borrow the all-product empirical-Bayes prior;
