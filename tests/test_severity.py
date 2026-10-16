@@ -1,4 +1,5 @@
 """Planted export changes and independent fixed-effects normal equations (W2)."""
+import json
 import numpy as np
 import pytest
 
@@ -56,3 +57,12 @@ def test_paired_partial_losses_and_endpoints():
     assert S["central"]["reduction"] == 1
     assert S["central"]["ci95"][1] > 0
     assert R["lp_states"] == 3
+
+
+def test_scenario_job_writes_a_probability_bundle(tmp_path):
+    from run_severity import job
+    table = {"M1": {"f": 0.1, "identified": True, "loss_ci95": [0, 0.2]}}
+    assert job("liion", table, str(tmp_path), n=20) == ("liion", "optimal")
+    R = json.loads((tmp_path / "liion.json").read_text())
+    assert R["monotone"] and isinstance(R["full_agrees_with_W1"], bool)
+    assert R["n"] == 20

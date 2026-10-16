@@ -44,9 +44,10 @@ def mixtures(V):
     return out, fallback
 
 
-def job(sector, table, run):
+def job(sector, table, run, n=20000):
     """Three severity assignments share draws and certify monotonicity against full loss."""
     root, path = Path("."), Path("results") / BASE[sector]
+    run_stamp = stamp()
     base = json.loads((path / "risk.json").read_text(encoding="utf-8"))
     N = build(sector=sector)
     M = model(N, durations=DURATIONS)
@@ -60,15 +61,19 @@ def job(sector, table, run):
             losses[name][m] = float(np.clip(row["loss_ci95"][j], 0, 1)) if (
                 row["identified"]) else 1.0
     R = partial_sampling(M, base["rates"]["p"], base["rates"]["rho"], DURATIONS,
-                         base["durations"]["weights"], mixes, losses)
+                         base["durations"]["weights"], mixes, losses, n=n)
     if R["status"] == "optimal":
         assert R["monotone"]
         full, previous = R["scenarios"]["full"], base["residual"]["0.25"]
-        R["full_agrees_with_W1"] = abs(full["estimate"]-previous["estimate"]) <= (
-            4*np.hypot(full["se"], previous["se"]))
+        R["full_agrees_with_W1"] = bool(abs(full["estimate"]-previous["estimate"]) <= (
+            4*np.hypot(full["se"], previous["se"])))
         delta = R["scenarios"]["central"]["reduction_ci95"]
         R["S3"] = "supported" if delta[0] >= 0.05 else (
             "killed" if delta[1] < 0.05 else "inconclusive")
+        counts = R["onsets_by_measure"]
+        R["unidentified_onset_share"] = sum(
+            v for m, v in counts.items() if not table.get(m, {}).get("identified"))/sum(
+            counts.values()) if sum(counts.values()) else None
     if "hard" in base:
         hard = {k: base["hard"][k] for k in ("L", "U", "residual")}
     else:
@@ -80,7 +85,7 @@ def job(sector, table, run):
         B = bracket(V, p, rh["rho"], DURATIONS, law["weights"], C, complete=True)
         hard = {"L": B["L"], "U": B["U"], "residual": residual_sampling(
             M, p, rh["rho"], DURATIONS, law["weights"], C, n=20000, seed=5, complete=True)}
-    R.update(sector=sector, base_bundle=BASE[sector], stamp=stamp(), mixtures=mixes,
+    R.update(sector=sector, base_bundle=BASE[sector], stamp=run_stamp, mixtures=mixes,
              pooled_mixture_fallback_nodes=[list(v) for v, f in zip(V, fallback, strict=True) if f],
              assigned_fractions=losses, full_outage=previous if R["status"] == "optimal" else None,
              hard={**hard, "registered": False}, severity_registered=True)

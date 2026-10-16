@@ -1,5 +1,6 @@
 """Exact cut union, count tail, residual Monte Carlo and latent-state IS."""
 from functools import cache
+from collections import Counter
 
 import numpy as np
 from scipy.stats import beta
@@ -178,9 +179,13 @@ def partial_sampling(M, p, rho, durations, weights, mixtures, losses, alpha=0.25
             phi[name] = cache[key]
             F[name][i] = phi[name] > alpha*M["total"] + 1e-7
             violation = max(violation, phi[name] - phi["full"])
+    counts = Counter()
+    for v, column in enumerate(marks):
+        counts.update(column[onset[:, v]].tolist())
     out = {"status": "optimal", "n": n, "seed": seed, "alpha": alpha,
            "method": "paired_partial_loss_mc", "max_monotonicity_violation": violation,
-           "monotone": violation <= 1e-7, "lp_states": len(cache), "scenarios": {}}
+           "monotone": violation <= 1e-7 and all(np.all(z <= F["full"]) for z in F.values()),
+           "lp_states": len(cache), "onsets_by_measure": dict(counts), "scenarios": {}}
     for name, z in F.items():
         m = int(z.sum())
         r = m/n
