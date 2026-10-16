@@ -7,7 +7,30 @@ production, and how likely are they each year?
 
 ## Answer
 
-PENDING
+**Seven single losses, all in China, each stop more than a quarter of two years' Li-ion cell
+output if they last a year:** cells, cathode material (CAM), anode material (AAM), cathode
+precursor (pCAM, imputed), graphite, lithium carbonate and refined cobalt. Three of them,
+cells, CAM and AAM, survive every registered test of capacity basis, re-export removal and
+chemistry mix. In all, 37 minimal sets of at most three losses do so; the rest combine the
+DRC's cobalt mines with smaller miners, or Australia's and Chile's lithium mines with a third.
+Over the 24-month horizon no combination of outages of six months or less can remove more
+than a quarter, and outages of up to a year cannot remove more than half.
+
+**How likely is a scenario, not a forecast.** If every export restriction recorded 2012–2024
+were a full outage of its node for its recorded length, the annual probability would be about
+0.49 (exact lower bound 0.486; importance sampling 0.490, 95% interval 0.478–0.503). Counting
+only quotas and bans, about 0.07 (post hoc). Recorded onsets do not predict later years
+better than a constant, so neither number is a forecast; cut sets containing a Chinese node
+carry 88% of the scenario risk.
+
+**Solar is more concentrated still.** Each of China's polysilicon, wafer, cell and module
+stages is a cut set on its own (v0.2.0). On one network with batteries, no single loss
+suffices at 25%, but 180 battery–PV pairs and triples do.
+
+**What the data cannot show.** Outside China, cell and refined-nickel capacity rests on export
+mass; precursor capacity is imputed from cell output; upstream metals have no competing
+demand; a recorded policy measure is not an observed outage; no production site has located
+capacity, so natural hazards are a scenario. Details: [FINDINGS](docs/FINDINGS.md).
 
 ## Model
 

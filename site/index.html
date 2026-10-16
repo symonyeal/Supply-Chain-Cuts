@@ -21,8 +21,10 @@
     <p class="lede">A cut set is a minimal set of (country, product) losses after which the least achievable shortfall, with
       shipments rerouted, inventory drawn and spare capacity ramped, exceeds α of demand over 24 months. All
       <span data-f="ncuts"></span> minimal cut sets of up to three losses are enumerated exactly at α = 25%. The singletons are China's
-      <span data-f="singles"></span>. How often such losses occur is a conditional scenario, not a forecast: recorded
-      export-policy onsets do not predict out of sample.</p>
+      <span data-f="singles"></span>. Three of them, cells, cathode and anode material, hold under every registered test of capacity
+      basis and chemistry; graphite, lithium carbonate and refined cobalt hold only on production statistics, and precursor and refined
+      cobalt only with nickel-rich cathodes in the mix. How often such losses occur is a conditional scenario, not a forecast:
+      recorded export-policy onsets do not predict out of sample.</p>
     <div class="facts" id="facts"></div>
   </section>
 
@@ -48,7 +50,7 @@
   </section>
 
   <section id="layers">
-    <h2>A layer can be cut by one loss only where one origin supplies more than the slack: cells, cathode, anode, graphite, lithium chemicals and refined cobalt</h2>
+    <h2>One loss can cut a layer only where the rest of it supplies less than half the requirement: cells, precursor, cathode, anode, graphite, lithium carbonate and refined cobalt</h2>
     <p class="note">Each bar is a country's 2024 output in years of the layer's requirement per year; a layer's total is its supply
       ratio S. A twelve-month loss of a node fails at α = 25% only if the rest of its layer falls below half the requirement over
       the year. Copper, aluminium and manganese hold 25–165 years of requirement because the model lets every tonne serve
@@ -65,7 +67,8 @@
       <span data-f="U"></span> is too loose to use, since about <span data-f="sump"></span> nodes are hit per year. The point estimate
       is importance sampling with 95% Monte Carlo interval [<span data-f="ISlo"></span>, <span data-f="IShi"></span>], checked
       against crude Monte Carlo (<span data-f="MC"></span>). The registered predictive test failed (log-loss
-      <span data-f="d1m"></span> against <span data-f="d1c"></span> for a constant), so these are scenarios under stated rates.</p>
+      <span data-f="d1m"></span> against <span data-f="d1c"></span> for a constant), so these are scenarios under stated rates. The
+      quotas-and-bans scenario (OECD codes M3, M4 and prohibiting acts) was added after the registered tests and is not one of them.</p>
     <div id="risk-chart" class="chart"></div>
   </section>
 
@@ -81,9 +84,9 @@
   </section>
 
   <section id="attribution">
-    <h2>China appears in the cut sets that carry most of the risk</h2>
-    <p class="note">Share of L carried by cut sets containing a node of the country, at α = 25%, D ≤ 12 months, h = σ = 0. A cut
-      set with nodes in two countries counts for both.</p>
+    <h2>Cut sets with a Chinese node carry <span data-f="chnU"></span> of the risk; the DRC's cobalt mines, <span data-f="codU"></span></h2>
+    <p class="note">For each country, P(some cut set containing one of its nodes is contained in Z)/L, computed exactly, at α = 25%,
+      D ≤ 12 months, h = σ = 0. A cut set with nodes in two countries counts for both, so shares across countries overlap.</p>
     <div id="attr-chart" class="chart"></div>
   </section>
 

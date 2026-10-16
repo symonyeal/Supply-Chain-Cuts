@@ -8,10 +8,41 @@ Li-ion first, then PV; capacity network with recourse; exact interdiction checke
 force; hybrid probability (bounds, then importance sampling); policy and natural hazards,
 with natural hazards matched to production sites.
 
+## Taken in implementation (2026-10-15)
+
+- **Refined cobalt from USGS MYB 2023 Table 8, not the BACI export proxy.** The proxy put
+  88% of refined cobalt in the DRC (HS 810520 hydroxide mass, 635 kt, above world mine
+  output) and omitted China, whose exports are 5.3 kt against 147 kt produced. BGS stays
+  unused while its licence is unresolved.
+- **LiOH converted to LCE as the monohydrate** (0.880 t/t, GB/T 26008-2020), not anhydrous
+  (1.543): China's LCE is 987 kt, not 1,225 kt.
+- **Requirement units and exact blocks (Lemma A).** With 24 monthly periods the MILP found 12
+  of 37 cut sets in 600 s; with 4 blocks it proved exhaustion in 1,236 s (108 nodes) and in
+  3,583 s (111 nodes). Rescaling makes every capacity dual bound 1.
+- **Lattice search for full-network cut lists (Lemma B).** 13.8 s and 3,714 LPs against
+  427 s and 107,416 LPs without the minimality rules; the MILP certifies it where it completes.
+- **All-product empirical-Bayes prior for unexposed products**, not Jeffreys: a Jeffreys
+  prior gives cells, CAM, pCAM and AAM an annual onset rate of 0.5.
+- **Demand equals the undisrupted achievable output** (PV 0.991 of retained modules), so
+  φ(0) = 0 and the strict 25% argument of HYPOTHESES holds.
+- **Raw files are committed only under verified open terms** (BACI, USGS, Xu et al., OECD
+  report) or as transcribed facts; OECD dataset extracts, GDACS, MOFCOM and national acts
+  stay local, hash-locked in `SOURCES.lock`.
+- **Day-1 (ii) uses the design's midstream (pCAM, CAM, AAM).** The first implementation also
+  counted refined chemicals; the definition was corrected before the registered result was
+  written, and both readings are reported.
+- **B1 is reported literally and narrowly**: cut sets that disappear in the rerun, and cut sets
+  that contain a flagged node; the rerun also lowers demand, which the literal rule ignores.
+- **Post hoc scenario**: onsets restricted to quotas and prohibitions (OECD M3, M4). Not
+  registered; reported as such.
+- **Not done**: Comtrade China tariff lines (optional key not supplied), e-Stat Japan cells
+  (appId not supplied), BGS (licence).
+
 ## Open
 
-- Natural-hazard site data: coverage threshold 70% per layer, else the sensitivity
-  fallback (design §5). To be measured at the start of phase P.
+- Natural-hazard site data: located capacity is 0% in every layer (no frozen site table has
+  coordinates for capacity), below the 70% threshold, so the sensitivity fallback applies
+  (design §5). A located capacity inventory would reopen site matching.
 
 ## Tested and refused
 

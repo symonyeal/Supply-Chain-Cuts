@@ -32,23 +32,27 @@ def test_rows(t):
     h1, h2, h3, a1, d1 = (t[k] for k in ("H1_china_graphite_singleton",
                                          "H2_china_midstream_share_of_L", "H3_annual_failure",
                                          "A1_spearman", "D1_prequential"))
-    est, b2 = h3["IS"], t["B2_capacity_basis"]["a0.25"]
+    est, b2, b1 = h3["IS"], t["B2_capacity_basis"]["a0.25"], t["B1_reexport"]
     r = {k: (None if a1[k] is None else round(a1[k], 2)) for k in ("hhi", "top_share")}
     single = ", ".join(map(str, h1["durations"])) or "no"
     c1 = "; ".join(f"NCM {k.split('_')[0][3:]}: {len(v['vanish_co_ni'])} vanish"
                    for k, v in t["C1_chemistry"].items() if k.endswith("a0.25"))
     res = {
         "h1": f"singleton at {single} months; a 6-month loss cannot exceed 25% of 24 months",
-        "h2": f"{pc(h2['without_graphite'])} (with graphite {pc(h2['with_graphite'])})",
+        "h2": (f"{pc(h2['midstream'])} (pCAM, CAM, AAM); secondary: with refined chemicals "
+               f"{pc(h2['with_refined'])}, and graphite {pc(h2['with_refined_and_graphite'])}"),
         "h3": (f"L = {pc(h3['L'])}, U = {pc(h3['U'])}, IS {pc(est['estimate'])} "
                f"[{pc(est['ci95'][0])}, {pc(est['ci95'][1])}]"),
         "a1": f"ρ_S = {r['hhi']} with HHI, {r['top_share']} with top share",
         "b2": f"α = 25%: {len(b2['vanish'])} vanish, {len(b2['appear'])} appear",
+        "b1": (f"{len(b1['withdrawn'])} cut set rests on a flagged node; in the rerun "
+               f"{len(b1['a0.25']['vanish'])} vanish and {len(b1['a0.25']['appear'])} appear at "
+               f"α = 25%, because removing flagged cells lowers demand by "
+               f"{pc(1 - b1['demand_ratio'])} and moves near-threshold combinations"),
         "d1": (f"model {d1['model_log_loss']:.3f} vs constant {d1['constant_log_loss']:.3f} "
                f"on {d1['test_node_years']} node-years, 2020–2024"),
     }
-    mid = ("holds" if h2["without_graphite"] >= 0.8 else
-           "holds only with graphite" if h2["with_graphite"] >= 0.8 else "killed")
+    mid = "holds" if h2["midstream"] >= 0.8 else "killed"
     conc = max(a1["hhi"] or 0, a1["top_share"] or 0) >= 0.9
     return [
         ["Day-1 (i)", "China graphite is a singleton cut at α = 25%, D ≥ 6 months", res["h1"],
@@ -58,8 +62,8 @@ def test_rows(t):
          "killed" if h3["L"] > 0.10 or est["ci95"][1] < 0.01 else "holds"],
         ["A1", "Spearman(attribution, concentration) ≥ 0.9 ⇒ concentration suffices", res["a1"],
          "killed: concentration suffices" if conc else "survives: the network adds information"],
-        ["B1", "a cut set resting on a re-export node is withdrawn",
-         f"{len(t['B1_reexport']['withdrawn'])} cut sets withdrawn at α = 25%", "applied"],
+        ["B1", "cut sets that disappear without re-export nodes are withdrawn", res["b1"],
+         "applied"],
         ["B2", "cut sets that change on the trade basis are basis-dependent", res["b2"],
          "applied"],
         ["C1", "Co/Ni cut sets that vanish at some NCM share are conditional on the mix", c1,

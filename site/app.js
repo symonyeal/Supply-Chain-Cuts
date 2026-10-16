@@ -96,9 +96,9 @@ const SECTIONS = {
     $("pv-table").innerHTML = cutTable(D.pv, cutRows(D.pv, c));
   },
   attribution() {
-    const by = D.attribution.country, ks = Object.keys(by).sort((a, b) => by[a] - by[b]);
+    const by = D.attribution.country_union, ks = Object.keys(by).sort((a, b) => by[a] - by[b]);
     plot("attr-chart", [{ type: "bar", orientation: "h", y: ks, x: ks.map((k) => by[k]), marker: { color: ks.map((k) => k === "CHN" ? T.accent : T.context) },
-      hovertemplate: "%{y}: %{x:.1%} of L<extra></extra>" }], { height: 120 + 26 * ks.length, xaxis: { tickformat: ".0%", title: { text: "share of L carried by cut sets containing the country (shares overlap)" } } });
+      hovertemplate: "%{y}: %{x:.1%} of L<extra></extra>" }], { height: 120 + 26 * ks.length, xaxis: { tickformat: ".0%", range: [0, 1], title: { text: "P(a cut set with the country occurs)/L (shares overlap)" } } });
   },
 };
 
@@ -119,15 +119,17 @@ const FACT = {
   hard: pct(D.hard.IS.estimate), hardL: pct(D.hard.L), rho: fmt(D.meta.rho, 2),
   sump: fmt(N.p.reduce((a, b) => a + b, 0), 1), w12: pct(D.meta.durations.weights[2], 0),
   d1m: fmt(D.meta.D1.model_log_loss, 3), d1c: fmt(D.meta.D1.constant_log_loss, 3),
-  mid: pct(t.H2_china_midstream_share_of_L.without_graphite), midg: pct(t.H2_china_midstream_share_of_L.with_graphite),
+  mid: pct(t.H2_china_midstream_share_of_L.midstream),
   rhoHHI: fmt(t.A1_spearman.hhi, 2), rhoTop: fmt(t.A1_spearman.top_share, 2),
   revision: D.meta.revision.slice(0, 7), lock: D.meta.lock.slice(0, 12), run: D.meta.run,
   L10: pct(D.configs["a0.1_h0_s0_L6_D12"].L), n10: D.configs["a0.1_h0_s0_L6_D12"].cuts.length,
   n6: D.configs["a0.25_h0_s0_L6_D6"].cuts.length,
+  chnU: pct(D.attribution.country_union.CHN, 0), codU: pct(D.attribution.country_union.COD, 0),
 };
 fill();
 
 $("facts").innerHTML = [[FACT.nsingle, "single losses that each stop more than 25% of two years' cells, if they last a year"],
+  [t.robust_singletons.length, "of them hold under every capacity-basis, re-export and chemistry test"],
   [FACT.ncuts, "minimal cut sets of up to three losses (α = 25%)"], [FACT.L, "exact lower bound L on annual failure, scenario"],
   [FACT.IS, "importance-sampling estimate, scenario"]].map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("");
 

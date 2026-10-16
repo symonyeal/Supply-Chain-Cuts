@@ -21,7 +21,8 @@ from chokepoint.recourse import solve
 from chokepoint.risk import bracket, exact_union, importance_sampling
 
 DURATIONS, K = (3, 6, 12), 3
-MIDSTREAM = ("li_carbonate", "refined_co", "refined_ni", "pcam", "cam", "aam")
+MIDSTREAM = ("pcam", "cam", "aam")                   # design §3: the midstream layer
+REFINED = ("li_carbonate", "refined_co", "refined_ni")
 NAMES = ("mine_co", "refined_co", "mine_ni", "refined_ni", "mine_mn", "pcam")
 
 
@@ -120,6 +121,10 @@ def main():
         for c in {V[v][0] for v, _ in S}:
             by_country[c] += x
     out["attribution"] = {"product": dict(by_product), "country": dict(by_country)}
+    out["attribution"]["country_union"] = {     # P(∪ cut sets containing c)/L, exact
+        c: exact_union(V, p, rho, list(DURATIONS), law["weights"],
+                       [S for S in cuts if any(d and V[v][0] == c for v, d in enumerate(S))])/L
+        for c in by_country} if L else {}
     if sector != "liion":                    # the registered tests concern Li-ion (v0.1.0)
         (run / "risk.json").write_text(json.dumps(out, indent=1, default=float),
                                        encoding="utf-8")
@@ -127,13 +132,12 @@ def main():
         return
     # Registered tests at the headline: alpha = 0.25, D_J = 12, h = sigma = 0.
     graphite = [S for S in head["cuts"] if len(S) == 1 and V[S[0][0]] == ("CHN", "graphite")]
-    mid = [S for S in cuts if any(d and V[v][0] == "CHN" and V[v][1] in MIDSTREAM
-                                  for v, d in enumerate(S))]
-    midg = [S for S in cuts if any(d and V[v][0] == "CHN" and V[v][1] in MIDSTREAM +
-                                   ("graphite",) for v, d in enumerate(S))]
     Dl, w = list(DURATIONS), law["weights"]
-    share_mid = exact_union(V, p, rho, Dl, w, mid)/L if L else None
-    share_midg = exact_union(V, p, rho, Dl, w, midg)/L if L else None
+
+    def share(P):
+        S = [S for S in cuts if any(d and V[v][0] == "CHN" and V[v][1] in P
+                                    for v, d in enumerate(S))]
+        return exact_union(V, p, rho, Dl, w, S)/L if L else None
     products = sorted(N["hhi"])
     a = [by_product.get(q, 0.0) for q in products]
     rank = {m: (None if np.ptp(a) == 0 else float(spearmanr(a, [N[m][q] for q in products])
@@ -148,12 +152,16 @@ def main():
     tests = {
         "H1_china_graphite_singleton": {"durations": [S[0][1] for S in graphite],
                                         "six_month_possible": False},
-        "H2_china_midstream_share_of_L": {"without_graphite": share_mid,
-                                          "with_graphite": share_midg, "threshold": 0.8},
+        "H2_china_midstream_share_of_L": {
+            "midstream": share(MIDSTREAM), "with_refined": share(MIDSTREAM + REFINED),
+            "with_refined_and_graphite": share(MIDSTREAM + REFINED + ("graphite",)),
+            "threshold": 0.8},
         "H3_annual_failure": {"L": L, "U": head["U"], "IS": out["IS"][0.25],
                               "interval": [0.01, 0.10]},
         "A1_spearman": {"products": products, "attribution": a, **rank, "threshold": 0.9},
         "B1_reexport": {"flagged": sorted(map(list, flagged)),
+                        "demand_ratio": build(exclude=flagged)["requirement"]["cell"]
+                        / N["requirement"]["cell"],
                         "withdrawn": sorted(list(x) for x in base[0.25] if any(
                             " ".join(f.split()[:2]) in {" ".join(y) for y in flagged}
                             for f in x)),
@@ -168,6 +176,10 @@ def main():
                                    if any(f.split()[1] in NAMES for f in S)),
             "appear": sorted(map(list, names(f"C1_ncm{x}_a{a}") - base[a]))}
             for x in (0.0, 0.25, 0.75, 1.0) for a in (0.1, 0.25)},
+        "robust_singletons": sorted(set.intersection(*(
+            {S[0] for S in names(k) if len(S) == 1} for k in
+            ["base_a0.25_h0_s0_L6", "B1_a0.25", "B2_a0.25",
+             *(f"C1_ncm{x}_a0.25" for x in (0.0, 0.25, 0.75, 1.0))]))),
         "D1_prequential": D1,
         "E1_tornado": {k: {"L": x["L"], "cuts": len(x["cuts"])} for k, x in out["configs"].items()
                        if sum([x["alpha"] != 0.25, x["h"] != 0, x["sigma"] != 0,
