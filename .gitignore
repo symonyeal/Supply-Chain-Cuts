@@ -4,3 +4,14 @@ __pycache__/
 *.egg-info/
 data/fetched/
 data/raw/bgs/
+# Local-only frozen sources (licence unverified); hashes in SOURCES.lock
+data/raw/hs/
+data/raw/cochilco/production_1996_2025.xlsx
+data/events/raw/oecd-battery-pv-2012-2024.csv
+data/events/raw/oecd-china-2023-2024.csv
+data/events/raw/oecd-methodology.pdf
+data/events/raw/oecd-structure.xml
+data/events/raw/gdacs-*
+data/events/raw/mofcom-*
+data/events/raw/indonesia-*
+data/events/raw/zimbabwe-*

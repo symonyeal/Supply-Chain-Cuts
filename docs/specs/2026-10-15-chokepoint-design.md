@@ -9,6 +9,18 @@ by sector annual demand before aggregating shortages. Policy licensing onsets ar
 observed full production outages; absent measured severities, risk is a scenario. The
 strict 25% boundary over a 24-month horizon is retained.
 
+Implementation clarifications (2026-10-15, second session): capacities are measured in
+years of requirement and the LP is aggregated exactly over blocks of constant data
+([MODEL](../MODEL.md), Lemma A). Refined cobalt uses USGS MYB 2023 Table 8 refinery
+production (public domain), replacing the BGS source while its licence is unresolved;
+China LiOH is converted to LCE as the monohydrate (GB/T 26008-2020). The MILP did not prove
+exhaustion within 600 s on the 108-node network, so full-network cut lists come from the
+lattice search in `brute.py` (Lemma B), which shares no code with `cuts.py`; the MILP
+certifies agreement on the pruned network over the sweep and on the full network where it
+completes. Products without event exposure borrow the all-product empirical-Bayes prior;
+a Jeffreys prior (mean 0.5) is not a credible annual rate. Policy onsets are derived in
+`chokepoint/events.py` from the frozen OECD records and national acts.
+
 Agreed with the user, 2026-10-15, through brainstorming Sections 1–5. Evidence base:
 `docs/RESEARCH.md` (primary sources, verified 2026-10-15). This spec is canonical; where
 `PROMPT.md` differs, this file wins.

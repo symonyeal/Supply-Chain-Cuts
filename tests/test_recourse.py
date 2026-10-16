@@ -4,7 +4,7 @@ Graphite from CN (8/month) and MZ (2/month) feeds cells in KR (10/month), one un
 graphite per cell, demand 10/month, T = 2.
 """
 import numpy as np
-from chokepoint.recourse import phi
+from chokepoint.recourse import matrices, phi, solve
 
 V = [("CN", "gr"), ("MZ", "gr"), ("KR", "cell")]
 u = np.array([8.0, 2.0, 10.0])
@@ -35,3 +35,25 @@ def test_monotone():
         D = rng.integers(0, 3, 3)
         Dp = np.maximum(D, rng.integers(0, 3, 3))
         assert f(D, h=0.5, sigma=0.2, L=2) <= f(Dp, h=0.5, sigma=0.2, L=2) + 1e-9
+
+
+def test_blocks_exact():
+    """Block-constant solutions are optimal when data are constant on blocks (MODEL.md)."""
+    V2 = [("A", "ore"), ("B", "ore"), ("C", "cam"), ("D", "cell"), ("E", "cell")]
+    a2 = {("ore", "cam"): 1.5, ("cam", "cell"): 2.0}
+    u2, d2 = [5.0, 4.0, 3.0, 1.0, 0.8], np.full(12, 1.5)
+    rng = np.random.default_rng(1)
+    for h, sigma, L, ends in ((0, 0, 1, [3, 6, 12]), (0.7, 0, 1, [3, 6, 12]),
+                              (0.7, 0.3, 4, [1, 2, 3, 4, 6, 12])):
+        M = matrices(V2, u2, a2, d2, h, sigma, L)
+        B = matrices(V2, u2, a2, d2, h, sigma, L, ends=ends)
+        for _ in range(20):
+            D = rng.choice([0, 3, 6, 12], 5)
+            x, y = solve(M, D), solve(B, D)
+            assert abs(x["phi"] - y["phi"]) < 1e-8 and y["gap"] < 1e-8
+
+
+def test_partial_loss():
+    """Half of CN lost for one month: 10 − 2 − 4 = 4."""
+    M = matrices(V, u, a, d)
+    assert abs(solve(M, [1, 0, 0], f=[0.5, 1, 1])["phi"] - 4) < 1e-9

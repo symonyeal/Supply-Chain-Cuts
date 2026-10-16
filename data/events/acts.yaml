@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "acts": [
+    {
+      "id": "CHN-MOFCOM-2023-23",
+      "country": "CHN",
+      "products": [],
+      "announced_date": "2023-07-03",
+      "effective_date": "2023-08-01",
+      "measure_type": "licensing",
+      "destination": "ALL",
+      "in_estimation_window": true,
+      "capacity_loss_fraction": null,
+      "duration_kind": "legal_measure_not_capacity_outage",
+      "source_url": "https://www.mofcom.gov.cn/zcfb/dwmygl/art/2023/art_52b9a321087f402bb3d310d18b07967e.html",
+      "source_file": "data/events/raw/mofcom-2023-23.html",
+      "scope": "Gallium and germanium items; outside current battery/PV network products.",
+      "right_censored": true
+    },
+    {
+      "id": "CHN-MOFCOM-2023-39",
+      "country": "CHN",
+      "products": [
+        "mine_graphite",
+        "aam"
+      ],
+      "announced_date": "2023-10-20",
+      "effective_date": "2023-12-01",
+      "measure_type": "licensing",
+      "destination": "ALL",
+      "in_estimation_window": true,
+      "capacity_loss_fraction": null,
+      "duration_kind": "legal_measure_not_capacity_outage",
+      "source_url": "https://www.mofcom.gov.cn/zcfb/blgg/art/2023/art_f6b1bc49e2c8482f8eb749012bc66dec.html",
+      "source_file": "data/events/raw/mofcom-2023-39.html",
+      "scope": "Natural flake graphite including spherical/expanded products; specified high-purity/high-strength/high-density artificial graphite. Licensing, not universal export prohibition.",
+      "national_codes": [
+        "3801100030",
+        "3801909010",
+        "6815190020",
+        "2504101000",
+        "2504109100",
+        "3801901000",
+        "3824999940"
+      ],
+      "right_censored": true,
+      "censor_date": "2024-12-31",
+      "deduplicate_oecd_ids": [
+        "OECD-cb375181c4f52a8f"
+      ]
+    },
+    {
+      "id": "CHN-MOFCOM-2024-46-GRAPHITE",
+      "country": "CHN",
+      "products": [
+        "mine_graphite",
+        "aam"
+      ],
+      "announced_date": "2024-12-03",
+      "effective_date": "2024-12-03",
+      "measure_type": "stricter_end_use_review",
+      "destination": "USA",
+      "in_estimation_window": true,
+      "capacity_loss_fraction": null,
+      "duration_kind": "legal_measure_not_capacity_outage",
+      "source_url": "https://www.mofcom.gov.cn/zfxxgk/gkml/art/2024/art_99f5d51bbe6a412ca309d5818c4dee52.html",
+      "source_file": "data/events/raw/mofcom-2024-46-original.html",
+      "scope": "Graphite dual-use exports to the United States receive stricter end-user/end-use review. The general military-user/end-use ban is separate. No global graphite ban.",
+      "right_censored": true,
+      "censor_date": "2024-12-31",
+      "end_date_after_estimation_window": "2025-11-09"
+    },
+    {
+      "id": "IDN-ESDM-11-2019",
+      "country": "IDN",
+      "products": [
+        "mine_ni"
+      ],
+      "announced_date": "2019-09-02",
+      "effective_date": "2020-01-01",
+      "measure_type": "export_prohibition",
+      "destination": "ALL",
+      "in_estimation_window": true,
+      "capacity_loss_fraction": null,
+      "duration_kind": "legal_measure_not_capacity_outage",
+      "source_url": "https://www.esdm.go.id/id/media-center/arsip-berita/bijih-nikel-tidak-boleh-diekspor-lagi-per-januari-2020",
+      "source_file": "data/events/raw/indonesia-2019-ministry-release.html",
+      "scope": "Nickel ore below 1.7% Ni cannot be exported from 1 January 2020. Domestic refining is permitted; refinery capacity is not destroyed.",
+      "announcement_date_precision": "primary ministry press-release date; regulation signature date not reverified",
+      "primary_notice_date": "2019-09-02",
+      "right_censored": true,
+      "censor_date": "2024-12-31",
+      "deduplicate_oecd_ids": [
+        "OECD-e934f4891d19fdfa"
+      ],
+      "date_discrepancy": "OECD trade-ministry act onset 2020-01-02; energy-ministry primary release specifies 2020-01-01. Merge at country/product/year."
+    },
+    {
+      "id": "ZWE-SI213-2022",
+      "country": "ZWE",
+      "products": [
+        "mine_li"
+      ],
+      "announced_date": "2022-12-16",
+      "effective_date": "2022-12-16",
+      "measure_type": "prohibition_with_permit_exceptions",
+      "destination": "ALL",
+      "in_estimation_window": true,
+      "capacity_loss_fraction": null,
+      "duration_kind": "legal_measure_not_capacity_outage",
+      "source_url": "https://www.veritaszim.net/sites/veritas_d/files/SI%202022-213%20Base%20Minerals%20Export%20Control%20%28Lithium%20Bearing%20Ores%20and%20Unbeneficiated%20Lithium%29%20Order%2C%202022.pdf",
+      "source_file": "data/events/raw/zimbabwe-si213-2022.pdf",
+      "scope": "Lithium-bearing ore and unbeneficiated lithium require written ministerial permit; assay samples and exceptional circumstances may qualify.",
+      "right_censored": true,
+      "censor_date": "2024-12-31",
+      "primary_record": "Government Gazette supplement dated 16 December 2022, pp1395-1396, reproduced unchanged by Veritas; section3(1)-(2).",
+      "deduplicate_oecd_ids": [
+        "OECD-0053cad7fa51f965",
+        "OECD-6e8d8e084796c727"
+      ]
+    },
+    {
+      "id": "CHN-MOFCOM-2025-28",
+      "country": "CHN",
+      "products": [
+        "li_carbonate",
+        "li_hydroxide",
+        "cam",
+        "pcam"
+      ],
+      "announced_date": "2025-07-15",
+      "effective_date": "2025-07-15",
+      "measure_type": "technology_export_restriction",
+      "destination": "ALL",
+      "in_estimation_window": false,
+      "capacity_loss_fraction": null,
+      "duration_kind": "legal_measure_not_capacity_outage",
+      "source_url": "https://www.mofcom.gov.cn/zcfb/zgdwjjmywg/art/2025/art_67e2a41850ec428eb1b7be6ec2f2bded.html",
+      "source_file": "data/events/raw/mofcom-2025-28.html",
+      "scope": "Specified LFP/LMFP cathode, precursor and lithium extraction/processing technologies. Does not itself prohibit material exports.",
+      "right_censored": true,
+      "suspended": false
+    },
+    {
+      "id": "CHN-MOFCOM-2025-58",
+      "country": "CHN",
+      "products": [
+        "cell",
+        "cam",
+        "pcam",
+        "aam"
+      ],
+      "announced_date": "2025-10-09",
+      "effective_date": "2025-11-08",
+      "measure_type": "licensing_announced_then_suspended",
+      "destination": "ALL",
+      "in_estimation_window": false,
+      "capacity_loss_fraction": null,
+      "duration_kind": "legal_measure_not_capacity_outage",
+      "source_url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_79646f0161564975a938fe00fee158d5.html",
+      "source_file": "data/events/raw/mofcom-2025-58.html",
+      "scope": "Cells >=300 Wh/kg and specified cathode/precursor/anode goods, equipment and technologies. Suspended before scheduled entry into force.",
+      "national_codes": [
+        "85076000",
+        "28429040",
+        "28539030",
+        "28539050"
+      ],
+      "suspended": true,
+      "suspension_date": "2025-11-07",
+      "suspension_until": "2026-11-10",
+      "duration_days_observed": 0,
+      "right_censored": false,
+      "suspension_source_url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_b1ec77dd3f0d4762952904df7cdaadec.html"
+    },
+    {
+      "id": "CHN-MOFCOM-2025-70",
+      "country": "CHN",
+      "products": [],
+      "announced_date": "2025-11-07",
+      "effective_date": "2025-11-07",
+      "measure_type": "suspension",
+      "destination": "ALL",
+      "in_estimation_window": false,
+      "capacity_loss_fraction": null,
+      "duration_kind": "legal_measure_not_capacity_outage",
+      "source_url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_b1ec77dd3f0d4762952904df7cdaadec.html",
+      "source_file": "data/events/raw/mofcom-2025-70.html",
+      "scope": "Suspends 2025 Nos55-58,61,62 through 10 November 2026; does not suspend No28.",
+      "suspended_act": "CHN-MOFCOM-2025-58",
+      "is_restrictive_onset": false
+    },
+    {
+      "id": "CHN-MOFCOM-2025-72",
+      "country": "CHN",
+      "products": [
+        "mine_graphite",
+        "aam"
+      ],
+      "announced_date": "2025-11-09",
+      "effective_date": "2025-11-09",
+      "measure_type": "partial_suspension",
+      "destination": "ALL",
+      "in_estimation_window": false,
+      "capacity_loss_fraction": null,
+      "duration_kind": "legal_measure_not_capacity_outage",
+      "source_url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_5c68985a6b1a46778e2e8dbff1bb1601.html",
+      "source_file": "data/events/raw/mofcom-2025-72.html",
+      "scope": "Suspends paragraph2 of 2024 No46 through 27 November 2026.",
+      "suspended_act": "CHN-MOFCOM-2024-46-GRAPHITE",
+      "is_restrictive_onset": false
+    }
+  ],
+  "merge_rule": "OECD and national records are linked by country, affected product and legal measure. Preserve legal revisions but count at most one restrictive onset per node/year. Prefer primary effective date where the same measure differs by a day. National positive records do not establish zero-event exposure in other years. 2025 acts remain outside 2012-2024 fitting."
+}

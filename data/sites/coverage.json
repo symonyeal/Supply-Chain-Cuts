@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "threshold": 0.7,
+  "matching_performed": false,
+  "coverage_test_passed": false,
+  "headline_hazards": [
+    "policy_conditional_scenario"
+  ],
+  "natural_hazard_mode": "sensitivity_only",
+  "fixed_loss_fractions": [
+    0.1,
+    0.25,
+    0.5,
+    1.0
+  ],
+  "fixed_loss_fraction_basis": "scenario assumptions; not estimated outage severities",
+  "layers": [
+    {
+      "product": "mine_li",
+      "candidate_records": 70,
+      "records_with_capacity": 50,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "mine_co",
+      "candidate_records": 128,
+      "records_with_capacity": 77,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "mine_ni",
+      "candidate_records": 158,
+      "records_with_capacity": 148,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "mine_graphite",
+      "candidate_records": 106,
+      "records_with_capacity": 98,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "li_carbonate",
+      "candidate_records": 43,
+      "records_with_capacity": 42,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "li_hydroxide",
+      "candidate_records": 5,
+      "records_with_capacity": 5,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "refined_co",
+      "candidate_records": 60,
+      "records_with_capacity": 46,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "refined_ni",
+      "candidate_records": 53,
+      "records_with_capacity": 45,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "cam",
+      "candidate_records": 0,
+      "records_with_capacity": 0,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "pcam",
+      "candidate_records": 0,
+      "records_with_capacity": 0,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "aam",
+      "candidate_records": 0,
+      "records_with_capacity": 0,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "cell",
+      "candidate_records": 0,
+      "records_with_capacity": 0,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "polysilicon",
+      "candidate_records": 0,
+      "records_with_capacity": 0,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "wafer",
+      "candidate_records": 0,
+      "records_with_capacity": 0,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "pv_cell",
+      "candidate_records": 0,
+      "records_with_capacity": 0,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "module",
+      "candidate_records": 0,
+      "records_with_capacity": 0,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "refined_cu",
+      "candidate_records": 206,
+      "records_with_capacity": 194,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "aluminium",
+      "candidate_records": 45,
+      "records_with_capacity": 45,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    },
+    {
+      "product": "mine_mn",
+      "candidate_records": 299,
+      "records_with_capacity": 290,
+      "located_capacity_records": 0,
+      "verified_located_capacity_share": 0.0,
+      "total_layer_capacity": null,
+      "coverage_status": "no_verified_geocoded_capacity",
+      "denominator_note": "No candidate in these frozen tables has coordinates; matched capacity numerator is zero. Network denominator must be read from the network run; do not sum duplicate/shared/incompatible capacity records."
+    }
+  ],
+  "raw_candidate_records": 2108,
+  "distinct_facilities": 1704,
+  "raw_tables_lack_coordinates": true,
+  "missing_global_layers": [
+    "cam",
+    "pcam",
+    "aam",
+    "cell",
+    "polysilicon",
+    "wafer",
+    "pv_cell",
+    "module"
+  ]
+}

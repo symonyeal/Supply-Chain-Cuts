@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "sites": [],
+  "status": "No verified coordinate-capacity matches; candidate facilities remain in site_candidates.csv",
+  "natural_hazard_mode": "sensitivity_only"
+}

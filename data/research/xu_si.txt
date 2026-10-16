@@ -1,0 +1,2860 @@
+Supplementary Information 1 
+Future material demand for automotive lithium-based batteries 2 
+ 3 
+Chengjian Xu 1*, Qiang Dai 2, Linda Gaines 2, Mingming Hu 1, Arnold Tukker 1, 4 
+Bernhard Steubing1* 5 
+ 6 
+1. Institute of Environmental Sciences (CML), Leiden University, 2300, RA 7 
+Leiden, The Netherlands 8 
+2. ReCell Center, Argonne National Laboratory, Lemont, IL, USA 9 
+ 10 
+* These authors contributed equally to this work 11 
+b.steubing@cml.leidenuniv.nl 12 
+ 13 
+  14 
+Supplementary Figures 15 
+ 16 
+Supplementary Figure 1: Stock dynamics model on the EV , battery, and material layers: 17 
+research questions (left), model structure (m iddle), and included categories (right). 18 
+Driving factors are classified into predominantly technical and socio-economic (in italic) 19 
+drivers. We use two EC fleet development scenarios until 2030 from International Energy 20 
+Agency (IEA)1. The EV range, fuel economy, and motor power of various EV models are 21 
+collected from the US DOE (US Department of Energy) 2. The material compositions for 22 
+various battery chemistries are calculated by using the BatPaC (Battery Performance and 23 
+Cost) model from Argonne National Laboratory 3, expected for Li-Sulphur and Li-Air 24 
+chemistries (marked with * as they are associated with uncertainty for EV applications 4). 25 
+Abbreviations: E, B, and M = EV , battery, and material; e, b, and m = categories of EV , 26 
+battery, and material; In, stk, and out = inflow, stock, and outflow; y = year. See section of 27 
+battery replacement and reuse for calculation equations. 28 
+ 29 
+
+ 30 
+Supplementary Figure 2: Projections of EV stock share in light-duty vehicles from 2030 31 
+to 20501,5-11. TOTAL projects 20%-30% of EV fleet share in 2040 9, which is shown as an 32 
+average number of 25% in the figure. Green and blue dashed lines represent own 33 
+estimations for the EV fleet share in the stated policies scenario and the sustainable 34 
+development scenario of IEA 1 until 2050 by logistic model 12 respectively, which is 35 
+comparable to other studies. 36 
+ 37 
+2030 2035 2040 2045 2050
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+ Stated policies scenario, IEA, 2020
+ Sustainable development scenario, IEA, 2020
+ New policies scenario, IEA, 2019
+ EV30@30 scenario, IEA, 2019
+ Bloomberg NEF, 2019
+ BP, 2019
+ OPEC, 2018
+ Low case, BHP, 2019
+ TOTAL, 2018
+ Ener-Blue scenario, Enerdata, 2018
+ Ener-Green scenario, Enerdata, 2018
+ Stated policies scenario, Logistic, 2030-2050
+ Sustainable development scenario, Logistic, 2030-2050
+EV stock share in light-duty vehicles
+Year
+ 38 
+Supplementary Figure 3: Projections of global EV sales in the stated policies scenario 39 
+and the sustainable development scenario in 2020-2050. EV sales are in rapid growth 40 
+phase until 2050, based on the projections of EV stock share in light-duty passenger 41 
+vehicles. 42 
+ 43 
+0.00
+50.00
+100.00
+150.00
+200.00
+250.00
+2020 2025 2030 2035 2040 2045 2050
+EV sales (millions)
+Year
+Total EV sales in Stated policies sceanrio
+BEV sales
+PHEV sales
+Total EV sales in Sustainable development scenario
+BEV sales
+PHEV sales
+ 44 
+Supplementary Figure 4: EV battery sales by year in the NCX (a), LFP (b) and Li-S/Air (c) 45 
+scenarios until 2050 for the fleet developmen t of the SD scenario (unit: 1 TWh = 10 3 46 
+GWh = 106 MWh = 109 kWh). 47 
+ 48 
+0
+2
+4
+6
+8
+10
+12
+14
+2020 2025 2030 2035 2040 2045 2050
+0
+2
+4
+6
+8
+10
+12
+14
+2020 2025 2030 2035 2040 2045 2050
+0
+2
+4
+6
+8
+10
+12
+14
+2 0 2 02 0 2 52 0 3 02 0 3 52 0 4 02 0 4 52 0 5 0
+Battery capacity (TWh)Battery capacity (TWh)Battery capacity (TWh)
+a
+b
+c
+Year
+LFP
+NCM955-Graphite (Si)
+NCM811-Graphite (Si)
+NCM622-Graphite (Si)
+NCM622
+NCM523
+NCM111
+NCA
+Li-Air
+Li-Sulphur
+ 49 
+Supplementary Figure 5: EV battery sales by year in the NCX (a), LFP (b) and Li-S/Air (c) 50 
+scenarios until 2050 for the fleet development of the STEP scenario and the SD scenario 51 
+(unit: millions). 52 
+ 53 
+0
+20
+40
+60
+80
+100
+120
+2020 2025 2030 2035 2040 2045 2050
+0
+20
+40
+60
+80
+100
+120
+2020 2025 2030 2035 2040 2045 2050
+0
+40
+80
+120
+160
+200
+240
+2020 2025 2030 2035 2040 2045 2050
+0
+40
+80
+120
+160
+200
+240
+2020 2025 2030 2035 2040 2045 2050
+Battery sales (millions)
+Battery sales (millions)
+Battery sales (millions)Battery sales (millions)
+Battery sales (millions)Battery sales (millions)
+a
+b
+c
+Year Year
+LFP
+NCM955-Graphite (Si)
+NCM811-Graphite (Si)
+NCM622-Graphite (Si)
+NCM622
+NCM523
+NCM111
+NCA
+Li-Air
+Li-Sulphur
+0
+40
+80
+120
+160
+200
+240
+2020 2025 2030 2035 2040 2045 2050
+0
+20
+40
+60
+80
+100
+120
+2020 2025 2030 2035 2040 2045 2050
+STEP scenario SD scenario
+ 54 
+Supplementary Figure 6: Weibull lifespan distributions of EVs and batteries. 55 
+ 56 
+0.00
+0.05
+0.10
+0.15
+0.20
+0 5 10 15 20 25
+probability density function
+Lifespan (in year)
+EV in 2005-2050
+0.00
+0.05
+0.10
+0.15
+0.20
+0 5 10 15 20 25
+probability density function
+Lifespan (in year)
+All battery chemistries in 2005-2019
+All battery chemistries except LFP in 2020-2050
+LFP in 2020-2050
+ 57 
+Supplementary Figure 7: Primary material demand (a) and materials in EoL batteries (b) 58 
+from 2020 to 2050 for Mn, Al, Cu, graphite, and Si in the NCX, LFP and Li-S/Air battery 59 
+scenarios. Mt = million tons. 60 
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+2020 2030 2040 2050
+EoL materials (Mt)
+Material demand (Mt)
+EoL materials (Mt)EoL materials (Mt)
+Material demand (Mt)Material demand (Mt)
+ab
+Year Year
+NCX scenario
+LFP scenario
+Li-S/Air scenario
+STEP scenario
+SD scenario
+Manganese Manganese
+Copper Copper
+Aluminum Aluminum
+0.0
+0.1
+0.2
+0.3
+0.4
+2020 2030 2040 2050
+0.0
+5.0
+10.0
+15.0
+20.0
+2020 2030 2040 2050
+0.0
+1.0
+2.0
+3.0
+4.0
+5.0
+6.0
+7.0
+2020 2030 2040 2050
+0.0
+2.0
+4.0
+6.0
+8.0
+10.0
+12.0
+2020 2030 2040 2050
+0.0
+1.0
+2.0
+3.0
+4.0
+2020 2030 2040 2050
+0.0
+2.0
+4.0
+6.0
+8.0
+10.0
+12.0
+14.0
+2020 2030 2040 2050
+0.0
+1.0
+2.0
+3.0
+4.0
+5.0
+2020 2030 2040 2050
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+2020 2030 2040 2050
+0.0
+0.1
+0.2
+2020 2030 2040 2050
+Graphite Graphite
+Silicon Silicon
+EoL materials (Mt)
+Material demand (Mt)
+EoL materials (Mt)
+Material demand (Mt)
+ 61 
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+Increasing factors
+abc
+Lithium Lithium
+Without recycling
+With recycling
+With recycling and second life
+STEP scenario
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+Lithium
+0
+5
+10
+15
+20
+25
+30
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+30
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+30
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+Nickel Nickel Nickel
+Cobalt Cobalt Cobalt
+Increasing factors Increasing factors
+ 62 
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+Manganese Manganese Manganese
+Aluminum Aluminum Aluminum
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+Copper Copper Copper
+Increasing factors Increasing factors Increasing factors
+ 63 
+Supplementary Figure 8: Increasing factors for the primary demand for Li, Ni, Co, Mn, Al, Cu, graphite, and Si from 2020 to 205 0 in the STEP scenario 64 
+in the NCX (a), LFP (b) and Li-S/Air (c) scenarios. Here recycling refers to hydrometallurgical recycling as an example. 65 
+ 66 
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+20
+40
+60
+80
+100
+120
+2020 2025 2030 2035 2040 2045 2050
+0
+20
+40
+60
+80
+100
+120
+2020 2025 2030 2035 2040 2045 2050
+0
+20
+40
+60
+80
+100
+120
+2020 2025 2030 2035 2040 2045 2050
+Graphite Graphite Graphite
+Silicon Silicon Silicon
+Increasing factors Increasing factors
+ 67 
+0
+5
+10
+15
+20
+25
+2 0 2 02 0 2 52 0 3 02 0 3 52 0 4 02 0 4 52 0 5 0
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+Increasing factors
+abc
+Lithium Lithium
+Without recycling
+With recycling
+With recycling and second life
+SD scenario
+Lithium
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+30
+35
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+30
+35
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+30
+35
+2020 2025 2030 2035 2040 2045 2050
+Nickel Nickel Nickel
+Cobalt Cobalt Cobalt
+Increasing factors Increasing factors
+ 68 
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+2 0 2 02 0 2 52 0 3 02 0 3 52 0 4 02 0 4 52 0 5 0
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+Manganese Manganese Manganese
+Aluminum Aluminum Aluminum
+Increasing factors Increasing factors
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+Copper Copper Copper
+Increasing factors
+ 69 
+Supplementary Figure 9: Increasing factors for the primary demand of Li, Ni, Co, Mn, Al, Cu, graphite, and Si from 2020 to 2050  in the SD scenario in 70 
+the NCX (a), LFP (b) and Li-S/Air (c) scenarios. Here recycling refers to hydrometallurgical recycling as an example.71 
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+2020 2025 2030 2035 2040 2045 2050
+0
+20
+40
+60
+80
+100
+120
+140
+2020 2025 2030 2035 2040 2045 2050
+0
+20
+40
+60
+80
+100
+120
+140
+2020 2025 2030 2035 2040 2045 2050
+0
+20
+40
+60
+80
+100
+120
+140
+2020 2025 2030 2035 2040 2045 2050
+Graphite Graphite Graphite
+Silicon Silicon Silicon
+Increasing factors Increasing factors
+72 
+ 73 
+Supplementary Figure 10: Result of sensitivity an alysis of required battery capacity (i.e. 74 
+100% BEV with 110 kWh and 100% PHEV with 10 kWh) on annual demand for Li, Co, Ni, 75 
+Mn, Al, Cu, graphite, and Si in 2020-2050 without recycling. 76 
+ 77 
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+2020 2030 2040 2050
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+2020 2030 2040 2050
+Material demand (Mt)
+Material demand (Mt)
+Baseline
+100% BEV 110 kWh
+100% PHEV 10 kWh
+STEP scenario, NCX
+SD scenario, NCX
+Production (2019)
+Lithium Cobalt
+0.0
+4.0
+8.0
+12.0
+16.0
+2020 2030 2040 2050
+0.0
+0.4
+0.8
+1.2
+1.6
+2020 2030 2040 2050
+Nickel Manganese
+0.0
+5.0
+10.0
+15.0
+20.0
+25.0
+30.0
+2020 2030 2040 2050
+0.0
+5.0
+10.0
+15.0
+20.0
+2020 2030 2040 2050
+0.0
+5.0
+10.0
+15.0
+20.0
+25.0
+2020 2030 2040 2050
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+2020 2030 2040 2050
+Aluminum Copper
+Graphite Silicon
+Year Year
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+16 
+ 
+ 78 
+Supplementary Figure 11: Cumulative primary demand for Mn, Al, Cu, graphite, and Si in 79 
+2020-2050 without recycling or with hydrom etallurgical recycling. Grey error bars 80 
+represent a sensitivity analysis for battery ca pacity considering two extreme cases (if all 81 
+EVs were PHEVs with small 10 kWh batteries or if all EVs were large SUVs with 110 kWh 82 
+batteries, e.g. Tesla’s Model S Long Range Plus 13). The global known reserves in 2019 for 83 
+Mn, Al, Cu, graphite, and Si are shown in Supplementary Table 5, which are much higher 84 
+than cumulative primary material demand from EV batteries only. 85 
+ 86 
+Cumulative primary demand (Mt)
+Cumulative primary demand (Mt)Cumulative primary demand (Mt)
+STEP scenario
+without recycling
+Known 
+reserves
+With recycling
+SD scenario 
+without recycling
+100% BEV (110 kWh)
+100% PHEV (10 kWh)
+With recycling
+Manganese Aluminum
+0
+5
+10
+15
+20
+25
+NCX LFP Li-S/Air
+0
+50
+100
+150
+200
+250
+300
+350
+400
+450
+NCX LFP Li-S/Air
+0
+50
+100
+150
+200
+250
+NCX LFP Li-S/Air
+Copper
+0
+50
+100
+150
+200
+250
+300
+350
+NCX LFP Li-S/Air
+Graphite
+0
+2
+4
+6
+8
+10
+NCX LFP Li-S/Air
+Cumulative primary demand (Mt)
+Cumulative primary demand (Mt)
+Silicon
+17 
+ 
+ 87 
+Supplementary Figure 12: Future battery waste stream by chemistry in the NCX (a), LFP 88 
+(b) and Li-S/Air (c) scenarios until 2050 (unit: Mt = million tons). Under the STEP 89 
+scenario, the EV battery waste stream reach around 11 Mt in 2050 if NCX scenario is 90 
+realized, which is lower than the LFP scenario (14 Mt) and higher than the Li-S/Air 91 
+scenario (9 Mt). The differences among thr ee battery chemistry scenarios are associated 92 
+with the relatively lower specific energy of LFP chemistry and higher specific energy of 93 
+Li-S and Li-Air chemistries compared to NC A and NCM series chemistries. Driven by 94 
+higher EV fleet deployments, the weight of EV battery waste stream reaches around 2 times 95 
+in the SD scenario than the STEP scenario. 96 
+ 97 
+0
+4
+8
+12
+16
+2020 2025 2030 2035 2040 2045 2050
+0
+4
+8
+12
+16
+2020 2025 2030 2035 2040 2045 2050
+0
+4
+8
+12
+16
+2 0 2 02 0 2 52 0 3 02 0 3 52 0 4 02 0 4 52 0 5 0
+0
+5
+10
+15
+20
+25
+30
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+30
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+25
+30
+2020 2025 2030 2035 2040 2045 2050
+Battery waste (Mt)
+Battery waste (Mt)
+Battery waste (Mt)Battery waste (Mt)
+Battery waste (Mt)Battery waste (Mt)
+a
+b
+c
+Year Year
+LFP
+NCM955-Graphite (Si)
+NCM811-Graphite (Si)
+NCM622-Graphite (Si)
+NCM622
+NCM523
+NCM111
+NCA
+Li-Air
+Li-Sulphur
+STEP scenario SD scenario
+18 
+ 
+ 98 
+Supplementary Figure 13: Materials in future EV battery waste steam potentially available 99 
+for recycling without second life use until 2050 in the STEP scenario in the NCX (a), LFP 100 
+(b) and Li-S/Air (c) scenarios (unit: Mt = million tons). The total weight of eight EoL 101 
+materials in 2050 in the NCX scenario is almost equal to the LFP scenario, but with 102 
+different material shares, especially for the EoL Ni weight in the NCX scenario is much 103 
+higher than the LFP scenario. The total weight of eight EoL materials in the Li-S/Air 104 
+scenario (Li includes Li ion in lithium chemical compounds and Li metal) is much lower 105 
+than the other two battery scenarios, however, EoL Li weight is slightly higher. 106 
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+2020
+2021
+2022
+2023
+2024
+2025
+2026
+2027
+2028
+2029
+2030
+2031
+2032
+2033
+2034
+2035
+2036
+2037
+2038
+2039
+2040
+2041
+2042
+2043
+2044
+2045
+2046
+2047
+2048
+2049
+2050
+Materials in battry waste (Mt)
+Year
+Si
+Graphite
+Cu
+Al
+Mn
+Co
+Ni
+Li
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+2020
+2021
+2022
+2023
+2024
+2025
+2026
+2027
+2028
+2029
+2030
+2031
+2032
+2033
+2034
+2035
+2036
+2037
+2038
+2039
+2040
+2041
+2042
+2043
+2044
+2045
+2046
+2047
+2048
+2049
+2050
+Materials in battry waste (Mt)
+Year
+Si
+Graphite
+Cu
+Al
+Mn
+Co
+Ni
+Li
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+2020
+2021
+2022
+2023
+2024
+2025
+2026
+2027
+2028
+2029
+2030
+2031
+2032
+2033
+2034
+2035
+2036
+2037
+2038
+2039
+2040
+2041
+2042
+2043
+2044
+2045
+2046
+2047
+2048
+2049
+2050
+Materials in battry waste (Mt)
+Year
+Si
+Graphite
+Cu
+Al
+Mn
+Co
+Ni
+Li metal
+Li ion
+a
+b
+c
+19 
+ 
+ 107 
+Supplementary Figure 14: Materials in future EV battery waste steam potentially available 108 
+for recycling without second life use until 2050 in the SD scenario in the NCX (a), LFP (b) 109 
+and Li-S/Air (c) scenarios (unit: Mt = million tons). We can see the same pattern for EoL 110 
+materials in the SD scenario as the STEP scenario. However, the weight of EoL materials 111 
+available for recycling in the SD scenario is around 2 times than the STEP scenario. 112 
+0
+2
+4
+6
+8
+10
+12
+14
+16
+18
+2020
+2021
+2022
+2023
+2024
+2025
+2026
+2027
+2028
+2029
+2030
+2031
+2032
+2033
+2034
+2035
+2036
+2037
+2038
+2039
+2040
+2041
+2042
+2043
+2044
+2045
+2046
+2047
+2048
+2049
+2050
+Materials in battry waste (Mt)
+Year
+Si
+Graphite
+Cu
+Al
+Mn
+Co
+Ni
+Li
+0
+2
+4
+6
+8
+10
+12
+14
+16
+18
+2020
+2021
+2022
+2023
+2024
+2025
+2026
+2027
+2028
+2029
+2030
+2031
+2032
+2033
+2034
+2035
+2036
+2037
+2038
+2039
+2040
+2041
+2042
+2043
+2044
+2045
+2046
+2047
+2048
+2049
+2050
+Materials in battry waste (Mt)
+Year
+Si
+Graphite
+Cu
+Al
+Mn
+Co
+Ni
+Li
+0
+2
+4
+6
+8
+10
+12
+14
+16
+18
+2020
+2021
+2022
+2023
+2024
+2025
+2026
+2027
+2028
+2029
+2030
+2031
+2032
+2033
+2034
+2035
+2036
+2037
+2038
+2039
+2040
+2041
+2042
+2043
+2044
+2045
+2046
+2047
+2048
+2049
+2050
+Materials in battry waste (Mt)
+Year
+Si
+Graphite
+Cu
+Al
+Mn
+Co
+Ni
+Li metal
+Li ion
+a
+b
+c
+20 
+ 
+ 113 
+0.0
+0.3
+0.6
+0.9
+1.2
+1.5
+1.8
+2020 2025 2030 2035 2040 2045 2050
+0.0
+0.3
+0.6
+0.9
+1.2
+1.5
+1.8
+2020 2025 2030 2035 2040 2045 2050
+0.0
+0.3
+0.6
+0.9
+1.2
+1.5
+1.8
+2020 2025 2030 2035 2040 2045 2050
+Material demand (Mt)
+abc
+Lithium Lithium Lithium
+SD scenario
+Without recycling
+With recycling
+With recycling and second life
+STEP scenario
+Production (2019)
+0.0
+1.0
+2.0
+3.0
+4.0
+5.0
+6.0
+7.0
+8.0
+2020 2025 2030 2035 2040 2045 2050
+0.0
+1.0
+2.0
+3.0
+4.0
+5.0
+6.0
+7.0
+8.0
+2020 2025 2030 2035 2040 2045 2050
+0.0
+1.0
+2.0
+3.0
+4.0
+5.0
+6.0
+7.0
+8.0
+2020 2025 2030 2035 2040 2045 2050
+Nickel Nickel Nickel
+Material demand (Mt)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+1.4
+2020 2025 2030 2035 2040 2045 2050
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+1.4
+2020 2025 2030 2035 2040 2045 2050
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+1.4
+2020 2025 2030 2035 2040 2045 2050
+Cobalt Cobalt Cobalt
+Material demand (Mt)
+21 
+ 
+ 114 
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+2020 2025 2030 2035 2040 2045 2050
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+2020 2025 2030 2035 2040 2045 2050
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+2020 2025 2030 2035 2040 2045 2050
+Manganese Manganese Manganese
+Material demand (Mt)
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+0
+5
+10
+15
+20
+2020 2025 2030 2035 2040 2045 2050
+Material demand (Mt)
+Aluminum Aluminum Aluminum
+0
+2
+4
+6
+8
+10
+12
+2020 2025 2030 2035 2040 2045 2050
+0
+2
+4
+6
+8
+10
+12
+2020 2025 2030 2035 2040 2045 2050
+0
+2
+4
+6
+8
+10
+12
+2020 2025 2030 2035 2040 2045 2050
+Material demand (Mt)
+Copper Copper Copper
+22 
+ 
+ 115 
+Supplementary Figure 15: Primary battery material demand in the NCX (a), LFP (b) and Li-S/Air (c) scenarios from 2020 to 2050 without recycling, with 116 
+recycling, and with recycling and second life. Here recycling refers to hydrometallurgical recycling as an example. 117 
+0
+2
+4
+6
+8
+10
+12
+14
+2020 2025 2030 2035 2040 2045 2050
+0
+2
+4
+6
+8
+10
+12
+14
+2020 2025 2030 2035 2040 2045 2050
+0
+2
+4
+6
+8
+10
+12
+14
+2020 2025 2030 2035 2040 2045 2050
+Graphite Graphite Graphite
+Material demand (Mt)
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+2020 2025 2030 2035 2040 2045 2050
+Material demand (Mt)
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+2020 2025 2030 2035 2040 2045 2050
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+2020 2025 2030 2035 2040 2045 2050
+Silicon Silicon Silicon
+Year Year Year
+23 
+ 
+ 118 
+ 119 
+Supplementary Figure 16: Lithium demand split by Li ion (in the form of chemicals like 120 
+Li2CO3, LiOH, etc.) and Li metal (in Li anode of Li-S and Li-Air chemistries) in the 121 
+Li-S/Air scenario, including a sensitivity analysis  for improved specific energy of Li-S and 122 
+Li-Air chemistries. Based on reviewing of the sp ecific energy of Li-S and Li-Air cells from 123 
+lab and commercial scales (see Supplementary Tables 21 and 22), the specific energy of 124 
+Li-S cells is improved from 400 Wh/kg to 600 Wh/kg, and the specific energy of Li-Air cells 125 
+from 500 Wh/kg to 1000 Wh/kg. Specific energy improvements of Li-S and Li-Air cells can 126 
+make total Li demand in the Li-S/Air scenario lower than LFP and NCX scenarios. 127 
+ 128 
+ 129 
+Supplementary Figure 17: Input of sensitivity  analysis of LFP market share in the LFP 130 
+scenario (a) and Li-S and Li-Air market shares in the Li-S/Air scenario (b). 131 
+0.0
+0.3
+0.6
+0.9
+1.2
+1.5
+1.8
+2020 2025 2030 2035 2040 2045 2050
+0.0
+0.3
+0.6
+0.9
+1.2
+1.5
+1.8
+2020 2025 2030 2035 2040 2045 2050
+STEP scenario SD scenario
+Li demand (Mt)
+Year Year
+Total Li demand
+Li metal demand
+Li ion demand
+Improved specific energy
+Improved specific energy
+0%
+20%
+40%
+60%
+80%
+100%
+2020 2030 2040 2050
+0%
+20%
+40%
+60%
+80%
+100%
+2020 2030 2040 2050
+0%
+20%
+40%
+60%
+80%
+100%
+2020 2030 2040 2050
+0%
+20%
+40%
+60%
+80%
+100%
+2020 2030 2040 2050
+Baseline Sensitivity analysisa
+b
+Market shareMarket share
+NCA NCM111 NCM523 NCM622 NCM622-Graphite (Si)
+NCM811-Graphite (Si) NCM955-Graphite (Si) LFP Li-Sulphur Li-Air
+24 
+ 
+ 132 
+ 133 
+Supplementary Figure 18: Result of sensitivity  analysis of 100% LFP market share (by 134 
+2030) on annual demand for Li, Co, Ni, Mn, Al, Cu, graphite, and Si in 2020-2050 without 135 
+recycling. 136 
+ 137 
+0.0
+0.3
+0.6
+0.9
+1.2
+1.5
+2020 2030 2040 2050
+0.0
+1.0
+2.0
+3.0
+4.0
+2020 2030 2040 2050
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+2020 2030 2040 2050
+0.0
+0.1
+0.2
+0.3
+0.4
+2020 2030 2040 2050
+0.0
+5.0
+10.0
+15.0
+20.0
+25.0
+2020 2030 2040 2050
+0.0
+2.0
+4.0
+6.0
+8.0
+10.0
+12.0
+14.0
+2020 2030 2040 2050
+0.0
+4.0
+8.0
+12.0
+16.0
+2020 2030 2040 2050
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+2020 2030 2040 2050
+Material demand (Mt)
+Material demand (Mt)
+STEP scenario, NCX
+SD scenario, NCX
+Production (2019)
+Lithium Cobalt
+Nickel Manganese
+Aluminum Copper
+Graphite Silicon
+Year Year
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Baseline
+100% LFP market share
+25 
+ 
+ 138 
+Supplementary Figure 19: Result of sensitivity analysis of 100% Li-S and Li-Air market 139 
+share (by 2040) on annual demand for Li, Co, Ni, Mn, Al, Cu, graphite, and Si in 140 
+2020-2050 without recycling. 141 
+ 142 
+0.0
+0.5
+1.0
+1.5
+2.0
+2020 2030 2040 2050
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+2020 2030 2040 2050
+0.0
+1.0
+2.0
+3.0
+4.0
+2 0 2 02 0 3 02 0 4 02 0 5 0
+0.0
+0.1
+0.2
+0.3
+0.4
+2020 2030 2040 2050
+0.0
+2.0
+4.0
+6.0
+8.0
+10.0
+12.0
+2020 2030 2040 2050
+0.0
+1.0
+2.0
+3.0
+4.0
+5.0
+6.0
+2020 2030 2040 2050
+0.0
+1.0
+2.0
+3.0
+4.0
+5.0
+2020 2030 2040 2050
+0.0
+0.1
+0.2
+0.3
+2020 2030 2040 2050
+Material demand (Mt)
+Material demand (Mt)
+STEP scenario, NCX
+SD scenario, NCX
+Production (2019)
+Lithium Cobalt
+Nickel Manganese
+Aluminum Copper
+Graphite Silicon
+Year Year
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Baseline
+100% Li-S and Li-Air  
+market share
+26 
+ 
+ 143 
+Supplementary Figure 20: Result of sensitivity analysis of lower battery lifespan (i.e. one 144 
+EV will use 1.5 battery packs on average after 2020, while in the baseline scenario one EV 145 
+will use 1 battery pack after 2020) on annual demand for Li, Co, Ni, Mn, Al, Cu, graphite, 146 
+and Si in 2020-2050 without recycling. 147 
+ 148 
+0.0
+0.5
+1.0
+1.5
+2.0
+2020 2030 2040 2050
+0.0
+0.5
+1.0
+1.5
+2.0
+2020 2030 2040 2050
+0.0
+2.0
+4.0
+6.0
+8.0
+10.0
+2020 2030 2040 2050
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+2020 2030 2040 2050
+0.0
+5.0
+10.0
+15.0
+20.0
+2020 2030 2040 2050
+0.0
+3.0
+6.0
+9.0
+12.0
+15.0
+2020 2030 2040 2050
+0.0
+3.0
+6.0
+9.0
+12.0
+15.0
+2020 2030 2040 2050
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+2020 2030 2040 2050
+Material demand (Mt)
+Material demand (Mt)
+Baseline
+Lower battery lifespan
+STEP scenario, NCX
+SD scenario, NCX
+Production (2019)
+Lithium Cobalt
+Nickel Manganese
+Aluminum Copper
+Graphite Silicon
+Year Year
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+Material demand (Mt)
+27 
+ 
+ 149 
+Supplementary Figure 21: EV stock estimations of stated policies scenario and sustainable 150 
+development scenario from 2020-2030 of IEA global EV outlook 2020 1, in proportion with 151 
+new policies scenario and EV30@30 scenario of IEA global EV outlook 2019 11, 152 
+respectively. 153 
+ 154 
+Supplementary Figure 22: Estimation of EV fleet  penetration in stated policies scenario 155 
+and sustainable development scenario of IEA (reach 100% until 2135). The EV fleet 156 
+penetration until 2030 is based on the stated policies scenario and the sustainable 157 
+development scenario of IEA1, and we model the EV fleet penetration after 2030 by logistic 158 
+model12. Here the figure shows the process of full transition to EVs in light-duty passenger 159 
+vehicle market, and the time point when EV fleet share reach 100% in the stated policies 160 
+scenario and the sustainable development scen ario, if our estimations of 25%-50% of EV 161 
+0
+50,000,000
+100,000,000
+150,000,000
+200,000,000
+250,000,000
+2020 2021 2022 2023 2024 2025 2026 2027 2028 2029 2030
+EV stock (units)
+Year
+Stated policies scenario, IEA, 2020
+Sustainable development scenario, IEA, 2020
+New policies scenario, IEA, 2019
+EV30@30 scenario, IEA, 2019
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+2019 2029 2039 2049 2059 2069 2079 2089 2099 2109 2119 2129
+EV share in light-duty vehicles
+Year
+Stated policies Scenario
+Sustainable development Scenario
+28 
+ 
+fleet share in 2050 are realized. 162 
+ 163 
+Supplementary Figure 23: Global BEV share in total EV stock in 2030-2050, in proportion 164 
+with US BEV stock share projection by US Energy Information Administration14. 165 
+ 166 
+ 167 
+Supplementary Figure 24: BEV sales market shares among small/mid-size/large segments. 168 
+The market shares are based on cumulative sales until 2019 of each BEV model included 169 
+in each BEV market segment. BEV sales market shares are assumed stable in 2020-2050, 170 
+while sensitivity analysis is conducted. 171 
+ 172 
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%BEV share in EV stock
+Year
+US BEV share in EV stock (used to inform global trend)
+Global BEV share in EV stock assumed in the STEP scenario
+Global BEV share in EV stock assumed in the SD scenario
+Small BEV Mid-size BEV Large BEV
+29 
+ 
+ 173 
+Supplementary Figure 25: PHEV sales market shares among small/mid-size/large 174 
+segments. The market shares are based on cumulative sales until 2019 of each PHEV 175 
+model included in each PHEV market segment. PHEV sales market shares are assumed 176 
+stable in 2020-2050, while sensitivity analysis is conducted.177 
+Small PHEV Mid-size PHEV Large PHEV
+30 
+ 
+Supplementary Tables 178 
+Supplementary Table 1: Sales-weighted av erage BEV range, fuel economy, and motor 179 
+power. We collect sales of each BEV model include in small/mid-size/large car segments 180 
+until 2019 15, and calculate the distribution of cumulative sales until 2019 of three car 181 
+segments (to represent BEV market shares among small/mid-size/large car segments). The 182 
+range, fuel economy, and motor power of each BEV segment are calculated by cumulative 183 
+sales-weighted average method. The required battery capacity = EV range * fuel economy / 184 
+0.85, where 0.85 is the ratio of available battery capacity for driving EVs based on the 185 
+assumption in the BatPaC model when calculating battery material compositions 3. Average 186 
+required battery capacity for BEVs reaches around 66 kWh. 187 
+BEVs Range  
+(miles) 
+Fuel economy 
+(Wh/mile) 
+Electric motor power 
+(kW) 
+Required capacity 
+(kWh) 
+Small BEVs 96 291 101 33 
+Mid-size BEVs 194 291 169 66 
+Large BEVs 241 353 295 100 
+ 188 
+Supplementary Table 2: Sales-weighted average PHEV range, fuel economy, and motor 189 
+power. Same data collection and calculation methods as the BEVs in the Supplementary 190 
+Table 1. Average required battery capacity for PHEVs reaches around 12 kWh. 191 
+PHEVs Range 
+(miles) 
+Fuel economy 
+(Wh/mile) 
+Electric motor power 
+(kW) 
+Required capacity 
+(kWh) 
+Small PHEVs 44 336 123 17 
+Mid-size PHEVs 22 303 55 8 
+Large PHEVs 22 470 61 12 
+ 192 
+Supplementary Table 3: The minimum, most likely, and maximum lifespans of EV batteries 193 
+from 2005 to 2050 as input to the calculation of shape and scale parameters of Weibull 194 
+lifespan distribution of batteries (unit: year, except for shape and scale parameters). Other 195 
+chemistries refer to all battery chemistrie s except LFP . Note here battery lifespan 196 
+assumptions are for illustration purposes which is linked to the assumptions of battery 197 
+replacement rate and second-use rate. 198 
+Period Chemistries Minimum 
+lifespan, a 
+Most likely 
+lifespan, d 
+Maximum 
+lifespan, c 
+Shape 
+parameter, α 
+Scale 
+parameter, β 
+2005-2019 All chemistries 1 8 15 3.1 7.9 
+2020-2050 
+2020-2050 
+Other chemistries 1 15 20 6.3 14.4 
+LFP 1 20 25 8.1 19.3 
+31 
+ 
+Supplementary Table 4: Specific energy of EV battery pack (unit: Wh/kg). 199 
+EV types 
+ LFP NCA NCM111 NCM523 NCM622 NCM622-Grap
+hite (Si) 
+NCM811-Grap
+hite (Si) 
+NCM955-Grap
+hite (Si) Li-Sulphur Li-Air 
+Small BEVs 122 169 151 153 164 176 183 192 295 365 
+Mid-size BEVs 129 178 160 163 174 186 193 202 308 383 
+Large BEVs 128 176 159 162 172 185 191 201 308 384 
+Small PHEVs 101 151 132 134 147 155 161 169 265 327 
+Mid-size PHEVs 74 109 103 104 109 116 118 121 224 272 
+Large PHEVs 75 115 106 108 114 119 121 124 234 287 
+32 
+ 
+Supplementary Table 5: Cumulative demand for Li, Co, Ni, Mn, Al, Cu, graphite, and Si in 200 
+2020-2050 without recycling, compared to global  known reserves in 2019 (unit: Mt). Note 201 
+Li demand includes Li ion demand (in the form of chemicals like Li 2CO3) and Li metal 202 
+demand in the Li-S/Air battery scenario, for example, 9.1 (4.8) for Li demand under the 203 
+STEP and Li-S/Air scenario is shown in the form of total Li demand (Li metal demand). * 204 
+Yearend production capacity for Al reserve. 
+‡
+ Si reserves are not available, but ample for 205 
+use. Known reserves in 2019 are referred from USGS16. 206 
+Materials 
+STEP 
+scenario, 
+NCX 
+STEP 
+scenario, 
+LFP 
+STEP 
+scenario, 
+Li-S/Air 
+SD 
+scenario, 
+NCX 
+SD 
+scenario, 
+LFP 
+SD 
+scenario, 
+Li-S/Air 
+Known 
+reserves 
+in 2019 
+Li 7.8 7.3 8.8 (4.6) 16.0 15.1 18.3 (9.6) 17 
+Co 8.1 3.5 4.3 16.8 7.1 8.8 7 
+Ni 43.0 18.1 21.9 88.9 37.2 44.7 89 
+Mn 5.2 2.2 2.7 10.6 4.5 5.5 810 
+Al 89.3 106.5 67.4 183.8 218.7 138.1 77.9* 
+Cu 59.8 66.8 37.6 121.0 134.6 75.4 870 
+Graphite 62.4 74.8 32.6 128.8 154.4 66.2 300 
+Si 2.4 1.0 1.2 5.0 2.1 2.4 Ample‡ 
+ 207 
+Supplementary Table 6: Assumptions of second-use rate of batteries distinguished by LFP 208 
+and other chemistries, based on the assumpti ons of EV and battery lifespan distribution 209 
+(Supplementary Tables 10 and 11). 210 
+Periods Battery chemistry Second-use rate 
+2005-2019 LFP 100% 
+Others 50% 
+2020-2050 LFP 100% 
+Others 75% 
+ 211 
+ 212 
+ 213 
+ 214 
+ 215 
+ 216 
+ 217 
+ 218 
+ 219 
+ 220 
+ 221 
+ 222 
+ 223 
+ 224 
+ 225 
+ 226 
+ 227 
+ 228 
+33 
+ 
+Supplementary Table 7: Effects of recycling on  cumulative demand for Li, Ni, Co, Mn, Al, 229 
+Cu, graphite, and Si in 2020-2050. Numbers in the table represent reduction percentages by 230 
+recycling compared to primary cumulative de mand. Note Li demand includes Li ion 231 
+demand (in the form of lithium chemicals) and Li metal demand in the Li-S/Air battery 232 
+scenario. For example, 20.2% (8.0%) under the STEP scenario is shown in the form of 233 
+reduction percentage of total Li demand (reduction percentage of Li metal demand). The 234 
+reduction percentage of total Li demand is mo re than 2 times the reduction percentage of 235 
+Li metal demand. From this table we can see the reduction of cumulative material demand 236 
+through 2050 could reach around 20%-30% by recycling in the NCX and LFP scenarios, 237 
+while it is raised to around 30%-40% in the Li-S/Air scenario due to the quick shift of 238 
+battery chemistry in this scenario. There is no big difference of reduction percentages 239 
+among materials and between the STEP scenario and SD scenario. 240 
+Materials STEP scenario, 
+NCX 
+STEP scenario, 
+LFP 
+STEP scenario, 
+Li-S/Air 
+SD scenario, 
+NCX 
+SD scenario, 
+LFP 
+SD scenario, 
+Li-S/Air 
+Li 23.2% 23.1% 21.3% (8.4%) 21.6% 21.5% 19.9% (8.3%) 
+Co 28.2% 32.5% 44.0% 26.3% 29.5% 41.0% 
+Ni 23.6% 26.6% 37.7% 22.2% 24.6% 35.4% 
+Mn 28.1% 33.0% 44.1% 25.9% 29.4% 40.6% 
+Al 23.2% 22.6% 28.0% 21.7% 21.2% 26.0% 
+Cu 23.1% 22.8% 31.7% 21.6% 21.3% 29.6% 
+Graphite 24.2% 23.0% 38.2% 22.5% 21.5% 35.6% 
+Si 16.7% 18.0% 27.3% 15.9% 17.0% 25.9% 
+ 241 
+ 242 
+ 243 
+ 244 
+ 245 
+ 246 
+ 247 
+ 248 
+ 249 
+ 250 
+ 251 
+ 252 
+ 253 
+ 254 
+ 255 
+ 256 
+ 257 
+ 258 
+ 259 
+ 260 
+ 261 
+ 262 
+ 263 
+ 264 
+34 
+ 
+Supplementary Table 8: Closed-loop recycling potential (CLRP) in 2020-2029, 2030-2039, 265 
+2040-2050 in the STEP scenario by battery chemistry scenarios, recycling technologies, and 266 
+second life use. There is no big difference of CLRP among three recycling technologies, 267 
+however, the quality of recovered materials is key to realize the CLRP in practice. 268 
+ 269 
+ 270 
+2020-2029 2030-2039 2040-2050 2020-2029 2030-2039 2040-2050 2020-2029 2030-2039 2040-2050
+No second life, pyro 0.03 0.17 0.28 0.03 0.17 0.28 0.03 0.24 0.50
+No second life, hydro 0.03 0.17 0.28 0.03 0.17 0.28 0.03 0.24 0.50
+No second life, direct 0.03 0.17 0.28 0.03 0.17 0.28 0.03 0.24 0.50
+Second life, pyro 0.01 0.04 0.13 0.01 0.04 0.10 0.01 0.06 0.26
+Second life, hydro 0.01 0.04 0.13 0.01 0.04 0.10 0.01 0.06 0.26
+Second life, direct 0.01 0.04 0.13 0.01 0.04 0.10 0.01 0.06 0.26
+No second life, mechanical 0.00 0.00 0.11
+Second life, mechanical 0.00 0.00 0.03
+No second life, pyro 0.04 0.19 0.36 0.06 0.33 0.38 0.04 0.28 0.71
+No second life, hydro 0.04 0.19 0.36 0.06 0.33 0.38 0.04 0.28 0.71
+No second life, direct 0.03 0.17 0.33 0.06 0.30 0.35 0.03 0.25 0.65
+Second life, pyro 0.01 0.06 0.17 0.02 0.10 0.22 0.01 0.08 0.36
+Second life, hydro 0.01 0.06 0.17 0.02 0.10 0.22 0.01 0.08 0.36
+Second life, direct 0.01 0.05 0.15 0.02 0.10 0.20 0.01 0.08 0.33
+No second life, pyro 0.02 0.15 0.29 0.04 0.26 0.30 0.02 0.23 0.56
+No second life, hydro 0.02 0.15 0.29 0.04 0.26 0.30 0.02 0.23 0.56
+No second life, direct 0.02 0.14 0.27 0.04 0.24 0.28 0.02 0.21 0.52
+Second life, pyro 0.01 0.04 0.12 0.01 0.08 0.16 0.01 0.06 0.27
+Second life, hydro 0.01 0.04 0.12 0.01 0.08 0.16 0.01 0.06 0.27
+Second life, direct 0.01 0.04 0.11 0.01 0.07 0.15 0.01 0.06 0.25
+No second life, pyro 0.05 0.18 0.32 0.09 0.33 0.33 0.05 0.27 0.62
+No second life, hydro 0.06 0.20 0.35 0.10 0.36 0.36 0.06 0.30 0.68
+No second life, direct 0.05 0.18 0.32 0.09 0.33 0.33 0.05 0.27 0.62
+Second life, pyro 0.01 0.07 0.18 0.02 0.13 0.24 0.01 0.10 0.39
+Second life, hydro 0.02 0.07 0.19 0.03 0.14 0.26 0.02 0.11 0.43
+Second life, direct 0.01 0.07 0.18 0.02 0.13 0.24 0.01 0.10 0.39
+No second life, pyro 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+No second life, hydro 0.03 0.17 0.28 0.03 0.16 0.28 0.03 0.21 0.36
+No second life, direct 0.03 0.17 0.28 0.03 0.16 0.28 0.03 0.21 0.36
+Second life, pyro 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+Second life, hydro 0.02 0.11 0.21 0.02 0.09 0.18 0.02 0.13 0.27
+Second life, direct 0.02 0.11 0.21 0.02 0.09 0.18 0.02 0.13 0.27
+No second life, pyro 0.03 0.17 0.28 0.03 0.16 0.28 0.03 0.23 0.43
+No second life, hydro 0.03 0.17 0.28 0.03 0.16 0.28 0.03 0.23 0.43
+No second life, direct 0.03 0.17 0.28 0.03 0.16 0.28 0.03 0.23 0.43
+Second life, pyro 0.01 0.06 0.15 0.01 0.04 0.11 0.01 0.08 0.24
+Second life, hydro 0.01 0.06 0.15 0.01 0.04 0.11 0.01 0.08 0.24
+Second life, direct 0.01 0.06 0.15 0.01 0.04 0.11 0.01 0.08 0.24
+No second life, pyro 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+No second life, hydro 0.03 0.18 0.29 0.03 0.16 0.28 0.03 0.27 0.57
+No second life, direct 0.03 0.18 0.29 0.03 0.16 0.28 0.03 0.27 0.57
+Second life, pyro 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+Second life, hydro 0.01 0.05 0.14 0.01 0.03 0.09 0.01 0.07 0.31
+Second life, direct 0.01 0.05 0.14 0.01 0.03 0.09 0.01 0.07 0.31
+No second life, pyro 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+No second life, hydro 0.01 0.08 0.20 0.01 0.13 0.21 0.01 0.13 0.38
+No second life, direct 0.01 0.08 0.20 0.01 0.13 0.21 0.01 0.13 0.38
+Second life, pyro 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+Second life, hydro 0.00 0.02 0.07 0.00 0.03 0.09 0.00 0.03 0.16
+Second life, direct 0.00 0.02 0.07 0.00 0.03 0.09 0.00 0.03 0.16
+Li ion
+Ni
+Co
+Mn
+Al
+Cu
+Graphite
+Si
+Li metal
+Battery scenarios
+Time periods
+NCX LFP Li-S/Air
+35 
+ 
+Supplementary Table 9: Annual material de mand in 2050 by three battery chemistry 271 
+scenarios without recycling, with recycling,  and with recycling and second life, and 2019 272 
+global mining production (unit: Mt) in the STEP scenario. The annual demand in 2050 for 273 
+Li, Ni, Co, and graphite (natural graphite) from EV batteries alone exceed global mining 274 
+production in 2019. 275 
+ 276 
+ 277 
+ 278 
+ 279 
+ 280 
+ 281 
+ 282 
+ 283 
+ 284 
+ 285 
+ 286 
+ 287 
+ 288 
+ 289 
+ 290 
+ 291 
+ 292 
+ 293 
+N C XL F P L i - S / A i r N C XL F P L i - S / A i r
+Without recycling 0.65 0.62 0.77 848% 807% 1002%
+With recycling 0.45 0.43 0.55 590% 565% 715%
+With recycling and second life 0.55 0.54 0.66 717% 707% 863%
+Without recycling 0.62 0.25 0.25 440% 179% 176%
+With recycling 0.37 0.15 0.10 265% 107% 72%
+With recycling and second life 0.49 0.19 0.14 347% 136% 102%
+Without recycling 3.75 1.53 1.50 139% 57% 56%
+With recycling 2.57 1.04 0.81 95% 39% 30%
+With recycling and second life 3.16 1.25 1.04 117% 46% 38%
+Without recycling 0.40 0.16 0.16 2% 1% 1%
+With recycling 0.25 0.10 0.07 1% 1% 0%
+With recycling and second life 0.30 0.12 0.08 2% 1% 0%
+Without recycling 7.53 9.08 5.25 12% 14% 8%
+With recycling 5.25 6.37 3.45 8% 10% 5%
+With recycling and second life 5.79 7.18 3.81 9% 11% 6%
+Without recycling 5.06 5.68 2.73 25% 28% 14%
+With recycling 3.55 3.99 1.70 18% 20% 8%
+With recycling and second life 4.21 4.91 2.04 21% 25% 10%
+Without recycling 5.11 6.31 2.04 464% 574% 186%
+With recycling 3.48 4.40 1.08 317% 400% 98%
+With recycling and second life 4.27 5.57 1.37 388% 506% 125%
+Without recycling 0.25 0.10 0.10 4% 1% 1%
+With recycling 0.19 0.08 0.07 3% 1% 1%
+With recycling and second life 0.22 0.09 0.08 3% 1% 1%
+Al
+Cu
+Graphite
+Si
+0.077
+2.7
+0.14
+19
+64
+20
+1.1
+7
+Li
+Battery scenarios / Mt
+Ni
+Co
+Mn
+Demand as percent of 2019 production2019 annual
+production /
+Mt
+Demand sceanriosMaterials
+36 
+ 
+Supplementary Table 10: Annual material de mand in 2050 by three battery chemistry 294 
+scenarios without recycling, with recycling,  and with recycling and second life, and 2019 295 
+global mining production (unit: Mt) in the SD scenario. 296 
+ 297 
+ 298 
+ 299 
+ 300 
+ 301 
+ 302 
+ 303 
+ 304 
+ 305 
+ 306 
+ 307 
+ 308 
+ 309 
+ 310 
+ 311 
+ 312 
+ 313 
+ 314 
+ 315 
+NCX LFP Li-S/Air NCX LFP Li-S/Air
+Without recycling 1.33 1.26 1.57 1724% 1641% 2038%
+With recycling 0.91 0.87 1.11 1183% 1133% 1435%
+With recycling and second life 1.23 1.19 1.46 1593% 1542% 1899%
+Without recycling 1.25 0.51 0.50 894% 364% 358%
+With recycling 0.74 0.30 0.20 527% 214% 141%
+With recycling and second life 1.12 0.45 0.40 801% 320% 283%
+Without recycling 7.63 3.10 3.05 282% 115% 113%
+With recycling 5.15 2.09 1.60 191% 77% 59%
+With recycling and second life 7.04 2.83 2.59 261% 105% 96%
+Without recycling 0.81 0.33 0.33 4% 2% 2%
+With recycling 0.49 0.20 0.14 3% 1% 1%
+With recycling and second life 0.72 0.29 0.25 4% 2% 1%
+Without recycling 15.27 18.37 10.66 24% 29% 17%
+With recycling 10.51 12.71 6.91 16% 20% 11%
+With recycling and second life 13.54 16.47 9.22 21% 26% 14%
+Without recycling 10.09 11.28 5.44 50% 56% 27%
+With recycling 6.97 7.80 3.32 35% 39% 17%
+With recycling and second life 9.24 10.50 4.75 46% 53% 24%
+Without recycling 10.39 12.84 4.16 944% 1167% 378%
+With recycling 6.98 8.82 2.15 634% 802% 196%
+With recycling and second life 9.55 12.09 3.48 868% 1099% 317%
+Without recycling 0.50 0.20 0.20 7% 3% 3%
+With recycling 0.38 0.16 0.13 5% 2% 2%
+With recycling and second life 0.47 0.19 0.18 7% 3% 3%
+Si 7
+Co 0.14
+Mn 19
+Al 64
+Cu 20
+Graphite 1.1
+Materials Demand sceanrios
+Battery scenarios / Mt 2019 annual
+production /
+Mt
+Demand as percent of 2019 production
+Li 0.077
+Ni 2.7
+37 
+ 
+ 316 
+Supplementary Table 11: Modelled material co mpositions of a Li-S (600 Wh/kg) and a 317 
+Li-Air (1000 Wh/kg) pack used for sensitivity analysis. (unit: kg per battery pack) 318 
+EV types 
+ Materials Li-Sulphur Li-Air 
+Small BEVs 
+Li ion 0.19 0.12 
+Li metal 3.62 1.69 
+Al 16.42 9.92 
+Cu 6.44 0.27 
+Al in modules 6.86 4.18 
+Cu in modules 6.14 0.10 
+Mid-size BEVs 
+Li ion 0.39 0.24 
+Li metal 7.30 3.40 
+Al 30.20 18.25 
+Cu 13.33 0.77 
+Al in modules 13.72 8.36 
+Cu in modules 12.53 0.29 
+Large BEVs 
+Li ion 0.59 0.36 
+Li metal 11.03 5.13 
+Al 45.64 27.58 
+Cu 21.75 2.12 
+Al in modules 20.63 12.58 
+Cu in modules 20.52 1.39 
+Small PHEVs 
+Li ion 0.10 0.06 
+Li metal 1.91 0.89 
+Al 7.26 4.39 
+Cu 7.52 2.62 
+Al in modules 3.53 2.15 
+Cu in modules 4.37 2.62 
+Mid-size PHEVs 
+Li ion 0.05 0.03 
+Li metal 0.88 0.41 
+Al 3.97 2.40 
+Cu 4.51 1.84 
+Al in modules 1.70 1.04 
+Cu in modules 3.06 1.84 
+Large PHEVs 
+Li ion 0.07 0.04 
+Li metal 1.32 0.61 
+Al 5.48 3.31 
+Cu 7.26 3.05 
+Al in modules 2.49 1.52 
+Cu in modules 5.08 3.05 
+ 319 
+38 
+ 
+Supplementary Table 12: Sensitivity analysis of  lower battery lifespan (i.e. one EV will use 320 
+1.5 battery packs on average after 2020, while in the baseline scenario one EV will use 1 321 
+battery pack after 2020) for cumulative demand for Li, Co, Ni, Mn, Al, Cu, graphite, and Si 322 
+in 2020-2050 without recycling, compared to global known reserves in 2019 (unit: Mt).  * 323 
+Yearend production capacity for Al reserve. 
+‡
+ Si reserves are not available, but ample for 324 
+use. Known reserves in 2019 are referred from USGS16. 325 
+Materials STEP scenario, 
+NCX scenario 
+STEP scenario, 
+NCX scenario, 
+with lower 
+battery lifespan 
+SD scenario, 
+NCX scenario 
+SD scenario, 
+NCX scenario, 
+with lower 
+battery lifespan 
+Known reserves 
+in 2019 
+Li 7.8 8.8 16.0 18.1 17 
+Co 8.1 9.2 16.8 18.9 7 
+Ni 43.0 49.0 88.9 100.6 89 
+Mn 5.2 5.8 10.6 12.0 810 
+Al 89.3 101.6 183.8 207.6 77.9* 
+Cu 59.8 68.1 121.0 136.9 870 
+Graphite 62.4 70.9 128.8 145.3 300 
+Si 2.4 2.8 5.0 5.7 Ample‡ 
+ 326 
+Supplementary Table 13: Compiled EPA car size class 17 used in this study. Note here small 327 
+cars include two-Seaters, minicompact sedans, subcompact sedans, and compact sedans by 328 
+the EPA car size class. Large cars include large sedans, small station wagons, SUVs, and 329 
+vans by the EPA car size class. 330 
+Class Passenger & Cargo V olume (Cu. Ft.) 
+Small < 110 
+Mid-size 110 to 119 
+Large > 119 
+ 331 
+Supplementary Table 14: Summary of capac ity of the cathode and anode of battery 332 
+chemistry as input to the BatPaC model. The majority of cathode and anode capacity are 333 
+kept as defaults in the BatPaC model 3, unless otherwise based on Supplementary Tables 18, 334 
+19, and 20 or references. We use composite graphite anode with 9 wt% Si to represent 335 
+Graphite (Si) anode in this table, and its capacity is from18. 336 
+Battery chemistry Cathode Cathode capacity 
+(mAh/g) Anode Anode capacity 
+(mAh/g) 
+LFP LiFePO 4 150 Graphite 360 
+NCA LiNi 0.80Co0.15Al0.05O2 200 Graphite 360 
+NCM111 Li 1.05(Ni1/3Mn1/3Co1/3)0.95O2 155 Graphite 360 
+NCM523 Li 1.05(Ni0.5Mn0.3Co0.2)0.95O2 158 Graphite 360 
+NCM622 Li 1.05(Ni0.6Mn0.2Co0.2)0.95O2 180 Graphite 360 
+NCM622-Graphite (Si) Li 1.05(Ni0.6Mn0.2Co0.2)0.95O2 180 Graphite (Si) 51718 
+NCM811-Graphite (Si) Li 1.05(Ni0.8Mn0.1Co0.1)0.95O2 191 Graphite (Si) 51718 
+NCM955-Graphite (Si) Li 1.05(Ni0.9Mn0.05Co0.05)0.95O2 211 Graphite (Si) 51718 
+ 337 
+39 
+ 
+Supplementary Table 15: The minimum, most likely, and maximum lifespans of EVs from 338 
+2005 to 2050 as input to the calculation of shape and scale parameters of Weibull lifespan 339 
+distribution of EVs (unit: year, expect for shape and scale parameters). Also see 340 
+Supplementary Figure 21 below. 341 
+Period Minimum 
+lifespan, a 
+Most likely 
+lifespan, d 
+Maximum 
+lifespan, c 
+Shape 
+parameter, α 
+Scale 
+parameter, β 
+2005-2050 1 15 20 6.3 14.4 
+ 342 
+Supplementary Table 16: Assumptions of battery replacement rate, based on the 343 
+assumptions of EV and battery lifespan distribution (Supplementary Tables 10 and 11). 344 
+Period Battery replacement rate 
+2005-2019 50% 
+2020-2050 0% 
+ 345 
+Supplementary Table 17: Review of cathode capacity of NCM523 (unit: mAh/g). We use the 346 
+average number in this table as input into the BatPaC model to calculate battery material 347 
+compositions of NCM523 chemistry. 348 
+References Cathode capacity of NCM523 
+Ref119 157 
+Ref220 164 
+Ref321 150 
+Ref321 142 
+Ref321 175 
+Average 158 
+ 349 
+Supplementary Table 18: Review of cathode capacity of NCM811 (unit: mAh/g). We use the 350 
+average number in this table as input into the BatPaC model to calculate battery material 351 
+compositions of NCM811-Graphite (Si). 352 
+References Cathode capacity of NCM811 
+Ref122 207 
+Ref219 200 
+Ref321 194 
+Ref321 185 
+Ref321 178 
+Ref321 186 
+Ref321 188 
+Ref321 193 
+Ref423 192 
+Average 191 
+ 353 
+ 354 
+ 355 
+ 356 
+40 
+ 
+Supplementary Table 19: Review of cathode capacity of NCM955 (unit: mAh/g). We use the 357 
+average number in this table as input into the BatPaC model to calculate battery material 358 
+compositions of NCM955-Graphite (Si). 359 
+References Cathode capacity of NCM955 
+Ref121 205 
+Ref223 217 
+Average 211 
+ 360 
+Supplementary Table 20: Reference chemistry and changing parameters as input to the 361 
+BatPaC model for the calculation of the material compositions of the non-existing battery 362 
+chemistries in the BatPaC model. Here we assume a linear growth for open circuit voltage 363 
+(OCV) at different levels of battery state of charge (SOC) from NCM523, to NCM622-  364 
+Graphite (Si), to NCM811- Graphite (Si), to NCM955-  Graphite (Si). The OCV of NCM523 365 
+= the average of OCV(NCM111) and OCV(NCM622) in the BatPaC model. The OCV of 366 
+NCM622-Graphite (Si) = OCV(NCM622) – 0.076 (see Supplementary Note 1 for the 367 
+assuming average voltage difference between  graphite (Si) anode and graphite anode). 368 
+Similarly, the OCV of NCM811-Graphite (Si) = 2*OCV(NCM622) – OCV(NCM523) – 369 
+0.076. The OCV of NCM955-Graphite (Si) = 2*OCV(NCM811-Graphite (Si)) – 370 
+OCV(NCM622-Graphite (Si)). Cathode capacity is from Supplementary Table 21. The Li, 371 
+Ni, Co, and Mn contents in the cathode active material are calculated by the stoichiometry 372 
+of battery cathode shown in the Supplementary Table 21. 373 
+Battery 
+chemistry NCM523 NCM622-Graphite 
+(Si)
+NCM811-Graphite 
+(Si)
+NCM955-Graphite 
+(Si) 
+Reference 
+chemistry NCM111 NCM622 NCM622 NCM622 
+Cathode 
+capacity 
+(mAh/g) 
+158 180 191 211 
+Anode 
+capacity 
+(mAh/g) 
+360 517 517 517 
+OCV at 20% 
+SOC (V) 3.5405 3.489 3.5135 3.538 
+OCV at 50% 
+SOC (V) 3.7105 3.674 3.7135 3.753 
+OCV at 80% 
+SOC (V) 3.95 3.924 3.974 4.024 
+OCV at 100% 
+SOC (V) 4.15 4.124 4.174 4.224 
+Li (g/g active 
+material) 0.07751513 0.077221916 0.076949595 0.076813626 
+Ni (g/g active 
+material) 0.296520724 0.354478904 0.470971788 0.528915777 
+Co (g/g active 
+material) 0.119093288 0.118642798 0.059112203 0.031060614 
+Mn (g/g 
+active 
+material) 
+0.166530137 
+0.11060014 0.055105055 0.027508722 
+ 374 
+41 
+ 
+Supplementary Table 21: Review of the specific energy of Li-S chemistry on cell level (unit: 375 
+Wh/kg). 376 
+References Battery shape Specific energy Technology 
+readiness 
+Ref124  400  
+Ref225  370  
+Ref326  300-620 R&D 
+Ref427 Pouch 300-400  
+Ref427 Pouch 500-600 R&D 
+Ref528  400-620  
+Ref624 Pouch 350-400 Commercial 
+Ref729 Pouch 300 Lab 
+ 377 
+ 378 
+ 379 
+Supplementary Table 22: Review of the specific  energy of Li-Air chemistry on cell level 380 
+(unit: Wh/kg). 381 
+References Battery shape Specific energy Technology readiness 
+Ref124  1700  
+Ref225  1700  
+Ref326  500-900  
+Ref430 Pouch 362 R&D 
+Ref531  520  
+Ref632 Coin 1000  
+Ref733 Folded structure 1214  
+Ref828  500-1000  
+42 
+ 
+Supplementary Table 23: EV battery material compositions on pack level calculated by the BatPaC model (unit: kg per battery pac k). Note the material 382 
+compositions of Li-S and Li-Air are calculated based on literature and report data. 383 
+EV types 
+ Materials LFP NCA NCM111 NCM523 NCM622 NCM622-Gra
+phite (Si) 
+NCM811-Gra
+phite (Si) 
+NCM955-Gra
+phite (Si) Li-Sulphur Li-Air 
+Small BEVs 
+Li ion 3.29 3.40 4.68 4.54 3.94 4.00 3.72 3.33 0.29 0.23 
+Li metal 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 5.44 3.37 
+Ni 0.00 21.97 11.50 16.73 17.38 17.74 21.97 22.10 0.00 0.00 
+Co 0.00 4.14 11.55 6.72 5.82 5.94 2.76 1.30 0.00 0.00 
+Mn 0.00 0.00 10.77 9.40 5.42 5.53 2.57 1.15 0.00 0.00 
+Al 58.66 45.71 49.02 48.42 46.33 44.33 43.23 42.23 24.63 19.83 
+Cu 29.14 24.51 26.74 26.29 24.71 24.97 24.16 23.88 9.66 0.55 
+Graphite 39.18 35.30 36.19 35.74 34.95 23.58 23.17 22.67 0.00 0.00 
+Si 0.00 0.00 0.00 0.00 0.00 2.33 2.29 2.24 0.00 0.00 
+Mid-size BEVs 
+Li 6.62 6.84 9.43 9.14 7.94 8.06 7.49 6.72 0.58 0.47 
+Li metal 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 10.95 6.79 
+Ni 0.00 44.26 23.18 33.71 35.00 35.73 44.26 44.51 0.00 0.00 
+Co 0.00 8.33 23.27 13.54 11.71 11.96 5.55 2.61 0.00 0.00 
+Mn 0.00 0.00 21.70 18.93 10.92 11.15 5.18 2.32 0.00 0.00 
+Al 106.87 83.41 87.69 86.68 84.12 80.35 78.98 77.11 45.30 36.50 
+Cu 56.33 49.16 49.70 49.17 48.54 49.08 48.58 48.03 20.00 1.53 
+Graphite 78.84 70.93 72.79 71.87 70.24 47.39 46.55 45.55 0.00 0.00 
+Si 0.00 0.00 0.00 0.00 0.00 4.69 4.60 4.51 0.00 0.00 
+Large BEVs Li 10.01 10.34 14.24 13.81 11.99 12.17 11.32 10.15 0.88 0.71 
+43 
+ 
+Li metal 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 16.54 10.27 
+Ni 0.00 66.86 35.02 50.93 52.88 53.97 66.86 67.25 0.00 0.00 
+Co 0.00 12.59 35.16 20.46 17.70 18.06 8.39 3.95 0.00 0.00 
+Mn 0.00 0.00 32.78 28.60 16.50 16.84 7.82 3.50 0.00 0.00 
+Al 162.87 127.52 134.00 132.45 128.57 122.92 120.86 118.01 68.46 55.16 
+Cu 92.60 80.24 81.37 80.50 79.37 79.90 79.05 78.09 32.63 4.25 
+Graphite 119.32 107.42 110.22 108.83 106.37 71.77 70.51 69.00 0.00 0.00 
+Si 0.00 0.00 0.00 0.00 0.00 7.10 6.97 6.82 0.00 0.00 
+Small PHEVs 
+Li 1.74 1.79 2.47 2.39 2.08 2.11 1.96 1.76 0.15 0.12 
+Li metal 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 2.86 1.78 
+Ni 0.00 11.56 6.05 8.80 9.14 9.33 11.56 11.63 0.00 0.00 
+Co 0.00 2.18 6.08 3.53 3.06 3.12 1.45 0.68 0.00 0.00 
+Mn 0.00 0.00 5.66 4.94 2.85 2.91 1.35 0.60 0.00 0.00 
+Al 35.16 21.27 26.66 26.32 21.82 20.95 20.38 19.59 10.89 8.78 
+Cu 34.72 24.49 25.98 25.65 24.76 25.30 24.74 24.02 11.27 5.24 
+Graphite 20.47 18.48 18.95 18.72 18.30 12.34 12.13 11.87 0.00 0.00 
+Si 0.00 0.00 0.00 0.00 0.00 1.22 1.20 1.17 0.00 0.00 
+Mid-size PHEVs 
+Li 0.81 0.83 1.13 1.10 0.96 0.97 0.90 0.81 0.07 0.06 
+Li metal 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 1.31 0.82 
+Ni 0.00 5.30 2.77 4.04 4.19 4.28 5.30 5.33 0.00 0.00 
+Co 0.00 1.00 2.79 1.62 1.40 1.43 0.66 0.31 0.00 0.00 
+Mn 0.00 0.00 2.60 2.27 1.31 1.33 0.62 0.28 0.00 0.00 
+Al 23.16 15.10 15.59 15.40 15.01 12.41 12.30 12.23 5.95 4.79 
+44 
+ 
+Cu 29.89 20.06 20.05 19.82 19.63 20.37 20.32 20.35 6.76 3.67 
+Graphite 9.43 8.55 8.77 8.66 8.46 5.71 5.61 5.49 0.00 0.00 
+Si 0.00 0.00 0.00 0.00 0.00 0.56 0.55 0.54 0.00 0.00 
+Large PHEVs 
+Li 1.21 1.24 1.71 1.66 1.44 1.46 1.36 1.22 0.11 0.09 
+Li metal 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 1.98 1.23 
+Ni 0.00 7.99 4.18 6.09 6.32 6.45 7.99 8.04 0.00 0.00 
+Co 0.00 1.50 4.20 2.44 2.11 2.16 1.00 0.47 0.00 0.00 
+Mn 0.00 0.00 3.92 3.42 1.97 2.01 0.93 0.42 0.00 0.00 
+Al 35.69 20.27 21.45 21.17 20.16 19.75 19.56 19.41 8.23 6.63 
+Cu 44.74 30.21 30.86 30.52 29.50 30.42 30.39 30.45 10.90 6.10 
+Graphite 14.18 12.84 13.17 13.01 12.72 8.58 8.42 8.24 0.00 0.00 
+Si 0.00 0.00 0.00 0.00 0.00 0.85 0.83 0.82 0.00 0.00 
+45 
+ 
+Supplementary Table 24: Comparisons of thre e EV battery recycling technologies by 384 
+recycled material type, recycling efficiency, an d the quality of recovered materials, where 385 
+mechanical recycling is especially for the reco very of Li metal (a different form compared 386 
+to Li ion in chemicals), Al, and Cu form Li-S and Li-Air chemistry. Numbers in the table 387 
+show the material recycling efficiencies. The different colors show the feasibility of 388 
+recovered materials reused in new batteries production (i.e. closed-loop recycling). Yellow 389 
+color indicates the economic feasibility of closed-loop recycling is in question, but maybe 390 
+become potentially economical with future technology development and price fluctuance of 391 
+recovered materials. Pyro and hydro recycling are already commercially available, while 392 
+direct recycling and mechanical recycling ma rked with star (*) are in still lab-scale 393 
+development. 394 
+ 395 
+Potentially ec onomical
+Not present
+Lost
+Eonomical
+Technology Li Ni Co Mn Al Cu Graphite Si
+Pyro 90% 98% 98% 90% 0% 90% 0% 0%
+Hydro 90% 98% 98% 98% 90% 90% 90% 90%
+Direct* 90% 90% 90% 90% 90% 90% 90% 90%
+Mechanical* 90% 90% 90%
+46 
+ 
+Supplementary Table 25: Material compositions of a BEV battery with 110 kWh capacity used for sensitivity analysis. (unit: kg per battery pack) 396 
+EV types 
+ Materials LFP NCA NCM111 NCM523 NCM622 NCM622-Grap
+hite (Si) 
+NCM811-Grap
+hite (Si) 
+NCM955-Grap
+hite (Si) Li-Sulphur Li-Air 
+BEV with  
+110 kWh capacity 
+Li ion 10.98 11.35 15.63 15.16 13.16 13.36 12.42 11.13 0.96 0.78 
+Li metal 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 18.15 11.26 
+Ni 0.00 73.36 38.42 55.88 58.02 59.22 73.36 73.79 0.00 0.00 
+Co 0.00 13.81 38.58 22.45 19.42 19.82 9.21 4.33 0.00 0.00 
+Mn 0.00 0.00 35.97 31.39 18.10 18.48 8.58 3.84 0.00 0.00 
+Al 172.79 135.08 141.95 140.31 136.19 130.17 127.98 124.94 75.12 60.53 
+Cu 99.58 86.46 87.62 86.66 85.42 86.01 85.07 84.02 35.80 4.66 
+Graphite 130.80 117.71 120.79 119.27 116.56 78.64 77.26 75.60 0.00 0.00 
+Si 0.00 0.00 0.00 0.00 0.00 7.78 7.64 7.48 0.00 0.00 
+Al in modules 85.70 66.31 69.31 68.54 66.54 64.01 62.84 61.37 33.96 27.60 
+Cu in modules 95.86 83.15 84.30 83.38 82.18 82.70 81.80 80.78 33.78 3.04 
+ 397 
+ 398 
+ 399 
+ 400 
+ 401 
+ 402 
+ 403 
+ 404 
+ 405 
+ 406 
+ 407 
+47 
+ 
+Supplementary Table 26: Material compositions of a PHEV battery with 10 kWh capacity used for sensitivity analysis. (unit: kg per battery pack) 408 
+EV types 
+ Materials LFP NCA NCM111 NCM523 NCM622 NCM622-Grap
+hite (Si) 
+NCM811-Grap
+hite (Si) 
+NCM955-Grap
+hite (Si) Li-Sulphur Li-Air 
+PHEV with  
+10 kWh capacity 
+Li ion 1.01  1.04  1.42  1.38  1.20  1.22  1.13  1.02  0.09  0.07  
+Li metal 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 1.65  1.02  
+Ni 0.00  6.66  3.49  5.07  5.27  5.37  6.66  6.70  0.00  0.00  
+Co 0.00  1.25  3.50  2.04  1.76  1.80  0.84  0.39  0.00  0.00  
+Mn 0.00  0.00  3.26  2.85  1.64  1.68  0.78  0.35  0.00  0.00  
+Al 29.81  16.90  17.27  17.13  16.86  16.45  16.29  16.14  6.28  5.07  
+Cu 34.74  23.03  22.70  22.67  22.74  23.23  23.22  23.30  6.50  3.02  
+Graphite 11.83  10.71  10.99  10.86  10.61  7.16  7.03  6.88  0.00  0.00  
+Si 0.00  0.00  0.00  0.00  0.00  0.71  0.70  0.68  0.00  0.00  
+Al in modules 15.69  8.75  8.83  8.72  8.63  8.57  8.49  8.46  3.05  2.48  
+Cu in modules 22.07  11.57  11.19  11.08  11.20  11.65  11.65  11.80  3.78  3.02  
+48 
+ 
+Supplementary Methods 409 
+Supplementary Method 1 410 
+The probability of Weibull lifespan distribution34 is given by equation (1):  411 
+ቄ− ቀ
+௬ି௔
+ఉ ቁ
+ఈ
+;ܽ>ݕ	݂݅ 
+.݁ݏ݅ݓݎ݁ℎݐ݋
+1 )  412 
+where α is the shape parameter (α > 0); β is the scale parameter (β > 0); y is the year; 413 
+a is the minimum lifespan. 414 
+By assuming the cumulative probability of Weibull lifespan distribution function 415 
+between the minimum and the maximum lifespans as 99.7% (based on the normal 416 
+distribution), the α and β in the Weibull lifespan distribution can be calculated by 417 
+equations (2) and (3)34:  418 
+ቄ− ቀ
+௖ି௔
+ఉ ቁ
+ఈ
+ቅ 	 = 	99.7%                               ( 2 )  419 
+ቀ
+ఈିଵ
+ఈ ቁ
+ଵ/ఈ
+                                   ( 3 )  420 
+where c is the maximum lifespan; d is the most likely lifespan. 421 
+Supplementary Method 2 422 
+Based on above assumptions on lifespan distributions of EVs and replacement rate 423 
+and reuse rate of EV batteries, we calculate the battery flows by equations (4) and (5):  424 
+)ݕ4 )  425 
+ 426 
+ݕ݀)ݕ
+௬ିଶ଴଴ସ
+௬ିଶ଴଴ହ
+ݕ݀)ݕ
+௬ିଶ଴଴ହ
+௬ିଶ଴଴଺
++ 	 …																															 
+ݕ݀)ݕ
+௬ିଶ଴ଵଽ
+௬ିଶ଴ଶ଴ …	+	
+௬ିଶ଴ଵ଼
+ݕ݀)ݕ
+ଶ
+ଵ   ( 5 )  427 
+where E, B, in, stk, and out are abbreviations of EV , battery, inflow, stock, and 428 
+outflow respectively; e and b are the categories of EV and battery; f E(y) are lifespan 429 
+distributions of EVs. 1.5 in the equation (5) refer to battery replacement means one 430 
+single EV uses 1.5 battery packs on average during EV lifespan. 431 
+49 
+ 
+432 
+Supplementary Notes 433 
+Supplementary Note 1 434 
+Average battery cell voltage = Average voltage of cathode – average voltage of anode. 435 
+Relative to Li+/Li, the average voltage of graphite (360 mAh/g) and Si are 0.15 V and 436 
+0.4 V . The average voltage of the graphite (Si) anode with 517 mAh/g active capacity 437 
+can be estimated as (360/517)*0.15 + (157/517)*0.4 = 0.226 (V), based on 438 
+assumption of a capacity averaged linear combination of graphite and Si 35. Therefore, 439 
+compared to NCM622-Graphite, the open circuit voltage of NCM622-Graphite (Si) 440 
+will be reduced by 0.226-0.15 = 0.076 (V)35. 441 
+Supplementary Note 2 442 
+The cell material compositions of Li-S batteries are obtained from 29, where required 443 
+cell materials are scaled linearly by a factor between cell level energy capacity and 444 
+required capacity of BEVs/PHEVs (see Supplementary Tables 2 and 3). The pack 445 
+components of Li-S is calculated based on the pack configurations of default NCA 446 
+chemistry in the BatPaC model3, that is to say the weight ratio of cell components and 447 
+pack components, as well as the weight ratios of various components/materials in the 448 
+pack configurations for Li-S are assumed equal to the NCA chemistry in the BatPaC 449 
+model3. Similarly, we also use the same calculation methods for the material 450 
+compositions of Li-Air packs, based on th e cell level material compositions of the 451 
+Li-Air battery from30. 452 
+  453 
+50 
+ 
+Supplementary References 454 
+1 Knobloch, F. et al. Net emission reductions from electric cars and heat pumps in 59 455 
+world regions over time. Nat. Sustain. 3, 437-447 (2020). 456 
+2 Find Electric Vehicle Models (US Department of Energy, 2019);  457 
+3 Modeling the Performance and Cost of Lithium-Ion Batteries for Electric-Drive 458 
+Vehicles, Third Edition  (Argonne National Lab, 2019); 459 
+https://www.osti.gov/servlets/purl/1503280 460 
+4 Inventing the sustainable batteries of the future  (BATTERY 2030+, 2020); 461 
+https://battery2030.eu/digitalAssets/816/c_816048-l_1-k_roadmap-27-march.pdf 462 
+5 Electric Vehicle Outlook 2020  (Bloomberg NEF, 2020); 463 
+https://bnef.turtl.co/story/evo-2020/?teaser=yes 464 
+6 BP Energy Outlook 2019 edition  (BP, 2019); 465 
+https://www.bp.com/content/dam/bp/business-sites/en/global/corporate/pdfs/energy-e466 
+conomics/energy-outlook/bp-energy-outlook-2019.pdf 467 
+7 Banza Lubaba Nkulu, C. et al. Sustainability of artisanal mining of cobalt in DR Congo. 468 
+Nat. Sustain. 1, 495-504 (2018). 469 
+8 Thies, C., Kieckhäfer, K., Spengler, T. S. & Sodhi, M. S. Assessment of social 470 
+sustainability hotspots in the supply  chain of lithium-ion batteries. in Procedia CIRP 471 
+292-297. 472 
+9 Weil, M., Ziemann, S. & Peters, J. in Behaviour of Lithium-Ion Batteries in Electric 473 
+Vehicles: Battery Health, Performance, Safety, and Cost (eds. Pistoia, G. & Liaw, B.) 474 
+59-74 (Springer International Publishing, 2018). 475 
+10 Up to 50% of the global car fleet could be electric in 2050 (Enerdata, 2018);  476 
+11 Global EV Outlook 2019  (IEA, 2019); 477 
+https://www.iea.org/reports/global-ev-outlook-2019 478 
+12 Al-Alawi, B. M. & Bradley, T. H. Review of hybrid, plug-in hybrid, and electric 479 
+vehicle market modeling studies. Renew. Sust. Energ. Rev. 21, 190-203 (2013). 480 
+13 Tesla is working on new ~110 kWh battery pack for more than 400 miles of range  481 
+(Electrek, 2020);  482 
+14 Annual energy outlook 2020 with projections to 2050: light-duty vehicle sales by 483 
+technology type (U.S. Energy Information Administration, 2020);  484 
+15 Global EV Outlook 2019: Scaling-up the transition to electric mobility  (International 485 
+Energy Agency, 2019); https://www.iea.org/reports/global-ev-outlook-2019 486 
+16 Mineral Commodity Summaries 2020 (USGS, 2020);  487 
+17 Vehicle Size Classes Used in the Fuel Economy Guide (EPA, 2019);  488 
+18 Ko, M. et al. Scalable synthesis of silicon-nanolayer-embedded graphite for 489 
+high-energy lithium-ion batteries. Nat. Energy 1, 1-8 (2016). 490 
+19 Benveniste, G., Rallo, H., Casals, L. C., Merino, A. & Amante, B. Comparison of the 491 
+state of Lithium-Sulphur and lithium-ion batteries applied to electromobility. J. 492 
+Environ. Manag. 226, 1-12 (2018). 493 
+20 Advanced battery materials for xEV and high-performance consumer products (BASF, 494 
+2014); http://www.docin.com/p-841976768.html 495 
+21 Ryu, H.-H., Park, K.-J., Yoon, C. S. & Sun, Y .-K. Capacity Fading of Ni-Rich Li [Ni x 496 
+Co y Mn1–x–y] O2 (0.6 ≤ x ≤ 0.95) Cathodes for High-Energy-Density Lithium-Ion 497 
+Batteries: Bulk or Surface Degradation? Chem. Mater. 30, 1155-1163 (2018). 498 
+22 Process development and manufacturing R&D at the national laboratories  (Argonne 499 
+National Laboratory, 2016); 500 
+https://www.energy.gov/sites/prod/files/2018/03/f49/FY2016_APR_Advanced_Batter501 
+ies_R%26D_Part-3of5-opt.pdf 502 
+23 Supplementary materials for cobalt in lithium-ion batteries  (Science, 2020); 503 
+https://science.sciencemag.org/content/sci/suppl/2020/02/26/367.6481.979.DC1/aba9504 
+168_Li_SM.pdf 505 
+24 New lithium-air battery could drive huge performance gains (ExtremeTech, 2015);  506 
+51 
+ 
+25 Tsach, S., Tatievsky, A. & London, L.  Future Commercial Aviation Trends. in Israel 507 
+Annual Conference on Aerospace Sciences (2012). 508 
+26 Why the future of batteries is lithium and why their impact will be bigger than you think 509 
+(Energy Post, 2017);  510 
+27 It’ s safer with OXIS lithium sulfur rechargeable batteries (OXIS Energy, 2016);  511 
+28 Aurbach, D., McCloskey, B. D., Nazar, L. F. & Bruce, P. G. Advances in understanding 512 
+mechanisms underpinning lithium–air batteries. Nat. Energy 1, 1-11 (2016). 513 
+29 Lithium-sulfur batteries: from materials understanding to device integration  (Yi Cui, 514 
+2017);  515 
+30 Zhang, J.-G., Wang, D., Xu, W., Xiao, J.  & Williford, R. E. Ambient operation of 516 
+Li/Air batteries. J. Power Sources 195, 4332-4337 (2010). 517 
+31 Samsung’ s lithium-air battery could help double EV range (World industrial reporter, 518 
+2017);  519 
+32 Park, J. O. et al. A 1000 Wh kg − 1 Li –Air battery: Cell desi gn and performance. J. 520 
+Power Sources 419, 112-118 (2019). 521 
+33 Lee, H. C. et al. High-energy-density Li-O2 battery at cell scale with folded cell 522 
+structure. Joule 3, 542-556 (2019). 523 
+34 Zhang, L., Yuan, Z. & Bi, J. Predicti ng future quantities of obsolete household 524 
+appliances in Nanjing by a stock-based model. Resour. Conserv. Recycl. 55, 1087-1094 525 
+(2011). 526 
+35 Chae, S., Ko, M., Kim, K., Ahn, K. & Ch o, J. Confronting issues of the practical 527 
+implementation of Si anode in high-energy lithium-ion batteries. Joule 1, 47-60 (2017). 528 
+ 529 

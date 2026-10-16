@@ -25,6 +25,37 @@ equal sector weights. It does not add battery kWh to PV kW. Failure means phi > 
 times total demand. Numerical certificates use a stated absolute epsilon around that
 boundary; unresolved boundary cases stop enumeration rather than being called complete.
 
+## Units and blocks
+
+Let R_f be the demand target of final f and R_p = sum_q a[p,q] R_q the annual requirement
+of p. The LP measures each product in units of R_p, so capacities are u[v] = annual[v] /
+(12 R[p]) and a'[p,q] = a[p,q] R[q]/R[p]. This diagonal rescaling is exact; every capacity
+dual bound becomes M[p] = 1 on the Li-ion chain, and S[p] = 12 sum_v u[v] is the supply
+ratio of layer p in years of requirement per year.
+
+**Lemma A (blocks).** Let 1 <= e_1 < ... < e_K = T be months such that capacity, ramp and
+demand are constant on each block (e_(i-1), e_i]. Then the LP over blocks, with rates per
+month, objective sum_i l_i g_i and balance I_i = I_(i-1) + l_i (x_i - a y_i), has the
+optimal value of the monthly LP. *Proof.* Summing a monthly solution over a block gives a
+block solution with the same objective. Conversely, give every month of block i the block
+rates: every capacity, shipment and demand row holds because its data are constant on the
+block, and inventory interpolates linearly between the nonnegative block endpoints. Hence
+both LPs have the same value. The block ends used are the disruption durations, the ramp
+months 1..L when sigma > 0, and T; durations must be block ends. A capacity dual of block
+i is bounded by l_i M[p], since one unit of rate lasts l_i months.
+
+**Lemma B (capacity dominance).** Let v, w be nodes of the same layer with u[v] <= u[w]
+and D[v] >= D[w]. Exchanging their durations does not decrease phi. *Proof.* Nodes of a
+layer differ only in capacity, and their initial stocks h a u are proportional to it;
+shipments are pooled by product. Nodes of one layer with one duration therefore aggregate
+exactly: split any aggregated solution in proportion to capacity. After the exchange the
+group with the longer outage gains capacity u[w] - u[v] and the shorter group loses it. A
+unit in the shorter group has at least the capacity, in every month, of a unit in the
+longer group, and the same stock. So every solution after the exchange can be reproduced
+before it, and phi does not decrease. With Proposition 1 (lengthening an outage does not
+decrease phi), a state is dominated by the state obtained by moving each outage to a
+larger node of its layer and lengthening it.
+
 ## Dual and interdiction
 
 The dual is max -b(D)'r + f'lambda, subject to
@@ -64,6 +95,21 @@ Every returned state is minimal: support optimality rules out deletion, and pred
 checks rule out shorter duration. Every excluded state contains an already returned cut.
 When the residual MILP is infeasible, every failing state with support <= k contains a
 reported cut. Time limits and numerical failures are incomplete results, not proofs.
+
+## Enumeration by lattice search
+
+`chokepoint/brute.py` gives two enumerators that call phi only. `enumerate_brute` visits
+every state of support <= k (skipping supersets of found cuts, and supports whose top state
+survives). `enumerate_lattice` fixes a pattern of layers with multiplicities, takes the
+nodes of each layer in decreasing capacity, and completes a partial state by filling open
+slots with maximal admissible (node, duration) pairs. By Lemma B and Proposition 1 every
+state of the subtree lies below one of these completions; if all survive, the subtree is
+pruned. A partial state that contains a found cut is skipped: no state below it is
+minimal. After the singletons are known, a slot may not use a node at or above its
+singleton duration, for the same reason. On random networks of four layers the two
+enumerators return identical lists (`tests/test_cuts.py`). On the 108-node Li-ion network
+at alpha = 0.25, h = sigma = 0, k = 3, plain lattice search took 427 s and 107,416 LPs;
+with the two minimality rules, 13.8 s and 3,714 LPs, with the same 37 cuts (2026-10-15).
 
 ## Annual probability
 

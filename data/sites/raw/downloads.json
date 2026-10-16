@@ -1,0 +1,72 @@
+[
+  {
+    "path": "data\\sites\\raw\\usgs-outlook-metadata.json",
+    "url": "https://www.sciencebase.gov/catalog/item/67b8b168d34e1a2e835b7e6c?format=json",
+    "bytes": 13290,
+    "status": "ok"
+  },
+  {
+    "path": "data\\sites\\raw\\usgs-argentina-sites.html",
+    "url": "https://www.usgs.gov/data/lithium-occurrences-and-processing-facilities-argentina-and-salars-lithium-triangle-central",
+    "status": "HTTP Error 403: Forbidden"
+  },
+  {
+    "path": "data\\sites\\raw\\usgs-african-minerals.html",
+    "url": "https://pubs.usgs.gov/publication/fs20243029/full",
+    "bytes": 175493,
+    "status": "ok"
+  },
+  {
+    "path": "data\\sites\\raw\\usgs-mrds-layer.json",
+    "url": "https://energy.usgs.gov/arcgis/rest/services/Hosted/Mineral_Resource_Data_System/FeatureServer/0?f=pjson",
+    "status": "HTTP Error 503: Service Unavailable"
+  },
+  {
+    "path": "data\\sites\\raw\\usgs-global-facilities-metadata.json",
+    "url": "https://www.sciencebase.gov/catalog/item/6a8490171ba49b3133cd8055?format=json",
+    "bytes": 31018,
+    "status": "ok"
+  },
+  {
+    "path": "data\\sites\\raw\\usgs-us-facilities-metadata.json",
+    "url": "https://www.sciencebase.gov/catalog/item/6a3edaf71ba49b7c2e263528?format=json",
+    "bytes": 11966,
+    "status": "ok"
+  },
+  {
+    "path": "data\\sites\\raw\\2024_MYBv3_metadata.xml",
+    "url": "https://www.sciencebase.gov/catalog/file/get/6a8490171ba49b3133cd8055?f=__disk__56%2F06%2Fce%2F5606ce0dbe32e2ae952385d93b5c634eca508a3a",
+    "bytes": 83730,
+    "status": "ok"
+  },
+  {
+    "path": "data\\sites\\raw\\2024MYBv3_Facilities_table.csv",
+    "url": "https://www.sciencebase.gov/catalog/file/get/6a8490171ba49b3133cd8055?f=__disk__81%2F38%2Feb%2F8138ebd0356ad02efcda21627f8d94f7ef108ae7",
+    "bytes": 7724775,
+    "status": "ok"
+  },
+  {
+    "path": "data\\sites\\raw\\Mines, smelters, refineries, and recycling facilities in the United States_worksheet.xlsx",
+    "url": "https://www.sciencebase.gov/catalog/file/get/6a3edaf71ba49b7c2e263528?f=__disk__f4%2F93%2F66%2Ff493662954d91840b5c3779c12024aa4efcdc1e9",
+    "bytes": 549220,
+    "status": "ok"
+  },
+  {
+    "path": "data\\sites\\raw\\Mines, smelters, refineries, and recycling facilities in the United States.xml",
+    "url": "https://www.sciencebase.gov/catalog/file/get/6a3edaf71ba49b7c2e263528?f=__disk__c4%2F52%2Fa4%2Fc452a48584afa42fcb2cb7bff269ea628c507da0",
+    "bytes": 8110,
+    "status": "ok"
+  },
+  {
+    "path": "data\\sites\\raw\\Outlook 2025 datarelease March2025.xml",
+    "url": "https://www.sciencebase.gov/catalog/file/get/67b8b168d34e1a2e835b7e6c?f=__disk__c8%2Fe1%2Fe6%2Fc8e1e66c9a7ed6b1a07a99a9843818ac1093a410",
+    "bytes": 22589,
+    "status": "ok"
+  },
+  {
+    "path": "data\\sites\\raw\\Outlook 2025 Data Release 031125.csv",
+    "url": "https://www.sciencebase.gov/catalog/file/get/67b8b168d34e1a2e835b7e6c?f=__disk__f8%2Ff5%2Fa4%2Ff8f5a4708b3451cd0ffcec730f3debdd5f1bf77d",
+    "bytes": 192247,
+    "status": "ok"
+  }
+]

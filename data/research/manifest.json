@@ -1,0 +1,229 @@
+{
+  "sources": [
+    {
+      "path": "data/raw/usgs/mcs2026_commodity_metadata.json",
+      "url": "https://www.sciencebase.gov/catalog/item/69837e43b66b01367d7ec7c7?format=json",
+      "license": "CC0-1.0",
+      "retrieved": "2026-10-15",
+      "sha256": "1acf6e89cb12007345289f59fc67819400158e68691619e1fd008f3445151d84",
+      "bytes": 7275
+    },
+    {
+      "path": "data/raw/usgs/MCS2026_Commodities_Data.csv",
+      "url": "https://www.sciencebase.gov/catalog/file/get/69837e43b66b01367d7ec7c7?f=__disk__d3%2Fac%2F84%2Fd3ac8466552946c5e8caa2c2c6338d9e1aff655d",
+      "license": "CC0-1.0",
+      "retrieved": "2026-10-15",
+      "sha256": "582a0aa231aea53d8a97dc8d1cd3dfa5f885cf3760353e3d029d7f0ae4fbaaf5",
+      "bytes": 3189010
+    },
+    {
+      "path": "data/raw/xu2020/supplement.pdf",
+      "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs43246-020-00095-x/MediaObjects/43246_2020_95_MOESM1_ESM.pdf",
+      "license": "CC-BY-4.0",
+      "retrieved": "2026-10-15",
+      "sha256": "d6e0d777f12be0036a0a21836dda8bfc161da48c27a7d7ec36a3c1e0e3ca5f18",
+      "bytes": 692381
+    },
+    {
+      "path": "data/raw/hs/H4.json",
+      "url": "https://comtradeapi.un.org/files/v1/app/reference/H4.json",
+      "license": "UN-Comtrade-reference-metadata; terms-unverified",
+      "retrieved": "2026-10-15",
+      "sha256": "29b35dfc510f94e8360cfe3d2eefdabfb47c69a28e6b5628f9a3b6d824789a33",
+      "bytes": 1266080
+    },
+    {
+      "path": "data/raw/hs/H6.json",
+      "url": "https://comtradeapi.un.org/files/v1/app/reference/H6.json",
+      "license": "UN-Comtrade-reference-metadata; terms-unverified",
+      "retrieved": "2026-10-15",
+      "sha256": "e266823e1299d1307c5d7986eb738b83aa5e5bd9af675bf19bf372220660be15",
+      "bytes": 1750838
+    },
+    {
+      "path": "data/raw/baci/BACI_HS12_Y2024_V202601_selected.csv",
+      "url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/data/BACI_HS12_V202601.zip",
+      "retrieved": "2026-10-15",
+      "license": "Etalab-2.0",
+      "license_url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/doc/baci_webpage.html",
+      "sha256": "18919015fd2e66c7a86ef699d59288423f9083c8a3751363dfbf27b55719d7e6",
+      "bytes": 923270,
+      "archive_member": "BACI_HS12_Y2024_V202601.csv",
+      "archive_member_sha256": "d1af577d5941598d63dbc7239e132acedb1f91928403c4a22cb3b5572c08696b",
+      "transform": {
+        "selection": {
+          "k": [
+            "250410",
+            "250490",
+            "260200",
+            "260300",
+            "260400",
+            "260500",
+            "260600",
+            "280461",
+            "282010",
+            "282090",
+            "282200",
+            "282520",
+            "283324",
+            "283329",
+            "283691",
+            "284190",
+            "284290",
+            "285390",
+            "380110",
+            "381800",
+            "740311",
+            "750210",
+            "760110",
+            "810520",
+            "850760",
+            "854142",
+            "854143"
+          ]
+        }
+      }
+    },
+    {
+      "path": "data/raw/baci/product_codes_HS12_V202601.csv",
+      "url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/data/BACI_HS12_V202601.zip",
+      "retrieved": "2026-10-15",
+      "license": "Etalab-2.0",
+      "license_url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/doc/baci_webpage.html",
+      "sha256": "092789b3f6576c98440e52afcbb7dbc51f646f0db6198d0f6f925cb73d58527e",
+      "bytes": 573394,
+      "archive_member": "product_codes_HS12_V202601.csv",
+      "archive_member_sha256": "092789b3f6576c98440e52afcbb7dbc51f646f0db6198d0f6f925cb73d58527e",
+      "transform": null
+    },
+    {
+      "path": "data/raw/baci/country_codes_V202601.csv",
+      "url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/data/BACI_HS22_V202601.zip",
+      "retrieved": "2026-10-15",
+      "license": "Etalab-2.0",
+      "license_url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/doc/baci_webpage.html",
+      "sha256": "c6892f28bea23d689b29b074d299cea7f5196c708b03026fbe419fa4ecb4e820",
+      "bytes": 5346,
+      "archive_member": "country_codes_V202601.csv",
+      "archive_member_sha256": "c6892f28bea23d689b29b074d299cea7f5196c708b03026fbe419fa4ecb4e820",
+      "transform": null
+    },
+    {
+      "path": "data/raw/baci/BACI_HS22_Y2024_V202601_selected.csv",
+      "url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/data/BACI_HS22_V202601.zip",
+      "retrieved": "2026-10-15",
+      "license": "Etalab-2.0",
+      "license_url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/doc/baci_webpage.html",
+      "sha256": "372071a3e40df5db8ead84932c4c22e2b0d3d8a3e3b8bbe865fc1109be416695",
+      "bytes": 1193642,
+      "archive_member": "BACI_HS22_Y2024_V202601.csv",
+      "archive_member_sha256": "298a39428bede6eaeb9aad1cc35e5244b7f213fa76b25a6928e4c2ebd5522134",
+      "transform": {
+        "selection": {
+          "k": [
+            "250410",
+            "250490",
+            "260200",
+            "260300",
+            "260400",
+            "260500",
+            "260600",
+            "280461",
+            "282010",
+            "282090",
+            "282200",
+            "282520",
+            "283324",
+            "283329",
+            "283691",
+            "284190",
+            "284290",
+            "285390",
+            "380110",
+            "381800",
+            "740311",
+            "750210",
+            "760110",
+            "810520",
+            "850760",
+            "854142",
+            "854143"
+          ]
+        }
+      }
+    },
+    {
+      "path": "data/raw/baci/product_codes_HS22_V202601.csv",
+      "url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/data/BACI_HS22_V202601.zip",
+      "retrieved": "2026-10-15",
+      "license": "Etalab-2.0",
+      "license_url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/doc/baci_webpage.html",
+      "sha256": "1d7dfab3d0c790e111663832b1d101d6ffafe396fb6dbed7035b7283f6614efd",
+      "bytes": 630077,
+      "archive_member": "product_codes_HS22_V202601.csv",
+      "archive_member_sha256": "1d7dfab3d0c790e111663832b1d101d6ffafe396fb6dbed7035b7283f6614efd",
+      "transform": null
+    },
+    {
+      "path": "data/raw/cochilco/production_1996_2025.xlsx",
+      "url": "https://www.cochilco.cl/web/download/140/estadisticas-estadisticas-de-la-mineria-no-metalica/16945/produccion-mineria-no-metalica-1996-2025.xlsx",
+      "license": "No-explicit-open-license; factual-transcription-only",
+      "retrieved": "2026-10-15",
+      "sha256": "ca5da74b68a56d40ae9bec881569e63423dabbb903afa44b0eb8d702c52d3a60",
+      "bytes": 25096
+    },
+    {
+      "path": "data/raw/xu2020/bom_mid_size_bev.csv",
+      "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs43246-020-00095-x/MediaObjects/43246_2020_95_MOESM1_ESM.pdf",
+      "retrieved": "2026-10-15",
+      "license": "CC-BY-4.0",
+      "sha256": "5119119b3075ec7c26cef1a3872eee10c0b18ae5c23b21289c5c1649a25e5f04",
+      "bytes": 10730,
+      "transform": "Numerical transcription: SI Tables 1 and 23; mid-size BEV, pack level."
+    },
+    {
+      "path": "data/raw/xu2020/specific_energy.csv",
+      "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs43246-020-00095-x/MediaObjects/43246_2020_95_MOESM1_ESM.pdf",
+      "retrieved": "2026-10-15",
+      "license": "CC-BY-4.0",
+      "sha256": "564a3cad625288ee132cb412fe992b80bd065443e6e9122d2cd28a79c313d21f",
+      "bytes": 1446,
+      "transform": "Numerical transcription: SI Table 4; pack-specific energy, not bare cell."
+    },
+    {
+      "path": "data/raw/miit/production_2024.csv",
+      "url": "https://www.miit.gov.cn/jgsj/dzs/gzdt/art/2025/art_dc20a4d4b3a74dcf91ac1b212f87bbfc.html",
+      "retrieved": "2026-10-15",
+      "license": "Numerical-facts; no source open license stated",
+      "sha256": "d42c06f192e69cb80f4d2aac7d138de7aa3db56f46562f0bf5013c76918d9958",
+      "bytes": 3096,
+      "transform": "Factual numerical transcription from two MIIT releases; row-specific URLs. Source basis: listed firms plus association estimates; not nameplate."
+    },
+    {
+      "path": "data/raw/cochilco/lithium_chemicals_2024.csv",
+      "url": "https://www.cochilco.cl/web/download/140/estadisticas-estadisticas-de-la-mineria-no-metalica/16945/produccion-mineria-no-metalica-1996-2025.xlsx",
+      "retrieved": "2026-10-15",
+      "license": "Numerical-facts; no source open license stated",
+      "sha256": "9bf003e5e60916346648ab2ce31ac102cde59843f6fc3d10b0d15e09f26c6156",
+      "bytes": 412,
+      "transform": "Exact cell extraction; Hoja1 column AD, tonnes of chemical compound."
+    },
+    {
+      "path": "data/raw/fraunhofer/silicon_usage_2024.csv",
+      "url": "https://www.ise.fraunhofer.de/content/dam/ise/de/documents/publications/studies/Photovoltaics-Report.pdf",
+      "retrieved": "2026-10-15",
+      "license": "Numerical-fact; citation required by source",
+      "sha256": "b21f81e7fcf1799375221fa76cdb772bf139f0277a7efb89a063a090811c8df5",
+      "bytes": 223,
+      "transform": "Numerical transcription, p8: silicon usage; not complete module mass."
+    },
+    {
+      "path": "data/raw/usgs/MCS2026_Commodities_Data.xml",
+      "url": "https://www.sciencebase.gov/catalog/file/get/69837e43b66b01367d7ec7c7?f=__disk__59%2F9f%2F78%2F599f78dcdae6cfc820ec8410e8a0e684c28be9d2",
+      "license": "CC0-1.0",
+      "retrieved": "2026-10-15",
+      "sha256": "0588a74c5257484630cd41dbb60cbd9ef4862bd24b6660a762d1aecf3c73e15a",
+      "bytes": 13470
+    }
+  ]
+}

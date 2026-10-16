@@ -1,0 +1,313 @@
+[
+  {
+    "path": "data\\events\\raw\\oecd-structure.xml",
+    "url": "https://sdmx.oecd.org/public/rest/v1/dataflow/OECD.TAD.ADM/DSD_QDD_TAD_EXP_RESTRIC@DF_QDD_TAD_EXP_RESTRIC/latest?references=all",
+    "bytes": 6371448,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\oecd-china-2023-2024.csv",
+    "url": "https://sdmx.oecd.org/public/rest/v1/data/OECD.TAD.ADM,DSD_QDD_TAD_EXP_RESTRIC@DF_QDD_TAD_EXP_RESTRIC,3.0/CHN......?startPeriod=2023&endPeriod=2024&format=csvfile",
+    "bytes": 1081190,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\oecd-report-2026.pdf",
+    "url": "https://www.oecd.org/content/dam/oecd/en/publications/reports/2026/04/oecd-inventory-of-export-restrictions-on-critical-raw-materials-2026_2cedac0b/d5ca8f62-en.pdf",
+    "bytes": 1843126,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-swagger.json",
+    "url": "https://www.gdacs.org/gdacsapi/swagger/v1/swagger.json",
+    "bytes": 151598,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-quickstart.pdf",
+    "url": "https://www.gdacs.org/Documents/2025/GDACS_API_quickstart_v2.pdf",
+    "bytes": 143846,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\mofcom-2023-39.html",
+    "url": "https://www.mofcom.gov.cn/zcfb/blgg/art/2023/art_f6b1bc49e2c8482f8eb749012bc66dec.html",
+    "bytes": 31010,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\mofcom-2024-46.html",
+    "url": "https://exportcontrol.mofcom.gov.cn/article/gndt/202412/1068.html",
+    "bytes": 12920,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\indonesia-11-2019.html",
+    "url": "https://peraturan.go.id/id/permen-esdm-no-11-tahun-2019",
+    "status": "<urlopen error [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond>"
+  },
+  {
+    "path": "data\\events\\raw\\zimbabwe-si213-2022.pdf",
+    "url": "https://www.veritaszim.net/sites/veritas_d/files/SI%202022-213%20Base%20Minerals%20Export%20Control%20%28Lithium%20Bearing%20Ores%20and%20Unbeneficiated%20Lithium%29%20Order%2C%202022.pdf",
+    "bytes": 431474,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\oecd-battery-pv-2012-2024.csv",
+    "url": "https://sdmx.oecd.org/public/rest/v1/data/OECD.TAD.ADM,DSD_QDD_TAD_EXP_RESTRIC@DF_QDD_TAD_EXP_RESTRIC,3.0/.HS07_250410+HS07_250490+HS07_253090+HS07_260200+HS07_260300+HS07_260400+HS07_260500+HS07_260600+HS07_280461+HS07_281820+HS07_281830+HS07_282010+HS07_282090+HS07_282200+HS07_282520+HS07_282540+HS07_283324+HS07_283691+HS07_380110+HS07_381800+HS07_740311+HS07_740319+HS07_750210+HS07_750220+HS07_760110+HS07_760120+HS07_810520+HS07_810590+HS07_854140...?startPeriod=2012&endPeriod=2024&format=csvfile",
+    "bytes": 6532926,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\oecd-methodology.pdf",
+    "url": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/export-restrictions-on-critical-raw-materials/methodological-note-inventory-export-restrictions-industrial-raw-materials_2025.pdf",
+    "bytes": 2139380,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\oecd-terms.html",
+    "url": "https://www.oecd.org/en/about/terms-conditions.html",
+    "status": "HTTP Error 403: Forbidden"
+  },
+  {
+    "path": "data\\events\\raw\\indonesia-11-2019-official.html",
+    "url": "https://jdih.esdm.go.id/dokumen/view?id=1946",
+    "bytes": 332478,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2012-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2012-01-01&toDate=2012-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 73686,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2012-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2012-01-01&toDate=2012-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 20123,
+    "features": 15,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2013-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2013-01-01&toDate=2013-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 76290,
+    "features": 57,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2013-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2013-01-01&toDate=2013-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 21604,
+    "features": 16,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2014-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2014-01-01&toDate=2014-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 38711,
+    "features": 29,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2014-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2014-01-01&toDate=2014-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 11193,
+    "features": 8,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2015-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2015-01-01&toDate=2015-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 54794,
+    "features": 40,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2015-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2015-01-01&toDate=2015-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 20374,
+    "features": 15,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2016-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2016-01-01&toDate=2016-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 55611,
+    "features": 41,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2016-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2016-01-01&toDate=2016-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 18262,
+    "features": 13,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2017-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2017-01-01&toDate=2017-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 60768,
+    "features": 44,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2017-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2017-01-01&toDate=2017-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 16488,
+    "features": 11,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2018-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2018-01-01&toDate=2018-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 64768,
+    "features": 45,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2018-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2018-01-01&toDate=2018-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 23184,
+    "features": 16,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2019-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2019-01-01&toDate=2019-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 96556,
+    "features": 68,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2019-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2019-01-01&toDate=2019-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 28197,
+    "features": 19,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2020-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2020-01-01&toDate=2020-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 78904,
+    "features": 54,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2020-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2020-01-01&toDate=2020-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 24359,
+    "features": 16,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2021-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2021-01-01&toDate=2021-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 74430,
+    "features": 53,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2021-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2021-01-01&toDate=2021-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 21007,
+    "features": 15,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2022-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2022-01-01&toDate=2022-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 64831,
+    "features": 46,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2022-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2022-01-01&toDate=2022-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 19746,
+    "features": 14,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2023-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2023-01-01&toDate=2023-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 80246,
+    "features": 58,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2023-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2023-01-01&toDate=2023-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 40953,
+    "features": 29,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2024-orange-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2024-01-01&toDate=2024-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 83228,
+    "features": 59,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-2024-red-page1.json",
+    "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2024-01-01&toDate=2024-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+    "bytes": 25185,
+    "features": 17,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\indonesia-2019-ministry-release.html",
+    "url": "https://www.esdm.go.id/id/media-center/arsip-berita/bijih-nikel-tidak-boleh-diekspor-lagi-per-januari-2020",
+    "bytes": 41837,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\mofcom-2023-23.html",
+    "url": "https://www.mofcom.gov.cn/zcfb/dwmygl/art/2023/art_52b9a321087f402bb3d310d18b07967e.html",
+    "bytes": 21980,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\mofcom-2025-28.html",
+    "url": "https://www.mofcom.gov.cn/zcfb/zgdwjjmywg/art/2025/art_67e2a41850ec428eb1b7be6ec2f2bded.html",
+    "bytes": 16833,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\mofcom-2025-58.html",
+    "url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_79646f0161564975a938fe00fee158d5.html",
+    "bytes": 16916,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\mofcom-2025-70.html",
+    "url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_b1ec77dd3f0d4762952904df7cdaadec.html",
+    "bytes": 12551,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\mofcom-2025-72.html",
+    "url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_5c68985a6b1a46778e2e8dbff1bb1601.html",
+    "bytes": 12112,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\gdacs-terms.pdf",
+    "url": "https://www.gdacs.org/documents/2025/GDACS_Terms_of_use_Mar_25.pdf",
+    "bytes": 160415,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\mofcom-2024-46-original.html",
+    "url": "https://www.mofcom.gov.cn/zfxxgk/gkml/art/2024/art_99f5d51bbe6a412ca309d5818c4dee52.html",
+    "bytes": 22776,
+    "status": "ok"
+  },
+  {
+    "path": "data\\events\\raw\\zimbabwe-gazette-2022-12-16.pdf",
+    "url": "https://archive.gazettes.africa/archive/zw/2022/zw-government-gazette-dated-2022-12-16-no-143.pdf",
+    "bytes": 47437679,
+    "status": "ok"
+  }
+]

@@ -1,0 +1,54 @@
+"""Exact risk compared with a hand-enumerated categorical state space."""
+from itertools import product
+
+import numpy as np
+import pytest
+
+from chokepoint.risk import bracket, exact_union, importance_sampling, state_probability
+from chokepoint.rates import fit_rates, prequential
+from chokepoint.recourse import matrices
+
+
+def test_correlated_duration_union_and_tail():
+    V = [("A", "ore"), ("A", "metal"), ("B", "cell")]
+    p = np.array([0.1, 0.2, 0.3])
+    C = [[2, 0, 0], [1, 1, 0], [0, 0, 2]]
+    durations, weights, rho = [1, 2], [0.25, 0.75], 0.6
+    probabilities, fail, tail = [], 0, 0
+    for D in product([0, 1, 2], repeat=3):
+        q = state_probability(V, p, rho, durations, weights, D)
+        probabilities.append(q)
+        if any(all(x <= y for x, y in zip(S, D, strict=True)) for S in C):
+            fail += q
+        if sum(x > 0 for x in D) > 1:
+            tail += q
+    assert sum(probabilities) == pytest.approx(1)
+    R = bracket(V, p, rho, durations, weights, C, k=1, complete=True)
+    assert R["L"] == pytest.approx(fail)
+    assert R["tail"] == pytest.approx(tail)
+    assert R["U"] == pytest.approx(min(1, fail + tail))
+    assert exact_union(V, p, 0, durations, weights, [[0, 0, 0]]) == 1
+    with pytest.raises(ValueError, match="complete"):
+        bracket(V, p, rho, durations, weights, C, k=1, complete=False)
+
+
+def test_importance_sampling_known_probability():
+    V = [("A", "cell")]
+    M = matrices(V, [10], {}, [10, 10])
+    R = importance_sampling(M, [0.08], 0, [1, 2], [0.5, 0.5],
+                            [[2]], alpha=0.6, n=3000, pilot=300, seed=7)
+    assert abs(R["estimate"] - 0.04) < 4*R["se"]
+    assert R["effective_sample_size"] > 0
+
+
+def test_rates_planted_marginal_and_no_missing_as_zero():
+    rng = np.random.default_rng(5)
+    V = [(str(i), "ore") for i in range(60)]
+    Y = (rng.random((60, 300)) < 0.2).astype(float)
+    Y[0, :] = np.nan
+    R = fit_rates(V, Y)
+    assert abs(np.mean(R["p"]) - 0.2) < 0.02
+    assert R["exposure"][0] == 0
+    assert R["basis"][0] == "pooled_no_exposure"
+    P = prequential(V, Y, np.arange(1725, 2025), train_end=2019)
+    assert np.isfinite(P["model_log_loss"])

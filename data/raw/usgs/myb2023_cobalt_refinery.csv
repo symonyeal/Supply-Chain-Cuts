@@ -1,0 +1,17 @@
+country,iso3,year,product,statistic,value,unit,qualifier,form,sheet_cell,source_url
+Australia,AUS,2023,refined_co,refinery_production,2400,t Co content,reported,metal and metal powder,T8!K7,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+Belgium,BEL,2023,refined_co,refinery_production,700,t Co content,reported,"metal powder, oxide, and hydroxidee, 3",T8!K8,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+Canada,CAN,2023,refined_co,refinery_production,4835,t Co content,reported,"metal, metal powder, and oxide",T8!K9,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+China,CHN,2023,refined_co,refinery_production,147000,t Co content,estimated,"metal, metal powder, oxide, and salts",T8!K10,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+Finland,FIN,2023,refined_co,refinery_production,10627,t Co content,reported,metal powder and salts,T8!K11,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+France,FRA,2023,refined_co,refinery_production,127,t Co content,reported,chloride,T8!K12,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+India,IND,2023,refined_co,refinery_production,,t Co content,not_available,metal and salts5,T8!K13,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+Indonesia,IDN,2023,refined_co,refinery_production,400,t Co content,estimated,cobalt sulfate,T8!K14,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+Japan,JPN,2023,refined_co,refinery_production,3800,t Co content,reported,metale,T8!K15,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+Madagascar,MDG,2023,refined_co,refinery_production,3400,t Co content,estimated,metal powder,T8!K16,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+Mexico,MEX,2023,refined_co,refinery_production,50,t Co content,estimated,metal,T8!K17,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+Morocco,MAR,2023,refined_co,refinery_production,1506,t Co content,reported,metal,T8!K18,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+Norway,NOR,2023,refined_co,refinery_production,3500,t Co content,reported,metal,T8!K19,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+Russia,RUS,2023,refined_co,refinery_production,1000,t Co content,estimated,metal,T8!K20,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+South Africa,ZAF,2023,refined_co,refinery_production,500,t Co content,reported,metal powder and sulfatee,T8!K21,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx
+Zambia,ZMB,2023,refined_co,refinery_production,,t Co content,zero,metal,T8!K22,https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx

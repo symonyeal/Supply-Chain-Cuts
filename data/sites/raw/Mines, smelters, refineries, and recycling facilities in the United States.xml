@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Tim M. O'Brien</origin>
+        <origin>Kathleen R. Trafton</origin>
+        <origin>John VerWey</origin>
+        <origin>Paul W. Volante</origin>
+        <origin>Terri A. Zach</origin>
+        <pubdate>20260629</pubdate>
+        <title>Mines, smelters, refineries, and recycling facilities in the United States</title>
+        <geoform>spreadsheet</geoform>
+        <onlink>https://doi.org/10.5066/P1BUPUAM</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>Developing resilient U.S. mineral supply chains requires data for identifying the vulnerabilities and bottlenecks for the mineral materials that are required for defense technologies, semiconductor manufacturing, agricultural production and advanced electronics. A U.S.-based mineral and metal production facility database is essential for national security and economic stability by mapping mineral resources currently in production or in the pipeline as well as the midstream processing capacities. Using only public source information, this domestic database identified over 800 mining or mineral processing facilities located in the U.S. It covers over 60 commodities (including 96% of the commodities included in the 2025 U.S. Dept. of Interior Critical Minerals List [FR Doc. 2025-19813]). The data provided here may be used to aid policy makers and industry leaders by pinpointing vulnerabilities and bottlenecks in specific commodities or sectors as well identifying the commodities in which the U.S. is economically competitive.</abstract>
+      <purpose>This dataset contains a compilation of United States mines, quarries, refineries, and facilities of over 60 commodities (including 96% of the commodities included in the 2025 U.S. Dept. of Interior Critical Minerals List [FR Doc. 2025-19813]). The data reports on the commodities, their form, final product, and annual capacity for each commodity and/or associated product. These data are presented as a excel table file along with the metadata file that describes the data associated with the entity.</purpose>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>20241204</begdate>
+          <enddate>20260430</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>ground condition</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>None planned</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-178.2100</westbc>
+        <eastbc>179.7700</eastbc>
+        <northbc>71.3500</northbc>
+        <southbc>18.9200</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>ISO 19115 Topic Category</themekt>
+        <themekey>biota</themekey>
+      </theme>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>Mines and Quarries</themekey>
+        <themekey>Smelters</themekey>
+        <themekey>Refineries</themekey>
+        <themekey>Critical Minerals</themekey>
+        <themekey>Mineral Commodities</themekey>
+      </theme>
+      <theme>
+        <themekt>USGS Metadata Identifier</themekt>
+        <themekey>USGS:6a3edaf71ba49b7c2e263528</themekey>
+      </theme>
+      <place>
+        <placekt>None</placekt>
+        <placekey>United States</placekey>
+      </place>
+    </keywords>
+    <accconst>No access constraints. Please see 'Distribution Information' for details.</accconst>
+    <useconst>These data are marked with a Creative Common CC0 1.0 Universal License. These data are in the public domain and do not have any use constraints. Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Terri Zach</cntper>
+        </cntperp>
+        <cntaddr>
+          <addrtype>physical</addrtype>
+          <address>12201 Sunrise Valley Dr</address>
+          <city>Reston</city>
+          <state>Virginia</state>
+          <postal>20192</postal>
+          <country>USA</country>
+        </cntaddr>
+        <cntvoice>(703) 648-5953</cntvoice>
+      </cntinfo>
+    </ptcontac>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>All values were verified  for public sources</attraccr>
+    </attracc>
+    <logic>Values are consistent with expected ranges</logic>
+    <complete>Facilities reported in the dataset represent the represent the most complete record of facilities within the US to our knowledge</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>NA</horizpar>
+      </horizpa>
+      <vertacc>
+        <vertaccr>NA</vertaccr>
+      </vertacc>
+    </posacc>
+    <lineage>
+      <procstep>
+        <procdesc>Process Description: We developed a comprehensive database of known mines, smelters, refineries, and recycling facilities in the United States. Data is derived from a myriad of public sources, including federal and state agencies, non-governmental organizations, and news outlets, which provide current information pertaining to U.S. facilities. We provide the names, status, location, equity ownership, operator, commodity produced, product formed, and annual production capacity for each facility. In addition to facilities identified and described, if capable through public sources, production is tracked from mine to refined product.</procdesc>
+        <procdate>20241204</procdate>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <eainfo>
+    <overview>
+      <eaover>Excel file containing United State facilities names, associated commodities, and annual capacity for recognized metal and mineral commodities.</eaover>
+      <eadetcit>O'Brien,T.M., Trafton, K.R., VerWey, J., Volante, P.W., Zach, T.A., 2026, Mines, smelters, refineries, and recycling facilities in the United States, https://doi:10.5066/P1BUPUAM</eadetcit>
+    </overview>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>U.S. Geological Survey - ScienceBase</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing address</addrtype>
+          <address>Denver Federal Center</address>
+          <address>Building 810</address>
+          <address>Mail Stop 302</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+        </cntaddr>
+        <cntvoice>1-888-275-8747</cntvoice>
+        <cntemail>sciencebase@usgs.gov</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>Unless otherwise stated, all data, metadata and related materials are considered to satisfy the quality standards relative to the purpose for which the data were collected. Although these data and associated metadata have been reviewed for accuracy and completeness and approved for release by the U.S. Geological Survey (USGS), no warranty expressed or implied is made regarding the display or utility of the data for other purposes, nor on all computer systems, nor shall the act of distribution constitute any such warranty.</distliab>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>Digital Data</formname>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>https://doi.org/10.5066/P1BUPUAM</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <fees>None</fees>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20260629</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>Terri A. Zach</cntper>
+        </cntperp>
+        <cntaddr>
+          <addrtype>physical</addrtype>
+          <address>12201 Sunrise Valley Dr</address>
+          <city>Reston</city>
+          <state>Virginia</state>
+          <postal>20192</postal>
+        </cntaddr>
+        <cntvoice>(703) 648-5953</cntvoice>
+        <cntemail>tzach@usgs.gov</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+  </metainfo>
+</metadata>

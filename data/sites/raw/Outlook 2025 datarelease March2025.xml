@@ -1,0 +1,473 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Elisa Alonso</origin>
+        <origin>Amanda S. Brioche</origin>
+        <origin>Ruth F. Schulte</origin>
+        <origin>Loyd M. Trimmer</origin>
+        <origin>Ji-Eun Kim</origin>
+        <origin>Andrew L. Gulley</origin>
+        <origin>David G. Pineault</origin>
+        <pubdate>20250311</pubdate>
+        <title>World minerals outlook to 2029—Cobalt, gallium, helium, lithium, magnesium, palladium, platinum, and titanium data</title>
+        <geoform>tabular digital data</geoform>
+        <pubinfo>
+          <pubplace>Reston, VA</pubplace>
+          <publish>U.S. Geological Survey</publish>
+        </pubinfo>
+        <onlink>https://doi.org/10.5066/P1HTTCWN</onlink>
+        <lworkcit>
+          <citeinfo>
+            <origin>Elisa Alonso</origin>
+            <origin>Amanda S. Brioche</origin>
+            <origin>Ruth F. Schulte</origin>
+            <origin>Loyd M. Trimmer</origin>
+            <origin>Ji-Eun Kim</origin>
+            <origin>Andrew L. Gulley</origin>
+            <origin>David G. Pineault</origin>
+            <pubdate>20250311</pubdate>
+            <title>World Minerals Outlook - Cobalt, Gallium, Helium, Lithium, Magnesium, Palladium, Platinum, and Titanium Through 2029</title>
+            <geoform>publication</geoform>
+            <onlink>https://doi.org/10.3133/sir20255021</onlink>
+          </citeinfo>
+        </lworkcit>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>Given the rapid expansion in the demand for mineral commodities that underpin worldwide economic growth and technological advancement, information regarding expected country-level mine production and production capacity is becoming increasingly important. In particular, production capacity can limit future supply, depending on how rapidly that capacity is able to expand. Current capacity can be evaluated on the basis of producing sites. Decreases to future capacity can be taken into account from announcements of planned shutdowns of mines or processing facilities, which are frequently publicized well in advance of such closures. Likewise, capacity expansions, which usually involve multiple stages—such as permitting, financing, and construction (all of which take time)—can also be estimated. As such, it is possible to evaluate midterm future capacity based on estimates of today’s capacities along with consideration of future plans. This World Minerals Outlook data release provides estimated capacities for cobalt, gallium, helium, lithium, magnesium, palladium, platinum, and titanium for 2024 through 2029. Production data from 2018 to 2024 are also provided and show the current and historical capacity utilization levels for these commodities.</abstract>
+      <purpose>This data release represents production capacity data synthesized from government, industry, and company reports available as of June 2024 on near-term production, expansion, development, and closure for select metallic and non-metallic mineral commodities globally. The growing need for the important minerals that support economic growth and technology makes understanding mine production and capacity more essential. How much a mine can produce affects future supply, especially as capacities can change over time. This World Minerals Outlook data release provides the supply side data of the listed mineral commodities with current and historical production data, current country production capacity levels, and future production capacity outlook.</purpose>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>20220101</begdate>
+          <enddate>20291231</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>publication date</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>None planned</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-180.0000</westbc>
+        <eastbc>180.0000</eastbc>
+        <northbc>90.0000</northbc>
+        <southbc>-90.0000</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>capacity utilization</themekey>
+        <themekey>future production capacity</themekey>
+        <themekey>mineral commodity</themekey>
+        <themekey>mining and refining</themekey>
+      </theme>
+      <theme>
+        <themekt>USGS Thesaurus</themekt>
+        <themekey>metallic mineral resources</themekey>
+        <themekey>nonmetallic mineral resources</themekey>
+        <themekey>mining and quarrying</themekey>
+        <themekey>critical minerals</themekey>
+        <themekey>world minerals outlook</themekey>
+        <themekey>production capacity</themekey>
+      </theme>
+      <theme>
+        <themekt>USGS Metadata Identifier</themekt>
+        <themekey>USGS:67b8b168d34e1a2e835b7e6c</themekey>
+      </theme>
+    </keywords>
+    <accconst>None.  Please see 'Distribution Info' for details.</accconst>
+    <useconst>None.  Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>U.S. Geological Survey</cntorg>
+          <cntper>Director, National Minerals Information Center</cntper>
+        </cntorgp>
+        <cntpos>Director</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>12201 Sunrise Valley Dr. MS988</address>
+          <city>Reston</city>
+          <state>VA</state>
+          <postal>20192</postal>
+          <country>United States of America</country>
+        </cntaddr>
+        <cntvoice>N/A</cntvoice>
+        <cntemail>nmicrecordsmgt@usgs.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>For production capacity data, where possible, data for 2022 and 2023 have been finalized for publication; the data for 2024 are noted as estimated. The data for 2025 through 2029 are collected based on estimated 2024 capacity and announced capacity expansions and consist of outlook data. For production data, the data were collected for previously published reports and tables and source data attribution is provided.</attraccr>
+    </attracc>
+    <logic>Data were checked to ensure that they match those published in the World Minerals Outlook 2025. Data were peer reviewed by Mineral Commodity Specialists and approved by supervisors in compliance with USGS fundamental science practices.</logic>
+    <complete>This data release contains tabular production and production capacity data found in the associated publication World Minerals Outlook 2025.  Additional detailed information is available in the full text version of the World Minerals Outlook 2025 and in the Minerals Yearbook (Volume I. -- Metals and Minerals) tables as noted from the source data citations below.</complete>
+    <lineage>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>National Minerals Information Center</origin>
+            <pubdate>2025</pubdate>
+            <title>U.S. Geological Survey Mineral Commodity Summaries 2025 Data Release</title>
+            <edition>2025</edition>
+            <geoform>dataset</geoform>
+            <pubinfo>
+              <pubplace>https://www.sciencebase.gov</pubplace>
+              <publish>U.S. Geological Survey</publish>
+            </pubinfo>
+            <onlink>https://doi.org/10.5066/p13xcp3r</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>Digital and/or Hardcopy</typesrc>
+        <srctime>
+          <timeinfo>
+            <rngdates>
+              <begdate>20230101</begdate>
+              <enddate>20241231</enddate>
+            </rngdates>
+          </timeinfo>
+          <srccurr>publication date</srccurr>
+        </srctime>
+        <srccitea>Mineral Commodity Summaries 2025 data</srccitea>
+        <srccontr>Production data from 2023 and 2024 and some capacity data, as noted in dataset</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>U.S. Geological Survey</origin>
+            <pubdate>2024</pubdate>
+            <title>U.S. Geological Survey Mineral Commodity Summaries 2024 Data Release (ver. 2.0, March 2024)</title>
+            <edition>2.0, March 2024</edition>
+            <geoform>publication</geoform>
+            <pubinfo>
+              <pubplace>n/a</pubplace>
+              <publish>US Geological Survey</publish>
+            </pubinfo>
+            <othercit>National Minerals Information Center, 2024, U.S. Geological Survey Mineral Commodity Summaries 2024 Data Release (ver. 2.0, March 2024): U.S. Geological Survey data release, https://doi.org/10.5066/P144BA54.</othercit>
+            <onlink>https://doi.org/10.5066/P144BA54</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>Digital and/or Hardcopy</typesrc>
+        <srctime>
+          <timeinfo>
+            <rngdates>
+              <begdate>20220101</begdate>
+              <enddate>20231231</enddate>
+            </rngdates>
+          </timeinfo>
+          <srccurr>publication date</srccurr>
+        </srctime>
+        <srccitea>Mineral commodity summaries 2024</srccitea>
+        <srccontr>production and capacity data for Titanium metal sponge</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>U.S. Geological Survey, National Minerals Information Center</origin>
+            <pubdate>20250301</pubdate>
+            <title>Minerals Yearbook (Volume I.-- Metals and Minerals)</title>
+            <geoform>publication</geoform>
+            <othercit>Data sources details on which table and commodity was used is included in the data release.</othercit>
+            <onlink>https://www.usgs.gov/centers/national-minerals-information-center/minerals-yearbook-metals-and-minerals</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>Digital and/or Hardcopy</typesrc>
+        <srctime>
+          <timeinfo>
+            <rngdates>
+              <begdate>20180101</begdate>
+              <enddate>20221231</enddate>
+            </rngdates>
+          </timeinfo>
+          <srccurr>publication date</srccurr>
+        </srctime>
+        <srccitea>Mineral yearbooks</srccitea>
+        <srccontr>production data from 2018 to 2022</srccontr>
+      </srcinfo>
+      <procstep>
+        <procdesc>Current capacity data are collected from annual mine- and country-level operating production and capacity data based on reports from companies, governments, and industry sources. Currently producing mines and facilities are considered operating capacity. In some cases, generally due to poor market conditions, producers decide to idle but not fully shut down a production site. Instead, they put a facility on care-and-maintenance status or pause production on a particular production line. In those cases, the production capacity is deemed idled capacity. The sum of operating and idled capacity equals the total current estimated production capacity.</procdesc>
+        <procdate>20241231</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>The USGS reconciled any identified discrepancies between reported capacity and production by selecting the larger value of these two on the basis of the assumption that capacity should be larger than production. For some facilities, this may be an overestimate, such as cases where production facilities were pushed to operate above reported capacity. However, over time and at the country level, this assumption should be reasonable because operating above capacity is not likely across many mines or for a significant period. Where capacity data were not available, the reported production value was used to calculate the current operating capacity rate. This second assumption would, in general, underestimate capacity because most facilities operate at less than 100 percent.</procdesc>
+        <procdate>20241231</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>For the outlook part of the report, capacity adjustments were made for each year based on (1) announced expansions of existing mines, (2) developments of new mines with bankable or definitive feasibility studies, and (3) reported mine closures to calculate world mineral capacity outlooks through 2029</procdesc>
+        <procdate>20241231</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Production data was collected from the U.S.Geological Survey National Minerals Information publications and data releases. Those data sources are listed below and are the Minerals Yearbook (Volume I. -- Metals and Minerals) and the Mineral Commodity Summaries. All the latest available data was used and noted in the data release.</procdesc>
+        <procdate>20250201</procdate>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>Data Release Outlook 2025 030225.csv</enttypl>
+        <enttypd>Comma Separated Value (CSV) file containing data.</enttypd>
+        <enttypds>Producer Defined</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>Mineral_Commodity</attrlabl>
+        <attrdef>Mineral commodity for which the data were compiled</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <codesetd>
+            <codesetn>Mineral Commodities</codesetn>
+            <codesets>USGS National Minerals Information Center</codesets>
+          </codesetd>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Year</attrlabl>
+        <attrdef>Calendar year for which the value of capacity is estimated.</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>2018</rdommin>
+            <rdommax>2050</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Note</attrlabl>
+        <attrdef>Note about the capacity or production for the commodity in the subject country for the year the data is provided</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>estimated</edomv>
+            <edomvd>estimated</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>revised</edomv>
+            <edomvd>data was revised and differs from earlier NMIC publications</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>reported</edomv>
+            <edomvd>reported</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>outlook</edomv>
+            <edomvd>data projected to future years is part of the outlook analysis</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>rounded</edomv>
+            <edomvd>totals were rounded</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>excludes U.S.</edomv>
+            <edomvd>Totals do not include U.S. data due to requirement to withhold business proprietary information.</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>idled</edomv>
+            <edomvd>idled</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>operating</edomv>
+            <edomvd>operating</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Quantity</attrlabl>
+        <attrdef>Production or processing capacity for the mineral commodity listed.</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>1000000000</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Data_type</attrlabl>
+        <attrdef>Defines whether the data entry is the production or the capacity.</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>Capacity</edomv>
+            <edomvd>Production or processing capacity by country/geographic region</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>Production</edomv>
+            <edomvd>Production by country/geographic region</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Unit_MEAS</attrlabl>
+        <attrdef>Unit of measure for the capacity or production, as noted in Data_type</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>Metric tons</edomv>
+            <edomvd>metric tons (MT)</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>Thousand metric tons</edomv>
+            <edomvd>thousand metric tons ('000 MT)</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>Million cubic meters</edomv>
+            <edomvd>million cubic metric meters, volume of gas measured at 1 atmosphere and 0 degrees Celsius</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>Kilograms</edomv>
+            <edomvd>kilograms (kg)</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Form</attrlabl>
+        <attrdef>Description of the form of commodity for which the production is measured, usually mine production (content of the mineral commodity in the ore) or refinery production of the mineral commodity</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <udom>For each mineral commodity, the form describes the basis for the measured capacity and production.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Geographic_Region</attrlabl>
+        <attrdef>Country or geographic region in which capacity for producing or processing the mineral commodity is located.</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <codesetd>
+            <codesetn>common geographic names</codesetn>
+            <codesets>Geopolitical Entities, Names and codes (GENC) Standard</codesets>
+          </codesetd>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Figure_Use</attrlabl>
+        <attrdef>Provides the figure reference in the larger work where the data point was presented.</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <udom>Figure numbers are provided.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Data Sources</attrlabl>
+        <attrdef>Provides details on the reference source data table and commodity and year where the data was pulled from. Citation details provided in the Data Quality description of the Metadata</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>&lt;&lt; empty cell &gt;&gt;</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <udom>The data sources are other U.S. Geological Survey publications and the citation is detailed in Data Quality section of the metadata file.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>U.S. Geological Survey - ScienceBase</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing address</addrtype>
+          <address>Denver Federal Center</address>
+          <address>Building 810</address>
+          <address>Mail Stop 302</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+        </cntaddr>
+        <cntvoice>1-888-275-8747</cntvoice>
+        <cntemail>sciencebase@usgs.gov</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>Unless otherwise stated, all data, metadata and related materials are considered to satisfy the quality standards relative to the purpose for which the data were collected. Although these data and associated metadata have been reviewed for accuracy and completeness and approved for release by the U.S. Geological Survey (USGS), no warranty expressed or implied is made regarding the display or utility of the data for other purposes, nor on all computer systems, nor shall the act of distribution constitute any such warranty.</distliab>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>Digital Data</formname>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>https://doi.org/10.5066/P1HTTCWN</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <fees>None</fees>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20250311</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>Elisa Alonso</cntper>
+          <cntorg>USGS - National Minerals Information Center</cntorg>
+        </cntperp>
+        <cntpos>Physical Scientist</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>12201 Sunrise Valley Drive</address>
+          <address>MS988 National Center</address>
+          <city>Reston</city>
+          <state>VA</state>
+          <postal>20192</postal>
+          <country>United States of America</country>
+        </cntaddr>
+        <cntvoice>703-648-4990</cntvoice>
+        <cntemail>nmicrecordsmgt@usgs.gov</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+  </metainfo>
+</metadata>

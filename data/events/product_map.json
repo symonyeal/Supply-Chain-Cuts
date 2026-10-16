@@ -1,0 +1,99 @@
+{
+  "hs_revision": "HS2007",
+  "hs6_to_products": {
+    "250410": [
+      "mine_graphite"
+    ],
+    "250490": [
+      "mine_graphite"
+    ],
+    "253090": [
+      "mine_li"
+    ],
+    "260200": [
+      "mine_mn"
+    ],
+    "260400": [
+      "mine_ni"
+    ],
+    "260500": [
+      "mine_co"
+    ],
+    "280461": [
+      "polysilicon"
+    ],
+    "282200": [
+      "refined_co"
+    ],
+    "282520": [
+      "li_hydroxide"
+    ],
+    "282540": [
+      "refined_ni"
+    ],
+    "283324": [
+      "refined_ni"
+    ],
+    "283691": [
+      "li_carbonate"
+    ],
+    "380110": [
+      "aam"
+    ],
+    "740311": [
+      "refined_cu"
+    ],
+    "740319": [
+      "refined_cu"
+    ],
+    "750210": [
+      "refined_ni"
+    ],
+    "750220": [
+      "refined_ni"
+    ],
+    "760110": [
+      "aluminium"
+    ],
+    "760120": [
+      "aluminium"
+    ],
+    "810520": [
+      "refined_co"
+    ],
+    "810590": [
+      "refined_co"
+    ]
+  },
+  "coverage_commodity_to_products": {
+    "Lithium": [
+      "mine_li",
+      "li_carbonate",
+      "li_hydroxide"
+    ],
+    "Cobalt": [
+      "mine_co",
+      "refined_co"
+    ],
+    "Nickel": [
+      "mine_ni",
+      "refined_ni"
+    ],
+    "Graphite": [
+      "mine_graphite"
+    ],
+    "Manganese": [
+      "mine_mn"
+    ],
+    "Copper": [
+      "refined_cu"
+    ],
+    "Aluminium": [
+      "aluminium"
+    ],
+    "Silicon": [
+      "polysilicon"
+    ]
+  },
+  "scope": "Policy incidence proxy. HS253090 is shared with other minerals; HS280461 includes semiconductor silicon. Artificial-graphite and battery midstream are outside the OECD commodity survey scope. No mapped record measures whole-node capacity loss."
+}

@@ -1,0 +1,760 @@
+{
+ "sources": [
+  {
+   "path": "data/events/raw/gdacs-2012-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2012-01-01&toDate=2012-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "d0197af42c98605de389990ca35cbe7008c24753cdf34f643c039f973ae48373",
+   "bytes": 73686
+  },
+  {
+   "path": "data/events/raw/gdacs-2012-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2012-01-01&toDate=2012-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "720bbbfde097187367d1602d80fe6732dce2a09e0ff2285d8cf2fa0907117bb7",
+   "bytes": 20123
+  },
+  {
+   "path": "data/events/raw/gdacs-2013-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2013-01-01&toDate=2013-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "aeef92efec96daebed6f28967529b4f568ff3940db0a26d3abb616d3843c98c2",
+   "bytes": 76290
+  },
+  {
+   "path": "data/events/raw/gdacs-2013-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2013-01-01&toDate=2013-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "996d19966ad3d611dcc408f915167bd3e1613c9974d7b4a1661d4437fbdd5ac8",
+   "bytes": 21604
+  },
+  {
+   "path": "data/events/raw/gdacs-2014-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2014-01-01&toDate=2014-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "4319779fa28759e617b9840936c25e61ab4c0f5a95f672a76db56ef71b984f97",
+   "bytes": 38711
+  },
+  {
+   "path": "data/events/raw/gdacs-2014-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2014-01-01&toDate=2014-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "5fc2cbe4895366b5f5453b65339e1b21ab80c4ce9d52f8ec0128061c4d36cd3d",
+   "bytes": 11193
+  },
+  {
+   "path": "data/events/raw/gdacs-2015-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2015-01-01&toDate=2015-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "ddc4547c33d20fdf67c767b9adb4d1ac521a25a2aa28349429fabab8b5f7961e",
+   "bytes": 54794
+  },
+  {
+   "path": "data/events/raw/gdacs-2015-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2015-01-01&toDate=2015-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "537eb08be28c2f0f549a18c29c91bd015d6fa37efe7d77cdcdde82599b5eb949",
+   "bytes": 20374
+  },
+  {
+   "path": "data/events/raw/gdacs-2016-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2016-01-01&toDate=2016-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "cfad7d04231ec20069b43ed75d7d117762c23c0799bede3c5097a615ba2bb662",
+   "bytes": 55611
+  },
+  {
+   "path": "data/events/raw/gdacs-2016-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2016-01-01&toDate=2016-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "fc6b95a38a9bf0ddc412fdbbbf719d475a75daeec7ac003cce557e4c7d4bd450",
+   "bytes": 18262
+  },
+  {
+   "path": "data/events/raw/gdacs-2017-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2017-01-01&toDate=2017-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "7b5ebc1b0866cff0a32603ff98ffffe738cab4683aeac03b04a0e69e3c67e037",
+   "bytes": 60768
+  },
+  {
+   "path": "data/events/raw/gdacs-2017-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2017-01-01&toDate=2017-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "cc2cc73d0e1adefc14e2be39678896d851108a0b5f6945abe1da48c9d69be5b3",
+   "bytes": 16488
+  },
+  {
+   "path": "data/events/raw/gdacs-2018-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2018-01-01&toDate=2018-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "602247b88e269f3b85d8261f06fdb4c4a213db8e7baa2a706ccec1e4dba0a42a",
+   "bytes": 64768
+  },
+  {
+   "path": "data/events/raw/gdacs-2018-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2018-01-01&toDate=2018-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "35c059a0697ad5af8834f70ccd9f75b68bb02ddee9300d64f9f90b2229a5335c",
+   "bytes": 23184
+  },
+  {
+   "path": "data/events/raw/gdacs-2019-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2019-01-01&toDate=2019-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "5ec4f762a238d011458e925590fb70d69886dfd7a51481a03e7b56bbce6bc00b",
+   "bytes": 96556
+  },
+  {
+   "path": "data/events/raw/gdacs-2019-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2019-01-01&toDate=2019-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "ae652805b63c8a84d11df64868138b9ffbfdbe906708a2a39be4b1291b56b16d",
+   "bytes": 28197
+  },
+  {
+   "path": "data/events/raw/gdacs-2020-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2020-01-01&toDate=2020-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "9d338ab961c8b80ab6e779cbdf698fbbd3965b35e57cba349b3717ecd7f539fb",
+   "bytes": 78904
+  },
+  {
+   "path": "data/events/raw/gdacs-2020-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2020-01-01&toDate=2020-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "3d60bbf75997699b8fddf5b8fe533e465998734c38e447e0f2647e8cc90c6a4b",
+   "bytes": 24359
+  },
+  {
+   "path": "data/events/raw/gdacs-2021-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2021-01-01&toDate=2021-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "bb0a382b541bba700e7513526362260bf6ff18fc6087e16d5fe9251045d4d1e5",
+   "bytes": 74430
+  },
+  {
+   "path": "data/events/raw/gdacs-2021-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2021-01-01&toDate=2021-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "5694545f59d7d4d80a86351f74a5552d61e4b9edca704ec7a6a383f47c477e17",
+   "bytes": 21007
+  },
+  {
+   "path": "data/events/raw/gdacs-2022-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2022-01-01&toDate=2022-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "8f848061c5fd90938268c9422cbfa0cbb90d0fc15f1f1b6f2ca1b4396c2ac973",
+   "bytes": 64831
+  },
+  {
+   "path": "data/events/raw/gdacs-2022-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2022-01-01&toDate=2022-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "c5c23694cf0d67bfc3a1eed4bf25e27f5c1a2fdb7e1f05d812197186b50a5cd8",
+   "bytes": 19746
+  },
+  {
+   "path": "data/events/raw/gdacs-2023-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2023-01-01&toDate=2023-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "f285d50797b055ea9a4a35f530ff081991ba74e7d41b6d0c80816f55b32bfdc9",
+   "bytes": 80246
+  },
+  {
+   "path": "data/events/raw/gdacs-2023-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2023-01-01&toDate=2023-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "87a5334f0ef44553dd41729b6ed1226e2b8381df790ced9512e523ae6328eb89",
+   "bytes": 40953
+  },
+  {
+   "path": "data/events/raw/gdacs-2024-orange-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2024-01-01&toDate=2024-12-31&alertlevel=Orange&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "3c5447dcd161f413156e4befb7d88301ded880f2242fdbb87fa244058eee9f60",
+   "bytes": 83228
+  },
+  {
+   "path": "data/events/raw/gdacs-2024-red-page1.json",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/search?fromDate=2024-01-01&toDate=2024-12-31&alertlevel=Red&eventlist=EQ,TC,FL,VO,DR,WF&pageSize=100&pageNumber=1",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "6ec73e3d5b33aacd6b98307d0c14fbcc78abeeee03058033a4014bdb1bc401af",
+   "bytes": 25185
+  },
+  {
+   "path": "data/events/raw/gdacs-quickstart.pdf",
+   "url": "https://www.gdacs.org/Documents/2025/GDACS_API_quickstart_v2.pdf",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "63c0bd5403b277a2fbf9fd324ee2c3bd1c35ee1b917506359d6bfcf725e21434",
+   "bytes": 143846
+  },
+  {
+   "path": "data/events/raw/gdacs-swagger.json",
+   "url": "https://www.gdacs.org/gdacsapi/swagger/v1/swagger.json",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "c436a29242bb3c1f5663b3685eb4daf0e0767872165402029e97bc31e8f68177",
+   "bytes": 151598
+  },
+  {
+   "path": "data/events/raw/gdacs-terms.pdf",
+   "url": "https://www.gdacs.org/documents/2025/GDACS_Terms_of_use_Mar_25.pdf",
+   "retrieved": "2026-10-15",
+   "licence": "GDACS terms (March 2025): attribution, no reuse licence",
+   "committed": false,
+   "sha256": "e9d4f66779b39f762cd155f77e409128bc412619022e55038a7ef78ef0a1e6de",
+   "bytes": 160415
+  },
+  {
+   "path": "data/events/raw/indonesia-11-2019-official.html",
+   "url": "https://jdih.esdm.go.id/dokumen/view?id=1946",
+   "retrieved": "2026-10-15",
+   "licence": "Official regulation; no licence statement",
+   "committed": false,
+   "sha256": "1e936011e5404a9059f6db54b452f7cb70ba7aa8a6cdb2b42e77481f4852eba7",
+   "bytes": 332478
+  },
+  {
+   "path": "data/events/raw/indonesia-2019-ministry-release.html",
+   "url": "https://www.esdm.go.id/id/media-center/arsip-berita/bijih-nikel-tidak-boleh-diekspor-lagi-per-januari-2020",
+   "retrieved": "2026-10-15",
+   "licence": "Official regulation; no licence statement",
+   "committed": false,
+   "sha256": "6c104e97fdd93c1c35bae4765cd89b98f1dbc58c7af0b312833b8443e44e5263",
+   "bytes": 41837
+  },
+  {
+   "path": "data/events/raw/mofcom-2023-23.html",
+   "url": "https://www.mofcom.gov.cn/zcfb/dwmygl/art/2023/art_52b9a321087f402bb3d310d18b07967e.html",
+   "retrieved": "2026-10-15",
+   "licence": "Official announcement; no licence statement",
+   "committed": false,
+   "sha256": "6a7a73b4d4c40b25dc3e61df472a65a13b727c6b5090f1cf935986e550b5f83b",
+   "bytes": 21980
+  },
+  {
+   "path": "data/events/raw/mofcom-2023-39.html",
+   "url": "https://www.mofcom.gov.cn/zcfb/blgg/art/2023/art_f6b1bc49e2c8482f8eb749012bc66dec.html",
+   "retrieved": "2026-10-15",
+   "licence": "Official announcement; no licence statement",
+   "committed": false,
+   "sha256": "1cbadbd2d9c8a2888069d89e06f5966cd1bd7c34841c5d6e80c8a5ad5009cddc",
+   "bytes": 31010
+  },
+  {
+   "path": "data/events/raw/mofcom-2024-46-original.html",
+   "url": "https://www.mofcom.gov.cn/zfxxgk/gkml/art/2024/art_99f5d51bbe6a412ca309d5818c4dee52.html",
+   "retrieved": "2026-10-15",
+   "licence": "Official announcement; no licence statement",
+   "committed": false,
+   "sha256": "d932b5e179f08375cc6d4b62ea3532e566399e193891ffa1ae4a790331d68adf",
+   "bytes": 22776
+  },
+  {
+   "path": "data/events/raw/mofcom-2024-46.html",
+   "url": "https://exportcontrol.mofcom.gov.cn/article/gndt/202412/1068.html",
+   "retrieved": "2026-10-15",
+   "licence": "Official announcement; no licence statement",
+   "committed": false,
+   "sha256": "4211805efcef10411a4cb046d5ea40c203a85dc3cdc5721081cd6d558150b336",
+   "bytes": 12920
+  },
+  {
+   "path": "data/events/raw/mofcom-2025-28.html",
+   "url": "https://www.mofcom.gov.cn/zcfb/zgdwjjmywg/art/2025/art_67e2a41850ec428eb1b7be6ec2f2bded.html",
+   "retrieved": "2026-10-15",
+   "licence": "Official announcement; no licence statement",
+   "committed": false,
+   "sha256": "499a21b0f43b228a827f4811f0c8e780bd498575678fe6094a1ff14176ae41e7",
+   "bytes": 16833
+  },
+  {
+   "path": "data/events/raw/mofcom-2025-58.html",
+   "url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_79646f0161564975a938fe00fee158d5.html",
+   "retrieved": "2026-10-15",
+   "licence": "Official announcement; no licence statement",
+   "committed": false,
+   "sha256": "5b26c739c815789a4d81bceb6ddbc7c3d6525a505f658b845b8abd7d1b3c90c0",
+   "bytes": 16916
+  },
+  {
+   "path": "data/events/raw/mofcom-2025-70.html",
+   "url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_b1ec77dd3f0d4762952904df7cdaadec.html",
+   "retrieved": "2026-10-15",
+   "licence": "Official announcement; no licence statement",
+   "committed": false,
+   "sha256": "fddcead2cf87bf637bafdc2c0e6ac9640aa31a80ae7411a405290af9e727f502",
+   "bytes": 12551
+  },
+  {
+   "path": "data/events/raw/mofcom-2025-72.html",
+   "url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_5c68985a6b1a46778e2e8dbff1bb1601.html",
+   "retrieved": "2026-10-15",
+   "licence": "Official announcement; no licence statement",
+   "committed": false,
+   "sha256": "67b9e85c4d6312365622ffab4641af1b439b5f3bc5b81350027dd695ca2e0f9a",
+   "bytes": 12112
+  },
+  {
+   "path": "data/events/raw/oecd-battery-pv-2012-2024.csv",
+   "url": "https://sdmx.oecd.org/public/rest/v1/data/OECD.TAD.ADM,DSD_QDD_TAD_EXP_RESTRIC@DF_QDD_TAD_EXP_RESTRIC,3.0/.HS07_250410+HS07_250490+HS07_253090+HS07_260200+HS07_260300+HS07_260400+HS07_260500+HS07_260600+HS07_280461+HS07_281820+HS07_281830+HS07_282010+HS07_282090+HS07_282200+HS07_282520+HS07_282540+HS07_283324+HS07_283691+HS07_380110+HS07_381800+HS07_740311+HS07_740319+HS07_750210+HS07_750220+HS07_760110+HS07_760120+HS07_810520+HS07_810590+HS07_854140...?startPeriod=2012&endPeriod=2024&format=csvfile",
+   "retrieved": "2026-10-15",
+   "licence": "OECD open licence per 2024 policy; dataset terms page returned 403 (unverified)",
+   "committed": false,
+   "sha256": "8fb8967fca3fdb762076c65afbc161b6a70ca7aeba3e7e91aef42effb517e4a2",
+   "bytes": 6532926
+  },
+  {
+   "path": "data/events/raw/oecd-china-2023-2024.csv",
+   "url": "https://sdmx.oecd.org/public/rest/v1/data/OECD.TAD.ADM,DSD_QDD_TAD_EXP_RESTRIC@DF_QDD_TAD_EXP_RESTRIC,3.0/CHN......?startPeriod=2023&endPeriod=2024&format=csvfile",
+   "retrieved": "2026-10-15",
+   "licence": "OECD open licence per 2024 policy; dataset terms page returned 403 (unverified)",
+   "committed": false,
+   "sha256": "39d56b4ee5154cb3a7781021b4d26b0435bc048258c524ebfc11f7fc83a0f2c2",
+   "bytes": 1081190
+  },
+  {
+   "path": "data/events/raw/oecd-methodology.pdf",
+   "url": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/export-restrictions-on-critical-raw-materials/methodological-note-inventory-export-restrictions-industrial-raw-materials_2025.pdf",
+   "retrieved": "2026-10-15",
+   "licence": "OECD open licence per 2024 policy; dataset terms page returned 403 (unverified)",
+   "committed": false,
+   "sha256": "fd9ee97efcaac32a9738503fab3103492f9b07bddec8e128e1b33e87e5e32b1e",
+   "bytes": 2139380
+  },
+  {
+   "path": "data/events/raw/oecd-report-2026.pdf",
+   "url": "https://www.oecd.org/content/dam/oecd/en/publications/reports/2026/04/oecd-inventory-of-export-restrictions-on-critical-raw-materials-2026_2cedac0b/d5ca8f62-en.pdf",
+   "retrieved": "2026-10-15",
+   "licence": "CC-BY-4.0 (report p. 2)",
+   "committed": true,
+   "sha256": "22a34b6c6dad42658cd52346f2f2b9c95c097b3f4ed92695f19fefcf53938041",
+   "bytes": 1843126
+  },
+  {
+   "path": "data/events/raw/oecd-structure.xml",
+   "url": "https://sdmx.oecd.org/public/rest/v1/dataflow/OECD.TAD.ADM/DSD_QDD_TAD_EXP_RESTRIC@DF_QDD_TAD_EXP_RESTRIC/latest?references=all",
+   "retrieved": "2026-10-15",
+   "licence": "OECD open licence per 2024 policy; dataset terms page returned 403 (unverified)",
+   "committed": false,
+   "sha256": "ac1d5607028074f9dad742aea053d2cb3b5080f6a7f1262cb6c94c1740e8a6c9",
+   "bytes": 6371448
+  },
+  {
+   "path": "data/events/raw/zimbabwe-si213-2022.pdf",
+   "url": "https://www.veritaszim.net/sites/veritas_d/files/SI%202022-213%20Base%20Minerals%20Export%20Control%20%28Lithium%20Bearing%20Ores%20and%20Unbeneficiated%20Lithium%29%20Order%2C%202022.pdf",
+   "retrieved": "2026-10-15",
+   "licence": "Statutory instrument; no licence statement",
+   "committed": false,
+   "sha256": "4075246f017762a827ee82f8dfa06682045735fd76429eee94bc5bf343385295",
+   "bytes": 431474
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2024_V202601_selected.csv",
+   "url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/data/BACI_HS12_V202601.zip",
+   "retrieved": "2026-10-15",
+   "license_url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/doc/baci_webpage.html",
+   "archive_member": "BACI_HS12_Y2024_V202601.csv",
+   "archive_member_sha256": "d1af577d5941598d63dbc7239e132acedb1f91928403c4a22cb3b5572c08696b",
+   "transform": {
+    "selection": {
+     "k": [
+      "250410",
+      "250490",
+      "260200",
+      "260300",
+      "260400",
+      "260500",
+      "260600",
+      "280461",
+      "282010",
+      "282090",
+      "282200",
+      "282520",
+      "283324",
+      "283329",
+      "283691",
+      "284190",
+      "284290",
+      "285390",
+      "380110",
+      "381800",
+      "740311",
+      "750210",
+      "760110",
+      "810520",
+      "850760",
+      "854142",
+      "854143"
+     ]
+    }
+   },
+   "licence": "Etalab-2.0",
+   "committed": true,
+   "sha256": "18919015fd2e66c7a86ef699d59288423f9083c8a3751363dfbf27b55719d7e6",
+   "bytes": 923270
+  },
+  {
+   "path": "data/raw/baci/BACI_HS22_Y2024_V202601_selected.csv",
+   "url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/data/BACI_HS22_V202601.zip",
+   "retrieved": "2026-10-15",
+   "license_url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/doc/baci_webpage.html",
+   "archive_member": "BACI_HS22_Y2024_V202601.csv",
+   "archive_member_sha256": "298a39428bede6eaeb9aad1cc35e5244b7f213fa76b25a6928e4c2ebd5522134",
+   "transform": {
+    "selection": {
+     "k": [
+      "250410",
+      "250490",
+      "260200",
+      "260300",
+      "260400",
+      "260500",
+      "260600",
+      "280461",
+      "282010",
+      "282090",
+      "282200",
+      "282520",
+      "283324",
+      "283329",
+      "283691",
+      "284190",
+      "284290",
+      "285390",
+      "380110",
+      "381800",
+      "740311",
+      "750210",
+      "760110",
+      "810520",
+      "850760",
+      "854142",
+      "854143"
+     ]
+    }
+   },
+   "licence": "Etalab-2.0",
+   "committed": true,
+   "sha256": "372071a3e40df5db8ead84932c4c22e2b0d3d8a3e3b8bbe865fc1109be416695",
+   "bytes": 1193642
+  },
+  {
+   "path": "data/raw/baci/country_codes_V202601.csv",
+   "url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/data/BACI_HS22_V202601.zip",
+   "retrieved": "2026-10-15",
+   "license_url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/doc/baci_webpage.html",
+   "archive_member": "country_codes_V202601.csv",
+   "archive_member_sha256": "c6892f28bea23d689b29b074d299cea7f5196c708b03026fbe419fa4ecb4e820",
+   "transform": null,
+   "licence": "Etalab-2.0",
+   "committed": true,
+   "sha256": "c6892f28bea23d689b29b074d299cea7f5196c708b03026fbe419fa4ecb4e820",
+   "bytes": 5346
+  },
+  {
+   "path": "data/raw/baci/product_codes_HS12_V202601.csv",
+   "url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/data/BACI_HS12_V202601.zip",
+   "retrieved": "2026-10-15",
+   "license_url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/doc/baci_webpage.html",
+   "archive_member": "product_codes_HS12_V202601.csv",
+   "archive_member_sha256": "092789b3f6576c98440e52afcbb7dbc51f646f0db6198d0f6f925cb73d58527e",
+   "transform": null,
+   "licence": "Etalab-2.0",
+   "committed": true,
+   "sha256": "092789b3f6576c98440e52afcbb7dbc51f646f0db6198d0f6f925cb73d58527e",
+   "bytes": 573394
+  },
+  {
+   "path": "data/raw/baci/product_codes_HS22_V202601.csv",
+   "url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/data/BACI_HS22_V202601.zip",
+   "retrieved": "2026-10-15",
+   "license_url": "https://www.cepii.fr/DATA_DOWNLOAD/baci/doc/baci_webpage.html",
+   "archive_member": "product_codes_HS22_V202601.csv",
+   "archive_member_sha256": "1d7dfab3d0c790e111663832b1d101d6ffafe396fb6dbed7035b7283f6614efd",
+   "transform": null,
+   "licence": "Etalab-2.0",
+   "committed": true,
+   "sha256": "1d7dfab3d0c790e111663832b1d101d6ffafe396fb6dbed7035b7283f6614efd",
+   "bytes": 630077
+  },
+  {
+   "path": "data/raw/cochilco/lithium_chemicals_2024.csv",
+   "url": "https://www.cochilco.cl/web/download/140/estadisticas-estadisticas-de-la-mineria-no-metalica/16945/produccion-mineria-no-metalica-1996-2025.xlsx",
+   "retrieved": "2026-10-15",
+   "transform": "Exact cell extraction; Hoja1 column AD, tonnes of chemical compound.",
+   "licence": "Numerical-facts; no source open license stated",
+   "committed": true,
+   "sha256": "9bf003e5e60916346648ab2ce31ac102cde59843f6fc3d10b0d15e09f26c6156",
+   "bytes": 412
+  },
+  {
+   "path": "data/raw/cochilco/production_1996_2025.xlsx",
+   "url": "https://www.cochilco.cl/web/download/140/estadisticas-estadisticas-de-la-mineria-no-metalica/16945/produccion-mineria-no-metalica-1996-2025.xlsx",
+   "retrieved": "2026-10-15",
+   "licence": "No-explicit-open-license; factual-transcription-only",
+   "committed": false,
+   "sha256": "ca5da74b68a56d40ae9bec881569e63423dabbb903afa44b0eb8d702c52d3a60",
+   "bytes": 25096
+  },
+  {
+   "path": "data/raw/fraunhofer/silicon_usage_2024.csv",
+   "url": "https://www.ise.fraunhofer.de/content/dam/ise/de/documents/publications/studies/Photovoltaics-Report.pdf",
+   "retrieved": "2026-10-15",
+   "transform": "Numerical transcription, p8: silicon usage; not complete module mass.",
+   "licence": "Numerical-fact; citation required by source",
+   "committed": true,
+   "sha256": "b21f81e7fcf1799375221fa76cdb772bf139f0277a7efb89a063a090811c8df5",
+   "bytes": 223
+  },
+  {
+   "path": "data/raw/hs/H4.json",
+   "url": "https://comtradeapi.un.org/files/v1/app/reference/H4.json",
+   "retrieved": "2026-10-15",
+   "licence": "UN-Comtrade-reference-metadata; terms-unverified",
+   "committed": false,
+   "sha256": "29b35dfc510f94e8360cfe3d2eefdabfb47c69a28e6b5628f9a3b6d824789a33",
+   "bytes": 1266080
+  },
+  {
+   "path": "data/raw/hs/H6.json",
+   "url": "https://comtradeapi.un.org/files/v1/app/reference/H6.json",
+   "retrieved": "2026-10-15",
+   "licence": "UN-Comtrade-reference-metadata; terms-unverified",
+   "committed": false,
+   "sha256": "e266823e1299d1307c5d7986eb738b83aa5e5bd9af675bf19bf372220660be15",
+   "bytes": 1750838
+  },
+  {
+   "path": "data/raw/miit/production_2024.csv",
+   "url": "https://www.miit.gov.cn/jgsj/dzs/gzdt/art/2025/art_dc20a4d4b3a74dcf91ac1b212f87bbfc.html",
+   "retrieved": "2026-10-15",
+   "transform": "Factual numerical transcription from two MIIT releases; row-specific URLs. Source basis: listed firms plus association estimates; not nameplate.",
+   "licence": "Numerical-facts; no source open license stated",
+   "committed": true,
+   "sha256": "d42c06f192e69cb80f4d2aac7d138de7aa3db56f46562f0bf5013c76918d9958",
+   "bytes": 3096
+  },
+  {
+   "path": "data/raw/usgs/MCS2026_Commodities_Data.csv",
+   "url": "https://www.sciencebase.gov/catalog/file/get/69837e43b66b01367d7ec7c7?f=__disk__d3%2Fac%2F84%2Fd3ac8466552946c5e8caa2c2c6338d9e1aff655d",
+   "retrieved": "2026-10-15",
+   "licence": "CC0-1.0",
+   "committed": true,
+   "sha256": "582a0aa231aea53d8a97dc8d1cd3dfa5f885cf3760353e3d029d7f0ae4fbaaf5",
+   "bytes": 3189010
+  },
+  {
+   "path": "data/raw/usgs/MCS2026_Commodities_Data.xml",
+   "url": "https://www.sciencebase.gov/catalog/file/get/69837e43b66b01367d7ec7c7?f=__disk__59%2F9f%2F78%2F599f78dcdae6cfc820ec8410e8a0e684c28be9d2",
+   "retrieved": "2026-10-15",
+   "licence": "CC0-1.0",
+   "committed": true,
+   "sha256": "0588a74c5257484630cd41dbb60cbd9ef4862bd24b6660a762d1aecf3c73e15a",
+   "bytes": 13470
+  },
+  {
+   "path": "data/raw/usgs/mcs2026_commodity_metadata.json",
+   "url": "https://www.sciencebase.gov/catalog/item/69837e43b66b01367d7ec7c7?format=json",
+   "retrieved": "2026-10-15",
+   "licence": "CC0-1.0",
+   "committed": true,
+   "sha256": "1acf6e89cb12007345289f59fc67819400158e68691619e1fd008f3445151d84",
+   "bytes": 7275
+  },
+  {
+   "path": "data/raw/usgs/myb1-2023-cobalt.xlsx",
+   "url": "https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx",
+   "retrieved": "2026-10-15",
+   "licence": "USGS public domain (Darton figures cited)",
+   "committed": true,
+   "sha256": "f56f044cdf72bc83c3ef50f18365ed992d6928482188443d81b655ec6c51119b",
+   "bytes": 139974
+  },
+  {
+   "path": "data/raw/usgs/myb2023_cobalt_refinery.csv",
+   "url": "https://pubs.usgs.gov/myb/vol1/2023/myb1-2023-cobalt.xlsx",
+   "retrieved": "2026-10-15",
+   "licence": "Transcribed numerical facts, USGS",
+   "transform": "Table 8, 2023 column, transcribed with sheet cells",
+   "committed": true,
+   "sha256": "e84abc35dd78e01ac9fc153392c23c7ee649c3a756882015b477ce7e606d5b8f",
+   "bytes": 2610
+  },
+  {
+   "path": "data/raw/xu2020/bom_mid_size_bev.csv",
+   "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs43246-020-00095-x/MediaObjects/43246_2020_95_MOESM1_ESM.pdf",
+   "retrieved": "2026-10-15",
+   "transform": "Numerical transcription: SI Tables 1 and 23; mid-size BEV, pack level.",
+   "licence": "CC-BY-4.0",
+   "committed": true,
+   "sha256": "5119119b3075ec7c26cef1a3872eee10c0b18ae5c23b21289c5c1649a25e5f04",
+   "bytes": 10730
+  },
+  {
+   "path": "data/raw/xu2020/specific_energy.csv",
+   "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs43246-020-00095-x/MediaObjects/43246_2020_95_MOESM1_ESM.pdf",
+   "retrieved": "2026-10-15",
+   "transform": "Numerical transcription: SI Table 4; pack-specific energy, not bare cell.",
+   "licence": "CC-BY-4.0",
+   "committed": true,
+   "sha256": "564a3cad625288ee132cb412fe992b80bd065443e6e9122d2cd28a79c313d21f",
+   "bytes": 1446
+  },
+  {
+   "path": "data/raw/xu2020/supplement.pdf",
+   "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs43246-020-00095-x/MediaObjects/43246_2020_95_MOESM1_ESM.pdf",
+   "retrieved": "2026-10-15",
+   "licence": "CC-BY-4.0",
+   "committed": true,
+   "sha256": "d6e0d777f12be0036a0a21836dda8bfc161da48c27a7d7ec36a3c1e0e3ca5f18",
+   "bytes": 692381
+  },
+  {
+   "path": "data/sites/raw/2024MYBv3_Facilities_table.csv",
+   "url": "https://www.sciencebase.gov/catalog/file/get/6a8490171ba49b3133cd8055?f=__disk__81%2F38%2Feb%2F8138ebd0356ad02efcda21627f8d94f7ef108ae7",
+   "retrieved": "2026-10-15",
+   "licence": "USGS public domain",
+   "committed": true,
+   "sha256": "2d6848d75544feca715843a47a031f593bd3310c1cff865deb967486b901f10b",
+   "bytes": 7724775
+  },
+  {
+   "path": "data/sites/raw/2024_MYBv3_metadata.xml",
+   "url": "https://www.sciencebase.gov/catalog/file/get/6a8490171ba49b3133cd8055?f=__disk__56%2F06%2Fce%2F5606ce0dbe32e2ae952385d93b5c634eca508a3a",
+   "retrieved": "2026-10-15",
+   "licence": "USGS public domain",
+   "committed": true,
+   "sha256": "734ba58ac0450991553b1b9b942823009b7f22247c9dcf89e39461b6a130b46e",
+   "bytes": 83730
+  },
+  {
+   "path": "data/sites/raw/Mines, smelters, refineries, and recycling facilities in the United States.xml",
+   "url": "https://www.sciencebase.gov/catalog/file/get/6a3edaf71ba49b7c2e263528?f=__disk__c4%2F52%2Fa4%2Fc452a48584afa42fcb2cb7bff269ea628c507da0",
+   "retrieved": "2026-10-15",
+   "licence": "USGS public domain",
+   "committed": true,
+   "sha256": "71445a3be3c9d2947e06967ff23dff4268909a4b276391bced4d259832903f90",
+   "bytes": 8110
+  },
+  {
+   "path": "data/sites/raw/Mines, smelters, refineries, and recycling facilities in the United States_worksheet.xlsx",
+   "url": "https://www.sciencebase.gov/catalog/file/get/6a3edaf71ba49b7c2e263528?f=__disk__f4%2F93%2F66%2Ff493662954d91840b5c3779c12024aa4efcdc1e9",
+   "retrieved": "2026-10-15",
+   "licence": "USGS public domain",
+   "committed": true,
+   "sha256": "d4e3456dea53968f580e380a2baeec6088bda1dce58c852ff1b31c0732106536",
+   "bytes": 549220
+  },
+  {
+   "path": "data/sites/raw/Outlook 2025 Data Release 031125.csv",
+   "url": "https://www.sciencebase.gov/catalog/file/get/67b8b168d34e1a2e835b7e6c?f=__disk__f8%2Ff5%2Fa4%2Ff8f5a4708b3451cd0ffcec730f3debdd5f1bf77d",
+   "retrieved": "2026-10-15",
+   "licence": "USGS public domain",
+   "committed": true,
+   "sha256": "b57e6ffce82a1956fcfe3d6e92b7f9e58b0d731d595cbad47215f5f223bba182",
+   "bytes": 192247
+  },
+  {
+   "path": "data/sites/raw/Outlook 2025 datarelease March2025.xml",
+   "url": "https://www.sciencebase.gov/catalog/file/get/67b8b168d34e1a2e835b7e6c?f=__disk__c8%2Fe1%2Fe6%2Fc8e1e66c9a7ed6b1a07a99a9843818ac1093a410",
+   "retrieved": "2026-10-15",
+   "licence": "USGS public domain",
+   "committed": true,
+   "sha256": "674dfcb610af9de1a38f6c7e2fb67b1c46224e3a1966530b7f192e1f603fae0b",
+   "bytes": 22589
+  },
+  {
+   "path": "data/sites/raw/usgs-african-minerals.html",
+   "url": "https://pubs.usgs.gov/publication/fs20243029/full",
+   "retrieved": "2026-10-15",
+   "licence": "USGS public domain",
+   "committed": true,
+   "sha256": "fd20c0c96f535c1057511e87f7114d980323127d4c7bd2acc0e1dd3db7a6a51e",
+   "bytes": 175493
+  },
+  {
+   "path": "data/sites/raw/usgs-global-facilities-metadata.json",
+   "url": "https://www.sciencebase.gov/catalog/item/6a8490171ba49b3133cd8055?format=json",
+   "retrieved": "2026-10-15",
+   "licence": "USGS public domain",
+   "committed": true,
+   "sha256": "bb945220ac58d2471fad36fea36fe34a2f0ac44322a6ab2f3db852cb0d38048b",
+   "bytes": 31018
+  },
+  {
+   "path": "data/sites/raw/usgs-outlook-metadata.json",
+   "url": "https://www.sciencebase.gov/catalog/item/67b8b168d34e1a2e835b7e6c?format=json",
+   "retrieved": "2026-10-15",
+   "licence": "USGS public domain",
+   "committed": true,
+   "sha256": "c71835d366a375c8b2cb2fe6c390c11ba906314ad80943b01791e8a6e677f08a",
+   "bytes": 13290
+  },
+  {
+   "path": "data/sites/raw/usgs-us-facilities-metadata.json",
+   "url": "https://www.sciencebase.gov/catalog/item/6a3edaf71ba49b7c2e263528?format=json",
+   "retrieved": "2026-10-15",
+   "licence": "USGS public domain",
+   "committed": true,
+   "sha256": "92fe5049697b711886c9858a7e7c62d5da9e3df268ee08d98aa7c47d6f6635c1",
+   "bytes": 11966
+  }
+ ]
+}

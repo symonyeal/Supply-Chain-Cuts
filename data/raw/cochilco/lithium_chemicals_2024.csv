@@ -1,0 +1,6 @@
+country,iso3,year,product_source_label,value,unit,worksheet,cell,basis
+Chile,CHL,2024,COMPUESTOS DE LITIO,325484,tonnes,Hoja1,AD20,production
+Chile,CHL,2024,CARBONATO DE LITIO,250605,tonnes,Hoja1,AD21,production
+Chile,CHL,2024,CLORURO DE LITIO,0,tonnes,Hoja1,AD22,production
+Chile,CHL,2024,SULFATO DE LITIO,53515,tonnes,Hoja1,AD23,production
+Chile,CHL,2024,HIDRÓXIDO DE LITIO,21364,tonnes,Hoja1,AD24,production
