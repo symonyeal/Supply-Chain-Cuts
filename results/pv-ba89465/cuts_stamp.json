@@ -1,0 +1,10 @@
+{
+ "revision": "ba89465ed3285c0eca9bd7809cfa3c71e3981471",
+ "dirty": [],
+ "sources": 74,
+ "absent_local_only": [],
+ "lock_sha256": "7908f1c27af448f8e90a886d6343943f818fc86c0ef18d14d34008be21eec7a5",
+ "python": "3.14.7",
+ "numpy": "2.5.3",
+ "scipy": "1.18.1"
+}

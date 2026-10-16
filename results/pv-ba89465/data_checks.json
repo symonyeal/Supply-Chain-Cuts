@@ -1,0 +1,225 @@
+{
+ "stamp": {
+  "revision": "524b9d3677c4e3032021a54304bbba2befc750ca",
+  "dirty": [],
+  "sources": 74,
+  "absent_local_only": [],
+  "lock_sha256": "7908f1c27af448f8e90a886d6343943f818fc86c0ef18d14d34008be21eec7a5",
+  "python": "3.14.7",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1"
+ },
+ "miit_parts_vs_total": {
+  "parts": 1170.0,
+  "total": 1170.0
+ },
+ "exports_vs_production": [
+  {
+   "country": "AUS",
+   "product": "refined_co",
+   "exports": 3.735303000000001,
+   "production": 2.4,
+   "ratio": 1.5563762500000005
+  },
+  {
+   "country": "BEL",
+   "product": "refined_co",
+   "exports": 1.669636,
+   "production": 0.7,
+   "ratio": 2.385194285714286
+  },
+  {
+   "country": "CAN",
+   "product": "refined_co",
+   "exports": 8.379601000000001,
+   "production": 4.835,
+   "ratio": 1.7331129265770426
+  },
+  {
+   "country": "CHL",
+   "product": "li_carbonate",
+   "exports": 240.86965599999994,
+   "production": 250.605,
+   "ratio": 0.9611526346242092
+  },
+  {
+   "country": "CHN",
+   "product": "cell",
+   "exports": 362.32142609013897,
+   "production": 1170.0,
+   "ratio": 0.30967643255567434
+  },
+  {
+   "country": "CHN",
+   "product": "li_carbonate",
+   "exports": 3.828942,
+   "production": 986.9473834715471,
+   "ratio": 0.0038795806788927824
+  },
+  {
+   "country": "CHN",
+   "product": "refined_co",
+   "exports": 5.2978200000000015,
+   "production": 147.0,
+   "ratio": 0.036039591836734705
+  },
+  {
+   "country": "FIN",
+   "product": "refined_co",
+   "exports": 3.988956999999999,
+   "production": 10.627,
+   "ratio": 0.3753605909475862
+  },
+  {
+   "country": "FRA",
+   "product": "refined_co",
+   "exports": 0.7978399999999999,
+   "production": 0.127,
+   "ratio": 6.282204724409448
+  },
+  {
+   "country": "IDN",
+   "product": "refined_co",
+   "exports": 2.46844,
+   "production": 0.4,
+   "ratio": 6.1711
+  },
+  {
+   "country": "JPN",
+   "product": "refined_co",
+   "exports": 4.142461999999999,
+   "production": 3.8,
+   "ratio": 1.0901215789473682
+  },
+  {
+   "country": "MAR",
+   "product": "refined_co",
+   "exports": 1.991081,
+   "production": 1.506,
+   "ratio": 1.3220989375830015
+  },
+  {
+   "country": "MDG",
+   "product": "refined_co",
+   "exports": 2.8909730000000002,
+   "production": 3.4,
+   "ratio": 0.8502861764705884
+  },
+  {
+   "country": "MEX",
+   "product": "refined_co",
+   "exports": 0.006225,
+   "production": 0.05,
+   "ratio": 0.12449999999999999
+  },
+  {
+   "country": "NOR",
+   "product": "refined_co",
+   "exports": 3.106004,
+   "production": 3.5,
+   "ratio": 0.8874297142857143
+  },
+  {
+   "country": "RUS",
+   "product": "refined_co",
+   "exports": 5.764559000000001,
+   "production": 1.0,
+   "ratio": 5.764559000000001
+  },
+  {
+   "country": "ZAF",
+   "product": "refined_co",
+   "exports": 2.964335,
+   "production": 0.5,
+   "ratio": 5.92867
+  }
+ ],
+ "comtrade_tariff_lines_vs_baci": "not measured: Comtrade tariff lines not fetched (optional key not supplied)",
+ "bgs": "not used: licence unresolved",
+ "reexport_flags": [
+  [
+   "DEU",
+   "cell",
+   98.39325899999996,
+   848.3450830000002
+  ],
+  [
+   "KOR",
+   "cell",
+   130.29008200000004,
+   175.12576
+  ],
+  [
+   "USA",
+   "cell",
+   179.61401799999987,
+   508.453625
+  ],
+  [
+   "CHN",
+   "refined_ni",
+   56.906946999999995,
+   102.99882699999999
+  ],
+  [
+   "DEU",
+   "refined_ni",
+   16.031244000000004,
+   49.749029
+  ],
+  [
+   "FRA",
+   "refined_ni",
+   9.880880000000001,
+   30.992320999999997
+  ],
+  [
+   "JPN",
+   "refined_ni",
+   25.526777,
+   48.415898
+  ],
+  [
+   "NLD",
+   "refined_ni",
+   52.55410300000001,
+   83.408489
+  ]
+ ],
+ "events_vs_research_csv": {
+  "only_derived": [
+   [
+    "ZWE",
+    "mine_li",
+    2022
+   ]
+  ],
+  "only_research_on_nodes": []
+ },
+ "site_coverage": {
+  "threshold": 0.7,
+  "passed": false,
+  "mode": "sensitivity_only",
+  "layers": {
+   "mine_li": 0.0,
+   "mine_co": 0.0,
+   "mine_ni": 0.0,
+   "mine_graphite": 0.0,
+   "li_carbonate": 0.0,
+   "li_hydroxide": 0.0,
+   "refined_co": 0.0,
+   "refined_ni": 0.0,
+   "cam": 0.0,
+   "pcam": 0.0,
+   "aam": 0.0,
+   "cell": 0.0,
+   "polysilicon": 0.0,
+   "wafer": 0.0,
+   "pv_cell": 0.0,
+   "module": 0.0,
+   "refined_cu": 0.0,
+   "aluminium": 0.0,
+   "mine_mn": 0.0
+  }
+ }
+}
