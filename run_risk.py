@@ -18,7 +18,7 @@ from chokepoint.fetch import stamp
 from chokepoint.net import build, model, reexport_flags
 from chokepoint.rates import duration_weights, fit_rates, prequential
 from chokepoint.recourse import solve
-from chokepoint.risk import bracket, exact_union, importance_sampling
+from chokepoint.risk import bracket, exact_union, importance_sampling, residual_sampling
 
 DURATIONS, K = (3, 6, 12), 3
 MIDSTREAM = ("pcam", "cam", "aam")                   # design §3: the midstream layer
@@ -93,6 +93,7 @@ def main():
     for key, R in C.items():
         if not key.startswith("base"):
             continue
+        assert R["complete"] and all(x["certified"] for x in R["certificates"]), key
         for DJ in DURATIONS:
             cuts = [S for S in R["cuts"] if max(d for _, d in S) <= DJ]
             Dl, w = truncate(law["weights"], DJ)
@@ -104,13 +105,15 @@ def main():
     head = out["configs"]["base_a0.25_h0_s0_L6_D12"]
     cuts = [dense(S, n) for S in head["cuts"]]
     M = model(N, durations=DURATIONS)
-    out["IS"], out["MC"] = {}, {}
+    out["IS"], out["MC"], out["residual"] = {}, {}, {}
     for a in (a for a in (0.10, 0.25, 0.50) if f"base_a{a}_h0_s0_L6_D12" in out["configs"]):
         S = [dense(x, n) for x in out["configs"][f"base_a{a}_h0_s0_L6_D12"]["cuts"]]
         out["IS"][a] = importance_sampling(M, p, rho, DURATIONS, law["weights"], S, alpha=a,
                                            n=20000, pilot=2000, seed=1, complete=True, k=K)
         out["MC"][a] = importance_sampling(M, p, rho, DURATIONS, law["weights"], S, alpha=a,
                                            n=20000, seed=2, complete=True, k=K, crude=True)
+        out["residual"][a] = residual_sampling(M, p, rho, DURATIONS, law["weights"], S,
+                                               alpha=a, n=20000, seed=4, complete=True, k=K)
     L = head["L"]
     attr = dict(zip((tuple(map(tuple, S)) for S in head["cuts"]), head["attribution"],
                     strict=True))
@@ -128,7 +131,7 @@ def main():
     if sector != "liion":                    # the registered tests concern Li-ion (v0.1.0)
         (run / "risk.json").write_text(json.dumps(out, indent=1, default=float),
                                        encoding="utf-8")
-        print(sector, "L", L, "U", head["U"], "IS", out["IS"][0.25]["estimate"])
+        print(sector, "L", L, "U", head["U"], "residual", out["residual"][0.25]["estimate"])
         return
     # Registered tests at the headline: alpha = 0.25, D_J = 12, h = sigma = 0.
     graphite = [S for S in head["cuts"] if len(S) == 1 and V[S[0][0]] == ("CHN", "graphite")]
@@ -157,6 +160,7 @@ def main():
             "with_refined_and_graphite": share(MIDSTREAM + REFINED + ("graphite",)),
             "threshold": 0.8},
         "H3_annual_failure": {"L": L, "U": head["U"], "IS": out["IS"][0.25],
+                              "residual": out["residual"][0.25],
                               "interval": [0.01, 0.10]},
         "A1_spearman": {"products": products, "attribution": a, **rank, "threshold": 0.9},
         "B1_reexport": {"flagged": sorted(map(list, flagged)),
@@ -194,11 +198,15 @@ def main():
                    "IS": importance_sampling(M, rh["p"], rh["rho"], DURATIONS, lh["weights"],
                                              cuts, alpha=0.25, n=20000, pilot=2000, seed=3,
                                              complete=True, k=K),
+                   "residual": residual_sampling(M, rh["p"], rh["rho"], DURATIONS,
+                                                 lh["weights"], cuts, alpha=0.25, n=20000,
+                                                 seed=5, complete=True, k=K),
                    "registered": False}
     out.update(tests=tests, hazards=hazards(N, root))
     (run / "risk.json").write_text(json.dumps(out, indent=1, default=float) + "\n",
                                    encoding="utf-8")
-    print("L", L, "U", head["U"], "IS", out["IS"][0.25]["estimate"], out["IS"][0.25]["ci95"])
+    print("L", L, "U", head["U"], "residual", out["residual"][0.25]["estimate"],
+          out["residual"][0.25]["ci95"])
 
 
 if __name__ == "__main__":

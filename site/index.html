@@ -60,15 +60,17 @@
   </section>
 
   <section id="risk">
-    <h2>If every recorded export restriction were a full outage, failure would come about every other year (<span data-f="IS"></span>); counting only quotas and bans, <span data-f="hard"></span></h2>
+    <h2>If every recorded export restriction were a full outage, failure would come about every other year (<span data-f="estimate"></span>, L = <span data-f="L"></span>); counting only quotas and bans, <span data-f="hard"></span> (L = <span data-f="hardL"></span>)</h2>
     <p class="note">Onsets 2012–2024 from the OECD Inventory and national acts, pooled by product with empirical-Bayes priors; a
       country shock with ρ = <span data-f="rho"></span> makes losses in one country coincide; <span data-f="w12"></span> of
-      spells last 12 months. L is the exact probability of containing an enumerated cut; U = L + P(more than three losses) =
+      spells last 12 months. L is the exact probability of containing an enumerated cut; U = min(1, L + P(more than three losses)) =
       <span data-f="U"></span> is too loose to use, since about <span data-f="sump"></span> nodes are hit per year. The point estimate
-      is importance sampling with 95% Monte Carlo interval [<span data-f="ISlo"></span>, <span data-f="IShi"></span>], checked
+      is L plus a Monte Carlo estimate of failures containing no enumerated cut, with exact-binomial 95% interval
+      [<span data-f="estimateLo"></span>, <span data-f="estimateHi"></span>], checked
       against crude Monte Carlo (<span data-f="MC"></span>). The registered predictive test failed (log-loss
       <span data-f="d1m"></span> against <span data-f="d1c"></span> for a constant), so these are scenarios under stated rates. The
-      quotas-and-bans scenario (OECD codes M3, M4 and prohibiting acts) was added after the registered tests and is not one of them.</p>
+      quotas-and-bans scenario (OECD codes M3, M4 and prohibiting acts) was added after the registered tests and is not one of them.
+      Each estimate uses 20,000 draws from its scenario law. Intervals cover sampling uncertainty conditional on fixed inputs.</p>
     <div id="risk-chart" class="chart"></div>
   </section>
 
@@ -107,8 +109,8 @@
   </section>
 
   <section id="provenance">
-    <h2>Every number on this page is read from one result bundle</h2>
-    <p class="note">Run <code data-f="run"></code>, code revision <code data-f="revision"></code>, source lock
+    <h2>Every number on this page is read from a named result bundle</h2>
+    <p class="note">Runs <code data-f="runs"></code>, risk code revision <code data-f="revision"></code>, source lock
       <code data-f="lock"></code>. Raw inputs are frozen with URL, date, SHA-256 and licence in
       <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/SOURCES.lock">SOURCES.lock</a>; derivations are in
       <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/docs/MODEL.md">MODEL.md</a>. Data: CEPII BACI (Etalab 2.0),

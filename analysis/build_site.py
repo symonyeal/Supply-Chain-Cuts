@@ -32,7 +32,7 @@ def test_rows(t):
     h1, h2, h3, a1, d1 = (t[k] for k in ("H1_china_graphite_singleton",
                                          "H2_china_midstream_share_of_L", "H3_annual_failure",
                                          "A1_spearman", "D1_prequential"))
-    est, b2, b1 = h3["IS"], t["B2_capacity_basis"]["a0.25"], t["B1_reexport"]
+    est, b2, b1 = h3["residual"], t["B2_capacity_basis"]["a0.25"], t["B1_reexport"]
     r = {k: (None if a1[k] is None else round(a1[k], 2)) for k in ("hhi", "top_share")}
     single = ", ".join(map(str, h1["durations"])) or "no"
     c1 = "; ".join(f"NCM {k.split('_')[0][3:]}: {len(v['vanish_co_ni'])} vanish"
@@ -41,7 +41,7 @@ def test_rows(t):
         "h1": f"singleton at {single} months; a 6-month loss cannot exceed 25% of 24 months",
         "h2": (f"{pc(h2['midstream'])} (pCAM, CAM, AAM); secondary: with refined chemicals "
                f"{pc(h2['with_refined'])}, and graphite {pc(h2['with_refined_and_graphite'])}"),
-        "h3": (f"L = {pc(h3['L'])}, U = {pc(h3['U'])}, IS {pc(est['estimate'])} "
+        "h3": (f"L = {pc(h3['L'])}, U = {pc(h3['U'])}, L + residual {pc(est['estimate'])} "
                f"[{pc(est['ci95'][0])}, {pc(est['ci95'][1])}]"),
         "a1": f"ρ_S = {r['hhi']} with HHI, {r['top_share']} with top share",
         "b2": f"α = 25%: {len(b2['vanish'])} vanish, {len(b2['appear'])} appear",
@@ -110,7 +110,16 @@ def block(run):
              "annual": [x["annual"] for x in N["nodes"]], "unit": [x["unit"] for x in N["nodes"]],
              "source": [x["source"] for x in N["nodes"]], "p": risk["rates"]["p"],
              "exposure": risk["rates"]["exposure"], "onsets": risk["rates"]["onsets"]}
-    est = {f"{float(a)}": {"IS": risk["IS"][a], "MC": risk["MC"][a]} for a in risk["IS"]}
+    for a, e in risk["residual"].items():
+        c = risk["configs"][f"base_a{float(a)}_h0_s0_L6_D12"]
+        assert e["method"] == "lower_bound_plus_residual"
+        assert e["interval_method"] == "clopper_pearson_binomial"
+        assert e["L"] == c["L"] and e["estimate"] >= c["L"]
+        assert math.isclose(e["estimate"], e["L"] + e["residual_events"]/e["n"])
+        assert e["ci95"][0] <= c["U"] and e["ci95"][1] >= c["L"]
+        assert not e["zero_residuals"] or e["ci95"][1] > e["L"]
+    est = {f"{float(a)}": {k: risk[k][a] for k in ("IS", "MC", "residual")}
+           for a in risk["residual"]}
     out = {"meta": {"run": run, "revision": risk["stamp"]["revision"],
                     "lock": risk["stamp"]["lock_sha256"], "rho": risk["rates"]["rho"],
                     "durations": risk["durations"], "D1": risk["D1"]},
@@ -127,7 +136,8 @@ def build(run, pv_run=None, joint_run=None):
                    "hhi": [N["hhi"].get(p) for p in layers],
                    "top": [N["top_share"].get(p) for p in layers]},
         "tests": risk["tests"], "testRows": test_rows(risk["tests"]),
-        "hard": {k: risk["hard"][k] for k in ("L", "U", "IS")}, "hazards": risk["hazards"],
+        "hard": {k: risk["hard"][k] for k in ("L", "U", "IS", "residual")},
+        "hazards": risk["hazards"],
         "checks": {k: checks[k] for k in ("exports_vs_production", "reexport_flags",
                                           "site_coverage")}})
     for name, r in (("pv", pv_run), ("joint", joint_run)):

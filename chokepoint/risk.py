@@ -1,7 +1,8 @@
-"""Exact cut union, country-count convolution and latent-state importance sampling."""
+"""Exact cut union, count tail, residual Monte Carlo and latent-state IS."""
 from functools import cache
 
 import numpy as np
+from scipy.stats import beta
 
 from chokepoint.recourse import solve
 
@@ -88,6 +89,49 @@ def bracket(V, p, rho, durations, weights, cuts, k=3, complete=False):
     return {"L": L, "U": min(1.0, L + tail), "tail": tail, "k": k,
             "attribution": [exact_union(V, p, rho, durations, w, [S])/L if L else 0
                             for S in cuts], "attribution_overlaps": True}
+
+
+def residual_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,
+                      seed=0, complete=False, k=3):
+    """P(fail) = L + P(fail without an enumerated cut), MODEL §Annual probability.
+
+    INPUT   M, cuts ... recourse model and certified failing duration states
+            complete .. enumeration complete through support k
+    OUTPUT  exact L, unbiased estimate, sample SE, exact-binomial 95% MC interval
+    """
+    if n < 2:
+        raise ValueError("At least two inference samples required")
+    V = M["V"]
+    _, w, groups, s, q = _parameters(V, p, rho, durations, weights)
+    rng = np.random.default_rng(seed)
+    cut = np.asarray(cuts, int).reshape((-1, len(V)))
+    L = exact_union(V, p, rho, durations, w, cuts)
+    H = rng.random((n, len(s))) < s
+    onset = rng.random((n, len(q))) < q
+    for j, I in enumerate(groups):
+        onset[:, I] |= H[:, j, None]
+    D = rng.choice(durations, size=onset.shape, p=w)*onset
+    theta, cache, m = alpha*M["total"], {}, 0
+    for x in D:
+        if len(cut) and np.any(np.all(x >= cut, axis=1)):
+            continue
+        if complete and np.count_nonzero(x) <= k:
+            continue
+        key = tuple(x)
+        if key not in cache:
+            R = solve(M, x, dual=False)
+            if R["status"] != "optimal":
+                raise RuntimeError(R)
+            cache[key] = R["phi"] > theta + 1e-7
+        m += cache[key]
+    r = m/n
+    lo = float(beta.ppf(0.025, m, n-m+1)) if m else 0.0
+    hi = float(beta.ppf(0.975, m+1, n-m)) if m < n else 1.0
+    return {"L": L, "estimate": L + r, "se": float(np.sqrt(r*(1-r)/(n-1))),
+            "ci95": [L + lo, min(1.0, L + hi)], "residual_estimate": r,
+            "residual_events": int(m), "zero_residuals": m == 0, "lp_states": len(cache),
+            "n": n, "seed": seed, "complete": complete, "k": k,
+            "method": "lower_bound_plus_residual", "interval_method": "clopper_pearson_binomial"}
 
 
 def importance_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,

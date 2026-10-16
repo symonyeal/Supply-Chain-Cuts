@@ -75,14 +75,16 @@ const SECTIONS = {
     const tr = [
       { type: "scatter", mode: "markers", x: xs, y: A.map((a) => D.configs[`a${a}_h0_s0_L6_D12`].L), name: "L (exact)",
         marker: { color: T.text, symbol: "line-ew-open", size: 28, line: { width: 3 } }, hovertemplate: "L = %{y:.3f}<extra></extra>" },
-      { type: "scatter", mode: "markers", x: xs, y: A.map((a) => E[a].IS.estimate), name: "importance sampling",
-        error_y: { type: "data", symmetric: false, array: A.map((a) => E[a].IS.ci95[1] - E[a].IS.estimate), arrayminus: A.map((a) => E[a].IS.estimate - E[a].IS.ci95[0]), color: T.accent },
-        marker: { color: T.accent, size: 10 }, hovertemplate: "IS = %{y:.3f}<extra></extra>" },
+      { type: "scatter", mode: "markers", x: xs, y: A.map((a) => E[a].residual.estimate), name: "L + residual",
+        error_y: { type: "data", symmetric: false, array: A.map((a) => E[a].residual.ci95[1] - E[a].residual.estimate), arrayminus: A.map((a) => E[a].residual.estimate - E[a].residual.ci95[0]), color: T.accent },
+        customdata: A.map((a) => E[a].residual.L),
+        marker: { color: T.accent, size: 10 }, hovertemplate: "L + residual = %{y:.3f}; L = %{customdata:.3f}<extra></extra>" },
       { type: "scatter", mode: "markers", x: xs, y: A.map((a) => E[a].MC.estimate), name: "crude Monte Carlo",
-        marker: { color: CAT[1], size: 9, symbol: "diamond" }, hovertemplate: "MC = %{y:.3f}<extra></extra>" },
-      { type: "scatter", mode: "markers", x: ["α = 0.25, quotas and bans only"], y: [D.hard.IS.estimate], name: "quotas and bans only",
-        error_y: { type: "data", symmetric: false, array: [D.hard.IS.ci95[1] - D.hard.IS.estimate], arrayminus: [D.hard.IS.estimate - D.hard.IS.ci95[0]], color: CAT[2] },
-        marker: { color: CAT[2], size: 10 }, hovertemplate: "%{y:.3f}<extra>post hoc</extra>" },
+        error_y: { type: "data", symmetric: false, array: A.map((a) => E[a].MC.ci95[1] - E[a].MC.estimate), arrayminus: A.map((a) => E[a].MC.estimate - E[a].MC.ci95[0]), color: T.context },
+        marker: { color: T.context, size: 9, symbol: "diamond" }, hovertemplate: "MC = %{y:.3f}<extra></extra>" },
+      { type: "scatter", mode: "markers", x: ["α = 0.25, quotas and bans only"], y: [D.hard.residual.estimate], name: "quotas and bans only",
+        error_y: { type: "data", symmetric: false, array: [D.hard.residual.ci95[1] - D.hard.residual.estimate], arrayminus: [D.hard.residual.estimate - D.hard.residual.ci95[0]], color: CAT[2] },
+        marker: { color: CAT[2], size: 10 }, hovertemplate: "%{y:.3f}, L = " + fmt(D.hard.L) + "<extra>post hoc; L + residual</extra>" },
     ];
     plot("risk-chart", tr, { showlegend: true, legend: { orientation: "h", y: 1.1 }, yaxis: { title: { text: "annual P(failure), scenario" }, range: [0, 1], tickformat: ".0%" } });
   },
@@ -91,8 +93,9 @@ const SECTIONS = {
     const k = `a${S.pvAlpha}_h0_s0_L6_D12`, c = D.pv.configs[k], j = D.joint && D.joint.configs[k];
     const e = D.pv.estimates[S.pvAlpha];
     $("pv-summary").textContent = `PV alone: ${c.cuts.length} minimal cut sets, ${c.cuts.filter((x) => x.length === 1).length} singletons; ` +
-      `L = ${pct(c.L)}, estimate ${e ? pct(e.IS.estimate) : "–"}.` + (j ? ` Shared Li-ion and PV network: ${j.cuts.length} cut sets, ` +
-      `${j.cuts.filter((x) => x.length === 1).length} singletons, L = ${pct(j.L)}.` : "");
+      `L = ${pct(c.L)}, L + residual ${pct(e.residual.estimate)} [${pct(e.residual.ci95[0])}, ${pct(e.residual.ci95[1])}].` + (j ? ` Shared Li-ion and PV network: ${j.cuts.length} cut sets, ` +
+      `${j.cuts.filter((x) => x.length === 1).length} singletons, L = ${pct(j.L)}, L + residual ${pct(D.joint.estimates[S.pvAlpha].residual.estimate)} ` +
+      `[${pct(D.joint.estimates[S.pvAlpha].residual.ci95[0])}, ${pct(D.joint.estimates[S.pvAlpha].residual.ci95[1])}].` : "");
     $("pv-table").innerHTML = cutTable(D.pv, cutRows(D.pv, c));
   },
   attribution() {
@@ -114,14 +117,15 @@ const head = D.configs["a0.25_h0_s0_L6_D12"], t = D.tests;
 const FACT = {
   ncuts: head.cuts.length, nsingle: head.cuts.filter((x) => x.length === 1).length,
   singles: head.cuts.filter((x) => x.length === 1).map(([[v]]) => N.product[v].replace("_", " ")).join(", "),
-  L: pct(head.L), U: pct(head.U), IS: pct(D.estimates["0.25"].IS.estimate), MC: pct(D.estimates["0.25"].MC.estimate),
-  ISlo: pct(D.estimates["0.25"].IS.ci95[0]), IShi: pct(D.estimates["0.25"].IS.ci95[1]),
-  hard: pct(D.hard.IS.estimate), hardL: pct(D.hard.L), rho: fmt(D.meta.rho, 2),
+  L: pct(head.L), U: pct(head.U), estimate: pct(D.estimates["0.25"].residual.estimate), MC: pct(D.estimates["0.25"].MC.estimate),
+  estimateLo: pct(D.estimates["0.25"].residual.ci95[0]), estimateHi: pct(D.estimates["0.25"].residual.ci95[1]),
+  hard: pct(D.hard.residual.estimate), hardL: pct(D.hard.L), rho: fmt(D.meta.rho, 2),
   sump: fmt(N.p.reduce((a, b) => a + b, 0), 1), w12: pct(D.meta.durations.weights[2], 0),
   d1m: fmt(D.meta.D1.model_log_loss, 3), d1c: fmt(D.meta.D1.constant_log_loss, 3),
   mid: pct(t.H2_china_midstream_share_of_L.midstream),
   rhoHHI: fmt(t.A1_spearman.hhi, 2), rhoTop: fmt(t.A1_spearman.top_share, 2),
   revision: D.meta.revision.slice(0, 7), lock: D.meta.lock.slice(0, 12), run: D.meta.run,
+  runs: [D, D.pv, D.joint].filter(Boolean).map((b) => b.meta.run).join(", "),
   L10: pct(D.configs["a0.1_h0_s0_L6_D12"].L), n10: D.configs["a0.1_h0_s0_L6_D12"].cuts.length,
   n6: D.configs["a0.25_h0_s0_L6_D6"].cuts.length,
   chnU: pct(D.attribution.country_union.CHN, 0), codU: pct(D.attribution.country_union.COD, 0),
@@ -131,7 +135,7 @@ fill();
 $("facts").innerHTML = [[FACT.nsingle, "single losses that each stop more than 25% of two years' cells, if they last a year"],
   [t.robust_singletons.length, "of them hold under every capacity-basis, re-export and chemistry test"],
   [FACT.ncuts, "minimal cut sets of up to three losses (α = 25%)"], [FACT.L, "exact lower bound L on annual failure, scenario"],
-  [FACT.IS, "importance-sampling estimate, scenario"]].map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("");
+  [FACT.estimate, "L plus residual estimate, scenario"]].map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("");
 
 const ctl = [["c-alpha", "alpha", ["0.1", "0.25", "0.5"], (v) => `α = ${v}`], ["c-dj", "DJ", ["3", "6", "12"], (v) => `D ≤ ${v} mo`],
   ["c-h", "h", ["0", "1", "3"], (v) => `h = ${v} mo`], ["c-sigma", "sigma", ["0", "0.1", "0.5"], (v) => `σ = ${v}`],
