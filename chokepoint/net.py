@@ -91,7 +91,9 @@ def build(root=Path("."), sector="liion", ncm=0.5, cutoff=0.01, basis="productio
     names = {x["country_name"].casefold(): x["country_iso3"] for x in country_rows}
     names.update({"congo (kinshasa)": "COD", "korea, republic of": "KOR",
                   "korea, north": "PRK", "russia": "RUS", "turkey": "TUR",
-                  "vietnam": "VNM", "côte d’ivoire": "CIV", "côte d'ivoire": "CIV"})
+                  "vietnam": "VNM", "côte d’ivoire": "CIV", "côte d'ivoire": "CIV",
+                  "united states": "USA", "tanzania": "TZA", "bolivia": "BOL",
+                  "burma": "MMR", "laos": "LAO"})
     prod, unparsed = _usgs(root, names)
     miit = {x["product"]: float(x["value"]) for x in csv.DictReader(
         (root / "data/raw/miit/production_2024.csv").open()) if x["statistic"] == "production"}

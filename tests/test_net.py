@@ -24,6 +24,12 @@ def test_requirements_and_baseline(N):
         assert solve(model(M), np.zeros(len(M["nodes"])))["phi"] == pytest.approx(0, abs=1e-9)
 
 
+def test_every_country_row_mapped(N):
+    """Only aggregates and withheld values may remain unparsed."""
+    U = {x["country"] for x in N["unparsed_usgs"] if x["reason"] == "aggregate_or_unmapped"}
+    assert U <= {"Other countries", "World total"}
+
+
 def test_labels_and_conversions(N):
     assert {x["basis"] for x in N["nodes"]} <= {"production", "trade", "imputed"}
     assert LCE_LIOH == pytest.approx(73.891/83.928)       # Li2CO3 per 2 LiOH·H2O
