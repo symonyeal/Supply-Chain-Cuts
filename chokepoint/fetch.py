@@ -1,6 +1,8 @@
 """Frozen-source verification. SOURCES.lock is the input contract."""
 import hashlib
 import json
+import platform
+import subprocess
 import urllib.request
 from pathlib import Path
 
@@ -48,3 +50,19 @@ def fetch_source(source, root=Path(".")):
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_bytes(data)
     return p
+
+
+def stamp(root=Path(".")):
+    """Provenance of a result bundle: code revision, tree state, lock digest, versions."""
+    import numpy
+    import scipy
+
+    def git(*args):
+        return subprocess.run(["git", "-C", str(root), *args], capture_output=True,
+                              text=True, check=True).stdout.rstrip()
+
+    changed = [x[3:] for x in git("status", "--porcelain").splitlines()
+               if not x[3:].startswith(("results/", "docs/", "site/"))]
+    return {"revision": git("rev-parse", "HEAD"), "dirty": changed, **verify(root),
+            "python": platform.python_version(), "numpy": numpy.__version__,
+            "scipy": scipy.__version__}

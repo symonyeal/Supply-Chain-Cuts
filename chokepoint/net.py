@@ -79,7 +79,8 @@ def build(root=Path("."), sector="liion", ncm=0.5, cutoff=0.01, basis="productio
            exclude .. (country, product) pairs removed before demand is set (test B1)
     OUTPUT nodes with annual, basis, share and capacity; physical a; requirements R;
            supply ratios S; coverage of each layer by the retained nodes.
-    Demand equals retained final output, so the final layer has no baseline slack.
+    Demand is retained final output scaled to what the undisrupted chain delivers
+    (demand_scale = min(1, min S_p over the chain), recorded), so phi(0) = 0.
     """
     if sector not in ("liion", "pv", "joint") or not 0 <= cutoff < 1:
         raise ValueError("sector in liion,pv,joint and 0 <= cutoff < 1 required")
@@ -183,6 +184,10 @@ def build(root=Path("."), sector="liion", ncm=0.5, cutoff=0.01, basis="productio
     totals = defaultdict(float)
     for (_, p), x in nodes.items():
         totals[p] += x["annual"]
+    hhi, top = defaultdict(float), defaultdict(float)       # over all origins, before cutoff
+    for (_, p), x in nodes.items():
+        hhi[p] += (x["annual"]/totals[p])**2
+        top[p] = max(top[p], x["annual"]/totals[p])
     selected, coverage = [], defaultdict(float)
     for x in sorted(nodes.values(), key=lambda x: (x["product"], x["country"])):
         x["share"] = x["annual"]/totals[x["product"]]
@@ -190,21 +195,44 @@ def build(root=Path("."), sector="liion", ncm=0.5, cutoff=0.01, basis="productio
             selected.append(x)
             coverage[x["product"]] += x["share"]
     finals = [p for p in ("cell", "module") if p in totals]
-    R = {p: sum(x["annual"] for x in selected if x["product"] == p) for p in finals}
     order = sorted(used - set(finals), key=lambda p: _depth(p, a))
-    for p in order:                                   # R_p = Σ_q a[p,q] R_q, top-down
-        R[p] = sum(x*R[q] for (r, q), x in a.items() if r == p)
+    scale = {f: 1.0 for f in finals}
+    for _ in range(2):                  # second pass: demand = undisrupted achievable output
+        R = {f: scale[f]*sum(x["annual"] for x in selected if x["product"] == f) for f in finals}
+        for p in order:                               # R_p = Σ_q a[p,q] R_q, top-down
+            R[p] = sum(x*R[q] for (r, q), x in a.items() if r == p)
+        S = {p: sum(x["annual"] for x in selected if x["product"] == p)/R[p] for p in R}
+        scale = {f: scale[f]*min(1.0, *(S[p] for p in _closure(f, a))) for f in finals}
     for x in selected:
         x["capacity"] = x["annual"]/(12*R[x["product"]])
-    S = {p: sum(x["annual"] for x in selected if x["product"] == p)/R[p] for p in R}
     return {"sector": sector, "nodes": selected, "a": [[p, q, x] for (p, q), x in a.items()],
-            "requirement": R, "supply_ratio": S, "finals": finals,
+            "requirement": R, "supply_ratio": S, "finals": finals, "demand_scale": scale,
             "annual_totals": dict(totals), "coverage": dict(coverage), "cutoff": cutoff,
+            "hhi": {p: hhi[p] for p in used if p in hhi},
+            "top_share": {p: top[p] for p in used if p in top},
             "ncm": ncm, "capacity_basis": basis, "excluded": sorted(map(list, exclude)),
             "bom": B, "missing_baci_quantities": missing, "unparsed_usgs": unparsed,
             "exports": {f"{c}:{p}": trade(c, p) for c in iso3 for p in HS if trade(c, p)},
             "imports": {f"{c}:{p}": 1e-3*sum(imports["22" if p in PV else "12"].get((c, hs), 0)
                                              for hs in HS[p]) for c in iso3 for p in HS}}
+
+
+def reexport_flags(network):
+    """Trade-basis nodes whose country imports at least what it exports of the same HS codes.
+
+    Such exports cannot be shown to be domestic production (test B1)."""
+    out = []
+    for x in network["nodes"]:
+        key = f"{x['country']}:{x['product']}"
+        if x["basis"] == "trade" and network["imports"].get(key, 0) >= network["exports"][key]:
+            out.append([x["country"], x["product"], network["exports"][key],
+                        network["imports"][key]])
+    return out
+
+
+def _closure(f, a):
+    """f and every product upstream of f."""
+    return {f}.union(*(_closure(p, a) for (p, q) in a if q == f))
 
 
 def _depth(p, a):

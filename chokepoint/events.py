@@ -17,6 +17,7 @@ import numpy as np
 ALIAS = {"mine_graphite": "graphite", "li_hydroxide": "li_carbonate"}
 YEARS = np.arange(2012, 2025)
 SUSPENDED = ("suspension", "partial_suspension", "licensing_announced_then_suspended")
+HARD = ("M3", "M4")                     # OECD export quota, export prohibition
 
 
 def _records(root):
@@ -39,10 +40,11 @@ def _records(root):
     return out
 
 
-def node_years(V, root=Path(".")):
+def node_years(V, root=Path("."), hard=False):
     """Return Y[v, t] ∈ {0, 1, nan} over YEARS, the onset ids behind each 1, and records.
 
     INPUT  V ..... (country, product) nodes
+           hard .. count only quotas and prohibitions (OECD M3, M4; prohibiting acts)
     OUTPUT Y, onset ids by 'c:p:year', and the onset records used (for durations)
     """
     root = Path(root)
@@ -54,6 +56,8 @@ def node_years(V, root=Path(".")):
                 surveyed.add((r["country"], ALIAS.get(p, p), int(r["year"])))
     onsets, used = defaultdict(list), []
     for x in _records(root):
+        if hard and x["measure"] not in HARD and "prohibition" not in x["measure"]:
+            continue
         keys = {(x["country"], ALIAS.get(p, p), x["year"]) for p in x["products"]}
         if keys & surveyed:
             used.append(x)
