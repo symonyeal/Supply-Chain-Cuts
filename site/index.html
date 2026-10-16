@@ -12,7 +12,7 @@
 <body>
 <header class="top"><div class="wrap">
   <a class="brand" href="#top">Chokepoint Lab</a>
-  <nav><a href="#cuts">Cut sets</a><a href="#layers">Layers</a><a href="#risk">Risk</a><a href="#attribution">Attribution</a><a href="#tests">Tests</a><a href="#hazards">Hazards</a><a href="#provenance">Provenance</a></nav>
+  <nav><a href="#cuts">Cut sets</a><a href="#layers">Layers</a><a href="#risk">Risk</a><a href="#pv">PV</a><a href="#attribution">Attribution</a><a href="#tests">Tests</a><a href="#hazards">Hazards</a><a href="#provenance">Provenance</a></nav>
 </div></header>
 
 <main class="wrap" id="top">
@@ -67,6 +67,17 @@
       against crude Monte Carlo (<span data-f="MC"></span>). The registered predictive test failed (log-loss
       <span data-f="d1m"></span> against <span data-f="d1c"></span> for a constant), so these are scenarios under stated rates.</p>
     <div id="risk-chart" class="chart"></div>
+  </section>
+
+  <section id="pv">
+    <h2>Solar is more concentrated still: each of China's four PV stages is a cut set on its own, and on the shared network a battery loss and a PV loss together suffice</h2>
+    <p class="note">PV chain polysilicon → wafer → cell → module (BACI HS22 2024; MIIT China output; 2.0 g Si/Wp), demand set to the
+      undisrupted module output. On the shared network each sector's shortfall is measured in its own annual output, so the two count
+      equally and failure is more than α of their sum. h = σ = 0, outages up to 12 months. PV rates borrow the all-product prior except
+      polysilicon, the only PV product the OECD survey covers.</p>
+    <div class="ctl"><span><label>shortfall threshold</label><span class="seg" id="c-pv"></span></span></div>
+    <p id="pv-summary"></p>
+    <div class="table-wrap"><table id="pv-table"></table></div>
   </section>
 
   <section id="attribution">

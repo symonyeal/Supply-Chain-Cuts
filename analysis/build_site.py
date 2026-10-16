@@ -1,4 +1,4 @@
-"""Build site/data.js from a result bundle: python analysis/build_site.py RUN_ID [PV_RUN_ID].
+"""Build site/data.js: python analysis/build_site.py LIION_RUN [PV_RUN JOINT_RUN].
 
 The page filters and draws; it computes nothing the model computes. Certificates are
 asserted before anything is written: every cut certified (zero gap, predecessors below the
@@ -78,13 +78,19 @@ def load(run):
             json.loads((d / "risk.json").read_text(encoding="utf-8")), cuts)
 
 
-def build(run, pv_run=None):
+def block(run):
+    """Nodes, certified cut lists with L, U and shortfalls, estimates and attribution."""
     net, checks, risk, cuts = load(run)
-    N = net["liion"]
+    N = net[risk["sector"]]
     V = risk["nodes"]
     assert V == [[x["country"], x["product"]] for x in N["nodes"]]
     for R in cuts.values():
         assert all(c["certified"] for c in R["certificates"]), R["task"]
+        P, F, B = (R.get(k) for k in ("pruned", "milp_full", "brute_full"))
+        assert not P or P["brute_equals_lattice"] and (P["milp_equals_brute"]
+                                                       or not P["milp_complete"]), R["task"]
+        assert not F or F["equals_lattice"] or not F["complete"], R["task"]
+        assert not B or B["equals_lattice"], R["task"]
     configs = {}
     for k, x in risk["configs"].items():
         assert 0 <= x["L"] <= x["U"] <= 1
@@ -94,38 +100,41 @@ def build(run, pv_run=None):
         configs[k.replace("base_", "")] = {
             "L": x["L"], "U": x["U"], "cuts": x["cuts"], "attribution": x["attribution"],
             "phi": [phi[json.dumps(S)] for S in x["cuts"]]}
-    est = {f"{float(a)}": {"IS": risk["IS"][a], "MC": risk["MC"][a]} for a in risk["IS"]}
     nodes = {"country": [v[0] for v in V], "product": [v[1] for v in V],
              "basis": [x["basis"] for x in N["nodes"]], "share": [x["share"] for x in N["nodes"]],
              "years": [12*x["capacity"] for x in N["nodes"]],
              "annual": [x["annual"] for x in N["nodes"]], "unit": [x["unit"] for x in N["nodes"]],
              "source": [x["source"] for x in N["nodes"]], "p": risk["rates"]["p"],
              "exposure": risk["rates"]["exposure"], "onsets": risk["rates"]["onsets"]}
+    est = {f"{float(a)}": {"IS": risk["IS"][a], "MC": risk["MC"][a]} for a in risk["IS"]}
+    out = {"meta": {"run": run, "revision": risk["stamp"]["revision"],
+                    "lock": risk["stamp"]["lock_sha256"], "rho": risk["rates"]["rho"],
+                    "durations": risk["durations"], "D1": risk["D1"]},
+           "nodes": nodes, "configs": configs, "estimates": est,
+           "attribution": risk["attribution"]}
+    return out, N, risk, checks
+
+
+def build(run, pv_run=None, joint_run=None):
+    data, N, risk, checks = block(run)
     layers = sorted(N["supply_ratio"], key=lambda p: -N["hhi"].get(p, 0))
-    data = {
-        "meta": {"run": run, "revision": risk["stamp"]["revision"],
-                 "lock": risk["stamp"]["lock_sha256"], "rho": risk["rates"]["rho"],
-                 "durations": risk["durations"], "D1": risk["D1"]},
-        "nodes": nodes,
+    data.update({
         "layers": {"product": layers, "S": [N["supply_ratio"][p] for p in layers],
                    "hhi": [N["hhi"].get(p) for p in layers],
                    "top": [N["top_share"].get(p) for p in layers]},
-        "configs": configs, "estimates": est, "tests": risk["tests"], "hard": {
-            k: risk["hard"][k] for k in ("L", "U", "IS")},
-        "hazards": risk["hazards"], "checks": {k: checks[k] for k in (
-            "exports_vs_production", "reexport_flags", "site_coverage")},
-        "attribution": risk["attribution"], "testRows": test_rows(risk["tests"]),
-    }
-    if pv_run:
-        _, _, prisk, _ = load(pv_run)
-        data["pv"] = {"risk": {k: prisk[k] for k in ("configs", "IS", "MC", "tests")
-                               if k in prisk}, "nodes": prisk["nodes"]}
+        "tests": risk["tests"], "testRows": test_rows(risk["tests"]),
+        "hard": {k: risk["hard"][k] for k in ("L", "U", "IS")}, "hazards": risk["hazards"],
+        "checks": {k: checks[k] for k in ("exports_vs_production", "reexport_flags",
+                                          "site_coverage")}})
+    for name, r in (("pv", pv_run), ("joint", joint_run)):
+        if r:
+            data[name] = block(r)[0]
     return data
 
 
 def main():
     out = ROOT / "site" / "data.js"
-    data = plain(build(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else None))
+    data = plain(build(*sys.argv[1:4]))
     out.write_text("window.DATA = " + json.dumps(data, separators=(",", ":"), ensure_ascii=False,
                                                  allow_nan=False) + ";\n", encoding="utf-8")
     print(f"{out}  {out.stat().st_size/1e6:.2f} MB")

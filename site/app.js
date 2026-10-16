@@ -23,7 +23,7 @@ function plot(id, data, layout = {}) {
 
 // Published values; every control writes S and marks the sections that read it.
 const PUB = { alpha: "0.25", DJ: "12", h: "0", sigma: "0", L: "6" };
-const S = { ...PUB, q: "" };
+const S = { ...PUB, q: "", pvAlpha: "0.25" };
 const key = () => `a${S.alpha}_h${S.h}_s${S.sigma}_L${S.sigma === "0" ? "6" : S.L}_D${S.DJ}`;
 const cfg = () => D.configs[key()];
 
@@ -35,20 +35,24 @@ function seg(id, k, values, label, after) {
   el.sync = sync; sync();
 }
 
-const cutText = (cut) => cut.map(([v, d]) => `${name(v)} <span class="tag ${N.basis[v]}">${N.basis[v]}</span> ${d} mo`).join(" + ");
+const cutText = (cut, B = D) => cut.map(([v, d]) => `${B.nodes.country[v]} ${B.nodes.product[v]} <span class="tag ${B.nodes.basis[v]}">${B.nodes.basis[v]}</span> ${d} mo`).join(" + ");
+function cutRows(B, c, q = "") {
+  return c.cuts.map((cut, i) => ({ cut, phi: c.phi[i], a: c.attribution[i] }))
+    .filter((r) => !q || r.cut.some(([v]) => `${B.nodes.country[v]} ${B.nodes.product[v]}`.toLowerCase().includes(q)))
+    .sort((x, y) => y.a - x.a || x.cut.length - y.cut.length);
+}
+function cutTable(B, rows) {
+  return `<thead><tr><th>Losses (node, basis, minimum duration)</th><th class="num">Shortfall φ/Σd</th>` +
+    `<th class="num">P(S ⊆ Z)/L</th></tr></thead><tbody>` + rows.map((r) =>
+      `<tr><td class="wrap">${cutText(r.cut, B)}</td><td class="num">${pct(r.phi)}</td><td class="num">${pct(r.a)}</td></tr>`).join("") + `</tbody>`;
+}
 
 const SECTIONS = {
   cuts() {
     const c = cfg(), q = S.q.trim().toLowerCase();
     $("cuts-summary").textContent = `${c.cuts.length} minimal cut sets of at most three losses; ` +
       `${c.cuts.filter((x) => x.length === 1).length} singletons. L = ${pct(c.L)}, U = ${pct(c.U)}.`;
-    const rows = c.cuts.map((cut, i) => ({ cut, phi: c.phi[i], a: c.attribution[i] }))
-      .filter((r) => !q || r.cut.some(([v]) => name(v).toLowerCase().includes(q)))
-      .sort((x, y) => y.a - x.a || x.cut.length - y.cut.length);
-    $("cuts-table").innerHTML = `<thead><tr><th>Losses (node, basis, minimum duration)</th><th class="num">Shortfall φ/Σd</th>` +
-      `<th class="num">P(S ⊆ Z)/L</th></tr></thead><tbody>` + rows.map((r) =>
-        `<tr><td class="wrap">${cutText(r.cut)}</td><td class="num">${pct(r.phi)}</td><td class="num">${pct(r.a)}</td></tr>`).join("") +
-      `</tbody>`;
+    $("cuts-table").innerHTML = cutTable(D, cutRows(D, c, q));
   },
   layers() {
     const P = D.layers.product, x = [], base = {};
@@ -81,6 +85,15 @@ const SECTIONS = {
         marker: { color: CAT[2], size: 10 }, hovertemplate: "%{y:.3f}<extra>post hoc</extra>" },
     ];
     plot("risk-chart", tr, { showlegend: true, legend: { orientation: "h", y: 1.1 }, yaxis: { title: { text: "annual P(failure), scenario" }, range: [0, 1], tickformat: ".0%" } });
+  },
+  pv() {
+    if (!D.pv) return;
+    const k = `a${S.pvAlpha}_h0_s0_L6_D12`, c = D.pv.configs[k], j = D.joint && D.joint.configs[k];
+    const e = D.pv.estimates[S.pvAlpha];
+    $("pv-summary").textContent = `PV alone: ${c.cuts.length} minimal cut sets, ${c.cuts.filter((x) => x.length === 1).length} singletons; ` +
+      `L = ${pct(c.L)}, estimate ${e ? pct(e.IS.estimate) : "–"}.` + (j ? ` Shared Li-ion and PV network: ${j.cuts.length} cut sets, ` +
+      `${j.cuts.filter((x) => x.length === 1).length} singletons, L = ${pct(j.L)}.` : "");
+    $("pv-table").innerHTML = cutTable(D.pv, cutRows(D.pv, c));
   },
   attribution() {
     const by = D.attribution.country, ks = Object.keys(by).sort((a, b) => by[a] - by[b]);
@@ -123,6 +136,7 @@ const ctl = [["c-alpha", "alpha", ["0.1", "0.25", "0.5"], (v) => `α = ${v}`], [
   ["c-L", "L", ["6", "24"], (v) => `L = ${v} mo`]];
 ctl.forEach(([id, k, vs, lab]) => seg(id, k, vs, lab, () => mark("cuts")));
 $("c-reset").onclick = () => { Object.assign(S, PUB); ctl.forEach(([id]) => $(id).sync()); mark("cuts"); };
+if (D.pv) seg("c-pv", "pvAlpha", ["0.1", "0.25"], (v) => `α = ${v}`, () => mark("pv"));
 $("c-q").oninput = (e) => { S.q = e.target.value; mark("cuts"); };
 
 $("tests-table").innerHTML = `<thead><tr><th>Leaf</th><th>Kill condition</th><th>Result</th><th>Verdict</th></tr></thead><tbody>` +
