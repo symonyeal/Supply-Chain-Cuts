@@ -17,4 +17,5 @@ licences are in [Research](RESEARCH.md).
 | MIIT 电子信息司, 2024年全国锂离子电池行业运行情况 (2025-02-27) | China 2024 cell, CAM, AAM, Li2CO3 and LiOH output | inspected (page text, 2026-10-15) |
 | OECD, Inventory of Export Restrictions on Industrial Raw Materials, SDMX dataflow DSD_QDD_TAD_EXP_RESTRIC, measure codes M1–M14 | Policy onsets 2012–2024; M3 quota and M4 prohibition for the post hoc hard-measure scenario | inspected (structure codelist, 2026-10-15) |
 | Rubinstein, R.Y., Kroese, D.P., *The Cross-Entropy Method*, Springer, 2004 | Cross-entropy tilting of the importance-sampling proposal | cited |
+| Clopper, C.J., Pearson, E.S., The use of confidence or fiducial limits illustrated in the case of the binomial, *Biometrika* 26(4):404–413, 1934, https://doi.org/10.1093/biomet/26.4.404 | Binomial tail inversion for residual-estimator Monte Carlo intervals | inspected (original paper, binomial tail construction pp. 406–407; 2026-10-16) |
 

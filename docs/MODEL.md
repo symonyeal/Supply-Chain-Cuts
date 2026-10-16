@@ -137,3 +137,35 @@ durations. Proposal adaptation uses a separate pilot, and inference uses fresh s
 The reported interval is a normal Monte Carlo interval, not a rigorous probability bound.
 An estimate can lie outside [L,U] through sampling error: report that check and the
 interval, never clip the estimate. The bracket itself is exact conditional on the model.
+
+### Lower bound plus residual (W1, 2026-10-16)
+
+Let F be failure and C the event that a sampled state contains an enumerated cut for the
+same model. Every cut fails, so C is contained in F. With exact L = P(C), define
+
+    X = 1_F - 1_C = 1_(F minus C),  r = P(F minus C),
+    P_hat = L + (1/n) sum_i X_i,    Z_i iid from the original scenario law.
+
+Then E(P_hat) = L + r = P(F) and Var(P_hat) = r(1-r)/n. For m = sum_i X_i and
+r_hat = m/n, the sample standard error is sqrt(r_hat(1-r_hat)/(n-1)). The estimate is
+at least L without clipping. Its variance comes only from failures outside the cut union;
+variance reduction relative to crude MC is measured, not a universal theorem.
+
+Sample the same latent country shocks, independent node onsets and categorical durations
+as in the scenario law. States containing a cut have X = 0 and need no LP. If enumeration
+is complete through k, states of support <= k without a cut also have X = 0 (Proposition
+3). Solve the remaining states with the same strict threshold and numerical epsilon as
+the cut certificates. Incomplete enumerations may still supply L, but cannot justify
+this second shortcut.
+
+For a useful interval even when m = 0, invert the binomial tails (Clopper and Pearson
+1934, SOURCES). At confidence 95%,
+
+    r_lo = 0 if m = 0, else BetaQuantile(0.025; m, n-m+1),
+    r_hi = 1 if m = n, else BetaQuantile(0.975; m+1, n-m).
+
+Report [L+r_lo, min(1,L+r_hi)]. This intersection with the probability parameter space
+retains coverage. Zero observed residuals imply a zero sample standard error but a
+positive upper interval width, not a proof that P(F) = L. The interval covers sampling
+uncertainty conditional on fixed rates, durations and capacities; it does not cover data
+or scenario uncertainty. The legacy IS and crude MC results remain comparisons.

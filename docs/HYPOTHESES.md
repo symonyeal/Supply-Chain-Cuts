@@ -35,3 +35,26 @@ The horizon is 24 months and failure is strict. A six-month outage cannot cause 
 25% cumulative loss when every other period can satisfy flat demand and there is no
 baseline shortage. Thus equality at 25% rejects the six-month singleton assertion; it
 must not be changed into a non-strict test after seeing results.
+
+## W1: residual probability estimator (2026-10-16)
+
+Registered before new probability computations. The original joint alpha = 10% IS point
+is below its exact lower bound; the original crude estimate is the comparison, not a new
+test result. Let C be the event of containing an enumerated failing cut, F failure, and
+L = P(C). The proposed answer is P_hat = L + mean(1_F - 1_C), with draws from the original
+scenario law. Since C is contained in F, the residual is Bernoulli and P_hat >= L for
+every sample. No empirical improvement of the onset model or outage severities is claimed.
+
+| Leaf | Expected result | Kill condition |
+| --- | --- | --- |
+| R1 | Recover the exact probability on a hand-enumerated categorical toy, including a failure outside the cut union | Exact probability outside the 95% binomial interval at the fixed test seed |
+| R2 | Agree with crude MC on a randomly generated capacity network | Difference exceeds four combined standard errors at the fixed test seed |
+| R3 | The shared alpha = 10% estimate is >= L and agrees with crude MC | Below L, or difference exceeds four combined standard errors |
+| R4 | Sampling uncertainty is smaller than crude MC on the three alpha = 25% headlines | Residual standard error exceeds crude standard error on any headline |
+
+Premortem: a supplied cut is not failing for the sampled model, or its durations or node
+order differ. The algebra then fails; certificates and node-order checks are prerequisites.
+Steelman: crude MC already agrees with the bracket; residual sampling earns its use only
+by recovering known probabilities and reducing measured error on these instances. Variance
+reduction is not asserted for every network. Zero observed residuals are not proof of zero
+residual probability; use an exact binomial interval, not a collapsed normal interval.

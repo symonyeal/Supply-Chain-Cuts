@@ -21,6 +21,11 @@ completes. Products without event exposure borrow the all-product empirical-Baye
 a Jeffreys prior (mean 0.5) is not a credible annual rate. Policy onsets are derived in
 `chokepoint/events.py` from the frozen OECD records and national acts.
 
+W1 clarification (2026-10-16, NEXT.md): the reported probability estimate is the exact
+lower bound plus a crude-sampled residual failure probability. The derivation and exact
+binomial interval are in MODEL. Importance sampling and crude MC remain comparisons;
+all estimates are shown with L. The capacities, rates and failure event are unchanged.
+
 Agreed with the user, 2026-10-15, through brainstorming Sections 1–5. Evidence base:
 `docs/RESEARCH.md` (primary sources, verified 2026-10-15). This spec is canonical; where
 `PROMPT.md` differs, this file wins.
