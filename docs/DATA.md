@@ -126,7 +126,7 @@ output, so their shares mirror the cell layer; a cut on an imputed node is label
 | China Li2CO3: exports vs MIIT LCE | 3.8 kt vs 987 kt (0.004) |
 | Chile Li2CO3: exports vs Cochilco | 240.9 kt vs 250.6 kt (0.96) |
 | Refined Co exports above MYB output | AUS 1.56, BEL 2.39, CAN 1.73, FRA 6.28, IDN 6.17, JPN 1.09, MAR 1.32, RUS 5.76, ZAF 5.93 (ratio) |
-| Comtrade China tariff lines vs BACI HS6 | not measured: tariff lines not fetched (optional key not supplied) |
+| Comtrade China tariff lines vs BACI HS6 | W5 supplement below replaces the original unmeasured status; keyless preview remains incomplete and has repeated reporting keys |
 | BGS refinery statistics | not used: licence unresolved |
 | BACI rows without mass | HS12 863, HS22 1,439; excluded from sums, not zero |
 | USGS rows unparsed | aggregates and withheld values only (test `test_every_country_row_mapped`) |
@@ -223,3 +223,89 @@ No frozen site table has coordinates for capacity, so located capacity is 0% in 
 layer, below the 70% threshold (`data/sites/coverage.json`). Natural hazards are therefore
 a sensitivity scenario at fixed country-wide loss fractions 0.1, 0.25, 0.5 and 1, with
 GDACS orange/red alert years per country as context; the headline uses policy onsets only.
+
+## W5: primary-source supplement (2026-10-16/17)
+
+The historical networks above remain the reference for W1?W4 and W6. Supplements
+are explicit opt-in variants, preserving every original raw hash and result bundle.
+`python run_data.py RUN 3.7 eu-sold` writes the combined-data variant; omission of
+optional arguments reproduces the reference. `python run_supply.py RUN` compares
+headline cut lists at fixed and flexible chemistry. No new onset-rate or probability
+fit is implied by a capacity-source change.
+
+**Japan.** METI annual 2024 workbook h2daa2024k, actual-values sheet rows 3488/3498,
+items 0108 (automobile) and 0109 (other sealed Li-ion). Twelve monthly observations
+per item sum to 4,334,353 and 801,958 kAh, total 5,136,311 kAh. These are quantities
+produced in electrical-charge units, not installed plant capacity. Energy equals
+kAh times assumed nominal voltage / 1,000,000 GWh: 19.0043507 GWh at 3.7 V or
+16.4361952 GWh at 3.2 V. Voltage is not measured by this table, so Japan cells are
+`imputed`, as are their BOM-derived upstream materials. The sealed-cell scope is
+retained; it is not asserted to cover every industrial cell category. e-Stat terms
+section 6(c) permits CC BY 4.0 reuse. The source workbook and selected observations
+are frozen. No appId is needed for this annual file.
+
+**Eurostat.** DS-059358 2024, annual Prodcom, quantity unit KG. The frozen API metadata
+and Statistics Finland's 2024 classification identify 20121955 as lithium oxide/
+hydroxide, 20134351/52 as carbonate at least/below 99.5%, and 20134281 as lithium
+iron phosphate. PRODQNT is sold quantity; no APRODQNT actual-production observations
+are returned for these slices. Missing/confidential quantities are not zero.
+
+| Product | Germany sold quantity, kg | EU27 sold quantity, kg | Adoption |
+| --- | ---: | ---: | --- |
+| Oxide/hydroxide 20121955 | 0 | 0 | no positive observation; no LiOH replacement |
+| Carbonate >=99.5%, 20134351 | 12,364,000 (:E) | 12,364,080 (:R) | both purity rows retained |
+| Carbonate <99.5%, 20134352 | 12,364,000 (:E) | 12,364,000 (:E) | combined code checked before summing |
+| Combined carbonate 201343Z1 | 24,728,000 (:E) | 24,728,060 (:R) | German sold-output proxy variant, `imputed` |
+| LFP 20134281 | missing (:C) | 12,000,000 (:R) | France 1,840,475 kg; does not replace aggregate CAM |
+
+The combined code confirms the German sum despite equal component estimates; EU
+rounding leaves a 20 kg discrepancy against the component sum. :E is an estimate,
+:R denotes rounded publication, :C confidential; original flags remain in the
+snapshots. Carbonate sold quantity includes technical grades and need not equal
+actual 2024 production. LFP sales alone neither measure total CAM nor reveal
+shared/dedicated plant capacity; no recipe split is invented. Eurostat's statistical
+reuse policy permits the selected EU production rows with attribution; unfiltered
+snapshots stay local. Source: Eurostat, extracted 2026-10-16. Chokepoint-Lab selected
+rows and made comparisons; Eurostat is not responsible for those transformations
+or conclusions.
+
+**China tariff lines.** Seven keyless preview queries, row cap 500, and disjoint
+batches of all observed partners for the three nonempty lines. The batches reproduce
+the unfiltered row multisets exactly; they cannot establish coverage of unseen
+partners. The current tariff rows identify H6 (HS2022), so comparisons use the
+frozen BACI HS22 parent rather than silently mixing HS revisions.
+
+| National line | Rows / partners | Repeated reporting keys | Returned-row mass / BACI parent mass, t |
+| --- | ---: | ---: | --- |
+| 28429040 | 189 / 41 | 148 | 3,285.214 / 53,001.725 (6.198%) |
+| 28539030 | 76 / 22 | 54 | 134,821.812 / 47,349.835 (284.736%) |
+| 28539050 | 19 / 4 | 15 | 3,146.458 / 47,349.835 (6.645%) |
+| 2504101000, 2504109100 | 0 | 0 | no rows; not evidence of zero trade |
+| 3801100030, 3824999940 | 0 | 0 | no rows; 382499 is absent from the frozen BACI subset |
+
+Rows with identical published reporting dimensions have different masses; their
+underlying subdivisions and overlap are unverified. The raw sums above are
+reconciliation diagnostics, not asserted exports or capacity. The precursor line
+exceeds its BACI parent by a factor 2.847, preventing an agreed aggregate. No pCAM
+capacity becomes `production`. Early HTTP 429 responses were retried after a pause;
+the final four graphite queries returned valid empty responses. Raw Comtrade bytes
+remain local, hash-locked, with licence and completeness unverified. The first
+reconciliation snapshot is retained as `reconciliation-v1.json`; its zero for the
+unselected BACI 382499 parent is corrected to missing in `reconciliation.json`.
+
+**Korea.** Public KOSIS/Statistics Korea and KBIA searches did not locate a qualifying
+annual domestic physical cell-output series. KBIA industry-statistics pages repeatedly
+redirected; company/global sales, won values and production indices do not establish
+domestic GWh. The Korean cell node retains its flagged trade basis. This is a search
+outcome, not proof that no such series exists.
+
+**Competing demand.** The approved, preregistered N1/N2 sensitivity reserves non-battery
+uses using global battery shares: Co 76% (2024) and Ni 16% (2023). Country and metal-form
+allocation are assumptions. Cu/Al/Mn availability of 100%, 10%, 1% is explicitly assumed;
+no matching global battery-only primary share was located. Demand and normalisation
+stay fixed, including if baseline shortage appears. FINDINGS reports both recipe
+models and every contrary result. No reservation is inferred from an onset.
+
+The workbook audit required openpyxl (XLSX; xlrd supports the earlier XLS concordance)
+and the independent source audit used pypdf. Both were already installed globally;
+they are now recorded dependencies. No second Python environment was created.

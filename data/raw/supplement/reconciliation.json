@@ -1,0 +1,984 @@
+{
+ "period": 2024,
+ "japan_kAh": 5136311,
+ "eurostat": {
+  "20121955": {
+   "AT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "BE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "BG": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "CY": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "CZ": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "DE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "DK": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "EE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "ES": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "EU27_2020": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "FI": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "FR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "GR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "HR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "HU": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "IE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "IT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LU": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LV": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "MT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "NL": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "PL": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "PT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "RO": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "SE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "SI": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "SK": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   }
+  },
+  "20134351": {
+   "AT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "BE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "BG": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "CY": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "CZ": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "DE": {
+    "PQNTFLAG": ":E",
+    "PRODQNT": "12364000",
+    "PRODVAL": "14516000",
+    "QNTUNIT": "KG"
+   },
+   "DK": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "EE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "ES": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "EU27_2020": {
+    "PQNTBASE": "20",
+    "PQNTFLAG": ":R",
+    "PRODQNT": "12364080",
+    "PRODVAL": "14516500",
+    "QNTUNIT": "KG"
+   },
+   "FI": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "FR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "GR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "HR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "HU": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "IE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "IT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LU": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LV": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "MT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "NL": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "PL": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "PT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "RO": {
+    "PQNTFLAG": ":C",
+    "QNTUNIT": "KG"
+   },
+   "SE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "SI": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "SK": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   }
+  },
+  "20134352": {
+   "AT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "BE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "BG": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "CY": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "CZ": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "DE": {
+    "PQNTFLAG": ":E",
+    "PRODQNT": "12364000",
+    "PRODVAL": "14516000",
+    "QNTUNIT": "KG"
+   },
+   "DK": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "EE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "ES": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "EU27_2020": {
+    "PQNTFLAG": ":E",
+    "PRODQNT": "12364000",
+    "PRODVAL": "14516000",
+    "QNTUNIT": "KG"
+   },
+   "FI": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "FR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "GR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "HR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "HU": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "IE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "IT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LU": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LV": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "MT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "NL": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "PL": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "PT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "RO": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "SE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "SI": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "SK": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   }
+  },
+  "201343Z1": {
+   "AT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "BE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "BG": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "CY": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "CZ": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "DE": {
+    "PQNTFLAG": ":E",
+    "PRODQNT": "24728000",
+    "PRODVAL": "29031000",
+    "QNTUNIT": "KG"
+   },
+   "DK": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "EE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "ES": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "EU27_2020": {
+    "PQNTBASE": "20",
+    "PQNTFLAG": ":R",
+    "PRODQNT": "24728060",
+    "PRODVAL": "29032000",
+    "QNTUNIT": "KG"
+   },
+   "FI": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "FR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "GR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "HR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "HU": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "IE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "IT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LU": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LV": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "MT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "NL": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "PL": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "PT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "RO": {
+    "PQNTFLAG": ":C",
+    "QNTUNIT": "KG"
+   },
+   "SE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "SI": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "SK": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   }
+  },
+  "20134281": {
+   "AT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "BE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "BG": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "CY": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "CZ": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "DE": {
+    "PQNTFLAG": ":C",
+    "PRODVAL": "17792000",
+    "QNTUNIT": "KG"
+   },
+   "DK": {
+    "PQNTFLAG": ":U",
+    "QNTUNIT": "KG"
+   },
+   "EE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "ES": {
+    "PQNTFLAG": ":C",
+    "QNTUNIT": "KG"
+   },
+   "EU27_2020": {
+    "PQNTBASE": "6000000",
+    "PQNTFLAG": ":R",
+    "PRODQNT": "12000000",
+    "PRODVAL": "30000000",
+    "QNTUNIT": "KG"
+   },
+   "FI": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "FR": {
+    "PRODQNT": "1840475",
+    "PRODVAL": "9456000",
+    "QNTUNIT": "KG"
+   },
+   "GR": {
+    "PQNTFLAG": ":C",
+    "QNTUNIT": "KG"
+   },
+   "HR": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "HU": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "IE": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "IT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LU": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "LV": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "MT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "NL": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "PL": {
+    "PQNTFLAG": ":C",
+    "QNTUNIT": "KG"
+   },
+   "PT": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "RO": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "SE": {
+    "PQNTFLAG": ":C",
+    "QNTUNIT": "KG"
+   },
+   "SI": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   },
+   "SK": {
+    "PRODQNT": "0",
+    "PRODVAL": "0",
+    "QNTUNIT": "KG"
+   }
+  }
+ },
+ "eurostat_basis": "sold quantity; no APRODQNT observations; flags retained verbatim",
+ "eurostat_attribution": "Source: Eurostat DS-059358, extracted 2026-10-16; EU production indicators selected. Eurostat is not responsible for these transformations or conclusions.",
+ "comtrade": [
+  {
+   "code": "28429040",
+   "rows": 189,
+   "partners": 41,
+   "duplicate_reporting_keys": 148,
+   "returned_row_mass_t": 3285.214,
+   "BACI_HS22_parent": "284290",
+   "BACI_parent_export_t": 53001.725,
+   "diagnostic_row_sum_to_parent": 0.061983152435133006,
+   "partner_chunks_match": true,
+   "status": "overlap_and_completeness_unverified"
+  },
+  {
+   "code": "28539030",
+   "rows": 76,
+   "partners": 22,
+   "duplicate_reporting_keys": 54,
+   "returned_row_mass_t": 134821.812,
+   "BACI_HS22_parent": "285390",
+   "BACI_parent_export_t": 47349.835,
+   "diagnostic_row_sum_to_parent": 2.847355476529116,
+   "partner_chunks_match": true,
+   "status": "overlap_and_completeness_unverified"
+  },
+  {
+   "code": "28539050",
+   "rows": 19,
+   "partners": 4,
+   "duplicate_reporting_keys": 15,
+   "returned_row_mass_t": 3146.458,
+   "BACI_HS22_parent": "285390",
+   "BACI_parent_export_t": 47349.835,
+   "diagnostic_row_sum_to_parent": 0.06645129808794477,
+   "partner_chunks_match": true,
+   "status": "overlap_and_completeness_unverified"
+  },
+  {
+   "code": "2504101000",
+   "rows": 0,
+   "partners": 0,
+   "duplicate_reporting_keys": 0,
+   "returned_row_mass_t": 0.0,
+   "BACI_HS22_parent": "250410",
+   "BACI_parent_export_t": 143424.896,
+   "diagnostic_row_sum_to_parent": null,
+   "partner_chunks_match": null,
+   "status": "no_rows_returned_not_evidence_of_zero_trade"
+  },
+  {
+   "code": "2504109100",
+   "rows": 0,
+   "partners": 0,
+   "duplicate_reporting_keys": 0,
+   "returned_row_mass_t": 0.0,
+   "BACI_HS22_parent": "250410",
+   "BACI_parent_export_t": 143424.896,
+   "diagnostic_row_sum_to_parent": null,
+   "partner_chunks_match": null,
+   "status": "no_rows_returned_not_evidence_of_zero_trade"
+  },
+  {
+   "code": "3801100030",
+   "rows": 0,
+   "partners": 0,
+   "duplicate_reporting_keys": 0,
+   "returned_row_mass_t": 0.0,
+   "BACI_HS22_parent": "380110",
+   "BACI_parent_export_t": 519965.51,
+   "diagnostic_row_sum_to_parent": null,
+   "partner_chunks_match": null,
+   "status": "no_rows_returned_not_evidence_of_zero_trade"
+  },
+  {
+   "code": "3824999940",
+   "rows": 0,
+   "partners": 0,
+   "duplicate_reporting_keys": 0,
+   "returned_row_mass_t": 0.0,
+   "BACI_HS22_parent": "382499",
+   "BACI_parent_export_t": null,
+   "diagnostic_row_sum_to_parent": null,
+   "partner_chunks_match": null,
+   "status": "no_rows_returned_not_evidence_of_zero_trade"
+  }
+ ],
+ "comtrade_chunks": [
+  {
+   "code": "28429040",
+   "chunks": [
+    {
+     "file": "comtrade-28429040-partners-0.json",
+     "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28429040&flowCode=X&maxRecords=500&partnerCode=36,40,56,76,100,124,158,203,246,250",
+     "status": "ok",
+     "partners": [
+      36,
+      40,
+      56,
+      76,
+      100,
+      124,
+      158,
+      203,
+      246,
+      250
+     ],
+     "rows": 40,
+     "filter_respected": true
+    },
+    {
+     "file": "comtrade-28429040-partners-1.json",
+     "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28429040&flowCode=X&maxRecords=500&partnerCode=276,300,344,360,376,380,392,408,410,458",
+     "status": "ok",
+     "partners": [
+      276,
+      300,
+      344,
+      360,
+      376,
+      380,
+      392,
+      408,
+      410,
+      458
+     ],
+     "rows": 61,
+     "filter_respected": true
+    },
+    {
+     "file": "comtrade-28429040-partners-2.json",
+     "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28429040&flowCode=X&maxRecords=500&partnerCode=484,504,528,566,578,616,634,643,688,699",
+     "status": "ok",
+     "partners": [
+      484,
+      504,
+      528,
+      566,
+      578,
+      616,
+      634,
+      643,
+      688,
+      699
+     ],
+     "rows": 42,
+     "filter_respected": true
+    },
+    {
+     "file": "comtrade-28429040-partners-3.json",
+     "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28429040&flowCode=X&maxRecords=500&partnerCode=702,704,705,724,752,757,764,784,792,826",
+     "status": "ok",
+     "partners": [
+      702,
+      704,
+      705,
+      724,
+      752,
+      757,
+      764,
+      784,
+      792,
+      826
+     ],
+     "rows": 34,
+     "filter_respected": true
+    },
+    {
+     "file": "comtrade-28429040-partners-4.json",
+     "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28429040&flowCode=X&maxRecords=500&partnerCode=840",
+     "status": "ok",
+     "partners": [
+      840
+     ],
+     "rows": 12,
+     "filter_respected": true
+    }
+   ],
+   "unfiltered_rows": 189,
+   "known_partner_chunks_match": true,
+   "completeness": "unverified: only partners observed in the preview are checked"
+  },
+  {
+   "code": "28539030",
+   "chunks": [
+    {
+     "file": "comtrade-28539030-partners-0.json",
+     "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28539030&flowCode=X&maxRecords=500&partnerCode=56,124,158,276,360,376,392,410,428,442",
+     "status": "ok",
+     "partners": [
+      56,
+      124,
+      158,
+      276,
+      360,
+      376,
+      392,
+      410,
+      428,
+      442
+     ],
+     "rows": 44,
+     "filter_respected": true
+    },
+    {
+     "file": "comtrade-28539030-partners-1.json",
+     "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28539030&flowCode=X&maxRecords=500&partnerCode=458,504,528,616,620,699,704,710,724,752",
+     "status": "ok",
+     "partners": [
+      458,
+      504,
+      528,
+      616,
+      620,
+      699,
+      704,
+      710,
+      724,
+      752
+     ],
+     "rows": 19,
+     "filter_respected": true
+    },
+    {
+     "file": "comtrade-28539030-partners-2.json",
+     "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28539030&flowCode=X&maxRecords=500&partnerCode=826,840",
+     "status": "ok",
+     "partners": [
+      826,
+      840
+     ],
+     "rows": 13,
+     "filter_respected": true
+    }
+   ],
+   "unfiltered_rows": 76,
+   "known_partner_chunks_match": true,
+   "completeness": "unverified: only partners observed in the preview are checked"
+  },
+  {
+   "code": "28539050",
+   "chunks": [
+    {
+     "file": "comtrade-28539050-partners-0.json",
+     "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28539050&flowCode=X&maxRecords=500&partnerCode=158,392,410,840",
+     "status": "ok",
+     "partners": [
+      158,
+      392,
+      410,
+      840
+     ],
+     "rows": 19,
+     "filter_respected": true
+    }
+   ],
+   "unfiltered_rows": 19,
+   "known_partner_chunks_match": true,
+   "completeness": "unverified: only partners observed in the preview are checked"
+  }
+ ],
+ "comtrade_basis": "trade; row-sum diagnostic only; no production replacement",
+ "korea": "No qualifying domestic physical cell output located in public KOSIS/KBIA search; KBIA industry-stat pages redirected repeatedly. Trade basis retained.",
+ "EU_adoption": "German combined-purity sold carbonate is an imputed variant; LFP-only quantity cannot replace aggregate CAM; confidential is missing."
+}

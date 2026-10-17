@@ -11,7 +11,8 @@ from chokepoint.fetch import sha256
 ROOT = Path(__file__).resolve().parents[2]
 LOCAL = ("data/raw/hs/", "data/raw/cochilco/production_1996_2025.xlsx", "data/events/raw/oecd-",
          "data/events/raw/gdacs-", "data/events/raw/mofcom-", "data/events/raw/indonesia-",
-         "data/events/raw/zimbabwe-")
+         "data/events/raw/zimbabwe-", "data/raw/comtrade/", "data/raw/enduse/raw/",
+         "data/raw/eurostat/unfiltered/", "data/raw/supplement/local/")
 OPEN = ("data/events/raw/oecd-report-2026.pdf",)
 LICENCE = {"data/events/raw/oecd-report-2026.pdf": "CC-BY-4.0 (report p. 2)",
            "data/events/raw/oecd-": "OECD open licence per 2024 policy; dataset terms page "

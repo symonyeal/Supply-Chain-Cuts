@@ -15,3 +15,8 @@ data/events/raw/gdacs-*
 data/events/raw/mofcom-*
 data/events/raw/indonesia-*
 data/events/raw/zimbabwe-*
+
+data/raw/comtrade/
+data/raw/enduse/raw/
+data/raw/eurostat/unfiltered/
+data/raw/supplement/local/

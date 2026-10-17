@@ -23,12 +23,16 @@ def slim(N):
 def main():
     root, run = Path("."), Path("results") / sys.argv[1]
     run.mkdir(parents=True, exist_ok=True)
-    nets = {s: build(sector=s) for s in ("liion", "pv", "joint")}
+    voltage = float(sys.argv[2]) if len(sys.argv) > 2 else None
+    eu = len(sys.argv) > 3 and sys.argv[3] == 'eu-sold'
+    nets = {s: build(sector=s, japan_voltage=voltage, eu_sold=eu)
+            for s in ("liion", "pv", "joint")}
     L = nets["liion"]
     miit = {x["product"]: float(x["value"]) for x in csv.DictReader(
         (root / "data/raw/miit/production_2024.csv").open()) if x["statistic"] == "production"}
     trade = build(basis="trade", cutoff=0)
-    prod = {(x["country"], x["product"]): x["annual"] for x in build(cutoff=0)["nodes"]}
+    prod = {(x["country"], x["product"]): x["annual"] for x in build(
+        cutoff=0, japan_voltage=voltage, eu_sold=eu)["nodes"]}
     exports = {(x["country"], x["product"]): x["annual"] for x in trade["nodes"]
                if x["basis"] == "trade"}
     recon = [{"country": c, "product": p, "exports": e, "production": prod[c, p],
@@ -48,8 +52,10 @@ def main():
         "miit_parts_vs_total": {"parts": miit["li_ion_consumer_cell"] + miit[
             "li_ion_storage_cell"] + miit["li_ion_traction_cell"], "total": miit["li_ion_cell"]},
         "exports_vs_production": recon,
-        "comtrade_tariff_lines_vs_baci": "not measured: Comtrade tariff lines not fetched "
-                                         "(optional key not supplied)",
+        "comtrade_tariff_lines_vs_baci": json.loads(
+            (root / "data/raw/supplement/reconciliation.json").read_text()),
+        "japan_nominal_voltage": voltage,
+        "german_sold_carbonate_proxy": eu,
         "bgs": "not used: licence unresolved",
         "reexport_flags": reexport_flags(L),
         "events_vs_research_csv": {

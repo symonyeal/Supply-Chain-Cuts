@@ -769,6 +769,336 @@
       "sha256": "386b18f60f81e161ce341c90a99218b08b70aeff2fefba3dba1e1385b7708097",
       "bytes": 1378,
       "transform": "one-to-one facts from Correlation HS2012-HS2007; raw workbook local only"
+    },
+    {
+      "path": "data/raw/meti/h2daa2024k.xlsx",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040293825&fileKind=0",
+      "license": "CC-BY-4.0 via e-Stat terms section 6(c); third-party exclusions do not apply to METI numerical tables",
+      "retrieved": "2026-10-16",
+      "sha256": "14307dab7b1ceac9f6255ce7066e430123ec7abdc07840fe7e5f361cb65221da",
+      "bytes": 2592344
+    },
+    {
+      "path": "data/raw/supplement/local/estat-terms.html",
+      "url": "https://www.e-stat.go.jp/terms-of-use",
+      "license": "Terms/source audit snapshot; raw retained locally",
+      "retrieved": "2026-10-16",
+      "sha256": "065525f3eed90d12798c157c1bc5c46decd008b3eed9530b4c8a76ddee20c62f",
+      "bytes": 132062
+    },
+    {
+      "path": "data/raw/supplement/local/eurostat-terms.html",
+      "url": "https://ec.europa.eu/eurostat/web/main/help/copyright-notice",
+      "license": "Terms/source audit snapshot; raw retained locally",
+      "retrieved": "2026-10-16",
+      "sha256": "f74ac50d13dd7b9bdd82574626213faeddae83766cdf4e4a9f6f95ab88ca812d",
+      "bytes": 179394
+    },
+    {
+      "path": "data/raw/supplement/local/prodcom-methods.html",
+      "url": "https://ec.europa.eu/eurostat/cache/metadata/en/prom_esms.htm",
+      "license": "Terms/source audit snapshot; raw retained locally",
+      "retrieved": "2026-10-16",
+      "sha256": "354dee9e83b943f9d693cc2917df7fb0a429a9c4db146afdc9ca0c8b21f437b4",
+      "bytes": 245402
+    },
+    {
+      "path": "data/raw/supplement/local/k-bia.html",
+      "url": "https://www.k-bia.or.kr/",
+      "license": "Terms/source audit snapshot; raw retained locally",
+      "retrieved": "2026-10-16",
+      "sha256": "37644381c2fa86024be66ed25d10115d802979b9c88f54d362b5fcb68150bec9",
+      "bytes": 36377
+    },
+    {
+      "path": "data/raw/enduse/raw/cobalt-enduse-2024.pdf",
+      "url": "https://www.cobaltinstitute.org/wp-content/uploads/2025/06/Cobalt-Market-Report-2024_Factsheet.pdf",
+      "license": "Reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "d49e1b9de39fc9f93c54bd9cba9ed072c176522456f3d2ab38289c3f62199b23",
+      "bytes": 357745
+    },
+    {
+      "path": "data/raw/enduse/raw/nickel-factbook-2024.pdf",
+      "url": "https://insg.org/wp-content/uploads/2024/09/publist_The-World-Nickel-Factbook-2024.pdf",
+      "license": "Reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "c277337b9625821d5c3b6ee03655f1b7db0feefb93d469224c284e36058b61e1",
+      "bytes": 2353989
+    },
+    {
+      "path": "data/raw/eurostat/unfiltered/prodcom-20121955.csv",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-059358/A..20121955./?startPeriod=2024&endPeriod=2024&format=SDMX-CSV",
+      "license": "Eurostat reuse policy; full country scope retained locally; selected EU rows redistributable",
+      "retrieved": "2026-10-16",
+      "sha256": "f86ddb0beef854fc5c3c916c76f808ba1ed8817fae98a5fe966170a5a1033e89",
+      "bytes": 28339
+    },
+    {
+      "path": "data/raw/eurostat/unfiltered/prodcom-20134351.csv",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-059358/A..20134351./?startPeriod=2024&endPeriod=2024&format=SDMX-CSV",
+      "license": "Eurostat reuse policy; full country scope retained locally; selected EU rows redistributable",
+      "retrieved": "2026-10-16",
+      "sha256": "b9fea227854df1c8d1a299956b0c46f08780981258ece7a5ac6ee3bf2961cf6c",
+      "bytes": 21379
+    },
+    {
+      "path": "data/raw/eurostat/unfiltered/prodcom-20134352.csv",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-059358/A..20134352./?startPeriod=2024&endPeriod=2024&format=SDMX-CSV",
+      "license": "Eurostat reuse policy; full country scope retained locally; selected EU rows redistributable",
+      "retrieved": "2026-10-16",
+      "sha256": "e8b751d8f3ef05af4028bfb8d05fd222fed3f7ede9d984199f68580bdf106a77",
+      "bytes": 21214
+    },
+    {
+      "path": "data/raw/eurostat/unfiltered/prodcom-201343Z1.csv",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-059358/A..201343Z1./?startPeriod=2024&endPeriod=2024&format=SDMX-CSV",
+      "license": "Eurostat reuse policy; full country scope retained locally; selected EU rows redistributable",
+      "retrieved": "2026-10-16",
+      "sha256": "9651ff36ba5df929195c200238cb4dd92ca07cacf03631152141b1dd024c74aa",
+      "bytes": 29443
+    },
+    {
+      "path": "data/raw/eurostat/unfiltered/prodcom-20134281.csv",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-059358/A..20134281./?startPeriod=2024&endPeriod=2024&format=SDMX-CSV",
+      "license": "Eurostat reuse policy; full country scope retained locally; selected EU rows redistributable",
+      "retrieved": "2026-10-16",
+      "sha256": "8c290d248692f7e54608eaabe15d13f92a00dfb659875ca2ff5ea794e2927bf4",
+      "bytes": 20797
+    },
+    {
+      "path": "data/raw/eurostat/prodcom-structure.xml",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/datastructure/ESTAT/DS-059358/latest?references=children",
+      "license": "Eurostat metadata reuse policy, attribution; Decision 2011/833/EU",
+      "retrieved": "2026-10-16",
+      "sha256": "360a64de5f6bfcf10dfb73eba8a30c320491c1b2797c8e18edb69bcd6c514872",
+      "bytes": 2587595
+    },
+    {
+      "path": "data/raw/eurostat/prodcom-flow.xml",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/dataflow/ESTAT/DS-059358/latest?references=children",
+      "license": "Eurostat metadata reuse policy, attribution; Decision 2011/833/EU",
+      "retrieved": "2026-10-16",
+      "sha256": "e919bf4e7f52fbfd2109f632f37ee596718d5b06c32e7a11e46b0bafc7917102",
+      "bytes": 7059
+    },
+    {
+      "path": "data/raw/comtrade/28429040.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28429040&flowCode=X&maxRecords=500",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "b7d18ea9e70ed4cd58320804cb6e9fd14f858bf9073a4b0d2faa179c9ccb0ce7",
+      "bytes": 113844
+    },
+    {
+      "path": "data/raw/comtrade/28539030.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28539030&flowCode=X&maxRecords=500",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "7c6d6a95343395fdc4ae71bf51061420474b097a689caa086e88ee5ed6dc772d",
+      "bytes": 46167
+    },
+    {
+      "path": "data/raw/comtrade/28539050.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28539050&flowCode=X&maxRecords=500",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "e347928791bbe732de3b8a5e5e1635357ec8d5347b15ec35fca3aa2c99c45cd6",
+      "bytes": 11623
+    },
+    {
+      "path": "data/raw/comtrade/2504101000.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=2504101000&flowCode=X&maxRecords=500",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "569d281fa57465882871482e8a6aebc7e37a37c7a063fd6d5aa7c50653976225",
+      "bytes": 58
+    },
+    {
+      "path": "data/raw/comtrade/2504109100.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=2504109100&flowCode=X&maxRecords=500",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "0d18aee8bbdb2081ce896841ef76a1c2ab685c14db3d827fe79a8ee11996426d",
+      "bytes": 57
+    },
+    {
+      "path": "data/raw/comtrade/3801100030.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=3801100030&flowCode=X&maxRecords=500",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "bc81fed4897c354a66d10ffaaa3b2a0fb2d62a32e2cdc456be5989bef0a21e2b",
+      "bytes": 58
+    },
+    {
+      "path": "data/raw/comtrade/3824999940.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=3824999940&flowCode=X&maxRecords=500",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "0d18aee8bbdb2081ce896841ef76a1c2ab685c14db3d827fe79a8ee11996426d",
+      "bytes": 57
+    },
+    {
+      "path": "data/raw/comtrade/comtrade-28429040-partners-0.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28429040&flowCode=X&maxRecords=500&partnerCode=36,40,56,76,100,124,158,203,246,250",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "2023af08c88dadad92bd181e805393b59898b7f968a6d1229acbb2d106e742c9",
+      "bytes": 24193
+    },
+    {
+      "path": "data/raw/comtrade/comtrade-28429040-partners-1.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28429040&flowCode=X&maxRecords=500&partnerCode=276,300,344,360,376,380,392,408,410,458",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "293825432a13b61730a4b93722b3600162c7b67fce67cebace5fba78abd0a97a",
+      "bytes": 36836
+    },
+    {
+      "path": "data/raw/comtrade/comtrade-28429040-partners-2.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28429040&flowCode=X&maxRecords=500&partnerCode=484,504,528,566,578,616,634,643,688,699",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "31e4d182fb7a54589bc0a6c26cf519a8451aebb1481e5d5e3dc272b90a85507e",
+      "bytes": 25301
+    },
+    {
+      "path": "data/raw/comtrade/comtrade-28429040-partners-3.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28429040&flowCode=X&maxRecords=500&partnerCode=702,704,705,724,752,757,764,784,792,826",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "722a96e77d3d4e08c3bdeb16335f0172528890f5b8c9216f89d22276a8533f62",
+      "bytes": 20429
+    },
+    {
+      "path": "data/raw/comtrade/comtrade-28429040-partners-4.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28429040&flowCode=X&maxRecords=500&partnerCode=840",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "b84855b55d71a2e17f296186bde41b0a67bc0127b18c54d63e87244e0f40ed01",
+      "bytes": 7316
+    },
+    {
+      "path": "data/raw/comtrade/comtrade-28539030-partners-0.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28539030&flowCode=X&maxRecords=500&partnerCode=56,124,158,276,360,376,392,410,428,442",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "f89e243d515d33c61059aa520d4cf84d90393ec0edecf4442697c45f0193e381",
+      "bytes": 26819
+    },
+    {
+      "path": "data/raw/comtrade/comtrade-28539030-partners-1.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28539030&flowCode=X&maxRecords=500&partnerCode=458,504,528,616,620,699,704,710,724,752",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "0e7535622824978162086fd256817b0daf3a4ea6e51d548496691b4444a68597",
+      "bytes": 11516
+    },
+    {
+      "path": "data/raw/comtrade/comtrade-28539030-partners-2.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28539030&flowCode=X&maxRecords=500&partnerCode=826,840",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "16b1a4e16c59e180c44b86e2d31e672eb5e5b6d2b57ccd228aa485d421fcdd29",
+      "bytes": 7949
+    },
+    {
+      "path": "data/raw/comtrade/comtrade-28539050-partners-0.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28539050&flowCode=X&maxRecords=500&partnerCode=158,392,410,840",
+      "license": "Comtrade reuse licence unverified; local only",
+      "retrieved": "2026-10-16",
+      "sha256": "9bfc83c105bb0a54164ec4c46894bae6431397ffd86735fcc1a01243136a550f",
+      "bytes": 11623
+    },
+    {
+      "path": "data/raw/comtrade/chunks.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS?reporterCode=156&period=2024&cmdCode=28429040&flowCode=X&maxRecords=500",
+      "license": "Acquisition diagnostics, no raw records",
+      "retrieved": "2026-10-16",
+      "sha256": "e4585362ec1fb88d0cd7e4ef4dd4146634c882795ed7067b4b43ba6f7023cf93",
+      "bytes": 4463,
+      "transform": "Disjoint observed-partner batches, Chokepoint-Lab-brief/chunk-comtrade.py"
+    },
+    {
+      "path": "data/raw/meti/liion_2024.csv",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040293825&fileKind=0",
+      "license": "CC-BY-4.0 via e-Stat terms section 6(c)",
+      "retrieved": "2026-10-16",
+      "sha256": "e722593d32ab9ca947dcdddad8c8b5c4477e0f8fb2c40f925ed0288240b2e2e4",
+      "bytes": 618,
+      "transform": "data.research.supplement: actual-values rows 3488/3498, columns I:T"
+    },
+    {
+      "path": "data/raw/eurostat/prodcom-20121955-EU.csv",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-059358/A..20121955./?startPeriod=2024&endPeriod=2024&format=SDMX-CSV",
+      "license": "Eurostat statistical-data reuse policy, attribution; Decision 2011/833/EU",
+      "retrieved": "2026-10-16",
+      "sha256": "cd46ce4ec07e8b7d45ecc5af751d0c26ea742ad76471df1c772b2049561b9e85",
+      "bytes": 5837,
+      "transform": "data.research.supplement: EU27 production indicators selected; flags unchanged"
+    },
+    {
+      "path": "data/raw/eurostat/prodcom-20134351-EU.csv",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-059358/A..20134351./?startPeriod=2024&endPeriod=2024&format=SDMX-CSV",
+      "license": "Eurostat statistical-data reuse policy, attribution; Decision 2011/833/EU",
+      "retrieved": "2026-10-16",
+      "sha256": "8223d661943c37a5ba5c80bc70238bc32b0eaad0386a257e9753aa6eea3bb480",
+      "bytes": 6023,
+      "transform": "data.research.supplement: EU27 production indicators selected; flags unchanged"
+    },
+    {
+      "path": "data/raw/eurostat/prodcom-20134352-EU.csv",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-059358/A..20134352./?startPeriod=2024&endPeriod=2024&format=SDMX-CSV",
+      "license": "Eurostat statistical-data reuse policy, attribution; Decision 2011/833/EU",
+      "retrieved": "2026-10-16",
+      "sha256": "8b7f5e43b09dd77b2aa1ff2fc4b5f43283dea1c39b64dcfc5bdd831f5099fa59",
+      "bytes": 6012,
+      "transform": "data.research.supplement: EU27 production indicators selected; flags unchanged"
+    },
+    {
+      "path": "data/raw/eurostat/prodcom-201343Z1-EU.csv",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-059358/A..201343Z1./?startPeriod=2024&endPeriod=2024&format=SDMX-CSV",
+      "license": "Eurostat statistical-data reuse policy, attribution; Decision 2011/833/EU",
+      "retrieved": "2026-10-16",
+      "sha256": "05cae21ce2a38a71bbcaf2ed26b296fa00607783bb3e488b23ae3e462a503570",
+      "bytes": 6023,
+      "transform": "data.research.supplement: EU27 production indicators selected; flags unchanged"
+    },
+    {
+      "path": "data/raw/eurostat/prodcom-20134281-EU.csv",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-059358/A..20134281./?startPeriod=2024&endPeriod=2024&format=SDMX-CSV",
+      "license": "Eurostat statistical-data reuse policy, attribution; Decision 2011/833/EU",
+      "retrieved": "2026-10-16",
+      "sha256": "6c6500187f6220cf154554ef3f77256299e10c0c2fabcfda9bdef8b3eeb36bd8",
+      "bytes": 5701,
+      "transform": "data.research.supplement: EU27 production indicators selected; flags unchanged"
+    },
+    {
+      "path": "data/raw/supplement/reconciliation-v1.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS",
+      "license": "Transcribed numerical facts and acquisition diagnostics; source attributions in file",
+      "retrieved": "2026-10-16",
+      "sha256": "bb344563b52e8b05444bd68f1ab032f52c44332a32776ba8d1a5d4bc40eb6c8a",
+      "bytes": 18742,
+      "transform": "data.research.supplement from locked METI, Eurostat, BACI and preview bytes; superseded: unselected BACI parent recorded as 0, corrected to missing in reconciliation.json"
+    },
+    {
+      "path": "data/raw/enduse/battery_shares.json",
+      "url": "https://www.cobaltinstitute.org/wp-content/uploads/2025/06/Cobalt-Market-Report-2024_Factsheet.pdf",
+      "license": "Transcribed numerical facts",
+      "retrieved": "2026-10-16",
+      "sha256": "ae72f6d208ed29a176edb093b7864cbd54831290a36ea054f0e19ee38d8532da",
+      "bytes": 753,
+      "transform": "Cobalt Institute page 2 components; INSG Factbook printed page 32, second URL in file"
+    },
+    {
+      "path": "data/raw/supplement/reconciliation.json",
+      "url": "https://comtradeapi.un.org/public/v1/previewTariffline/C/A/HS",
+      "license": "Transcribed numerical facts and acquisition diagnostics",
+      "retrieved": "2026-10-17",
+      "sha256": "52515444776c36295daa37408f6145379cbafc1550ab91a17d25b93540e93a4c",
+      "bytes": 18745,
+      "transform": "data.research.supplement; unselected BACI 382499 parent remains missing, not zero"
     }
   ]
 }

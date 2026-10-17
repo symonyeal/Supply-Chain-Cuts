@@ -398,3 +398,15 @@ Access: free HTML and PDF on mofcom.gov.cn and exportcontrol.mofcom.gov.cn; no A
 - Australia REQ Sep 2026 workbooks (page timed out); IEA Critical Minerals Dataset country grain for refining.
 - BGS World Mineral Statistics licence (OGL vs BGS Digital Data Licence); Eurostat Prodcom reuse terms not re-read.
 - DesInventar data licence; GDACS terms PDF (Mar 2025) not read; GDACS start year.
+
+
+## W5 follow-up, 2026-10-16/17
+
+DATA's primary-source supplement supersedes the initial acquisition expectations.
+METI annual files require no appId; the 2024 file is frozen. Eurostat's reuse policy
+was re-read and verified for EU production rows. The keyless tariff preview was
+partner-checked but does not reconcile as a complete unique-flow aggregate. Korea
+remains on a flagged export proxy. Cobalt Institute and INSG global consumption
+shares support the approved allocation sensitivity; country allocation is assumed.
+The original research notes are retained as dated observations, not current claims
+that these quantities have all been adopted as production.

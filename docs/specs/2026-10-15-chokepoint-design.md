@@ -6,6 +6,10 @@ Cu/Al/Mn use assumed available fractions 1, 0.1 and 0.01. Demand stays fixed and
 baseline shortages remain visible (MODEL, W5). New METI data enter an explicit
 supplement variant: Japan's 2024 sealed Li-ion output in kAh times assumed voltage,
 labelled imputed. Original frozen network variants and result bundles remain reproducible.
+An additional imputed variant substitutes German Prodcom sold lithium-carbonate
+quantity (combined purity code) for its export proxy. Sold quantity is not actual
+production or battery-grade output. LFP-only sold output is retained as a scope check,
+not substituted for aggregate CAM without a measured recipe/capacity split.
 
 Implementation clarifications (2026-10-15): [MODEL](../MODEL.md) specifies the dual sign,
 immediate-duration predecessor certificates and upper-orthant exclusions. Exact-state

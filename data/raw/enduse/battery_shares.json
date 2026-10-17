@@ -1,0 +1,18 @@
+{
+ "basis": "global consumption estimates; proportional country allocation is assumed",
+ "cobalt": {
+  "year": 2024,
+  "fraction": 0.76,
+  "components": {"EV": 0.43, "portables": 0.30, "other_batteries": 0.03},
+  "source": "Cobalt Institute, Cobalt Market Report 2024 factsheet, physical page 2",
+  "url": "https://www.cobaltinstitute.org/wp-content/uploads/2025/06/Cobalt-Market-Report-2024_Factsheet.pdf"
+ },
+ "nickel": {
+  "year": 2023,
+  "fraction": 0.16,
+  "source": "INSG, The World Nickel Factbook 2024, printed page 32, physical page 33",
+  "url": "https://insg.org/wp-content/uploads/2024/09/publist_The-World-Nickel-Factbook-2024.pdf"
+ },
+ "unidentified": ["copper", "aluminium", "manganese"],
+ "assumed_available_fractions": [1, 0.1, 0.01]
+}

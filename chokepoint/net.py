@@ -7,6 +7,7 @@ per month. The rescaling is diagonal, hence exact; S_p = Σ_v annual_v / R_p is 
 ratio of layer p in years of requirement per year.
 """
 import csv
+import json
 from collections import defaultdict
 from pathlib import Path
 
@@ -70,13 +71,15 @@ def _usgs(root, names):
 
 
 def build(root=Path("."), sector="liion", ncm=0.5, cutoff=0.01, basis="production",
-          exclude=()):
+          exclude=(), japan_voltage=None, eu_sold=False):
     """Build the physical network and its requirement-unit capacities.
 
     INPUT  sector ... liion | pv | joint;  ncm ... NCM622 fraction of the cathode mix
            cutoff ... origins below this share of their layer are excluded and reported
            basis .... production (MIIT, Cochilco, MYB override export proxies) | trade
            exclude .. (country, product) pairs removed before demand is set (test B1)
+           japan_voltage .. optional METI supplement, assumed nominal V (not observed)
+           eu_sold .. optional German Prodcom sold-carbonate proxy (imputed)
     OUTPUT nodes with annual, basis, share and capacity; physical a; requirements R;
            supply ratios S; coverage of each layer by the retained nodes.
     Demand is retained final output scaled to what the undisrupted chain delivers
@@ -137,6 +140,19 @@ def build(root=Path("."), sector="liion", ncm=0.5, cutoff=0.01, basis="productio
                 if x["product_source_label"] == "CARBONATO DE LITIO":
                     put("CHL", "li_carbonate", float(x["value"])/1000, "production", "kt",
                         "Cochilco Hoja1 AD21", "Carbonate only; sulfate excluded")
+            if japan_voltage is not None:
+                J = list(csv.DictReader((root / "data/raw/meti/liion_2024.csv").open()))
+                q = sum(float(x["production_kAh"]) for x in J)
+                put("JPN", "cell", q*japan_voltage/1e6, "imputed", "GWh",
+                    "METI 2024 h2daa2024k, items 0108/0109",
+                    f"Sealed Li-ion production kAh times assumed {japan_voltage} V; "
+                    "not installed capacity; scope excludes unreported battery categories")
+            if eu_sold:
+                E = json.loads((root / "data/raw/supplement/reconciliation.json").read_text())
+                q = E['eurostat']['201343Z1']['DE']['PRODQNT']
+                put("DEU", "li_carbonate", float(q)/1e6, "imputed", "kt",
+                    "Eurostat Prodcom 2024 201343Z1 sold quantity",
+                    "Sold-output proxy, both purity grades; not actual production or battery grade")
         else:
             for c in iso3:
                 put(c, "refined_co", trade(c, "refined_co"), "trade", "kt",
