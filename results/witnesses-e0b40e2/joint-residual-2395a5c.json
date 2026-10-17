@@ -1,0 +1,26 @@
+{
+ "stamp": {
+  "revision": "e0b40e244d7aeba4064ae533d7072b0820e869f8",
+  "dirty": [],
+  "sources": 88,
+  "absent_local_only": [],
+  "lock_sha256": "8d60b382f46a2cf45c811d94b81bda55478b771971c937ee8de80918d570b9a4",
+  "python": "3.14.7",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1"
+ },
+ "source": "joint-residual-2395a5c",
+ "checks": [
+  {
+   "task": "base_a0.1_h0_s0_L6",
+   "cuts": 244,
+   "max_error": 0
+  },
+  {
+   "task": "base_a0.25_h0_s0_L6",
+   "cuts": 180,
+   "max_error": 0
+  }
+ ],
+ "all_recovered_witnesses_match_LP": true
+}

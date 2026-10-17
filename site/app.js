@@ -115,7 +115,7 @@ const SECTIONS = {
       line: { color: T.accent, width: 3 }, marker: { color: T.accent, size: 8 },
       hovertemplate: "%{y}: L = %{x:.3%}<extra></extra>" }], {
       height: 390, margin: { t: 16, r: 24, b: 56, l: innerWidth < 700 ? 186 : 224 },
-      xaxis: { range: [0, 0.65], tickformat: ".0%", title: { text: "annual lower bound L, scenario" } },
+      xaxis: { range: [0, 0.65], tickformat: ".0%", title: { text: "annual L<br>scenario" } },
       yaxis: { autorange: "reversed" },
       shapes: [{ type: "line", x0: head.L, x1: head.L, yref: "paper", y0: 0, y1: 1, line: { color: T.context, dash: "dot", width: 1 } }],
     });
