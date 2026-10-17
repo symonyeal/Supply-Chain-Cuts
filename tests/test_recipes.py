@@ -64,3 +64,13 @@ def test_baseline_failure_is_the_empty_cut():
     M = matrices([('A', 'cell')], [0.1], {}, [1, 1])
     assert enumerate_brute(M, [1, 2], k=0) == [[0]]
     assert enumerate_lattice(M, [1, 2], k=0)['cuts'] == [[0]]
+
+
+def test_restored_by_half_horizon_makes_quota_nonbinding():
+    rng = np.random.default_rng(10)
+    A = matrices(V, [5, 10, 10, 10], {}, [10]*4, recipes=R, shares={'cell': (0, 1)})
+    B = matrices(V, [5, 10, 10, 10], {}, [10]*4, recipes=R,
+                 shares={'cell': (0.25, 0.75)})
+    for _ in range(40):
+        D = rng.choice([0, 1, 2], 4)
+        assert solve(A, D)['phi'] == pytest.approx(solve(B, D)['phi'])

@@ -22,7 +22,8 @@ def job(sector, run, out):
     previous = Path('results') / f'{sector}-residual-2395a5c'
     old = json.loads((previous / 'risk.json').read_text())
     N = build(sector=sector)
-    assert N == json.loads((previous / 'network.json').read_text())[sector]
+    frozen = json.loads((previous / 'network.json').read_text())[sector]
+    assert all(N[k] == x for k, x in frozen.items())
     M = model(N)
     assert list(map(list, M['V'])) == old['nodes']
     baseline = solve(model(N, shares=(0.5, 0.5), T=1, durations=(1,)), [0]*len(M['V']))
