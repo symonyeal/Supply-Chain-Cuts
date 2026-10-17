@@ -1,4 +1,4 @@
-# Chokepoint-Lab: design
+# Supply-Chain-Cuts: design
 
 W5 clarification (2026-10-16, approved): competing-demand reservations multiply
 mined/refined Co and Ni capacities by global battery-use shares 0.76 and 0.16;
@@ -60,7 +60,7 @@ deciding where supply diversification pays.
 (v0.2.0). Out of scope: firms, investment or price claims, forecasting.
 
 **Tooling.** System Python 3.14, numpy, scipy (`scipy.optimize.milp`, `linprog`; HiGHS).
-House style per skill `math-style`. Public repo `symonyeal/Chokepoint-Lab`, `main` only.
+House style per skill `math-style`. Public repo `symonyeal/Supply-Chain-Cuts`, `main` only.
 
 ## 2. Architecture
 

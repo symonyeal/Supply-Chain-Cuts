@@ -39,7 +39,7 @@ source. Mathematical outcomes are return values, not exceptions.
 
 ### Issue tracker
 
-GitHub Issues on `symonyeal/Chokepoint-Lab`, via `gh`. See `docs/agents/issue-tracker.md`.
+GitHub Issues on `symonyeal/Supply-Chain-Cuts`, via `gh`. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

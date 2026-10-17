@@ -1,6 +1,6 @@
-# Chokepoint-Lab
+# Supply Chain Cuts
 
-**Explorer: https://symonyeal.github.io/Chokepoint-Lab/**
+**Explorer: https://symonyeal.github.io/Supply-Chain-Cuts/**
 
 Which minimal sets of (country, product) supply losses stop global lithium-ion cell
 production, and how likely are they each year?

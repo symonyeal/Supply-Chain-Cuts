@@ -1,4 +1,4 @@
-# Chokepoint-Lab: data and literature verification
+# Supply-Chain-Cuts: data and literature verification
 
 Checked 2026-10-15 against primary sources (dataset pages, documentation, official PDFs, first-party APIs, Crossref/DOI records). Small samples only were downloaded (MCS 2026 commodity CSV, 3 MB; one OECD SDMX slice, 1 MB; Comtrade HS reference lists). "Unverified" means I could not reach the owning source. §12 adds foreign-language and alternative primary sources (Chinese, Japanese, Korean, Spanish, Indonesian, French); its samples are in `dl2/`.
 

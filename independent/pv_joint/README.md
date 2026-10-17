@@ -3,7 +3,7 @@ These independent scripts reproduce the original fixed 50% LFP/50% NCM622 PV and
 Use system Python 3.14 with numpy, scipy, openpyxl and pypdf installed. Run these PowerShell commands from this directory. Set `--root` to the frozen input tree and `--out` to a separate output directory; the cut paths are explicit. These are the commands tested in this workspace:
 
 ```powershell
-$inputRoot = 'C:\Users\Yeal\Documents\My Projects\Chokepoint-Lab'
+$inputRoot = 'C:\Users\Yeal\Documents\My Projects\Supply-Chain-Cuts'
 $outputDir = '..\portable-test'
 py -3.14 .\recompute.py --root $inputRoot --out $outputDir --pv-cuts '.\inputs\pv-cuts.json' --joint-cuts '.\inputs\joint-cuts.json'
 py -3.14 .\trace_sources.py --root $inputRoot --out $outputDir

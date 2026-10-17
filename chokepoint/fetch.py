@@ -42,7 +42,7 @@ def fetch_source(source, root=Path(".")):
         return p
     if source.get("transform") or source.get("archive_member"):
         raise ValueError("Derived snapshot: regenerate with the recorded acquisition script")
-    request = urllib.request.Request(source["url"], headers={"User-Agent": "Chokepoint-Lab/0.2"})
+    request = urllib.request.Request(source["url"], headers={"User-Agent": "Supply-Chain-Cuts/0.2"})
     with urllib.request.urlopen(request, timeout=120) as response:
         data = response.read()
     if hashlib.sha256(data).hexdigest() != source["sha256"]:

@@ -265,7 +265,7 @@ snapshots. Carbonate sold quantity includes technical grades and need not equal
 actual 2024 production. LFP sales alone neither measure total CAM nor reveal
 shared/dedicated plant capacity; no recipe split is invented. Eurostat's statistical
 reuse policy permits the selected EU production rows with attribution; unfiltered
-snapshots stay local. Source: Eurostat, extracted 2026-10-16. Chokepoint-Lab selected
+snapshots stay local. Source: Eurostat, extracted 2026-10-16. Supply-Chain-Cuts selected
 rows and made comparisons; Eurostat is not responsible for those transformations
 or conclusions.
 
