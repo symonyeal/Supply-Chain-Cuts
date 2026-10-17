@@ -78,6 +78,9 @@ def enumerate_lattice(M, durations, alpha=0.25, k=3, eps=1e-7, eligible=None):
             cache[key] = R["phi"] > theta + eps
         return cache[key]
 
+    if fails([0]*n):
+        return {"cuts": [[0]*n], "lp_calls": len(cache)}
+
     dmax = {v: durations[-1] for v in eligible}      # longest duration below v's singleton cut
 
     def completions(E, later, p, r):

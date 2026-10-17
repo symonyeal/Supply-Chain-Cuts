@@ -4,12 +4,15 @@ from scipy.optimize import linprog
 from scipy.sparse import hstack, lil_matrix
 
 
-def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, ends=None):
+def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, ends=None,
+             recipes=None, stock=None, shares=None):
     """Build min c'x, Ax <= b(D), Ex = f, x >= 0 over blocks of months.
 
     INPUT V: (country, product); u: monthly capacity; a[p,q]: input/output units;
           d: monthly demand vector or {final: vector}; h: months of stock;
-          sigma: spare fraction; L: ramp months; ends: block end months (default monthly).
+          sigma: spare fraction; L: ramp months; ends: block end months (default monthly);
+          recipes[layer][name] = (output, {input: coefficient}); shares[final] = (lo, hi);
+          stock[input, layer]: reference input per unit capacity for initial inventory.
     OUTPUT shared primal matrices and valid capacity-dual bounds.
     Block aggregation is exact when all data are constant on each block: averaging a
     feasible solution over a block keeps every linear row, and inventory moves linearly
@@ -29,6 +32,23 @@ def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, 
         raise ValueError("Demand vectors must have equal positive length and nonnegative values")
     if any(not np.isfinite(x) or x <= 0 for x in a.values()):
         raise ValueError("Input coefficients must be finite and positive")
+    layers = {p for _, p in V}
+    recipes = {p: {p: (p, {q: x for (q, r), x in a.items() if r == p})}
+               for p in layers} | (recipes or {})
+    shares = shares or {}
+    if any(not 0 <= lo <= hi <= 1 for lo, hi in shares.values()):
+        raise ValueError("Chemistry shares require 0 <= lo <= hi <= 1")
+    recipes = {p: {r: (q, b) for r, (q, b) in rs.items()
+                   if not (q in shares and ((shares[q][1] == 0 and r == 'ncm') or
+                                            (shares[q][0] == 1 and r != 'ncm')))}
+               for p, rs in recipes.items()}
+    if h and stock is None and any(len(rs) > 1 for rs in recipes.values()):
+        raise ValueError("Alternative recipes with stock need reference input coefficients")
+    stock = stock if stock is not None else {
+        (q, p): x for p, rs in recipes.items() for _, b in rs.values() for q, x in b.items()}
+    arcs = [(q, p, x) for rs in recipes.values() for p, b in rs.values() for q, x in b.items()]
+    if any(not np.isfinite(x) or x <= 0 for _, _, x in arcs):
+        raise ValueError("Recipe coefficients must be finite and positive")
     ends = np.arange(1, T + 1) if ends is None else np.array(sorted(set(ends)), int)
     if ends[0] < 1 or ends[-1] != T:
         raise ValueError("Block ends must lie in 1..T and end at T")
@@ -37,17 +57,21 @@ def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, 
     if any(np.ptp(x[s - 1:e]) > 0 for s, e in zip(starts, ends, strict=True)
            for x in [ramp, *d.values()]):
         raise ValueError("Demand and ramp must be constant on every block")
-    products = {p for _, p in V} | {p for edge in a for p in edge} | set(d)
+    products = {p for rs in recipes.values() for p, _ in rs.values()} | {
+        q for q, _, _ in arcs} | set(d)
     order, remaining = [], set(products)
     while remaining:
-        P = sorted(p for p in remaining if not any(q == p and r in remaining for r, q in a))
+        P = sorted(p for p in remaining if not any(q == p and r in remaining
+                                                  for r, q, _ in arcs))
         if not P:
             raise ValueError("Product graph must be acyclic")
         order.extend(P)
         remaining.difference_update(P)
     M = {p: float(p in d) for p in products}
     for p in reversed(order):
-        M[p] = max([M[p], *(M[q] / x for (r, q), x in a.items() if r == p)])
+        M[p] = max([M[p], *(M[q]/x for r, q, x in arcs if r == p)])
+    gamma = max([1, *(1/lo for lo, hi in shares.values() if 0 < lo < 1),
+                  *(1/(1-hi) for lo, hi in shares.values() if 0 < hi < 1)])
     original_V, original_u = V, u
     if h == 0 and aggregate:
         V = [("ALL", p) for p in sorted({p for _, p in V})]
@@ -55,12 +79,14 @@ def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, 
                       for _, p in V])
     n, F, K, ell = len(V), list(d), len(ends), ends - starts + 1
     p = [v[1] for v in V]
-    edges = [(q, w) for w in range(n) for q, r in a if r == p[w]]
-    products = sorted(set(p) | {q for q, _ in edges})     # a supplier-less q keeps Σx ≤ 0
-    stocks = [(w, q) for w in range(n) for q, r in a if r == p[w]]
-    m, s, j = len(edges), len(stocks), len(F)
-    N = n + m + s + j
-    A = lil_matrix((K*(n + len(products) + j), K*N))
+    R = [(v, r, q, b) for v in range(n) for r, (q, b) in recipes[p[v]].items()]
+    edges = [(q, v) for v in range(n)
+             for q in sorted({q for _, b in recipes[p[v]].values() for q in b})]
+    products = sorted(products)                      # a supplier-less q keeps Σx ≤ 0
+    stocks = [(v, q) for q, v in edges]
+    nr, m, s, j = len(R), len(edges), len(stocks), len(F)
+    N = nr + m + s + j
+    A = lil_matrix((K*(n + len(products) + j + len(shares)) + 2*len(shares), K*N))
     E = lil_matrix((K*s, K*N))
     b, f, c = np.zeros(A.shape[0]), np.zeros(K*s), np.zeros(K*N)
     U = u[None, :] * ramp[ends - 1][:, None]
@@ -68,41 +94,54 @@ def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, 
     for t in range(K):
         offset = t*N
         for v in range(n):
-            A[cap[t, v], offset + v] = 1
             b[cap[t, v]] = U[t, v]
-            r = K*n + t*len(products) + products.index(p[v])
-            A[r, offset + v] = -1
+        for i, (v, _, q, _) in enumerate(R):
+            A[cap[t, v], offset + i] = 1
+            r = K*n + t*len(products) + products.index(q)
+            A[r, offset + i] = -1
         for e, (q, _) in enumerate(edges):
             r = K*n + t*len(products) + products.index(q)
-            A[r, offset + n + e] = 1
+            A[r, offset + nr + e] = 1
         for l, q in enumerate(F):
             r = K*(n + len(products)) + t*j + l
-            for v in range(n):
-                if p[v] == q:
-                    A[r, offset + v] = -1
-            A[r, offset + n + m + s + l] = -1
+            for i, (_, _, output, _) in enumerate(R):
+                if output == q:
+                    A[r, offset + i] = -1
+            A[r, offset + nr + m + s + l] = -1
             b[r] = -d[q][ends[t] - 1]
-            c[offset + n + m + s + l] = ell[t]                  # Σ_t ℓ_t g_t
+            c[offset + nr + m + s + l] = ell[t]                  # Σ_t ℓ_t g_t
         for i, (w, q) in enumerate(stocks):
             r = t*s + i                                         # I_t = I_{t-1} + ℓ_t(x − a y)
-            E[r, offset + n + m + i] = 1
+            E[r, offset + nr + m + i] = 1
             if t:
-                E[r, offset - N + n + m + i] = -1
+                E[r, offset - N + nr + m + i] = -1
             else:
-                f[r] = h*a[q, p[w]]*u[w]
+                f[r] = h*stock.get((q, p[w]), 0)*u[w]
             for e, (q2, w2) in enumerate(edges):
                 if w2 == w and q2 == q:
-                    E[r, offset + n + e] = -ell[t]
-            E[r, offset + w] = ell[t]*a[q, p[w]]
+                    E[r, offset + nr + e] = -ell[t]
+            for k, (v, _, _, inputs) in enumerate(R):
+                if v == w:
+                    E[r, offset + k] = ell[t]*inputs.get(q, 0)
+        for l, (q, (lo, hi)) in enumerate(shares.items()):
+            r = K*(n + len(products) + j) + t*len(shares) + l
+            b[r] = d[q][ends[t] - 1]
+            for i, (_, name, output, _) in enumerate(R):
+                if output == q:
+                    A[r, offset + i] = 1
+                    r0 = K*(n + len(products) + j + len(shares)) + 2*l
+                    A[r0, offset + i] = ell[t]*(lo - (name == 'ncm'))
+                    A[r0+1, offset + i] = ell[t]*((name == 'ncm') - hi)
     original_cap = cap[:, [V.index(("ALL", q)) for _, q in original_V]] if (
         h == 0 and aggregate) else cap
     original_U = original_u[None, :] * ramp[ends - 1][:, None]
-    Mv = np.array([M[q] for _, q in original_V])
+    Mv = np.array([gamma*max(M[q] for q, _ in recipes[p].values()) for _, p in original_V])
     return {"V": original_V, "u": original_u, "a": a, "d": d, "T": T, "N": N,
             "A": A.tocsr(), "b": b, "E": E.tocsr(), "f": f, "c": c,
             "cap": original_cap, "U": original_U, "ends": ends, "ell": ell,
             "M": Mv, "Mcap": ell[:, None]*Mv[None, :],       # one unit of rate lasts ℓ_t months
             "total": float(sum(x.sum() for x in d.values())),
+            "recipes": recipes, "shares": shares, "stock": stock,
             "recourse": {"h": h, "sigma": sigma, "L": L}}
 
 

@@ -221,3 +221,53 @@ Estimate each failure probability by its observed fraction, with a binomial inte
 The paired reduction indicator is 1{full failure, partial survival}, also Bernoulli;
 its interval tests S3 directly. These trade responses and their conversion to capacity
 remain conditional scenarios, not measured production losses.
+
+## Alternative recipes and chemistry choice (W3)
+
+The approved dated design fixes physical capacities at the reference 50% NCM mix.
+Recipe r at capacity node v has rate y[v,r,t], output p(r), and inputs a[q,r]. One
+capacity row sums all its recipe rates. Commodity supply sums all recipes producing
+that commodity; recipient inventory subtracts the sum of its recipes' consumption.
+Both CAM commodities use the original aggregate CAM requirement as their unit scale.
+All other scales remain fixed. Initial stock is h u[v] times the reference blended
+input coefficient, once per node/input. These are flexibility and stock assumptions.
+
+Cell-share constraints sum block-weighted delivered output over the whole horizon.
+Each period's cell production is capped by its demand, preventing unwanted output
+from satisfying a share quota. One-recipe calls without share constraints retain the
+legacy LP. Blocks remain exact because the added share rows are linear in block totals.
+Lemma B still holds: all nodes of a capacity layer have identical recipes and reference
+stock coefficients, and proportional splitting preserves global shares.
+
+For the capacity dual bound, first ignore share constraints. Removing delta units of
+one input's availability can be accommodated by withdrawing its downstream flow in the
+acyclic recipe graph. Each unit is allocated once among recipients; every downstream
+path yields at most the reciprocal product of its input coefficients. Multiple required
+inputs cannot amplify this output. Unused shipments can remain as stock or be withdrawn;
+inventory moves material through time without multiplying it. Thus the maximum lost
+final output is bounded by the largest path yield times delta.
+
+Now impose NCM share [s_lo,s_hi] on total delivered cell output. If withdrawing x NCM
+units violates the lower share, also withdraw enough LFP to restore it: the total
+withdrawal is at most x/s_lo. If withdrawing x LFP violates the upper share, total
+withdrawal is at most x/(1−s_hi). Withdrawals consume fewer upstream inputs and preserve
+all capacity constraints. Therefore multiplying every path bound by
+
+    Gamma = max(1, 1/s_lo when 0<s_lo<1, 1/(1−s_hi) when 0<s_hi<1)
+
+is conservative. At pure endpoints, remove the excluded final recipe first and use
+Gamma = 1. Each capacity layer takes the maximum value of its available recipe outputs.
+An extra unit of block rate lasts ell[t] months, giving Mcap[t,v] = ell[t] M[v].
+
+This withdrawal argument gives a coordinatewise Lipschitz bound on the optimal shortfall
+as capacities change, with initial stocks fixed. At positive capacities the capacity
+components of an optimal dual can be chosen within these bounds; taking a limit from
+positive capacities preserves such a bounded optimum at zero capacities. The dual
+feasible polyhedron projected onto its bounded capacity multipliers and objective is
+closed, so an optimal multiplier vector exists there. The MILP linearizes against these
+bounds using the same primal matrices. Tests compare this bounded dual with the primal,
+including binding quotas, zero capacities, pure endpoints and stocked block LPs.
+
+The lattice enumerator also checks phi(0) first: if the undisrupted instance already
+fails, its sole minimal cut is the empty state, including when k = 0. This case was
+exposed by recipe-network tests; it does not alter the legacy instances with phi(0)=0.
