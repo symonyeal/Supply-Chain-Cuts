@@ -28,6 +28,63 @@ GW over export tonnes calibrates each non-China stage; polysilicon uses 2.0 g Si
 
 ## Layers
 
+### Exact reference construction for independent reproduction
+
+These definitions specify the legacy fixed-mix network; they do not supply computed
+node capacities or shortfalls. Let nu = 0.5 be the NCM622 share by pack kWh. Let b_L[m]
+and b_N[m] be Xu's LFP and NCM622 material kilograms per pack divided by 66 kWh. Set
+b[m] = (1−nu)b_L[m] + nu b_N[m]. Atomic masses used as conversion assumptions are
+Li 6.94, Fe 55.845, P 30.974, O 15.999, Ni 58.6934, Co 58.9332, Mn 54.938;
+OH has mass 17.007. Then, in kg/kWh,
+
+    C_L = b_L[Li](6.94 + 55.845 + 30.974 + 4*15.999)/6.94,
+    C_N = b_N[Li]+b_N[Ni]+b_N[Co]+b_N[Mn] + b_N[Li]*2*15.999/6.94,
+    P_N = sum_(m=Ni,Co,Mn) b_N[m](1 + 2*17.007/atomic_mass[m]),
+    C = (1−nu) C_L + nu C_N,  P = nu P_N,  B_LCE = 5.323 b[Li].
+
+Use pack specific energy E = 1/((1−nu)/E_L + nu/E_N) in Wh/kg. With exports q in
+tonnes, cell output is q E / 10^6 GWh. Multiplying GWh by kg/kWh gives kt directly.
+Impute every country's CAM = cell GWh times C, AAM = cell GWh times b[Graphite], and
+pCAM = cell GWh times P. China CAM and AAM are replaced by MIIT production. pCAM
+remains imputed everywhere. Imputation precedes the separate 1% layer cutoffs and uses
+all positive cell nodes; it is not restricted to the retained cell roster.
+
+| Product | BACI reference selection | Conversion / production replacement |
+| --- | --- | --- |
+| cell | HS12 850760 | pack E as above; China replaced by MIIT GWh |
+| li_carbonate | HS12 283691 | tonnes / 1000; China carbonate + LiOH·H2O × 73.891/(2×41.964), both MIIT tonnes; Chile carbonate from Cochilco |
+| refined_ni | HS12 750210 | tonnes / 1000; no production replacement |
+| refined_co | HS12 810520 for trade comparison | reference uses MYB Table 8 production tonnes / 1000 |
+| graphite | HS12 380110 synthetic, plus USGS natural | add synthetic export tonnes / 1000 to natural production kt by country; label imputed whenever synthetic is added |
+| polysilicon | HS22 280461 | export tonnes / 1000; China replaced by MIIT production kt |
+| wafer | HS22 381800 | export tonnes × 60.9 GW / China's export tonnes of this code; China replaced by MIIT production GW |
+| pv_cell | HS22 854142 | same conversion with China exports 57.5 GW; production replacement |
+| module | HS22 854143 | same conversion with China exports 238.8 GW; production replacement |
+
+USGS mine Li, Co, Ni, Mn, natural graphite, refinery Cu and smelter Al use 2024 rows;
+MYB refined Co uses 2023. Mine production is elemental metal mass; no recovery loss is
+imposed. A positive capacity is retained iff its share of all positive origins in its
+own layer is at least 1%. Layer shares, HHI and top share use the pre-cutoff denominator.
+
+All physical Leontief edges a[input,output] are:
+
+    mine_li -> li_carbonate: 1/5.323;
+    li_carbonate -> cam: B_LCE/C;  pcam -> cam: P/C;
+    mine_co -> refined_co: 1;  mine_ni -> refined_ni: 1;
+    refined_co -> pcam: b[Co]/P;  refined_ni -> pcam: b[Ni]/P;
+    mine_mn -> pcam: b[Mn]/P;  graphite -> aam: 1;
+    cam -> cell: C;  aam -> cell: b[Graphite];
+    refined_cu -> cell: b[Cu];  aluminium -> cell: b[Al];
+    polysilicon -> wafer: 2 kt/GW;  wafer -> pv_cell: 1;  pv_cell -> module: 1.
+
+There is no edge between the battery and PV physical product sets. The shared model
+couples their shortfalls through the joint failure threshold and country-shock law.
+For each sector, start the annual final requirement at retained final output, propagate
+R[p] = sum_q a[p,q] R[q] upstream, and scale final demand down by the smallest supply
+ratio in that sector's upstream closure if below one. Repeat the propagation after
+scaling. Monthly capacity is annual/(12 R[p]), coefficient a' = a R[q]/R[p], and
+monthly final demand 1/12. The joint objective sums these normalized sector shortfalls.
+
 Capacities are measured in years of requirement: S is a layer's retained output divided
 by what the demand target requires of it. Demand equals the retained final output scaled
 to what the undisrupted chain delivers (Li-ion 1.000; PV 0.991, because retained PV cells
