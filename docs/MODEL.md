@@ -271,3 +271,21 @@ including binding quotas, zero capacities, pure endpoints and stocked block LPs.
 The lattice enumerator also checks phi(0) first: if the undisrupted instance already
 fails, its sole minimal cut is the empty state, including when k = 0. This case was
 exposed by recipe-network tests; it does not alter the legacy instances with phi(0)=0.
+
+**Nonbinding share sensitivity on this horizon.** In the reference physical network a
+50/50 monthly output mix is feasible without stocks; this follows by splitting the
+legacy blended CAM flow in proportion to its LFP/NCM masses. All modeled outages end
+by month 12, demand is flat over 24 months, and restored capacity is at least nominal.
+Thus any unrestricted optimum can deliver the full second year's demand at the
+reference 50/50 mix. Let first-year output be a in [0,1] and its NCM output b in [0,a],
+in annual demand units. The resulting horizon NCM share is
+
+    (b + 1/2)/(a + 1), which lies in [1/4, 3/4].
+
+This replacement preserves first-year feasibility and second-year demand satisfaction;
+leftover input stocks can be carried unused. Hence the approved [0.25,0.75] bounds
+cannot worsen optimal shortfall relative to [0,1] under these horizon assumptions.
+Identical cut lists across the 94 runs are a check of this implication, not evidence
+that arbitrary chemistry quotas do not matter. Tighter bounds, monthly bounds or
+outages beyond half the horizon would require a different sensitivity. The probability
+law of failure is identical here, so its estimator may be reused with that fact labelled.
