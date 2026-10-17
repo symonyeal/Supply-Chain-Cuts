@@ -27,9 +27,15 @@ the shared network has 100 cuts and no singletons at 25%, L = 0.105885 and estim
 0.106885 (95% sampling interval 0.106496–0.107429). A fresh independent reconstruction
 reproduces all 22 solar and 180 fixed-mix shared cuts from raw inputs.
 
-**What the data cannot show.** Outside China, cell and refined-nickel capacity rests on export
-mass; precursor capacity is imputed from cell output; upstream metals have no competing
-demand; a recorded policy measure is not an observed outage; no production site has located
+**New capacity data matter.** The METI Japan supplement (assumed voltage, imputed)
+removes the trade-dependent cell triple, leaving six choice cuts and the same five
+singletons. A German sold-carbonate proxy changes no headline cut. The registered
+competing-demand sensitivity exposes baseline failures under some allocations;
+it is reported without reducing demand to hide them.
+
+**What the data cannot show.** Most non-China cell and refined-nickel capacity still
+rests on export mass; precursor is imputed; country-specific competing demand is unknown;
+a recorded policy measure is not an observed outage; no production site has located
 capacity, so natural hazards are a scenario. Details: [FINDINGS](docs/FINDINGS.md).
 
 ## Model

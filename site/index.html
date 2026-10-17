@@ -12,12 +12,12 @@
 <body>
 <header class="top"><div class="wrap">
   <a class="brand" href="#top">Chokepoint Lab</a>
-  <nav><a href="#cuts">Cut sets</a><a href="#layers">Layers</a><a href="#risk">Risk</a><a href="#pv">PV</a><a href="#sensitivity">Sensitivity</a><a href="#attribution">Attribution</a><a href="#tests">Tests</a><a href="#hazards">Hazards</a><a href="#provenance">Provenance</a></nav>
+  <nav><a href="#cuts">Cut sets</a><a href="#layers">Layers</a><a href="#risk">Risk</a><a href="#pv">PV</a><a href="#sensitivity">Sensitivity</a><a href="#capacity">Capacity data</a><a href="#attribution">Attribution</a><a href="#tests">Tests</a><a href="#hazards">Hazards</a><a href="#provenance">Provenance</a></nav>
 </div></header>
 
 <main class="wrap" id="top">
   <section class="hero">
-    <h1>Losing any one of <span data-f="nsingle"></span> Chinese nodes for a year stops more than a quarter of two years' lithium-ion cell output</h1>
+    <h1>At reference capacities, losing any one of <span data-f="nsingle"></span> Chinese nodes for a year stops more than a quarter of two years' lithium-ion cell output</h1>
     <p class="lede">A cut set is a minimal set of (country, product) losses after which the least achievable shortfall, with
       shipments rerouted, inventory drawn and spare capacity ramped, exceeds α of demand over 24 months. All
       <span data-f="ncuts"></span> minimal cut sets of up to three losses are enumerated exactly at α = 25%. The singletons are China's
@@ -128,6 +128,26 @@
     <div id="attr-chart" class="chart"></div>
   </section>
 
+  <section id="capacity">
+    <h2>Japan’s output data remove one cell triple; five Chinese singletons remain</h2>
+    <p class="note">METI 2024 sealed-cell output totals 5,136,311 kAh: 16.436 GWh at assumed 3.2 V or 19.004 GWh at 3.7 V.
+      The conversion is imputed. Both variants remove the China cells 6-month + Poland and US cells 12-month triple from
+      the seven chemistry-choice cuts, leaving six. These capacity variants are separate from the reference cut controls
+      and probability comparison; their onset probabilities have not been refitted. German Prodcom sold carbonate
+      (24,728 tonnes, both purity grades, imputed proxy) changes no headline cut. Sold output is not actual production.</p>
+    <p class="note">The competing-demand sensitivity reserves non-battery uses, applying global battery shares 76% Co and 16% Ni
+      proportionally to countries. Cu/Al/Mn availability of 100%, 10% or 1% is assumed. Demand stays fixed.
+      A positive baseline shortage is shown; when it exceeds 25%, the sole minimal cut is the empty set.
+      Thus one empty cut means failure without any outage, not a new single-node chokepoint. N1 and N2 survive.</p>
+    <div class="table-wrap"><table id="capacity-table"></table></div>
+    <p class="note">All cases: α = 25%, h = σ = 0, 24 months, outages ≤ 12 months, at most three losses.
+      Complete lattice lists have primal/dual and shorter-duration certificates. Source: <code>supply-4ae36c1</code>.
+      China tariff-line partner batches match the preview rows, but repeated dimensions, a precursor sum above its BACI
+      parent, and four empty graphite queries prevent a complete-flow or production claim. Korean domestic physical
+      cell output remains unlocated, so its flagged trade basis is retained.
+      <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/docs/DATA.md">Data, licences and limitations</a>.</p>
+  </section>
+
   <section id="tests">
     <h2>Registered tests: the network adds information beyond concentration, and the probability claims are scenarios</h2>
     <p class="note">The table reports the fixed-mix reference tests. W3's registered chemistry-choice claims both survive:
@@ -148,7 +168,9 @@
 
   <section id="provenance">
     <h2>Every number on this page is read from a named result bundle</h2>
-    <p class="note">Runs <code data-f="runs"></code>, risk code revision <code data-f="revision"></code>, source lock
+    <p class="note">Runs <code data-f="runs"></code>. Reference risk code <code data-f="revision"></code>,
+      chemistry risk code <code data-f="choiceRevision"></code>, capacity code <code data-f="capacityRevision"></code>.
+      Reference source lock
       <code data-f="lock"></code>. Raw inputs are frozen with URL, date, SHA-256 and licence in
       <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/SOURCES.lock">SOURCES.lock</a>; derivations are in
       <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/docs/MODEL.md">MODEL.md</a>. Data: CEPII BACI (Etalab 2.0),

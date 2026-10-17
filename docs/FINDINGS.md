@@ -324,3 +324,77 @@ no inequalities or enumeration shortcuts were added.
 - No located capacity: natural hazards are a country-wide scenario, not matched to sites.
 - Not measured: Comtrade tariff lines for China's midstream; BGS refinery statistics
   (licence unresolved); national cell output outside China.
+
+
+## W8: no verified located capacity enters hazard probabilities
+
+The new coverage bundle `sites-4ae36c1` supplies physical denominators for all
+18 active layers; every located numerator is zero. The threshold remains below
+70% everywhere. Frozen facility sources provide administrative divisions without
+coordinates, and midstream/cell site tables are absent. Administrative polygon
+matching and plant-level hazard losses were not measured. Natural-hazard results
+therefore remain the declared country-wide scenarios. This meets the coverage
+audit criterion while leaving actual site location as a documented data gap.
+
+
+## W5: capacity sources and competing demand change different parts of the answer
+
+Bundle `supply-4ae36c1`, producer `7b810a3`, clean stamps, alpha = 25%, h = sigma = 0,
+24 months, duration <= 12, support <= 3. Every list is complete, with matching
+primal/dual values and shorter-duration witnesses. N1/N2 were registered at
+`e585992`, before any of these results. Source details and limitations are in DATA.
+
+| Variant | Chemistry | Nodes | Baseline shortfall | Minimal cuts | Vanish / appear vs respective reference |
+| --- | --- | ---: | ---: | ---: | ---: |
+| eu_sold_choice | choice | 112 | 0.000000% | 7 | 0 / 0 |
+| eu_sold_fixed | fixed 50/50 | 112 | 0.000000% | 37 | 0 / 0 |
+| japan3.2_choice | choice | 113 | 0.000000% | 6 | 1 / 0 |
+| japan3.2_fixed | fixed 50/50 | 113 | 0.000000% | 36 | 20 / 19 |
+| japan3.7_choice | choice | 114 | 0.000000% | 6 | 1 / 0 |
+| japan3.7_fixed | fixed 50/50 | 114 | 0.000000% | 36 | 21 / 20 |
+| reserve0.01_choice | choice | 111 | 74.819450% | 1 (empty) | 7 / 1 |
+| reserve0.01_fixed | fixed 50/50 | 111 | 75.341298% | 1 (empty) | 37 / 1 |
+| reserve0.1_choice | choice | 111 | 0.000000% | 7 | 0 / 0 |
+| reserve0.1_fixed | fixed 50/50 | 111 | 67.794261% | 1 (empty) | 37 / 1 |
+| reserve1_choice | choice | 111 | 0.000000% | 7 | 0 / 0 |
+| reserve1_fixed | fixed 50/50 | 111 | 67.794261% | 1 (empty) | 37 / 1 |
+| supplement_choice | choice | 115 | 0.000000% | 6 | 1 / 0 |
+| supplement_fixed | fixed 50/50 | 115 | 0.000000% | 36 | 21 / 20 |
+
+Japan's annual METI output at either assumed 3.2 or 3.7 V removes the trade-dependent
+China cells 6-month + Poland and US cells 12-month triple from the chemistry-choice
+list. Six cuts remain, including all five Chinese singletons. The newly retained
+Japanese cell/CAM/AAM nodes and changed final-output normalisation explain the
+fixed-mix boundary changes (36 cuts, not 37). These are source/voltage variants,
+not evidence of actual plant flexibility. German Prodcom combined-purity carbonate
+sold output (24,728 t; `imputed`) changes no cut at this headline. The combined
+METI/Prodcom result equals the METI cut list. These variants have no probability
+refit; the frozen-law W3 comparison uses the original reference capacities.
+
+Co/Ni reservation at their published global battery shares makes the fixed-mix
+baseline fail even without outages: 67.794261% shortfall. N1 survives, but its
+scientific implication is incompatible allocation/throughput assumptions, not a
+new observed chokepoint. The sole minimal cut is empty. Flexible recipes meet
+baseline demand and retain all seven original choice cuts when Cu/Al/Mn availability
+is 100% or 10%. At 1%, fixed/flexible baseline shortfalls are 75.341298% and
+74.819450%; N2 survives under both recipes. No demand rescaling conceals the shortage.
+All global-to-country allocations and the three Cu/Al/Mn fractions are scenarios;
+these results do not identify actual competing-use behaviour during disruptions.
+
+`inputs-7b810a3`, `japan-7b810a3` and `supplement-7b810a3` rerun the data pipeline:
+111/114/115 Li-ion nodes respectively; 15 PV throughout. All 128 locked sources
+verify and all 52 committed source blobs match their frozen bytes; every original
+88-source hash is unchanged. The retained first reconciliation snapshot records
+the diagnosed missing-parent/zero reporting error and is superseded by the corrected
+snapshot; no capacity result used that missing BACI quantity.
+
+The other acquired sources terminate with explicit scope limits. Keyless Comtrade
+partner batches reproduce the preview rows but repeated dimensions and a precursor
+row-sum/BACI-parent ratio 2.847 prevent a unique-flow aggregate. Four graphite lines
+return no rows, not measured zero exports. No capacity basis changes from those
+trade diagnostics. EU actual production is unavailable; LFP-only sales do not
+replace aggregate CAM, confidential values stay missing, and zero sold LiOH does
+not establish absent productive capacity. No qualifying Korean domestic physical
+cell series was located; its flagged trade proxy remains. BGS statistics remain
+unused pending licence clarification. These are terminal data outcomes, not claims
+that all source gaps have been filled.

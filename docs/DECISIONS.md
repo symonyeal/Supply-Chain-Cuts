@@ -94,3 +94,22 @@ is unknown. The [25%,75%] bound is nonbinding by the restored-second-year argume
 so identical results are not evidence of robustness to binding chemistry quotas.
 The site defaults to choice, offers the fixed-mix reference in the same cut controls,
 and explicitly retains fixed-mix labels on the severity study and E1 exhibit.
+
+
+### 2026-10-17 — keep new source scopes and allocation failures explicit
+
+METI charge output times assumed voltage enters an imputed supplement, not the
+unchanged-reference chemistry probability comparison. Six choice cuts replace seven;
+five Chinese singletons remain. German sold carbonate is a separate imputed proxy;
+it changes no headline cut. LFP-only sales cannot identify aggregate CAM capacity.
+Comtrade rows do not reconcile as unique complete flows, so precursor remains imputed.
+No Korean physical-output source qualified. Verified Eurostat/e-Stat reuse terms
+permit the selected data; raw sources with unresolved terms remain local.
+
+The user approved fixed-demand Co/Ni reservations and assumed Cu/Al/Mn fractions.
+Their fixed-mix baseline already loses 67.8%, whereas recipe choice meets demand at
+10% Cu/Al/Mn availability. At 1% both fail without outages. Preserve those failures
+and the empty-cut certificates; do not renormalise demand or label them forecasts.
+The first reconciliation incorrectly printed zero for an unselected BACI parent;
+retain it as v1 and correct that field to missing in the current snapshot, preserving
+all source hashes. No model result uses that field.

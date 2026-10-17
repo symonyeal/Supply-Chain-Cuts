@@ -1,7 +1,7 @@
 # Chemistry choice: proposed model extension
 
-Status: approved by the user, 2026-10-16, with 24-month share bounds; no chemistry-choice
-results computed. Implements NEXT W3.
+Status: approved by the user, 2026-10-16, with 24-month share bounds; implemented and
+certified in the W3 bundles (FINDINGS, CHEMISTRY). Implements NEXT W3.
 The intended question is whether precursor, cobalt and nickel cuts survive when cells
 may choose LFP or NCM622 while physical plant capacities remain fixed.
 

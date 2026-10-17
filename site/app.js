@@ -145,8 +145,9 @@ const FACT = {
   mid: pct(t.H2_china_midstream_share_of_L.midstream),
   rhoHHI: fmt(t.A1_spearman.hhi, 2), rhoTop: fmt(t.A1_spearman.top_share, 2),
   revision: D.meta.revision.slice(0, 7), lock: D.meta.lock.slice(0, 12), run: D.meta.run,
+  choiceRevision: D.choice.meta.revision.slice(0, 7), capacityRevision: D.supply.revision.slice(0, 7),
   runs: [...[D, D.pv, D.joint].filter(Boolean).map((b) => b.meta.run), D.severity && D.severity.run,
-    D.choice.meta.cut_run, D.choice.meta.risk_run].filter(Boolean).join(", "),
+    D.choice.meta.cut_run, D.choice.meta.risk_run, D.supply.run].filter(Boolean).join(", "),
   L10: pct(D.configs["a0.1_h0_s0_L6_D12"].L), n10: D.configs["a0.1_h0_s0_L6_D12"].cuts.length,
   n6: D.configs["a0.25_h0_s0_L6_D6"].cuts.length,
   chnU: pct(D.attribution.country_union.CHN, 0), codU: pct(D.attribution.country_union.COD, 0),
@@ -188,6 +189,14 @@ $("chemistry-table").innerHTML = `<thead><tr><th>Network</th><th>Threshold</th><
       return `<tr><td>${s}</td><td>${pct(+a, 0)}</td><td>${pct(e.estimate, 3)} [${pct(e.ci95[0], 3)}, ${pct(e.ci95[1], 3)}]</td>` +
         `<td>L = ${pct(f.L, 3)}; ${pct(f.estimate, 3)} [${pct(f.ci95[0], 3)}, ${pct(f.ci95[1], 3)}]</td></tr>`;
     })).join("") + `</tbody>`;
+
+const capacityLabel = (name) => name.startsWith("japan") ? `Japan, assumed ${name.slice(5)} V` :
+  name === "eu_sold" ? "German sold carbonate" : name === "supplement" ? "Japan 3.7 V + German carbonate" :
+    `Co/Ni reservation; Cu/Al/Mn ${pct(+name.slice(7), 0)} available`;
+$("capacity-table").innerHTML = `<thead><tr><th>Capacity scenario</th><th>Chemistry</th><th class="num">Baseline shortfall</th><th class="num">Minimal cuts</th><th class="num">Vanish / appear</th></tr></thead><tbody>` +
+  D.supply.cases.map((x) => `<tr><td>${capacityLabel(x.case.replace(/_(choice|fixed)$/, ""))}</td>` +
+    `<td>${x.choice ? "Choice" : "Fixed 50/50"}</td><td class="num">${pct(x.baseline, 3)}</td>` +
+    `<td class="num">${x.baseline > 0.25 ? "1 empty set" : x.cuts}</td><td class="num">${x.vanish} / ${x.appear}</td></tr>`).join("") + `</tbody>`;
 
 $("tests-table").innerHTML = `<thead><tr><th>Leaf</th><th>Kill condition</th><th>Result</th><th>Verdict</th></tr></thead><tbody>` +
   D.testRows.map((r) => `<tr><td>${r[0]}</td><td class="wrap">${r[1]}</td><td class="wrap">${r[2]}</td><td class="verdict ${r[3].startsWith("killed") ? "killed" : ""}">${r[3]}</td></tr>`).join("") + `</tbody>`;

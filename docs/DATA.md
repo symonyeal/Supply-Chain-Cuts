@@ -226,7 +226,7 @@ GDACS orange/red alert years per country as context; the headline uses policy on
 
 ## W5: primary-source supplement (2026-10-16/17)
 
-The historical networks above remain the reference for W1?W4 and W6. Supplements
+The historical networks above remain the reference for W1–W4 and W6. Supplements
 are explicit opt-in variants, preserving every original raw hash and result bundle.
 `python run_data.py RUN 3.7 eu-sold` writes the combined-data variant; omission of
 optional arguments reproduces the reference. `python run_supply.py RUN` compares

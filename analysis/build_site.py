@@ -229,6 +229,26 @@ def chemistry(cut_run, risk_run, sector, reference, law):
                      "revision": risk["stamp"]["revision"]}}
 
 
+def supply(run):
+    """Read certified capacity sensitivities; these contain no probability refit."""
+    out, revisions = [], set()
+    for p in sorted((ROOT / 'results' / run).glob('*.json')):
+        x = json.loads(p.read_text())
+        assert x['complete'] and not x['stamp']['dirty']
+        assert all(c['certified'] and c['gap'] <= 1e-6 for c in x['certificates'])
+        assert x['baseline']['status'] == 'optimal' and x['baseline']['gap'] <= 1e-6
+        revisions.add(x['stamp']['revision'])
+        assert x['baseline_share'] <= 0.25 or x['cuts'] == [[]]
+        out.append({'case': x['case'], 'choice': x['flexible'],
+                    'nodes': len(x['network']['nodes']), 'cuts': len(x['cuts']),
+                    'singletons': sum(len(s) == 1 for s in x['cuts']),
+                    'baseline': x['baseline_share'], 'vanish': len(x['vanish']),
+                    'appear': len(x['appear'])})
+    assert len(out) == 14
+    assert len(revisions) == 1
+    return {'run': run, 'revision': revisions.pop(), 'cases': out}
+
+
 def build(run, pv_run=None, joint_run=None, severity_run=None):
     data, N, risk, checks = block(run)
     layers = sorted(N["supply_ratio"], key=lambda p: -N["hhi"].get(p, 0))
@@ -247,6 +267,7 @@ def build(run, pv_run=None, joint_run=None, severity_run=None):
     if severity_run:
         data["severity"] = severity(severity_run)
     data["choice"] = chemistry("chemistry-896581f", "chemistry-risk-d18c743", "liion", data, risk)
+    data['supply'] = supply('supply-4ae36c1')
     if joint_run:
         data["joint_choice"] = chemistry("chemistry-896581f", "chemistry-risk-d18c743", "joint",
                                           data["joint"], load(joint_run)[2])

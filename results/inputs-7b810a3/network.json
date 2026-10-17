@@ -1,0 +1,3542 @@
+{
+ "liion": {
+  "sector": "liion",
+  "nodes": [
+   {
+    "country": "CHN",
+    "product": "aam",
+    "annual": 2000.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "MIIT 2024",
+    "note": "",
+    "share": 0.9096654406401794,
+    "capacity": 0.11517542332187121
+   },
+   {
+    "country": "HUN",
+    "product": "aam",
+    "annual": 23.675824540074455,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.0107685396813832,
+    "capacity": 0.0013634365569487109
+   },
+   {
+    "country": "POL",
+    "product": "aam",
+    "annual": 33.681164628623876,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.01531929573158578,
+    "capacity": 0.0019396211970376949
+   },
+   {
+    "country": "USA",
+    "product": "aam",
+    "annual": 30.0546729800987,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.013669848669868988,
+    "capacity": 0.0017307798416416362
+   },
+   {
+    "country": "ARE",
+    "product": "aluminium",
+    "annual": 2690.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.040666384471185826,
+    "capacity": 0.12091797259735605
+   },
+   {
+    "country": "AUS",
+    "product": "aluminium",
+    "annual": 1570.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.023734655620729274,
+    "capacity": 0.07057294311444201
+   },
+   {
+    "country": "BHR",
+    "product": "aluminium",
+    "annual": 1620.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.0244905363729818,
+    "capacity": 0.07282048907350067
+   },
+   {
+    "country": "BRA",
+    "product": "aluminium",
+    "annual": 1100.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.01662937654955554,
+    "capacity": 0.04944601109929058
+   },
+   {
+    "country": "CAN",
+    "product": "aluminium",
+    "annual": 3320.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.050190481949567635,
+    "capacity": 0.1492370516814952
+   },
+   {
+    "country": "CHN",
+    "product": "aluminium",
+    "annual": 44000.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.6651750619822216,
+    "capacity": 1.977840443971623
+   },
+   {
+    "country": "IND",
+    "product": "aluminium",
+    "annual": 4200.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.06349398318921207,
+    "capacity": 0.18879386056092767
+   },
+   {
+    "country": "ISL",
+    "product": "aluminium",
+    "annual": 742.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.011217270363427465,
+    "capacity": 0.03335358203243055
+   },
+   {
+    "country": "MYS",
+    "product": "aluminium",
+    "annual": 1050.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.015873495797303017,
+    "capacity": 0.04719846514023192
+   },
+   {
+    "country": "NOR",
+    "product": "aluminium",
+    "annual": 1300.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.01965289955856564,
+    "capacity": 0.05843619493552523
+   },
+   {
+    "country": "RUS",
+    "product": "aluminium",
+    "annual": 3880.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.058656346374795915,
+    "capacity": 0.17440956642295222
+   },
+   {
+    "country": "USA",
+    "product": "aluminium",
+    "annual": 676.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.010219507770454134,
+    "capacity": 0.030386821366473117
+   },
+   {
+    "country": "CHN",
+    "product": "cam",
+    "annual": 3100.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "MIIT 2024",
+    "note": "",
+    "share": 0.9020534126759348,
+    "capacity": 0.10533555724055817
+   },
+   {
+    "country": "HUN",
+    "product": "cam",
+    "annual": 40.12560845801064,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.011675949046853823,
+    "capacity": 0.001363436556948711
+   },
+   {
+    "country": "KOR",
+    "product": "cam",
+    "annual": 36.948741812172884,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.010751528595404049,
+    "capacity": 0.0012554891316524973
+   },
+   {
+    "country": "POL",
+    "product": "cam",
+    "annual": 57.08258320678147,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.016610173866462977,
+    "capacity": 0.0019396211970376949
+   },
+   {
+    "country": "USA",
+    "product": "cam",
+    "annual": 50.93643257457591,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.014821736397881886,
+    "capacity": 0.0017307798416416362
+   },
+   {
+    "country": "CHN",
+    "product": "cell",
+    "annual": 1170.0,
+    "basis": "production",
+    "unit": "GWh",
+    "source": "MIIT 2024",
+    "note": "",
+    "share": 0.8693353117581455,
+    "capacity": 0.07609587866410884
+   },
+   {
+    "country": "DEU",
+    "product": "cell",
+    "annual": 14.577789382930687,
+    "basis": "trade",
+    "unit": "GWh",
+    "source": "BACI HS12 2024 850760",
+    "note": "Pack Wh/kg applied to mixed cell/pack exports",
+    "share": 0.01083161288714071,
+    "capacity": 0.0009481279419439552
+   },
+   {
+    "country": "HUN",
+    "product": "cell",
+    "annual": 20.963300505029704,
+    "basis": "trade",
+    "unit": "GWh",
+    "source": "BACI HS12 2024 850760",
+    "note": "Pack Wh/kg applied to mixed cell/pack exports",
+    "share": 0.015576185794888621,
+    "capacity": 0.001363436556948711
+   },
+   {
+    "country": "KOR",
+    "product": "cell",
+    "annual": 19.303572148990106,
+    "basis": "trade",
+    "unit": "GWh",
+    "source": "BACI HS12 2024 850760",
+    "note": "Pack Wh/kg applied to mixed cell/pack exports",
+    "share": 0.014342971719818947,
+    "capacity": 0.0012554891316524973
+   },
+   {
+    "country": "POL",
+    "product": "cell",
+    "annual": 29.822335195722776,
+    "basis": "trade",
+    "unit": "GWh",
+    "source": "BACI HS12 2024 850760",
+    "note": "Pack Wh/kg applied to mixed cell/pack exports",
+    "share": 0.022158640226264594,
+    "capacity": 0.0019396211970376949
+   },
+   {
+    "country": "USA",
+    "product": "cell",
+    "annual": 26.611328369821763,
+    "basis": "trade",
+    "unit": "GWh",
+    "source": "BACI HS12 2024 850760",
+    "note": "Pack Wh/kg applied to mixed cell/pack exports",
+    "share": 0.019772792687758448,
+    "capacity": 0.0017307798416416362
+   },
+   {
+    "country": "BRA",
+    "product": "graphite",
+    "annual": 77.84505,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "USGS natural + BACI 380110 synthetic exports",
+    "note": "Substitution assumed; synthetic exports include non-anode use",
+    "share": 0.033550755478742825,
+    "capacity": 0.004482918293631115
+   },
+   {
+    "country": "CHN",
+    "product": "graphite",
+    "annual": 1773.9436910000002,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "USGS natural + BACI 380110 synthetic exports",
+    "note": "Substitution assumed; synthetic exports include non-anode use",
+    "share": 0.7645592238658658,
+    "capacity": 0.10215735778004385
+   },
+   {
+    "country": "DEU",
+    "product": "graphite",
+    "annual": 32.838472999999986,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "USGS natural + BACI 380110 synthetic exports",
+    "note": "Substitution assumed; synthetic exports include non-anode use",
+    "share": 0.014153187362822657,
+    "capacity": 0.0018910925145094182
+   },
+   {
+    "country": "IND",
+    "product": "graphite",
+    "annual": 33.186696000000005,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "USGS natural + BACI 380110 synthetic exports",
+    "note": "Substitution assumed; synthetic exports include non-anode use",
+    "share": 0.014303269413320085,
+    "capacity": 0.0019111458802271253
+   },
+   {
+    "country": "MDG",
+    "product": "graphite",
+    "annual": 85.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.03663449655043115,
+    "capacity": 0.004894955491179526
+   },
+   {
+    "country": "MOZ",
+    "product": "graphite",
+    "annual": 41.652651,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "USGS natural + BACI 380110 synthetic exports",
+    "note": "Substitution assumed; synthetic exports include non-anode use",
+    "share": 0.017952045875009558,
+    "capacity": 0.002398680855701581
+   },
+   {
+    "country": "TZA",
+    "product": "graphite",
+    "annual": 27.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.011636840080725188,
+    "capacity": 0.0015548682148452612
+   },
+   {
+    "country": "ARG",
+    "product": "li_carbonate",
+    "annual": 65.78166599999999,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 283691",
+    "note": "Export proxy, kt Li2CO3",
+    "share": 0.04984960496396794,
+    "capacity": 0.007286789649140086
+   },
+   {
+    "country": "CHL",
+    "product": "li_carbonate",
+    "annual": 250.605,
+    "basis": "production",
+    "unit": "kt",
+    "source": "Cochilco Hoja1 AD21",
+    "note": "Carbonate only; sulfate excluded",
+    "share": 0.18990945367657894,
+    "capacity": 0.027760104464711364
+   },
+   {
+    "country": "CHN",
+    "product": "li_carbonate",
+    "annual": 986.9473834715471,
+    "basis": "production",
+    "unit": "kt",
+    "source": "MIIT 2024",
+    "note": "Battery-grade carbonate + LiOH\u00b7H2O as LCE",
+    "share": 0.7479126051060856,
+    "capacity": 0.10932647978429678
+   },
+   {
+    "country": "AUS",
+    "product": "mine_co",
+    "annual": 4.78,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.016269017392192234,
+    "capacity": 0.003504452736130718
+   },
+   {
+    "country": "CAN",
+    "product": "mine_co",
+    "annual": 3.35,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.011401926415030121,
+    "capacity": 0.002456049511723411
+   },
+   {
+    "country": "COD",
+    "product": "mine_co",
+    "annual": 226.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.769204587999047,
+    "capacity": 0.1656916984028331
+   },
+   {
+    "country": "CUB",
+    "product": "mine_co",
+    "annual": 3.45,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.01174228242741908,
+    "capacity": 0.002529364422521125
+   },
+   {
+    "country": "IDN",
+    "product": "mine_co",
+    "annual": 35.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.1191246043361356,
+    "capacity": 0.025660218779199814
+   },
+   {
+    "country": "MDG",
+    "product": "mine_co",
+    "annual": 3.1,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.010551036384057725,
+    "capacity": 0.0022727622347291265
+   },
+   {
+    "country": "PHL",
+    "product": "mine_co",
+    "annual": 3.1,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.010551036384057725,
+    "capacity": 0.0022727622347291265
+   },
+   {
+    "country": "RUS",
+    "product": "mine_co",
+    "annual": 8.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.02722848099111671,
+    "capacity": 0.0058651928638171
+   },
+   {
+    "country": "ARG",
+    "product": "mine_li",
+    "annual": 13.8,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.061891734314033275,
+    "capacity": 0.00813704873289076
+   },
+   {
+    "country": "AUS",
+    "product": "mine_li",
+    "annual": 82.7,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.3709019150558371,
+    "capacity": 0.04876332827609172
+   },
+   {
+    "country": "BRA",
+    "product": "mine_li",
+    "annual": 10.2,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.04574606449298111,
+    "capacity": 0.006014340367788821
+   },
+   {
+    "country": "CAN",
+    "product": "mine_li",
+    "annual": 4.82,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.02161725792707539,
+    "capacity": 0.0028420706443864825
+   },
+   {
+    "country": "CHL",
+    "product": "mine_li",
+    "annual": 48.9,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.2193120150692918,
+    "capacity": 0.028833455292634643
+   },
+   {
+    "country": "CHN",
+    "product": "mine_li",
+    "annual": 41.4,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.1856752029420998,
+    "capacity": 0.024411146198672275
+   },
+   {
+    "country": "ZWE",
+    "product": "mine_li",
+    "annual": 20.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.08969816567251199,
+    "capacity": 0.011792824250566316
+   },
+   {
+    "country": "AUS",
+    "product": "mine_mn",
+    "annual": 1600.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.09155413138017852,
+    "capacity": 1.2579012533937404
+   },
+   {
+    "country": "BRA",
+    "product": "mine_mn",
+    "annual": 705.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.04034103913939117,
+    "capacity": 0.5542627397766169
+   },
+   {
+    "country": "CHN",
+    "product": "mine_mn",
+    "annual": 690.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.03948271915770199,
+    "capacity": 0.5424699155260505
+   },
+   {
+    "country": "CIV",
+    "product": "mine_mn",
+    "annual": 340.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.019455252918287938,
+    "capacity": 0.26730401634616985
+   },
+   {
+    "country": "GAB",
+    "product": "mine_mn",
+    "annual": 4640.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.26550698100251774,
+    "capacity": 3.647913634841847
+   },
+   {
+    "country": "GHA",
+    "product": "mine_mn",
+    "annual": 1280.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.07324330510414283,
+    "capacity": 1.0063210027149923
+   },
+   {
+    "country": "IND",
+    "product": "mine_mn",
+    "annual": 731.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.04182879377431906,
+    "capacity": 0.5747036351442651
+   },
+   {
+    "country": "ZAF",
+    "product": "mine_mn",
+    "annual": 7490.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.4285877775234607,
+    "capacity": 5.888550242449448
+   },
+   {
+    "country": "AUS",
+    "product": "mine_ni",
+    "annual": 98.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.02884057928363533,
+    "capacity": 0.024038492952354384
+   },
+   {
+    "country": "BRA",
+    "product": "mine_ni",
+    "annual": 67.5,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.01986468471066719,
+    "capacity": 0.01655712524779511
+   },
+   {
+    "country": "CAN",
+    "product": "mine_ni",
+    "annual": 125.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.0367864531679022,
+    "capacity": 0.030661343051472428
+   },
+   {
+    "country": "CHN",
+    "product": "mine_ni",
+    "annual": 115.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.03384353691447003,
+    "capacity": 0.028208435607354632
+   },
+   {
+    "country": "IDN",
+    "product": "mine_ni",
+    "annual": 2310.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.6798136545428327,
+    "capacity": 0.5666216195912105
+   },
+   {
+    "country": "NCL",
+    "product": "mine_ni",
+    "annual": 116.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.034137828539813245,
+    "capacity": 0.028453726351766413
+   },
+   {
+    "country": "PHL",
+    "product": "mine_ni",
+    "annual": 354.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.10417923537149903,
+    "capacity": 0.08683292352176991
+   },
+   {
+    "country": "RUS",
+    "product": "mine_ni",
+    "annual": 205.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.060329783195359615,
+    "capacity": 0.05028460260441478
+   },
+   {
+    "country": "CHN",
+    "product": "pcam",
+    "annual": 810.4263226679851,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "No pCAM production statistic; tariff-line coverage incomplete",
+    "share": 0.8693353117581458,
+    "capacity": 0.07609587866410883
+   },
+   {
+    "country": "DEU",
+    "product": "pcam",
+    "annual": 10.097627557467447,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "No pCAM production statistic; tariff-line coverage incomplete",
+    "share": 0.010831612887140716,
+    "capacity": 0.0009481279419439552
+   },
+   {
+    "country": "HUN",
+    "product": "pcam",
+    "annual": 14.52069276861123,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "No pCAM production statistic; tariff-line coverage incomplete",
+    "share": 0.015576185794888628,
+    "capacity": 0.001363436556948711
+   },
+   {
+    "country": "KOR",
+    "product": "pcam",
+    "annual": 13.371045291506144,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "No pCAM production statistic; tariff-line coverage incomplete",
+    "share": 0.014342971719818954,
+    "capacity": 0.0012554891316524973
+   },
+   {
+    "country": "POL",
+    "product": "pcam",
+    "annual": 20.657098671830457,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "No pCAM production statistic; tariff-line coverage incomplete",
+    "share": 0.0221586402262646,
+    "capacity": 0.0019396211970376946
+   },
+   {
+    "country": "USA",
+    "product": "pcam",
+    "annual": 18.432923924841777,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "No pCAM production statistic; tariff-line coverage incomplete",
+    "share": 0.019772792687758455,
+    "capacity": 0.001730779841641636
+   },
+   {
+    "country": "AUS",
+    "product": "refined_co",
+    "annual": 2.4,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, reported",
+    "share": 0.013344824710167083,
+    "capacity": 0.0017595578591451302
+   },
+   {
+    "country": "CAN",
+    "product": "refined_co",
+    "annual": 4.835,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, reported",
+    "share": 0.02688426144735744,
+    "capacity": 0.0035447759370694602
+   },
+   {
+    "country": "CHN",
+    "product": "refined_co",
+    "annual": 147.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, estimated",
+    "share": 0.8173705134977339,
+    "capacity": 0.10777291887263922
+   },
+   {
+    "country": "FIN",
+    "product": "refined_co",
+    "annual": 10.627,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, reported",
+    "share": 0.059089771747894,
+    "capacity": 0.007791175570473041
+   },
+   {
+    "country": "JPN",
+    "product": "refined_co",
+    "annual": 3.8,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, reported",
+    "share": 0.021129305791097883,
+    "capacity": 0.0027859666103131225
+   },
+   {
+    "country": "MDG",
+    "product": "refined_co",
+    "annual": 3.4,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, estimated",
+    "share": 0.01890516833940337,
+    "capacity": 0.0024927069671222676
+   },
+   {
+    "country": "NOR",
+    "product": "refined_co",
+    "annual": 3.5,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, reported",
+    "share": 0.019461202702327,
+    "capacity": 0.0025660218779199814
+   },
+   {
+    "country": "AUS",
+    "product": "refined_cu",
+    "annual": 434.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.01716093317516805,
+    "capacity": 0.03552938311828864
+   },
+   {
+    "country": "CAN",
+    "product": "refined_cu",
+    "annual": 324.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.012811387900355872,
+    "capacity": 0.026524239931625622
+   },
+   {
+    "country": "CHL",
+    "product": "refined_cu",
+    "annual": 1940.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.07671016211941478,
+    "capacity": 0.15881797983751142
+   },
+   {
+    "country": "CHN",
+    "product": "refined_cu",
+    "annual": 12400.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.4903123764333729,
+    "capacity": 1.015125231951104
+   },
+   {
+    "country": "COD",
+    "product": "refined_cu",
+    "annual": 2560.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.10122578094108343,
+    "capacity": 0.20957424143506664
+   },
+   {
+    "country": "DEU",
+    "product": "refined_cu",
+    "annual": 597.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.0236061684460261,
+    "capacity": 0.04887336802216202
+   },
+   {
+    "country": "IDN",
+    "product": "refined_cu",
+    "annual": 349.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.013799920917358639,
+    "capacity": 0.028570863383139942
+   },
+   {
+    "country": "IND",
+    "product": "refined_cu",
+    "annual": 545.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.02155001977066034,
+    "capacity": 0.044616391243012234
+   },
+   {
+    "country": "JPN",
+    "product": "refined_cu",
+    "annual": 1570.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.06207987346777382,
+    "capacity": 0.12852795275509946
+   },
+   {
+    "country": "KAZ",
+    "product": "refined_cu",
+    "annual": 498.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.019691577698695135,
+    "capacity": 0.040768739154165304
+   },
+   {
+    "country": "KOR",
+    "product": "refined_cu",
+    "annual": 604.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.023882957690786872,
+    "capacity": 0.04944642258858603
+   },
+   {
+    "country": "MEX",
+    "product": "refined_cu",
+    "annual": 489.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.01933570581257414,
+    "capacity": 0.040031954711620146
+   },
+   {
+    "country": "PER",
+    "product": "refined_cu",
+    "annual": 385.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.015223408461842626,
+    "capacity": 0.03151800115332057
+   },
+   {
+    "country": "POL",
+    "product": "refined_cu",
+    "annual": 589.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.023289837880585213,
+    "capacity": 0.04821844851767744
+   },
+   {
+    "country": "RUS",
+    "product": "refined_cu",
+    "annual": 896.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.0354290233293792,
+    "capacity": 0.07335098450227333
+   },
+   {
+    "country": "USA",
+    "product": "refined_cu",
+    "annual": 921.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.03641755634638197,
+    "capacity": 0.07539760795378764
+   },
+   {
+    "country": "AUS",
+    "product": "refined_ni",
+    "annual": 71.437883,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.09862769181657828,
+    "capacity": 0.017523051500271603
+   },
+   {
+    "country": "CAN",
+    "product": "refined_ni",
+    "annual": 94.551511,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.13053854476202512,
+    "capacity": 0.02319261051844855
+   },
+   {
+    "country": "CHN",
+    "product": "refined_ni",
+    "annual": 56.906946999999995,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.07856616959013685,
+    "capacity": 0.013958747391831677
+   },
+   {
+    "country": "DEU",
+    "product": "refined_ni",
+    "annual": 16.031244000000004,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.022132859013590453,
+    "capacity": 0.003932315774606873
+   },
+   {
+    "country": "FIN",
+    "product": "refined_ni",
+    "annual": 40.99626,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.056599752499837036,
+    "capacity": 0.010056003133498855
+   },
+   {
+    "country": "FRA",
+    "product": "refined_ni",
+    "annual": 9.880880000000001,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.013641619076486242,
+    "capacity": 0.0024236884106434635
+   },
+   {
+    "country": "GBR",
+    "product": "refined_ni",
+    "annual": 26.08070300000001,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.03600721955665609,
+    "capacity": 0.006397355053652532
+   },
+   {
+    "country": "IDN",
+    "product": "refined_ni",
+    "annual": 50.666746,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.06995089999849032,
+    "capacity": 0.012428083843262548
+   },
+   {
+    "country": "JPN",
+    "product": "refined_ni",
+    "annual": 25.526777,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.03524246505214214,
+    "capacity": 0.006261482132763489
+   },
+   {
+    "country": "MDG",
+    "product": "refined_ni",
+    "annual": 26.024067000000002,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.03592902745858224,
+    "capacity": 0.006383462767052024
+   },
+   {
+    "country": "NLD",
+    "product": "refined_ni",
+    "annual": 52.55410300000001,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.0725565996178906,
+    "capacity": 0.012891035046763333
+   },
+   {
+    "country": "NOR",
+    "product": "refined_ni",
+    "annual": 107.89232099999998,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.1489569698609817,
+    "capacity": 0.026464987734404657
+   },
+   {
+    "country": "RUS",
+    "product": "refined_ni",
+    "annual": 68.811991,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.09500236508454708,
+    "capacity": 0.016878944496846668
+   },
+   {
+    "country": "ZAF",
+    "product": "refined_ni",
+    "annual": 36.472863,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.05035471574139845,
+    "capacity": 0.008946455716098846
+   }
+  ],
+  "a": [
+   [
+    "mine_li",
+    "li_carbonate",
+    0.18786398647379296
+   ],
+   [
+    "li_carbonate",
+    "cam",
+    0.30674814056854355
+   ],
+   [
+    "graphite",
+    "aam",
+    1.0
+   ],
+   [
+    "cam",
+    "cell",
+    1.914088311064536
+   ],
+   [
+    "aam",
+    "cell",
+    1.1293939393939394
+   ],
+   [
+    "refined_cu",
+    "cell",
+    0.7944696969696969
+   ],
+   [
+    "aluminium",
+    "cell",
+    1.4468939393939395
+   ],
+   [
+    "pcam",
+    "cam",
+    0.3618809365546788
+   ],
+   [
+    "mine_co",
+    "refined_co",
+    1.0
+   ],
+   [
+    "mine_ni",
+    "refined_ni",
+    1.0
+   ],
+   [
+    "refined_co",
+    "pcam",
+    0.12807232306631744
+   ],
+   [
+    "refined_ni",
+    "pcam",
+    0.3827951586098301
+   ],
+   [
+    "mine_mn",
+    "pcam",
+    0.119432089486267
+   ]
+  ],
+  "requirement": {
+   "cell": 1281.278325602495,
+   "cam": 2452.479866256076,
+   "aluminium": 1853.8738439910646,
+   "aam": 1447.0679756122724,
+   "refined_cu": 1017.9368030752548,
+   "graphite": 1447.0679756122724,
+   "pcam": 887.5057108822422,
+   "li_carbonate": 752.2936387558417,
+   "mine_mn": 105.99666148166096,
+   "refined_co": 113.66491812731223,
+   "refined_ni": 339.73288936429793,
+   "mine_li": 141.32888197554794,
+   "mine_ni": 339.73288936429793,
+   "mine_co": 113.66491812731223
+  },
+  "supply_ratio": {
+   "cell": 1.0,
+   "cam": 1.3394986076140645,
+   "aluminium": 35.680960823954976,
+   "aam": 1.4425111310099907,
+   "refined_cu": 24.658701723101284,
+   "graphite": 1.4314922283616545,
+   "pcam": 1.0,
+   "li_carbonate": 1.7324804867777788,
+   "mine_mn": 164.87311728231757,
+   "refined_co": 1.5445574843361867,
+   "refined_ni": 2.0128586822417414,
+   "mine_li": 1.5695305651563722,
+   "mine_ni": 9.979899227137658,
+   "mine_co": 2.5230300142282016
+  },
+  "finals": [
+   "cell"
+  ],
+  "demand_scale": {
+   "cell": 1.0
+  },
+  "coverage": {
+   "aam": 0.9494231247230174,
+   "aluminium": 0.9999999999999999,
+   "cam": 0.9559128005825376,
+   "cell": 0.9520175150740168,
+   "graphite": 0.8927898186269173,
+   "li_carbonate": 0.9876716637466325,
+   "mine_co": 0.9760729723290562,
+   "mine_li": 0.9948423554738305,
+   "mine_mn": 1.0,
+   "mine_ni": 0.9977957557261795,
+   "pcam": 0.9520175150740171,
+   "refined_co": 0.9761850482359806,
+   "refined_cu": 0.9925266903914591,
+   "refined_ni": 0.9441068991293428
+  },
+  "cutoff": 0.01,
+  "ncm": 0.5,
+  "capacity_basis": "production",
+  "hhi": {
+   "mine_ni": 0.4815348635957288,
+   "mine_mn": 0.2732426201245892,
+   "graphite": 0.5884847051096427,
+   "cam": 0.8146163079528779,
+   "cell": 0.7573739644770026,
+   "refined_co": 0.6737990375702015,
+   "pcam": 0.7573739644770031,
+   "aluminium": 0.45641088149567305,
+   "aam": 0.8282703267355153,
+   "li_carbonate": 0.5979424669276469,
+   "refined_ni": 0.08480551849750738,
+   "mine_li": 0.2345924578405496,
+   "refined_cu": 0.2668054631126697,
+   "mine_co": 0.6075459693100308
+  },
+  "top_share": {
+   "mine_ni": 0.6798136545428327,
+   "mine_mn": 0.4285877775234607,
+   "graphite": 0.7645592238658658,
+   "cam": 0.9020534126759348,
+   "cell": 0.8693353117581455,
+   "refined_co": 0.8173705134977339,
+   "pcam": 0.8693353117581458,
+   "aluminium": 0.6651750619822216,
+   "aam": 0.9096654406401794,
+   "li_carbonate": 0.7479126051060856,
+   "refined_ni": 0.1489569698609817,
+   "mine_li": 0.3709019150558371,
+   "refined_cu": 0.4903123764333729,
+   "mine_co": 0.769204587999047
+  },
+  "missing_baci_quantities": {
+   "12": 863,
+   "22": 1439
+  },
+  "unparsed_usgs": [
+   {
+    "country": "Other countries",
+    "chapter": "ALUMINUM",
+    "value": "6680",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "ALUMINUM",
+    "value": "72800",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "COBALT",
+    "value": "7780",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "COBALT",
+    "value": "302000",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "COPPER",
+    "value": "2310",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "COPPER",
+    "value": "27600",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "USA",
+    "chapter": "GRAPHITE (NATURAL)",
+    "value": "\u2014",
+    "reason": "withheld_or_non_numeric"
+   },
+   {
+    "country": "World total",
+    "chapter": "GRAPHITE (NATURAL)",
+    "value": "1550000",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "USA",
+    "chapter": "LITHIUM",
+    "value": "W",
+    "reason": "withheld_or_non_numeric"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "LITHIUM",
+    "value": "\u2014",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "LITHIUM",
+    "value": "222000",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "USA",
+    "chapter": "MANGANESE",
+    "value": "\u2014",
+    "reason": "withheld_or_non_numeric"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "MANGANESE",
+    "value": "1240",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "MANGANESE",
+    "value": "18700",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "NICKEL",
+    "value": "308000",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "NICKEL",
+    "value": "3710000",
+    "reason": "aggregate_or_unmapped"
+   }
+  ],
+  "annual_totals": {
+   "aluminium": 66148.0,
+   "mine_co": 293.81,
+   "refined_cu": 25290.0,
+   "graphite": 2320.2175000000007,
+   "mine_li": 222.97000000000003,
+   "mine_mn": 17476.0,
+   "mine_ni": 3397.99,
+   "cell": 1345.855832812991,
+   "li_carbonate": 1319.6025534715468,
+   "refined_ni": 724.318715,
+   "refined_co": 179.84500000000006,
+   "cam": 3436.603594019863,
+   "aam": 2198.610511786064,
+   "pcam": 932.2367465195645
+  }
+ },
+ "pv": {
+  "sector": "pv",
+  "nodes": [
+   {
+    "country": "CHN",
+    "product": "module",
+    "annual": 588.0,
+    "basis": "production",
+    "unit": "GW",
+    "source": "MIIT 2024",
+    "note": "",
+    "share": 0.8048927155958171,
+    "capacity": 0.07158430464903251
+   },
+   {
+    "country": "IND",
+    "product": "module",
+    "annual": 11.936946979577705,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.01634007086788365,
+    "capacity": 0.0014532279747711545
+   },
+   {
+    "country": "MYS",
+    "product": "module",
+    "annual": 15.696554821860452,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.021486467068139246,
+    "capacity": 0.001910930208007311
+   },
+   {
+    "country": "NLD",
+    "product": "module",
+    "annual": 7.549254098961957,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.01033391093951759,
+    "capacity": 0.0009190614035596091
+   },
+   {
+    "country": "THA",
+    "product": "module",
+    "annual": 17.645998966098233,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.024154993243577873,
+    "capacity": 0.0021482594656899467
+   },
+   {
+    "country": "VNM",
+    "product": "module",
+    "annual": 49.801794611608265,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.06817194167769135,
+    "capacity": 0.006062970812152911
+   },
+   {
+    "country": "CHN",
+    "product": "polysilicon",
+    "annual": 1820.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "MIIT 2024",
+    "note": "Strict lower bound",
+    "share": 0.9384328428510612,
+    "capacity": 0.11078523338540745
+   },
+   {
+    "country": "DEU",
+    "product": "polysilicon",
+    "annual": 49.33022100000001,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.025435768973352268,
+    "capacity": 0.003002780245296005
+   },
+   {
+    "country": "USA",
+    "product": "polysilicon",
+    "annual": 34.956455000000005,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.018024332660244613,
+    "capacity": 0.002127834629396425
+   },
+   {
+    "country": "CHN",
+    "product": "pv_cell",
+    "annual": 654.0,
+    "basis": "production",
+    "unit": "GW",
+    "source": "MIIT 2024",
+    "note": "",
+    "share": 0.929019401470909,
+    "capacity": 0.07961927761984228
+   },
+   {
+    "country": "THA",
+    "product": "pv_cell",
+    "annual": 30.507591995758176,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.043336612929996875,
+    "capacity": 0.0037140557134910527
+   },
+   {
+    "country": "CHN",
+    "product": "wafer",
+    "annual": 753.0,
+    "basis": "production",
+    "unit": "GW",
+    "source": "MIIT 2024",
+    "note": "",
+    "share": 0.9467529361985781,
+    "capacity": 0.09167173707605693
+   },
+   {
+    "country": "JPN",
+    "product": "wafer",
+    "annual": 8.270331400592628,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.010398353966595445,
+    "capacity": 0.0010068468070212285
+   },
+   {
+    "country": "SGP",
+    "product": "wafer",
+    "annual": 9.33439406755783,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.011736208487509912,
+    "capacity": 0.0011363879398744582
+   },
+   {
+    "country": "VNM",
+    "product": "wafer",
+    "annual": 9.333372776170423,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.01173492440966165,
+    "capacity": 0.00113626360580335
+   }
+  ],
+  "a": [
+   [
+    "polysilicon",
+    "wafer",
+    2.0
+   ],
+   [
+    "wafer",
+    "pv_cell",
+    1.0
+   ],
+   [
+    "pv_cell",
+    "module",
+    1.0
+   ]
+  ],
+  "requirement": {
+   "module": 684.5075919957582,
+   "pv_cell": 684.5075919957582,
+   "wafer": 684.5075919957582,
+   "polysilicon": 1369.0151839915163
+  },
+  "supply_ratio": {
+   "module": 1.0089450541585612,
+   "pv_cell": 1.0,
+   "wafer": 1.1394148251450718,
+   "polysilicon": 1.3909901791211985
+  },
+  "finals": [
+   "module"
+  ],
+  "demand_scale": {
+   "module": 0.9911342504513081
+  },
+  "coverage": {
+   "module": 0.9453800993926269,
+   "polysilicon": 0.9818929444846581,
+   "pv_cell": 0.9723560144009059,
+   "wafer": 0.9806224230623451
+  },
+  "cutoff": 0.01,
+  "ncm": 0.5,
+  "capacity_basis": "production",
+  "hhi": {
+   "polysilicon": 0.8817084870227747,
+   "pv_cell": 0.8650141227173952,
+   "wafer": 0.8967650663294644,
+   "module": 0.6541202088954284
+  },
+  "top_share": {
+   "polysilicon": 0.9384328428510612,
+   "pv_cell": 0.929019401470909,
+   "wafer": 0.9467529361985781,
+   "module": 0.8048927155958171
+  },
+  "missing_baci_quantities": {
+   "12": 863,
+   "22": 1439
+  },
+  "unparsed_usgs": [
+   {
+    "country": "Other countries",
+    "chapter": "ALUMINUM",
+    "value": "6680",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "ALUMINUM",
+    "value": "72800",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "COBALT",
+    "value": "7780",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "COBALT",
+    "value": "302000",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "COPPER",
+    "value": "2310",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "COPPER",
+    "value": "27600",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "USA",
+    "chapter": "GRAPHITE (NATURAL)",
+    "value": "\u2014",
+    "reason": "withheld_or_non_numeric"
+   },
+   {
+    "country": "World total",
+    "chapter": "GRAPHITE (NATURAL)",
+    "value": "1550000",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "USA",
+    "chapter": "LITHIUM",
+    "value": "W",
+    "reason": "withheld_or_non_numeric"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "LITHIUM",
+    "value": "\u2014",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "LITHIUM",
+    "value": "222000",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "USA",
+    "chapter": "MANGANESE",
+    "value": "\u2014",
+    "reason": "withheld_or_non_numeric"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "MANGANESE",
+    "value": "1240",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "MANGANESE",
+    "value": "18700",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "NICKEL",
+    "value": "308000",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "NICKEL",
+    "value": "3710000",
+    "reason": "aggregate_or_unmapped"
+   }
+  ],
+  "annual_totals": {
+   "polysilicon": 1939.403564,
+   "wafer": 795.3500551299699,
+   "pv_cell": 703.968075332471,
+   "module": 730.5321424914828
+  }
+ },
+ "joint": {
+  "sector": "joint",
+  "nodes": [
+   {
+    "country": "CHN",
+    "product": "aam",
+    "annual": 2000.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "MIIT 2024",
+    "note": "",
+    "share": 0.9096654406401794,
+    "capacity": 0.11517542332187121
+   },
+   {
+    "country": "HUN",
+    "product": "aam",
+    "annual": 23.675824540074455,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.0107685396813832,
+    "capacity": 0.0013634365569487109
+   },
+   {
+    "country": "POL",
+    "product": "aam",
+    "annual": 33.681164628623876,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.01531929573158578,
+    "capacity": 0.0019396211970376949
+   },
+   {
+    "country": "USA",
+    "product": "aam",
+    "annual": 30.0546729800987,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.013669848669868988,
+    "capacity": 0.0017307798416416362
+   },
+   {
+    "country": "ARE",
+    "product": "aluminium",
+    "annual": 2690.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.040666384471185826,
+    "capacity": 0.12091797259735605
+   },
+   {
+    "country": "AUS",
+    "product": "aluminium",
+    "annual": 1570.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.023734655620729274,
+    "capacity": 0.07057294311444201
+   },
+   {
+    "country": "BHR",
+    "product": "aluminium",
+    "annual": 1620.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.0244905363729818,
+    "capacity": 0.07282048907350067
+   },
+   {
+    "country": "BRA",
+    "product": "aluminium",
+    "annual": 1100.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.01662937654955554,
+    "capacity": 0.04944601109929058
+   },
+   {
+    "country": "CAN",
+    "product": "aluminium",
+    "annual": 3320.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.050190481949567635,
+    "capacity": 0.1492370516814952
+   },
+   {
+    "country": "CHN",
+    "product": "aluminium",
+    "annual": 44000.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.6651750619822216,
+    "capacity": 1.977840443971623
+   },
+   {
+    "country": "IND",
+    "product": "aluminium",
+    "annual": 4200.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.06349398318921207,
+    "capacity": 0.18879386056092767
+   },
+   {
+    "country": "ISL",
+    "product": "aluminium",
+    "annual": 742.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.011217270363427465,
+    "capacity": 0.03335358203243055
+   },
+   {
+    "country": "MYS",
+    "product": "aluminium",
+    "annual": 1050.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.015873495797303017,
+    "capacity": 0.04719846514023192
+   },
+   {
+    "country": "NOR",
+    "product": "aluminium",
+    "annual": 1300.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.01965289955856564,
+    "capacity": 0.05843619493552523
+   },
+   {
+    "country": "RUS",
+    "product": "aluminium",
+    "annual": 3880.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.058656346374795915,
+    "capacity": 0.17440956642295222
+   },
+   {
+    "country": "USA",
+    "product": "aluminium",
+    "annual": 676.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.010219507770454134,
+    "capacity": 0.030386821366473117
+   },
+   {
+    "country": "CHN",
+    "product": "cam",
+    "annual": 3100.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "MIIT 2024",
+    "note": "",
+    "share": 0.9020534126759348,
+    "capacity": 0.10533555724055817
+   },
+   {
+    "country": "HUN",
+    "product": "cam",
+    "annual": 40.12560845801064,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.011675949046853823,
+    "capacity": 0.001363436556948711
+   },
+   {
+    "country": "KOR",
+    "product": "cam",
+    "annual": 36.948741812172884,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.010751528595404049,
+    "capacity": 0.0012554891316524973
+   },
+   {
+    "country": "POL",
+    "product": "cam",
+    "annual": 57.08258320678147,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.016610173866462977,
+    "capacity": 0.0019396211970376949
+   },
+   {
+    "country": "USA",
+    "product": "cam",
+    "annual": 50.93643257457591,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "",
+    "share": 0.014821736397881886,
+    "capacity": 0.0017307798416416362
+   },
+   {
+    "country": "CHN",
+    "product": "cell",
+    "annual": 1170.0,
+    "basis": "production",
+    "unit": "GWh",
+    "source": "MIIT 2024",
+    "note": "",
+    "share": 0.8693353117581455,
+    "capacity": 0.07609587866410884
+   },
+   {
+    "country": "DEU",
+    "product": "cell",
+    "annual": 14.577789382930687,
+    "basis": "trade",
+    "unit": "GWh",
+    "source": "BACI HS12 2024 850760",
+    "note": "Pack Wh/kg applied to mixed cell/pack exports",
+    "share": 0.01083161288714071,
+    "capacity": 0.0009481279419439552
+   },
+   {
+    "country": "HUN",
+    "product": "cell",
+    "annual": 20.963300505029704,
+    "basis": "trade",
+    "unit": "GWh",
+    "source": "BACI HS12 2024 850760",
+    "note": "Pack Wh/kg applied to mixed cell/pack exports",
+    "share": 0.015576185794888621,
+    "capacity": 0.001363436556948711
+   },
+   {
+    "country": "KOR",
+    "product": "cell",
+    "annual": 19.303572148990106,
+    "basis": "trade",
+    "unit": "GWh",
+    "source": "BACI HS12 2024 850760",
+    "note": "Pack Wh/kg applied to mixed cell/pack exports",
+    "share": 0.014342971719818947,
+    "capacity": 0.0012554891316524973
+   },
+   {
+    "country": "POL",
+    "product": "cell",
+    "annual": 29.822335195722776,
+    "basis": "trade",
+    "unit": "GWh",
+    "source": "BACI HS12 2024 850760",
+    "note": "Pack Wh/kg applied to mixed cell/pack exports",
+    "share": 0.022158640226264594,
+    "capacity": 0.0019396211970376949
+   },
+   {
+    "country": "USA",
+    "product": "cell",
+    "annual": 26.611328369821763,
+    "basis": "trade",
+    "unit": "GWh",
+    "source": "BACI HS12 2024 850760",
+    "note": "Pack Wh/kg applied to mixed cell/pack exports",
+    "share": 0.019772792687758448,
+    "capacity": 0.0017307798416416362
+   },
+   {
+    "country": "BRA",
+    "product": "graphite",
+    "annual": 77.84505,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "USGS natural + BACI 380110 synthetic exports",
+    "note": "Substitution assumed; synthetic exports include non-anode use",
+    "share": 0.033550755478742825,
+    "capacity": 0.004482918293631115
+   },
+   {
+    "country": "CHN",
+    "product": "graphite",
+    "annual": 1773.9436910000002,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "USGS natural + BACI 380110 synthetic exports",
+    "note": "Substitution assumed; synthetic exports include non-anode use",
+    "share": 0.7645592238658658,
+    "capacity": 0.10215735778004385
+   },
+   {
+    "country": "DEU",
+    "product": "graphite",
+    "annual": 32.838472999999986,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "USGS natural + BACI 380110 synthetic exports",
+    "note": "Substitution assumed; synthetic exports include non-anode use",
+    "share": 0.014153187362822657,
+    "capacity": 0.0018910925145094182
+   },
+   {
+    "country": "IND",
+    "product": "graphite",
+    "annual": 33.186696000000005,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "USGS natural + BACI 380110 synthetic exports",
+    "note": "Substitution assumed; synthetic exports include non-anode use",
+    "share": 0.014303269413320085,
+    "capacity": 0.0019111458802271253
+   },
+   {
+    "country": "MDG",
+    "product": "graphite",
+    "annual": 85.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.03663449655043115,
+    "capacity": 0.004894955491179526
+   },
+   {
+    "country": "MOZ",
+    "product": "graphite",
+    "annual": 41.652651,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "USGS natural + BACI 380110 synthetic exports",
+    "note": "Substitution assumed; synthetic exports include non-anode use",
+    "share": 0.017952045875009558,
+    "capacity": 0.002398680855701581
+   },
+   {
+    "country": "TZA",
+    "product": "graphite",
+    "annual": 27.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.011636840080725188,
+    "capacity": 0.0015548682148452612
+   },
+   {
+    "country": "ARG",
+    "product": "li_carbonate",
+    "annual": 65.78166599999999,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 283691",
+    "note": "Export proxy, kt Li2CO3",
+    "share": 0.04984960496396794,
+    "capacity": 0.007286789649140086
+   },
+   {
+    "country": "CHL",
+    "product": "li_carbonate",
+    "annual": 250.605,
+    "basis": "production",
+    "unit": "kt",
+    "source": "Cochilco Hoja1 AD21",
+    "note": "Carbonate only; sulfate excluded",
+    "share": 0.18990945367657894,
+    "capacity": 0.027760104464711364
+   },
+   {
+    "country": "CHN",
+    "product": "li_carbonate",
+    "annual": 986.9473834715471,
+    "basis": "production",
+    "unit": "kt",
+    "source": "MIIT 2024",
+    "note": "Battery-grade carbonate + LiOH\u00b7H2O as LCE",
+    "share": 0.7479126051060856,
+    "capacity": 0.10932647978429678
+   },
+   {
+    "country": "AUS",
+    "product": "mine_co",
+    "annual": 4.78,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.016269017392192234,
+    "capacity": 0.003504452736130718
+   },
+   {
+    "country": "CAN",
+    "product": "mine_co",
+    "annual": 3.35,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.011401926415030121,
+    "capacity": 0.002456049511723411
+   },
+   {
+    "country": "COD",
+    "product": "mine_co",
+    "annual": 226.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.769204587999047,
+    "capacity": 0.1656916984028331
+   },
+   {
+    "country": "CUB",
+    "product": "mine_co",
+    "annual": 3.45,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.01174228242741908,
+    "capacity": 0.002529364422521125
+   },
+   {
+    "country": "IDN",
+    "product": "mine_co",
+    "annual": 35.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.1191246043361356,
+    "capacity": 0.025660218779199814
+   },
+   {
+    "country": "MDG",
+    "product": "mine_co",
+    "annual": 3.1,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.010551036384057725,
+    "capacity": 0.0022727622347291265
+   },
+   {
+    "country": "PHL",
+    "product": "mine_co",
+    "annual": 3.1,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.010551036384057725,
+    "capacity": 0.0022727622347291265
+   },
+   {
+    "country": "RUS",
+    "product": "mine_co",
+    "annual": 8.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.02722848099111671,
+    "capacity": 0.0058651928638171
+   },
+   {
+    "country": "ARG",
+    "product": "mine_li",
+    "annual": 13.8,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.061891734314033275,
+    "capacity": 0.00813704873289076
+   },
+   {
+    "country": "AUS",
+    "product": "mine_li",
+    "annual": 82.7,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.3709019150558371,
+    "capacity": 0.04876332827609172
+   },
+   {
+    "country": "BRA",
+    "product": "mine_li",
+    "annual": 10.2,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.04574606449298111,
+    "capacity": 0.006014340367788821
+   },
+   {
+    "country": "CAN",
+    "product": "mine_li",
+    "annual": 4.82,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.02161725792707539,
+    "capacity": 0.0028420706443864825
+   },
+   {
+    "country": "CHL",
+    "product": "mine_li",
+    "annual": 48.9,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.2193120150692918,
+    "capacity": 0.028833455292634643
+   },
+   {
+    "country": "CHN",
+    "product": "mine_li",
+    "annual": 41.4,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.1856752029420998,
+    "capacity": 0.024411146198672275
+   },
+   {
+    "country": "ZWE",
+    "product": "mine_li",
+    "annual": 20.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.08969816567251199,
+    "capacity": 0.011792824250566316
+   },
+   {
+    "country": "AUS",
+    "product": "mine_mn",
+    "annual": 1600.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.09155413138017852,
+    "capacity": 1.2579012533937404
+   },
+   {
+    "country": "BRA",
+    "product": "mine_mn",
+    "annual": 705.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.04034103913939117,
+    "capacity": 0.5542627397766169
+   },
+   {
+    "country": "CHN",
+    "product": "mine_mn",
+    "annual": 690.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.03948271915770199,
+    "capacity": 0.5424699155260505
+   },
+   {
+    "country": "CIV",
+    "product": "mine_mn",
+    "annual": 340.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.019455252918287938,
+    "capacity": 0.26730401634616985
+   },
+   {
+    "country": "GAB",
+    "product": "mine_mn",
+    "annual": 4640.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.26550698100251774,
+    "capacity": 3.647913634841847
+   },
+   {
+    "country": "GHA",
+    "product": "mine_mn",
+    "annual": 1280.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.07324330510414283,
+    "capacity": 1.0063210027149923
+   },
+   {
+    "country": "IND",
+    "product": "mine_mn",
+    "annual": 731.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.04182879377431906,
+    "capacity": 0.5747036351442651
+   },
+   {
+    "country": "ZAF",
+    "product": "mine_mn",
+    "annual": 7490.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.4285877775234607,
+    "capacity": 5.888550242449448
+   },
+   {
+    "country": "AUS",
+    "product": "mine_ni",
+    "annual": 98.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.02884057928363533,
+    "capacity": 0.024038492952354384
+   },
+   {
+    "country": "BRA",
+    "product": "mine_ni",
+    "annual": 67.5,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.01986468471066719,
+    "capacity": 0.01655712524779511
+   },
+   {
+    "country": "CAN",
+    "product": "mine_ni",
+    "annual": 125.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.0367864531679022,
+    "capacity": 0.030661343051472428
+   },
+   {
+    "country": "CHN",
+    "product": "mine_ni",
+    "annual": 115.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.03384353691447003,
+    "capacity": 0.028208435607354632
+   },
+   {
+    "country": "IDN",
+    "product": "mine_ni",
+    "annual": 2310.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.6798136545428327,
+    "capacity": 0.5666216195912105
+   },
+   {
+    "country": "NCL",
+    "product": "mine_ni",
+    "annual": 116.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.034137828539813245,
+    "capacity": 0.028453726351766413
+   },
+   {
+    "country": "PHL",
+    "product": "mine_ni",
+    "annual": 354.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.10417923537149903,
+    "capacity": 0.08683292352176991
+   },
+   {
+    "country": "RUS",
+    "product": "mine_ni",
+    "annual": 205.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.060329783195359615,
+    "capacity": 0.05028460260441478
+   },
+   {
+    "country": "CHN",
+    "product": "module",
+    "annual": 588.0,
+    "basis": "production",
+    "unit": "GW",
+    "source": "MIIT 2024",
+    "note": "",
+    "share": 0.8048927155958171,
+    "capacity": 0.07158430464903251
+   },
+   {
+    "country": "IND",
+    "product": "module",
+    "annual": 11.936946979577705,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.01634007086788365,
+    "capacity": 0.0014532279747711545
+   },
+   {
+    "country": "MYS",
+    "product": "module",
+    "annual": 15.696554821860452,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.021486467068139246,
+    "capacity": 0.001910930208007311
+   },
+   {
+    "country": "NLD",
+    "product": "module",
+    "annual": 7.549254098961957,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.01033391093951759,
+    "capacity": 0.0009190614035596091
+   },
+   {
+    "country": "THA",
+    "product": "module",
+    "annual": 17.645998966098233,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.024154993243577873,
+    "capacity": 0.0021482594656899467
+   },
+   {
+    "country": "VNM",
+    "product": "module",
+    "annual": 49.801794611608265,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.06817194167769135,
+    "capacity": 0.006062970812152911
+   },
+   {
+    "country": "CHN",
+    "product": "pcam",
+    "annual": 810.4263226679851,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "No pCAM production statistic; tariff-line coverage incomplete",
+    "share": 0.8693353117581458,
+    "capacity": 0.07609587866410883
+   },
+   {
+    "country": "DEU",
+    "product": "pcam",
+    "annual": 10.097627557467447,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "No pCAM production statistic; tariff-line coverage incomplete",
+    "share": 0.010831612887140716,
+    "capacity": 0.0009481279419439552
+   },
+   {
+    "country": "HUN",
+    "product": "pcam",
+    "annual": 14.52069276861123,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "No pCAM production statistic; tariff-line coverage incomplete",
+    "share": 0.015576185794888628,
+    "capacity": 0.001363436556948711
+   },
+   {
+    "country": "KOR",
+    "product": "pcam",
+    "annual": 13.371045291506144,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "No pCAM production statistic; tariff-line coverage incomplete",
+    "share": 0.014342971719818954,
+    "capacity": 0.0012554891316524973
+   },
+   {
+    "country": "POL",
+    "product": "pcam",
+    "annual": 20.657098671830457,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "No pCAM production statistic; tariff-line coverage incomplete",
+    "share": 0.0221586402262646,
+    "capacity": 0.0019396211970376946
+   },
+   {
+    "country": "USA",
+    "product": "pcam",
+    "annual": 18.432923924841777,
+    "basis": "imputed",
+    "unit": "kt",
+    "source": "BOM x cell",
+    "note": "No pCAM production statistic; tariff-line coverage incomplete",
+    "share": 0.019772792687758455,
+    "capacity": 0.001730779841641636
+   },
+   {
+    "country": "CHN",
+    "product": "polysilicon",
+    "annual": 1820.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "MIIT 2024",
+    "note": "Strict lower bound",
+    "share": 0.9384328428510612,
+    "capacity": 0.11078523338540745
+   },
+   {
+    "country": "DEU",
+    "product": "polysilicon",
+    "annual": 49.33022100000001,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.025435768973352268,
+    "capacity": 0.003002780245296005
+   },
+   {
+    "country": "USA",
+    "product": "polysilicon",
+    "annual": 34.956455000000005,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.018024332660244613,
+    "capacity": 0.002127834629396425
+   },
+   {
+    "country": "CHN",
+    "product": "pv_cell",
+    "annual": 654.0,
+    "basis": "production",
+    "unit": "GW",
+    "source": "MIIT 2024",
+    "note": "",
+    "share": 0.929019401470909,
+    "capacity": 0.07961927761984228
+   },
+   {
+    "country": "THA",
+    "product": "pv_cell",
+    "annual": 30.507591995758176,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.043336612929996875,
+    "capacity": 0.0037140557134910527
+   },
+   {
+    "country": "AUS",
+    "product": "refined_co",
+    "annual": 2.4,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, reported",
+    "share": 0.013344824710167083,
+    "capacity": 0.0017595578591451302
+   },
+   {
+    "country": "CAN",
+    "product": "refined_co",
+    "annual": 4.835,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, reported",
+    "share": 0.02688426144735744,
+    "capacity": 0.0035447759370694602
+   },
+   {
+    "country": "CHN",
+    "product": "refined_co",
+    "annual": 147.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, estimated",
+    "share": 0.8173705134977339,
+    "capacity": 0.10777291887263922
+   },
+   {
+    "country": "FIN",
+    "product": "refined_co",
+    "annual": 10.627,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, reported",
+    "share": 0.059089771747894,
+    "capacity": 0.007791175570473041
+   },
+   {
+    "country": "JPN",
+    "product": "refined_co",
+    "annual": 3.8,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, reported",
+    "share": 0.021129305791097883,
+    "capacity": 0.0027859666103131225
+   },
+   {
+    "country": "MDG",
+    "product": "refined_co",
+    "annual": 3.4,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, estimated",
+    "share": 0.01890516833940337,
+    "capacity": 0.0024927069671222676
+   },
+   {
+    "country": "NOR",
+    "product": "refined_co",
+    "annual": 3.5,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MYB 2023 Table 8",
+    "note": "2023 refinery output, reported",
+    "share": 0.019461202702327,
+    "capacity": 0.0025660218779199814
+   },
+   {
+    "country": "AUS",
+    "product": "refined_cu",
+    "annual": 434.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.01716093317516805,
+    "capacity": 0.03552938311828864
+   },
+   {
+    "country": "CAN",
+    "product": "refined_cu",
+    "annual": 324.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.012811387900355872,
+    "capacity": 0.026524239931625622
+   },
+   {
+    "country": "CHL",
+    "product": "refined_cu",
+    "annual": 1940.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.07671016211941478,
+    "capacity": 0.15881797983751142
+   },
+   {
+    "country": "CHN",
+    "product": "refined_cu",
+    "annual": 12400.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.4903123764333729,
+    "capacity": 1.015125231951104
+   },
+   {
+    "country": "COD",
+    "product": "refined_cu",
+    "annual": 2560.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.10122578094108343,
+    "capacity": 0.20957424143506664
+   },
+   {
+    "country": "DEU",
+    "product": "refined_cu",
+    "annual": 597.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.0236061684460261,
+    "capacity": 0.04887336802216202
+   },
+   {
+    "country": "IDN",
+    "product": "refined_cu",
+    "annual": 349.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.013799920917358639,
+    "capacity": 0.028570863383139942
+   },
+   {
+    "country": "IND",
+    "product": "refined_cu",
+    "annual": 545.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.02155001977066034,
+    "capacity": 0.044616391243012234
+   },
+   {
+    "country": "JPN",
+    "product": "refined_cu",
+    "annual": 1570.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.06207987346777382,
+    "capacity": 0.12852795275509946
+   },
+   {
+    "country": "KAZ",
+    "product": "refined_cu",
+    "annual": 498.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.019691577698695135,
+    "capacity": 0.040768739154165304
+   },
+   {
+    "country": "KOR",
+    "product": "refined_cu",
+    "annual": 604.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.023882957690786872,
+    "capacity": 0.04944642258858603
+   },
+   {
+    "country": "MEX",
+    "product": "refined_cu",
+    "annual": 489.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.01933570581257414,
+    "capacity": 0.040031954711620146
+   },
+   {
+    "country": "PER",
+    "product": "refined_cu",
+    "annual": 385.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.015223408461842626,
+    "capacity": 0.03151800115332057
+   },
+   {
+    "country": "POL",
+    "product": "refined_cu",
+    "annual": 589.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.023289837880585213,
+    "capacity": 0.04821844851767744
+   },
+   {
+    "country": "RUS",
+    "product": "refined_cu",
+    "annual": 896.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.0354290233293792,
+    "capacity": 0.07335098450227333
+   },
+   {
+    "country": "USA",
+    "product": "refined_cu",
+    "annual": 921.0,
+    "basis": "production",
+    "unit": "kt",
+    "source": "USGS MCS2026, 2024 production",
+    "note": "",
+    "share": 0.03641755634638197,
+    "capacity": 0.07539760795378764
+   },
+   {
+    "country": "AUS",
+    "product": "refined_ni",
+    "annual": 71.437883,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.09862769181657828,
+    "capacity": 0.017523051500271603
+   },
+   {
+    "country": "CAN",
+    "product": "refined_ni",
+    "annual": 94.551511,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.13053854476202512,
+    "capacity": 0.02319261051844855
+   },
+   {
+    "country": "CHN",
+    "product": "refined_ni",
+    "annual": 56.906946999999995,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.07856616959013685,
+    "capacity": 0.013958747391831677
+   },
+   {
+    "country": "DEU",
+    "product": "refined_ni",
+    "annual": 16.031244000000004,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.022132859013590453,
+    "capacity": 0.003932315774606873
+   },
+   {
+    "country": "FIN",
+    "product": "refined_ni",
+    "annual": 40.99626,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.056599752499837036,
+    "capacity": 0.010056003133498855
+   },
+   {
+    "country": "FRA",
+    "product": "refined_ni",
+    "annual": 9.880880000000001,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.013641619076486242,
+    "capacity": 0.0024236884106434635
+   },
+   {
+    "country": "GBR",
+    "product": "refined_ni",
+    "annual": 26.08070300000001,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.03600721955665609,
+    "capacity": 0.006397355053652532
+   },
+   {
+    "country": "IDN",
+    "product": "refined_ni",
+    "annual": 50.666746,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.06995089999849032,
+    "capacity": 0.012428083843262548
+   },
+   {
+    "country": "JPN",
+    "product": "refined_ni",
+    "annual": 25.526777,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.03524246505214214,
+    "capacity": 0.006261482132763489
+   },
+   {
+    "country": "MDG",
+    "product": "refined_ni",
+    "annual": 26.024067000000002,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.03592902745858224,
+    "capacity": 0.006383462767052024
+   },
+   {
+    "country": "NLD",
+    "product": "refined_ni",
+    "annual": 52.55410300000001,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.0725565996178906,
+    "capacity": 0.012891035046763333
+   },
+   {
+    "country": "NOR",
+    "product": "refined_ni",
+    "annual": 107.89232099999998,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.1489569698609817,
+    "capacity": 0.026464987734404657
+   },
+   {
+    "country": "RUS",
+    "product": "refined_ni",
+    "annual": 68.811991,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.09500236508454708,
+    "capacity": 0.016878944496846668
+   },
+   {
+    "country": "ZAF",
+    "product": "refined_ni",
+    "annual": 36.472863,
+    "basis": "trade",
+    "unit": "kt",
+    "source": "BACI HS12 2024 750210",
+    "note": "Export proxy; omits domestically absorbed metal",
+    "share": 0.05035471574139845,
+    "capacity": 0.008946455716098846
+   },
+   {
+    "country": "CHN",
+    "product": "wafer",
+    "annual": 753.0,
+    "basis": "production",
+    "unit": "GW",
+    "source": "MIIT 2024",
+    "note": "",
+    "share": 0.9467529361985781,
+    "capacity": 0.09167173707605693
+   },
+   {
+    "country": "JPN",
+    "product": "wafer",
+    "annual": 8.270331400592628,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.010398353966595445,
+    "capacity": 0.0010068468070212285
+   },
+   {
+    "country": "SGP",
+    "product": "wafer",
+    "annual": 9.33439406755783,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.011736208487509912,
+    "capacity": 0.0011363879398744582
+   },
+   {
+    "country": "VNM",
+    "product": "wafer",
+    "annual": 9.333372776170423,
+    "basis": "trade",
+    "unit": "GW",
+    "source": "BACI HS22 2024 / MIIT China exports",
+    "note": "HS22 only; silicon and wafer codes include semiconductor products",
+    "share": 0.01173492440966165,
+    "capacity": 0.00113626360580335
+   }
+  ],
+  "a": [
+   [
+    "mine_li",
+    "li_carbonate",
+    0.18786398647379296
+   ],
+   [
+    "li_carbonate",
+    "cam",
+    0.30674814056854355
+   ],
+   [
+    "graphite",
+    "aam",
+    1.0
+   ],
+   [
+    "cam",
+    "cell",
+    1.914088311064536
+   ],
+   [
+    "aam",
+    "cell",
+    1.1293939393939394
+   ],
+   [
+    "refined_cu",
+    "cell",
+    0.7944696969696969
+   ],
+   [
+    "aluminium",
+    "cell",
+    1.4468939393939395
+   ],
+   [
+    "pcam",
+    "cam",
+    0.3618809365546788
+   ],
+   [
+    "mine_co",
+    "refined_co",
+    1.0
+   ],
+   [
+    "mine_ni",
+    "refined_ni",
+    1.0
+   ],
+   [
+    "refined_co",
+    "pcam",
+    0.12807232306631744
+   ],
+   [
+    "refined_ni",
+    "pcam",
+    0.3827951586098301
+   ],
+   [
+    "mine_mn",
+    "pcam",
+    0.119432089486267
+   ],
+   [
+    "polysilicon",
+    "wafer",
+    2.0
+   ],
+   [
+    "wafer",
+    "pv_cell",
+    1.0
+   ],
+   [
+    "pv_cell",
+    "module",
+    1.0
+   ]
+  ],
+  "requirement": {
+   "cell": 1281.278325602495,
+   "module": 684.5075919957582,
+   "aluminium": 1853.8738439910646,
+   "pv_cell": 684.5075919957582,
+   "refined_cu": 1017.9368030752548,
+   "cam": 2452.479866256076,
+   "aam": 1447.0679756122724,
+   "graphite": 1447.0679756122724,
+   "pcam": 887.5057108822422,
+   "li_carbonate": 752.2936387558417,
+   "wafer": 684.5075919957582,
+   "polysilicon": 1369.0151839915163,
+   "refined_co": 113.66491812731223,
+   "mine_li": 141.32888197554794,
+   "mine_mn": 105.99666148166096,
+   "refined_ni": 339.73288936429793,
+   "mine_ni": 339.73288936429793,
+   "mine_co": 113.66491812731223
+  },
+  "supply_ratio": {
+   "cell": 1.0,
+   "module": 1.0089450541585612,
+   "aluminium": 35.680960823954976,
+   "pv_cell": 1.0,
+   "refined_cu": 24.658701723101284,
+   "cam": 1.3394986076140645,
+   "aam": 1.4425111310099907,
+   "graphite": 1.4314922283616545,
+   "pcam": 1.0,
+   "li_carbonate": 1.7324804867777788,
+   "wafer": 1.1394148251450718,
+   "polysilicon": 1.3909901791211985,
+   "refined_co": 1.5445574843361867,
+   "mine_li": 1.5695305651563722,
+   "mine_mn": 164.87311728231757,
+   "refined_ni": 2.0128586822417414,
+   "mine_ni": 9.979899227137658,
+   "mine_co": 2.5230300142282016
+  },
+  "finals": [
+   "cell",
+   "module"
+  ],
+  "demand_scale": {
+   "cell": 1.0,
+   "module": 0.9911342504513081
+  },
+  "coverage": {
+   "aam": 0.9494231247230174,
+   "aluminium": 0.9999999999999999,
+   "cam": 0.9559128005825376,
+   "cell": 0.9520175150740168,
+   "graphite": 0.8927898186269173,
+   "li_carbonate": 0.9876716637466325,
+   "mine_co": 0.9760729723290562,
+   "mine_li": 0.9948423554738305,
+   "mine_mn": 1.0,
+   "mine_ni": 0.9977957557261795,
+   "module": 0.9453800993926269,
+   "pcam": 0.9520175150740171,
+   "polysilicon": 0.9818929444846581,
+   "pv_cell": 0.9723560144009059,
+   "refined_co": 0.9761850482359806,
+   "refined_cu": 0.9925266903914591,
+   "refined_ni": 0.9441068991293428,
+   "wafer": 0.9806224230623451
+  },
+  "cutoff": 0.01,
+  "ncm": 0.5,
+  "capacity_basis": "production",
+  "hhi": {
+   "mine_ni": 0.4815348635957288,
+   "mine_mn": 0.2732426201245892,
+   "graphite": 0.5884847051096427,
+   "module": 0.6541202088954284,
+   "cam": 0.8146163079528779,
+   "cell": 0.7573739644770026,
+   "refined_co": 0.6737990375702015,
+   "pcam": 0.7573739644770031,
+   "polysilicon": 0.8817084870227747,
+   "wafer": 0.8967650663294644,
+   "aluminium": 0.45641088149567305,
+   "aam": 0.8282703267355153,
+   "li_carbonate": 0.5979424669276469,
+   "pv_cell": 0.8650141227173952,
+   "refined_ni": 0.08480551849750738,
+   "mine_li": 0.2345924578405496,
+   "refined_cu": 0.2668054631126697,
+   "mine_co": 0.6075459693100308
+  },
+  "top_share": {
+   "mine_ni": 0.6798136545428327,
+   "mine_mn": 0.4285877775234607,
+   "graphite": 0.7645592238658658,
+   "module": 0.8048927155958171,
+   "cam": 0.9020534126759348,
+   "cell": 0.8693353117581455,
+   "refined_co": 0.8173705134977339,
+   "pcam": 0.8693353117581458,
+   "polysilicon": 0.9384328428510612,
+   "wafer": 0.9467529361985781,
+   "aluminium": 0.6651750619822216,
+   "aam": 0.9096654406401794,
+   "li_carbonate": 0.7479126051060856,
+   "pv_cell": 0.929019401470909,
+   "refined_ni": 0.1489569698609817,
+   "mine_li": 0.3709019150558371,
+   "refined_cu": 0.4903123764333729,
+   "mine_co": 0.769204587999047
+  },
+  "missing_baci_quantities": {
+   "12": 863,
+   "22": 1439
+  },
+  "unparsed_usgs": [
+   {
+    "country": "Other countries",
+    "chapter": "ALUMINUM",
+    "value": "6680",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "ALUMINUM",
+    "value": "72800",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "COBALT",
+    "value": "7780",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "COBALT",
+    "value": "302000",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "COPPER",
+    "value": "2310",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "COPPER",
+    "value": "27600",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "USA",
+    "chapter": "GRAPHITE (NATURAL)",
+    "value": "\u2014",
+    "reason": "withheld_or_non_numeric"
+   },
+   {
+    "country": "World total",
+    "chapter": "GRAPHITE (NATURAL)",
+    "value": "1550000",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "USA",
+    "chapter": "LITHIUM",
+    "value": "W",
+    "reason": "withheld_or_non_numeric"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "LITHIUM",
+    "value": "\u2014",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "LITHIUM",
+    "value": "222000",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "USA",
+    "chapter": "MANGANESE",
+    "value": "\u2014",
+    "reason": "withheld_or_non_numeric"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "MANGANESE",
+    "value": "1240",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "MANGANESE",
+    "value": "18700",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "Other countries",
+    "chapter": "NICKEL",
+    "value": "308000",
+    "reason": "aggregate_or_unmapped"
+   },
+   {
+    "country": "World total",
+    "chapter": "NICKEL",
+    "value": "3710000",
+    "reason": "aggregate_or_unmapped"
+   }
+  ],
+  "annual_totals": {
+   "aluminium": 66148.0,
+   "mine_co": 293.81,
+   "refined_cu": 25290.0,
+   "graphite": 2320.2175000000007,
+   "mine_li": 222.97000000000003,
+   "mine_mn": 17476.0,
+   "mine_ni": 3397.99,
+   "cell": 1345.855832812991,
+   "li_carbonate": 1319.6025534715468,
+   "refined_ni": 724.318715,
+   "refined_co": 179.84500000000006,
+   "cam": 3436.603594019863,
+   "aam": 2198.610511786064,
+   "pcam": 932.2367465195645,
+   "polysilicon": 1939.403564,
+   "wafer": 795.3500551299699,
+   "pv_cell": 703.968075332471,
+   "module": 730.5321424914828
+  }
+ }
+}
