@@ -1,0 +1,118 @@
+{
+  "original_code_sha256": {
+    "recompute.py": "29092b322abc6ed6a83f29791941c8affad0f1955821aa9fd82de6efe2998083",
+    "trace_sources.py": "1c92ee50e897556a93b79114b7da48c3e7ea7ed7838af24e9a687d749fc9b456"
+  },
+  "portable_code_sha256": {
+    "recompute.py": "1dabd1a6e44dc7904229a77b302e8adb833c97abc63612e1183ef9173dd7ca42",
+    "trace_sources.py": "114b8440f3db57970c0a7dbd410eef530ffb28e574ca6d46f3b3b0b31f3128b6"
+  },
+  "cut_input_sha256": {
+    "pv-cuts.json": "c8d5edaf889bafb094f166e5aa110cb532d9a1cf105829076d6bffa61eccac9b",
+    "joint-cuts.json": "ed510ed3f1c2e55aa80c7c94ded88eddc4f3576e88d7e2f58e5cd4c2548162ca"
+  },
+  "immutable_accepted_artifacts_sha256": {
+    "results.json": "a3f5efb32394aea9d2f6eac82aa551cb64cc12f135c22754153d274a78035970",
+    "independent_check.md": "ef3eee0685a236700c801b2bbf3c955d6db62ddb8eab4b7e370002d7882334a2"
+  },
+  "test": {
+    "output_directory": "../portable-test",
+    "checks": {
+      "accepted_files_immutable": true,
+      "sector_certificates_and_L_exactly_equal": true,
+      "rates_exactly_equal": true,
+      "events_exactly_equal": true,
+      "source_trace_exactly_equal": true,
+      "enumerated_cut_lists_equal": true,
+      "frozen_input_hashes_match_lock": true,
+      "cut_copies_byte_identical": true,
+      "network_equal_except_disclosed_HHI_correction": true
+    },
+    "L": {
+      "pv": 0.2444939846405121,
+      "joint": 0.20382804118895667
+    },
+    "enumerated_cuts": {
+      "pv": 22,
+      "joint": 180
+    },
+    "HHI_correction": {
+      "mine_co": {
+        "accepted": 0.60736297452115,
+        "portable": 0.6075459693100308
+      },
+      "refined_cu": {
+        "accepted": 0.26674961275616454,
+        "portable": 0.2668054631126696
+      },
+      "graphite": {
+        "accepted": 0.5878811345556734,
+        "portable": 0.5884847051096429
+      },
+      "mine_li": {
+        "accepted": 0.23457762749172464,
+        "portable": 0.2345924578405497
+      },
+      "mine_ni": {
+        "accepted": 0.4815300049029101,
+        "portable": 0.4815348635957288
+      },
+      "cell": {
+        "accepted": 0.7571915151763924,
+        "portable": 0.7573739644770038
+      },
+      "cam": {
+        "accepted": 0.814447864219305,
+        "portable": 0.8146163079528785
+      },
+      "pcam": {
+        "accepted": 0.7571915151763924,
+        "portable": 0.7573739644770038
+      },
+      "aam": {
+        "accepted": 0.8280287209263294,
+        "portable": 0.8282703267355151
+      },
+      "li_carbonate": {
+        "accepted": 0.5979238485873717,
+        "portable": 0.5979424669276465
+      },
+      "refined_ni": {
+        "accepted": 0.0845561258831075,
+        "portable": 0.08480551849750739
+      },
+      "refined_co": {
+        "accepted": 0.6736695966846588,
+        "portable": 0.6737990375702018
+      },
+      "polysilicon": {
+        "accepted": 0.8816280554526374,
+        "portable": 0.8817084870227746
+      },
+      "wafer": {
+        "accepted": 0.8967246950064072,
+        "portable": 0.8967650663294653
+      },
+      "pv_cell": {
+        "accepted": 0.8649551103296109,
+        "portable": 0.8650141227173961
+      },
+      "module": {
+        "accepted": 0.6539186168482559,
+        "portable": 0.654120208895428
+      }
+    }
+  },
+  "versions": {
+    "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "openpyxl": "3.1.5",
+    "pypdf": "6.19.0"
+  },
+  "repository_code_sha256": {
+    "recompute.py": "15e44ca42b8da2094995d6a5bd57a50aacbdf7486560afcbd3bc867256acc6f2",
+    "trace_sources.py": "4ac062ad7bf5efe8b89681ea8bfdaffde1886bc577adf684fded8698bfa3a3bf"
+  },
+  "repository_formatting": "ruff format, line length 100; abstract syntax trees equal to portable originals"
+}

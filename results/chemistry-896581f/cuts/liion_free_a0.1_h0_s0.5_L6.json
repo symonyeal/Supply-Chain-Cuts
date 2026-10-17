@@ -1,0 +1,1149 @@
+{
+ "stamp": {
+  "revision": "d18c743a6dc99493b2adcea1eea254c84ea42dd3",
+  "dirty": [],
+  "sources": 88,
+  "absent_local_only": [
+   "data/events/raw/gdacs-2012-orange-page1.json",
+   "data/events/raw/gdacs-2012-red-page1.json",
+   "data/events/raw/gdacs-2013-orange-page1.json",
+   "data/events/raw/gdacs-2013-red-page1.json",
+   "data/events/raw/gdacs-2014-orange-page1.json",
+   "data/events/raw/gdacs-2014-red-page1.json",
+   "data/events/raw/gdacs-2015-orange-page1.json",
+   "data/events/raw/gdacs-2015-red-page1.json",
+   "data/events/raw/gdacs-2016-orange-page1.json",
+   "data/events/raw/gdacs-2016-red-page1.json",
+   "data/events/raw/gdacs-2017-orange-page1.json",
+   "data/events/raw/gdacs-2017-red-page1.json",
+   "data/events/raw/gdacs-2018-orange-page1.json",
+   "data/events/raw/gdacs-2018-red-page1.json",
+   "data/events/raw/gdacs-2019-orange-page1.json",
+   "data/events/raw/gdacs-2019-red-page1.json",
+   "data/events/raw/gdacs-2020-orange-page1.json",
+   "data/events/raw/gdacs-2020-red-page1.json",
+   "data/events/raw/gdacs-2021-orange-page1.json",
+   "data/events/raw/gdacs-2021-red-page1.json",
+   "data/events/raw/gdacs-2022-orange-page1.json",
+   "data/events/raw/gdacs-2022-red-page1.json",
+   "data/events/raw/gdacs-2023-orange-page1.json",
+   "data/events/raw/gdacs-2023-red-page1.json",
+   "data/events/raw/gdacs-2024-orange-page1.json",
+   "data/events/raw/gdacs-2024-red-page1.json",
+   "data/events/raw/gdacs-quickstart.pdf",
+   "data/events/raw/gdacs-swagger.json",
+   "data/events/raw/gdacs-terms.pdf",
+   "data/events/raw/indonesia-11-2019-official.html",
+   "data/events/raw/indonesia-2019-ministry-release.html",
+   "data/events/raw/mofcom-2023-23.html",
+   "data/events/raw/mofcom-2023-39.html",
+   "data/events/raw/mofcom-2024-46-original.html",
+   "data/events/raw/mofcom-2024-46.html",
+   "data/events/raw/mofcom-2025-28.html",
+   "data/events/raw/mofcom-2025-58.html",
+   "data/events/raw/mofcom-2025-70.html",
+   "data/events/raw/mofcom-2025-72.html",
+   "data/events/raw/oecd-battery-pv-2012-2024.csv",
+   "data/events/raw/oecd-china-2023-2024.csv",
+   "data/events/raw/oecd-methodology.pdf",
+   "data/events/raw/oecd-structure.xml",
+   "data/events/raw/zimbabwe-si213-2022.pdf",
+   "data/raw/cochilco/production_1996_2025.xlsx",
+   "data/raw/hs/H4.json",
+   "data/raw/hs/H6.json",
+   "data/raw/hs/HS12_HS07.xls"
+  ],
+  "lock_sha256": "8d60b382f46a2cf45c811d94b81bda55478b771971c937ee8de80918d570b9a4",
+  "python": "3.14.7",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1"
+ },
+ "task": "liion_free_a0.1_h0_s0.5_L6",
+ "sector": "liion",
+ "config": {
+  "alpha": 0.1,
+  "h": 0,
+  "sigma": 0.5,
+  "L": 6
+ },
+ "chemistry": {
+  "NCM_share": [
+   0,
+   1
+  ],
+  "share_horizon_months": 24,
+  "capacity_reference_NCM": 0.5,
+  "basis": "recipe_flexibility_scenario"
+ },
+ "nodes": [
+  [
+   "CHN",
+   "aam"
+  ],
+  [
+   "HUN",
+   "aam"
+  ],
+  [
+   "POL",
+   "aam"
+  ],
+  [
+   "USA",
+   "aam"
+  ],
+  [
+   "ARE",
+   "aluminium"
+  ],
+  [
+   "AUS",
+   "aluminium"
+  ],
+  [
+   "BHR",
+   "aluminium"
+  ],
+  [
+   "BRA",
+   "aluminium"
+  ],
+  [
+   "CAN",
+   "aluminium"
+  ],
+  [
+   "CHN",
+   "aluminium"
+  ],
+  [
+   "IND",
+   "aluminium"
+  ],
+  [
+   "ISL",
+   "aluminium"
+  ],
+  [
+   "MYS",
+   "aluminium"
+  ],
+  [
+   "NOR",
+   "aluminium"
+  ],
+  [
+   "RUS",
+   "aluminium"
+  ],
+  [
+   "USA",
+   "aluminium"
+  ],
+  [
+   "CHN",
+   "cam"
+  ],
+  [
+   "HUN",
+   "cam"
+  ],
+  [
+   "KOR",
+   "cam"
+  ],
+  [
+   "POL",
+   "cam"
+  ],
+  [
+   "USA",
+   "cam"
+  ],
+  [
+   "CHN",
+   "cell"
+  ],
+  [
+   "DEU",
+   "cell"
+  ],
+  [
+   "HUN",
+   "cell"
+  ],
+  [
+   "KOR",
+   "cell"
+  ],
+  [
+   "POL",
+   "cell"
+  ],
+  [
+   "USA",
+   "cell"
+  ],
+  [
+   "BRA",
+   "graphite"
+  ],
+  [
+   "CHN",
+   "graphite"
+  ],
+  [
+   "DEU",
+   "graphite"
+  ],
+  [
+   "IND",
+   "graphite"
+  ],
+  [
+   "MDG",
+   "graphite"
+  ],
+  [
+   "MOZ",
+   "graphite"
+  ],
+  [
+   "TZA",
+   "graphite"
+  ],
+  [
+   "ARG",
+   "li_carbonate"
+  ],
+  [
+   "CHL",
+   "li_carbonate"
+  ],
+  [
+   "CHN",
+   "li_carbonate"
+  ],
+  [
+   "AUS",
+   "mine_co"
+  ],
+  [
+   "CAN",
+   "mine_co"
+  ],
+  [
+   "COD",
+   "mine_co"
+  ],
+  [
+   "CUB",
+   "mine_co"
+  ],
+  [
+   "IDN",
+   "mine_co"
+  ],
+  [
+   "MDG",
+   "mine_co"
+  ],
+  [
+   "PHL",
+   "mine_co"
+  ],
+  [
+   "RUS",
+   "mine_co"
+  ],
+  [
+   "ARG",
+   "mine_li"
+  ],
+  [
+   "AUS",
+   "mine_li"
+  ],
+  [
+   "BRA",
+   "mine_li"
+  ],
+  [
+   "CAN",
+   "mine_li"
+  ],
+  [
+   "CHL",
+   "mine_li"
+  ],
+  [
+   "CHN",
+   "mine_li"
+  ],
+  [
+   "ZWE",
+   "mine_li"
+  ],
+  [
+   "AUS",
+   "mine_mn"
+  ],
+  [
+   "BRA",
+   "mine_mn"
+  ],
+  [
+   "CHN",
+   "mine_mn"
+  ],
+  [
+   "CIV",
+   "mine_mn"
+  ],
+  [
+   "GAB",
+   "mine_mn"
+  ],
+  [
+   "GHA",
+   "mine_mn"
+  ],
+  [
+   "IND",
+   "mine_mn"
+  ],
+  [
+   "ZAF",
+   "mine_mn"
+  ],
+  [
+   "AUS",
+   "mine_ni"
+  ],
+  [
+   "BRA",
+   "mine_ni"
+  ],
+  [
+   "CAN",
+   "mine_ni"
+  ],
+  [
+   "CHN",
+   "mine_ni"
+  ],
+  [
+   "IDN",
+   "mine_ni"
+  ],
+  [
+   "NCL",
+   "mine_ni"
+  ],
+  [
+   "PHL",
+   "mine_ni"
+  ],
+  [
+   "RUS",
+   "mine_ni"
+  ],
+  [
+   "CHN",
+   "pcam"
+  ],
+  [
+   "DEU",
+   "pcam"
+  ],
+  [
+   "HUN",
+   "pcam"
+  ],
+  [
+   "KOR",
+   "pcam"
+  ],
+  [
+   "POL",
+   "pcam"
+  ],
+  [
+   "USA",
+   "pcam"
+  ],
+  [
+   "AUS",
+   "refined_co"
+  ],
+  [
+   "CAN",
+   "refined_co"
+  ],
+  [
+   "CHN",
+   "refined_co"
+  ],
+  [
+   "FIN",
+   "refined_co"
+  ],
+  [
+   "JPN",
+   "refined_co"
+  ],
+  [
+   "MDG",
+   "refined_co"
+  ],
+  [
+   "NOR",
+   "refined_co"
+  ],
+  [
+   "AUS",
+   "refined_cu"
+  ],
+  [
+   "CAN",
+   "refined_cu"
+  ],
+  [
+   "CHL",
+   "refined_cu"
+  ],
+  [
+   "CHN",
+   "refined_cu"
+  ],
+  [
+   "COD",
+   "refined_cu"
+  ],
+  [
+   "DEU",
+   "refined_cu"
+  ],
+  [
+   "IDN",
+   "refined_cu"
+  ],
+  [
+   "IND",
+   "refined_cu"
+  ],
+  [
+   "JPN",
+   "refined_cu"
+  ],
+  [
+   "KAZ",
+   "refined_cu"
+  ],
+  [
+   "KOR",
+   "refined_cu"
+  ],
+  [
+   "MEX",
+   "refined_cu"
+  ],
+  [
+   "PER",
+   "refined_cu"
+  ],
+  [
+   "POL",
+   "refined_cu"
+  ],
+  [
+   "RUS",
+   "refined_cu"
+  ],
+  [
+   "USA",
+   "refined_cu"
+  ],
+  [
+   "AUS",
+   "refined_ni"
+  ],
+  [
+   "CAN",
+   "refined_ni"
+  ],
+  [
+   "CHN",
+   "refined_ni"
+  ],
+  [
+   "DEU",
+   "refined_ni"
+  ],
+  [
+   "FIN",
+   "refined_ni"
+  ],
+  [
+   "FRA",
+   "refined_ni"
+  ],
+  [
+   "GBR",
+   "refined_ni"
+  ],
+  [
+   "IDN",
+   "refined_ni"
+  ],
+  [
+   "JPN",
+   "refined_ni"
+  ],
+  [
+   "MDG",
+   "refined_ni"
+  ],
+  [
+   "NLD",
+   "refined_ni"
+  ],
+  [
+   "NOR",
+   "refined_ni"
+  ],
+  [
+   "RUS",
+   "refined_ni"
+  ],
+  [
+   "ZAF",
+   "refined_ni"
+  ]
+ ],
+ "total": 2.0,
+ "baseline": {
+  "status": "optimal",
+  "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+  "phi": 0.0,
+  "dual": 4.440892098500626e-16,
+  "gap": 4.440892098500626e-16,
+  "residual": 5.551115123125783e-17
+ },
+ "cuts": [
+  [
+   [
+    0,
+    3
+   ]
+  ],
+  [
+   [
+    16,
+    3
+   ]
+  ],
+  [
+   [
+    21,
+    3
+   ]
+  ],
+  [
+   [
+    27,
+    3
+   ],
+   [
+    28,
+    3
+   ]
+  ],
+  [
+   [
+    28,
+    3
+   ],
+   [
+    29,
+    3
+   ],
+   [
+    30,
+    3
+   ]
+  ],
+  [
+   [
+    28,
+    3
+   ],
+   [
+    29,
+    3
+   ],
+   [
+    32,
+    3
+   ]
+  ],
+  [
+   [
+    28,
+    3
+   ],
+   [
+    30,
+    3
+   ],
+   [
+    32,
+    3
+   ]
+  ],
+  [
+   [
+    28,
+    3
+   ],
+   [
+    31,
+    3
+   ]
+  ],
+  [
+   [
+    28,
+    3
+   ],
+   [
+    32,
+    3
+   ],
+   [
+    33,
+    3
+   ]
+  ],
+  [
+   [
+    28,
+    6
+   ]
+  ],
+  [
+   [
+    35,
+    3
+   ],
+   [
+    36,
+    3
+   ]
+  ],
+  [
+   [
+    36,
+    6
+   ]
+  ],
+  [
+   [
+    46,
+    6
+   ],
+   [
+    49,
+    6
+   ],
+   [
+    50,
+    6
+   ]
+  ],
+  [
+   [
+    46,
+    12
+   ],
+   [
+    49,
+    12
+   ],
+   [
+    51,
+    12
+   ]
+  ]
+ ],
+ "certificates": [
+  {
+   "phi": 0.23130299131088553,
+   "dual": 0.23130299131088572,
+   "gap": 1.942890293094024e-16,
+   "predecessors": [
+    {
+     "v": 0,
+     "D": 0,
+     "phi": 0.0
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.22278440128559182,
+   "dual": 0.22278440128559196,
+   "gap": 1.3877787807814457e-16,
+   "predecessors": [
+    {
+     "v": 16,
+     "D": 0,
+     "phi": 0.0
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.22466890865771427,
+   "dual": 0.2246689086577145,
+   "gap": 2.220446049250313e-16,
+   "predecessors": [
+    {
+     "v": 21,
+     "D": 0,
+     "phi": 0.0
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.2030117834579782,
+   "dual": 0.20301178345797832,
+   "gap": 1.1102230246251565e-16,
+   "predecessors": [
+    {
+     "v": 27,
+     "D": 0,
+     "phi": 0.1863610352571607
+    },
+    {
+     "v": 28,
+     "D": 0,
+     "phi": 0.0
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20048355767747417,
+   "dual": 0.2004835576774744,
+   "gap": 2.220446049250313e-16,
+   "predecessors": [
+    {
+     "v": 28,
+     "D": 0,
+     "phi": 0.0
+    },
+    {
+     "v": 29,
+     "D": 0,
+     "phi": 0.19345953822829476
+    },
+    {
+     "v": 30,
+     "D": 0,
+     "phi": 0.1933850547063401
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20229439195639687,
+   "dual": 0.2022943919563971,
+   "gap": 2.220446049250313e-16,
+   "predecessors": [
+    {
+     "v": 28,
+     "D": 0,
+     "phi": 0.0
+    },
+    {
+     "v": 29,
+     "D": 0,
+     "phi": 0.19527037250721743
+    },
+    {
+     "v": 32,
+     "D": 0,
+     "phi": 0.1933850547063401
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20236887547835147,
+   "dual": 0.2023688754783517,
+   "gap": 2.220446049250313e-16,
+   "predecessors": [
+    {
+     "v": 28,
+     "D": 0,
+     "phi": 0.0
+    },
+    {
+     "v": 30,
+     "D": 0,
+     "phi": 0.19527037250721743
+    },
+    {
+     "v": 32,
+     "D": 0,
+     "phi": 0.19345953822829476
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.2045421989543963,
+   "dual": 0.20454219895439651,
+   "gap": 2.220446049250313e-16,
+   "predecessors": [
+    {
+     "v": 28,
+     "D": 0,
+     "phi": 0.0
+    },
+    {
+     "v": 31,
+     "D": 0,
+     "phi": 0.1863610352571607
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20104556568163345,
+   "dual": 0.20104556568163368,
+   "gap": 2.220446049250313e-16,
+   "predecessors": [
+    {
+     "v": 28,
+     "D": 0,
+     "phi": 0.0
+    },
+    {
+     "v": 32,
+     "D": 0,
+     "phi": 0.1921362284315767
+    },
+    {
+     "v": 33,
+     "D": 0,
+     "phi": 0.19527037250721743
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.3590851494979987,
+   "dual": 0.35908514949799875,
+   "gap": 5.551115123125783e-17,
+   "predecessors": [
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.1863610352571607
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.22195356491539434,
+   "dual": 0.22195356491539453,
+   "gap": 1.942890293094024e-16,
+   "predecessors": [
+    {
+     "v": 35,
+     "D": 0,
+     "phi": 0.11510651631103702
+    },
+    {
+     "v": 36,
+     "D": 0,
+     "phi": 0.0
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20130728611729626,
+   "dual": 0.2013072861172962,
+   "gap": 5.551115123125783e-17,
+   "predecessors": [
+    {
+     "v": 36,
+     "D": 3,
+     "phi": 0.11510651631103702
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.25466432884689144,
+   "dual": 0.2546643288468915,
+   "gap": 5.551115123125783e-17,
+   "predecessors": [
+    {
+     "v": 46,
+     "D": 3,
+     "phi": 0.13920324528569292
+    },
+    {
+     "v": 49,
+     "D": 3,
+     "phi": 0.13920324528569292
+    },
+    {
+     "v": 50,
+     "D": 3,
+     "phi": 0.14499188287532344
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.23732966030521863,
+   "dual": 0.23732966030521863,
+   "gap": 0.0,
+   "predecessors": [
+    {
+     "v": 46,
+     "D": 6,
+     "phi": 0.14712267864868328
+    },
+    {
+     "v": 49,
+     "D": 6,
+     "phi": 0.14712267864868328
+    },
+    {
+     "v": 51,
+     "D": 6,
+     "phi": 0.14712267864868328
+    }
+   ],
+   "certified": true
+  }
+ ],
+ "complete": true,
+ "method": "lattice",
+ "lp_calls": 1420,
+ "legacy_comparison": {
+  "vanish": [
+   [
+    [
+     28,
+     3
+    ],
+    [
+     29,
+     3
+    ],
+    [
+     33,
+     3
+    ]
+   ],
+   [
+    [
+     28,
+     3
+    ],
+    [
+     30,
+     3
+    ],
+    [
+     33,
+     3
+    ]
+   ],
+   [
+    [
+     37,
+     6
+    ],
+    [
+     38,
+     6
+    ],
+    [
+     39,
+     6
+    ]
+   ],
+   [
+    [
+     37,
+     6
+    ],
+    [
+     39,
+     6
+    ],
+    [
+     40,
+     6
+    ]
+   ],
+   [
+    [
+     37,
+     6
+    ],
+    [
+     39,
+     6
+    ],
+    [
+     44,
+     3
+    ]
+   ],
+   [
+    [
+     39,
+     3
+    ],
+    [
+     41,
+     3
+    ],
+    [
+     44,
+     3
+    ]
+   ],
+   [
+    [
+     39,
+     6
+    ],
+    [
+     41,
+     3
+    ]
+   ],
+   [
+    [
+     39,
+     6
+    ],
+    [
+     44,
+     6
+    ]
+   ],
+   [
+    [
+     39,
+     12
+    ]
+   ],
+   [
+    [
+     45,
+     12
+    ],
+    [
+     46,
+     12
+    ],
+    [
+     49,
+     12
+    ]
+   ],
+   [
+    [
+     46,
+     12
+    ],
+    [
+     47,
+     12
+    ],
+    [
+     49,
+     12
+    ]
+   ],
+   [
+    [
+     46,
+     12
+    ],
+    [
+     49,
+     12
+    ],
+    [
+     51,
+     6
+    ]
+   ],
+   [
+    [
+     46,
+     12
+    ],
+    [
+     50,
+     12
+    ],
+    [
+     51,
+     12
+    ]
+   ],
+   [
+    [
+     68,
+     3
+    ]
+   ],
+   [
+    [
+     76,
+     3
+    ],
+    [
+     77,
+     3
+    ]
+   ],
+   [
+    [
+     76,
+     6
+    ]
+   ]
+  ],
+  "appear": [
+   [
+    [
+     46,
+     12
+    ],
+    [
+     49,
+     12
+    ],
+    [
+     51,
+     12
+    ]
+   ]
+  ]
+ }
+}

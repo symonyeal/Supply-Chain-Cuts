@@ -22,10 +22,11 @@ function plot(id, data, layout = {}) {
 }
 
 // Published values; every control writes S and marks the sections that read it.
-const PUB = { alpha: "0.25", DJ: "12", h: "0", sigma: "0", L: "6" };
+const PUB = { alpha: "0.25", DJ: "12", h: "0", sigma: "0", L: "6", chemistry: "choice" };
 const S = { ...PUB, q: "" };
 const key = () => `a${S.alpha}_h${S.h}_s${S.sigma}_L${S.sigma === "0" ? "6" : S.L}_D${S.DJ}`;
-const cfg = () => D.configs[key()];
+const battery = () => S.chemistry === "choice" ? D.choice : D;
+const cfg = () => battery().configs[key()];
 
 function seg(id, k, values, label, after) {
   const el = $(id);
@@ -93,7 +94,8 @@ const SECTIONS = {
   },
   pv() {
     if (!D.pv) return;
-    const k = key(), c = D.pv.configs[k], j = D.joint && D.joint.configs[k];
+    const k = key(), c = D.pv.configs[k], J = S.chemistry === "choice" ? D.joint_choice : D.joint;
+    const j = J && J.configs[k];
     const e = S.h === "0" && S.sigma === "0" && S.DJ === "12" && D.pv.estimates[S.alpha];
     $("pv-summary").textContent = `PV alone: ${c.cuts.length} minimal cut sets, ${c.cuts.filter((x) => x.length === 1).length} singletons; ` +
       `L = ${pct(c.L)}, U = ${pct(c.U)}.` + (e ? ` L + residual ${pct(e.residual.estimate)} [${pct(e.residual.ci95[0])}, ${pct(e.residual.ci95[1])}].` : "") +
@@ -130,10 +132,11 @@ function fill() {
   document.querySelectorAll("[data-f]").forEach((el) => { const f = FACT[el.dataset.f]; el.textContent = f == null ? "–" : f; });
 }
 
-const head = D.configs["a0.25_h0_s0_L6_D12"], t = D.tests;
+const head = D.configs["a0.25_h0_s0_L6_D12"], flexible = D.choice.configs["a0.25_h0_s0_L6_D12"], t = D.tests;
 const FACT = {
-  ncuts: head.cuts.length, nsingle: head.cuts.filter((x) => x.length === 1).length,
-  singles: head.cuts.filter((x) => x.length === 1).map(([[v]]) => N.product[v].replace("_", " ")).join(", "),
+  ncuts: flexible.cuts.length, nsingle: flexible.cuts.filter((x) => x.length === 1).length,
+  singles: flexible.cuts.filter((x) => x.length === 1).map(([[v]]) => N.product[v].replace("_", " ")).join(", "),
+  choiceL: pct(flexible.L), choiceEstimate: pct(D.choice.residual["0.25"].estimate),
   L: pct(head.L), U: pct(head.U), estimate: pct(D.estimates["0.25"].residual.estimate), MC: pct(D.estimates["0.25"].MC.estimate),
   estimateLo: pct(D.estimates["0.25"].residual.ci95[0]), estimateHi: pct(D.estimates["0.25"].residual.ci95[1]),
   hard: pct(D.hard.residual.estimate), hardL: pct(D.hard.L), rho: fmt(D.meta.rho, 2),
@@ -142,7 +145,8 @@ const FACT = {
   mid: pct(t.H2_china_midstream_share_of_L.midstream),
   rhoHHI: fmt(t.A1_spearman.hhi, 2), rhoTop: fmt(t.A1_spearman.top_share, 2),
   revision: D.meta.revision.slice(0, 7), lock: D.meta.lock.slice(0, 12), run: D.meta.run,
-  runs: [...[D, D.pv, D.joint].filter(Boolean).map((b) => b.meta.run), D.severity && D.severity.run].filter(Boolean).join(", "),
+  runs: [...[D, D.pv, D.joint].filter(Boolean).map((b) => b.meta.run), D.severity && D.severity.run,
+    D.choice.meta.cut_run, D.choice.meta.risk_run].filter(Boolean).join(", "),
   L10: pct(D.configs["a0.1_h0_s0_L6_D12"].L), n10: D.configs["a0.1_h0_s0_L6_D12"].cuts.length,
   n6: D.configs["a0.25_h0_s0_L6_D6"].cuts.length,
   chnU: pct(D.attribution.country_union.CHN, 0), codU: pct(D.attribution.country_union.COD, 0),
@@ -151,12 +155,13 @@ fill();
 
 $("facts").innerHTML = [[FACT.nsingle, "single losses that each stop more than 25% of two years' cells, if they last a year"],
   [t.robust_singletons.length, "of them hold under every capacity-basis, re-export and chemistry test"],
-  [FACT.ncuts, "minimal cut sets of up to three losses (α = 25%)"], [FACT.L, "exact lower bound L on annual failure, scenario"],
-  [FACT.estimate, "L plus residual estimate, scenario"]].map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("");
+  [FACT.ncuts, "minimal cut sets with chemistry choice (α = 25%)"], [FACT.choiceL, "exact lower bound L with chemistry choice, scenario"],
+  [FACT.choiceEstimate, "L plus residual with chemistry choice, scenario"]].map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("");
 
 const ctl = [["c-alpha", "alpha", ["0.1", "0.25", "0.5"], (v) => `α = ${v}`], ["c-dj", "DJ", ["3", "6", "12"], (v) => `D ≤ ${v} mo`],
   ["c-h", "h", ["0", "1", "3"], (v) => `h = ${v} mo`], ["c-sigma", "sigma", ["0", "0.1", "0.5"], (v) => `σ = ${v}`],
-  ["c-L", "L", ["6", "24"], (v) => `L = ${v} mo`]];
+  ["c-L", "L", ["6", "24"], (v) => `L = ${v} mo`],
+  ["c-chemistry", "chemistry", ["choice", "fixed"], (v) => v === "choice" ? "Choose LFP/NCM" : "Fixed 50/50"]];
 ctl.forEach(([id, k, vs, lab]) => seg(id, k, vs, lab, () => mark("cuts", "pv", "attribution")));
 $("c-reset").onclick = () => { Object.assign(S, PUB); ctl.forEach(([id]) => $(id).sync()); mark("cuts", "pv", "attribution"); };
 $("c-q").oninput = (e) => { S.q = e.target.value; mark("cuts"); };
@@ -175,6 +180,14 @@ if (D.severity) {
       `<td>${x.loss == null ? "not estimable" : `${fmt(x.loss)} [${fmt(x.loss_ci95[0])}, ${fmt(x.loss_ci95[1])}]`}</td>` +
       `<td>${x.identified ? "identified under stated assumptions" : "insufficient isolated events"}${x.pretrend ? "; pretrend detected" : ""}</td></tr>`).join("") + `</tbody>`;
 }
+
+$("chemistry-table").innerHTML = `<thead><tr><th>Network</th><th>Threshold</th><th>Fixed 50/50: L + residual (95% interval)</th><th>Chemistry choice: L; L + residual (95% interval)</th></tr></thead><tbody>` +
+  [["Li-ion", D, D.choice], ["Shared", D.joint, D.joint_choice]].flatMap(([s, B, C]) =>
+    ["0.1", "0.25"].map((a) => {
+      const e = B.estimates[a].residual, f = C.residual[a];
+      return `<tr><td>${s}</td><td>${pct(+a, 0)}</td><td>${pct(e.estimate, 3)} [${pct(e.ci95[0], 3)}, ${pct(e.ci95[1], 3)}]</td>` +
+        `<td>L = ${pct(f.L, 3)}; ${pct(f.estimate, 3)} [${pct(f.ci95[0], 3)}, ${pct(f.ci95[1], 3)}]</td></tr>`;
+    })).join("") + `</tbody>`;
 
 $("tests-table").innerHTML = `<thead><tr><th>Leaf</th><th>Kill condition</th><th>Result</th><th>Verdict</th></tr></thead><tbody>` +
   D.testRows.map((r) => `<tr><td>${r[0]}</td><td class="wrap">${r[1]}</td><td class="wrap">${r[2]}</td><td class="verdict ${r[3].startsWith("killed") ? "killed" : ""}">${r[3]}</td></tr>`).join("") + `</tbody>`;

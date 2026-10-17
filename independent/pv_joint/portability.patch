@@ -1,0 +1,61 @@
+--- original/recompute.py
++++ portable/recompute.py
+@@ -4,6 +4,7 @@
+ OUTPUT  results.json, network.json, raw_events.json, node_years.csv.
+ """
+ 
++import argparse
+ import csv
+ import hashlib
+ import itertools
+@@ -20,8 +21,15 @@
+ from scipy.optimize import linprog, minimize, minimize_scalar
+ from scipy.special import betaln
+ 
+-R = Path(r"C:\Users\Yeal\Documents\My Projects\Chokepoint-Lab")
+-W = Path(__file__).resolve().parent
++a = argparse.ArgumentParser(description=__doc__)
++a.add_argument("--root", type=Path, required=True, help="Frozen project input root.")
++a.add_argument("--out", type=Path, required=True, help="Directory for independent result artifacts.")
++a.add_argument("--pv-cuts", type=Path, required=True, help="Named PV cut-list JSON.")
++a.add_argument("--joint-cuts", type=Path, required=True, help="Named joint cut-list JSON.")
++args = a.parse_args()
++R, W = args.root.resolve(), args.out.resolve()
++C = {"pv": args.pv_cuts.resolve(), "joint": args.joint_cuts.resolve()}
++W.mkdir(parents=True, exist_ok=True)
+ H = {}
+ 
+ 
+@@ -379,7 +387,7 @@
+ 
+ def cuts(nodes, edges, sector):
+     """Check every named cut, every duration predecessor, and all singletons."""
+-    data = json.loads(read(R.parent / "Chokepoint-Lab-brief/independent-inputs" / f"{sector}-cuts.json"))
++    data = json.loads(read(C[sector]))
+     idx = {(v["country"], v["product"]): i for i, v in enumerate(nodes)}
+     Z = [tuple(sorted((idx[v["country"], v["product"]], v["duration"]) for v in c["losses"])) for c in data["cuts"]]
+     finals = ["module"] if sector == "pv" else ["cell", "module"]
+--- original/trace_sources.py
++++ portable/trace_sources.py
+@@ -1,5 +1,6 @@
+ """Trace selected frozen numerical transcriptions to their frozen primary sources."""
+ 
++import argparse
+ import csv
+ import hashlib
+ import html
+@@ -10,8 +11,12 @@
+ from openpyxl import load_workbook
+ from pypdf import PdfReader
+ 
+-R = Path(r"C:\Users\Yeal\Documents\My Projects\Chokepoint-Lab")
+-W = Path(__file__).resolve().parent
++a = argparse.ArgumentParser(description=__doc__)
++a.add_argument("--root", type=Path, required=True, help="Frozen project input root.")
++a.add_argument("--out", type=Path, required=True, help="Directory for independent source-audit artifacts.")
++args = a.parse_args()
++R, W = args.root.resolve(), args.out.resolve()
++W.mkdir(parents=True, exist_ok=True)
+ out = {"sha256": {}, "workbooks": {}, "pdf": {}}
+ previous = json.loads((W / "source_trace.json").read_text(encoding="utf-8")) if (W / "source_trace.json").exists() else {"sha256": {}, "pdf": {}}
+ 

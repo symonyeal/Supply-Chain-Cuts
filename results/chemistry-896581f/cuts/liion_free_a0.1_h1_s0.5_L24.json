@@ -1,0 +1,1674 @@
+{
+ "stamp": {
+  "revision": "d18c743a6dc99493b2adcea1eea254c84ea42dd3",
+  "dirty": [],
+  "sources": 88,
+  "absent_local_only": [
+   "data/events/raw/gdacs-2012-orange-page1.json",
+   "data/events/raw/gdacs-2012-red-page1.json",
+   "data/events/raw/gdacs-2013-orange-page1.json",
+   "data/events/raw/gdacs-2013-red-page1.json",
+   "data/events/raw/gdacs-2014-orange-page1.json",
+   "data/events/raw/gdacs-2014-red-page1.json",
+   "data/events/raw/gdacs-2015-orange-page1.json",
+   "data/events/raw/gdacs-2015-red-page1.json",
+   "data/events/raw/gdacs-2016-orange-page1.json",
+   "data/events/raw/gdacs-2016-red-page1.json",
+   "data/events/raw/gdacs-2017-orange-page1.json",
+   "data/events/raw/gdacs-2017-red-page1.json",
+   "data/events/raw/gdacs-2018-orange-page1.json",
+   "data/events/raw/gdacs-2018-red-page1.json",
+   "data/events/raw/gdacs-2019-orange-page1.json",
+   "data/events/raw/gdacs-2019-red-page1.json",
+   "data/events/raw/gdacs-2020-orange-page1.json",
+   "data/events/raw/gdacs-2020-red-page1.json",
+   "data/events/raw/gdacs-2021-orange-page1.json",
+   "data/events/raw/gdacs-2021-red-page1.json",
+   "data/events/raw/gdacs-2022-orange-page1.json",
+   "data/events/raw/gdacs-2022-red-page1.json",
+   "data/events/raw/gdacs-2023-orange-page1.json",
+   "data/events/raw/gdacs-2023-red-page1.json",
+   "data/events/raw/gdacs-2024-orange-page1.json",
+   "data/events/raw/gdacs-2024-red-page1.json",
+   "data/events/raw/gdacs-quickstart.pdf",
+   "data/events/raw/gdacs-swagger.json",
+   "data/events/raw/gdacs-terms.pdf",
+   "data/events/raw/indonesia-11-2019-official.html",
+   "data/events/raw/indonesia-2019-ministry-release.html",
+   "data/events/raw/mofcom-2023-23.html",
+   "data/events/raw/mofcom-2023-39.html",
+   "data/events/raw/mofcom-2024-46-original.html",
+   "data/events/raw/mofcom-2024-46.html",
+   "data/events/raw/mofcom-2025-28.html",
+   "data/events/raw/mofcom-2025-58.html",
+   "data/events/raw/mofcom-2025-70.html",
+   "data/events/raw/mofcom-2025-72.html",
+   "data/events/raw/oecd-battery-pv-2012-2024.csv",
+   "data/events/raw/oecd-china-2023-2024.csv",
+   "data/events/raw/oecd-methodology.pdf",
+   "data/events/raw/oecd-structure.xml",
+   "data/events/raw/zimbabwe-si213-2022.pdf",
+   "data/raw/cochilco/production_1996_2025.xlsx",
+   "data/raw/hs/H4.json",
+   "data/raw/hs/H6.json",
+   "data/raw/hs/HS12_HS07.xls"
+  ],
+  "lock_sha256": "8d60b382f46a2cf45c811d94b81bda55478b771971c937ee8de80918d570b9a4",
+  "python": "3.14.7",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1"
+ },
+ "task": "liion_free_a0.1_h1_s0.5_L24",
+ "sector": "liion",
+ "config": {
+  "alpha": 0.1,
+  "h": 1,
+  "sigma": 0.5,
+  "L": 24
+ },
+ "chemistry": {
+  "NCM_share": [
+   0,
+   1
+  ],
+  "share_horizon_months": 24,
+  "capacity_reference_NCM": 0.5,
+  "basis": "recipe_flexibility_scenario"
+ },
+ "nodes": [
+  [
+   "CHN",
+   "aam"
+  ],
+  [
+   "HUN",
+   "aam"
+  ],
+  [
+   "POL",
+   "aam"
+  ],
+  [
+   "USA",
+   "aam"
+  ],
+  [
+   "ARE",
+   "aluminium"
+  ],
+  [
+   "AUS",
+   "aluminium"
+  ],
+  [
+   "BHR",
+   "aluminium"
+  ],
+  [
+   "BRA",
+   "aluminium"
+  ],
+  [
+   "CAN",
+   "aluminium"
+  ],
+  [
+   "CHN",
+   "aluminium"
+  ],
+  [
+   "IND",
+   "aluminium"
+  ],
+  [
+   "ISL",
+   "aluminium"
+  ],
+  [
+   "MYS",
+   "aluminium"
+  ],
+  [
+   "NOR",
+   "aluminium"
+  ],
+  [
+   "RUS",
+   "aluminium"
+  ],
+  [
+   "USA",
+   "aluminium"
+  ],
+  [
+   "CHN",
+   "cam"
+  ],
+  [
+   "HUN",
+   "cam"
+  ],
+  [
+   "KOR",
+   "cam"
+  ],
+  [
+   "POL",
+   "cam"
+  ],
+  [
+   "USA",
+   "cam"
+  ],
+  [
+   "CHN",
+   "cell"
+  ],
+  [
+   "DEU",
+   "cell"
+  ],
+  [
+   "HUN",
+   "cell"
+  ],
+  [
+   "KOR",
+   "cell"
+  ],
+  [
+   "POL",
+   "cell"
+  ],
+  [
+   "USA",
+   "cell"
+  ],
+  [
+   "BRA",
+   "graphite"
+  ],
+  [
+   "CHN",
+   "graphite"
+  ],
+  [
+   "DEU",
+   "graphite"
+  ],
+  [
+   "IND",
+   "graphite"
+  ],
+  [
+   "MDG",
+   "graphite"
+  ],
+  [
+   "MOZ",
+   "graphite"
+  ],
+  [
+   "TZA",
+   "graphite"
+  ],
+  [
+   "ARG",
+   "li_carbonate"
+  ],
+  [
+   "CHL",
+   "li_carbonate"
+  ],
+  [
+   "CHN",
+   "li_carbonate"
+  ],
+  [
+   "AUS",
+   "mine_co"
+  ],
+  [
+   "CAN",
+   "mine_co"
+  ],
+  [
+   "COD",
+   "mine_co"
+  ],
+  [
+   "CUB",
+   "mine_co"
+  ],
+  [
+   "IDN",
+   "mine_co"
+  ],
+  [
+   "MDG",
+   "mine_co"
+  ],
+  [
+   "PHL",
+   "mine_co"
+  ],
+  [
+   "RUS",
+   "mine_co"
+  ],
+  [
+   "ARG",
+   "mine_li"
+  ],
+  [
+   "AUS",
+   "mine_li"
+  ],
+  [
+   "BRA",
+   "mine_li"
+  ],
+  [
+   "CAN",
+   "mine_li"
+  ],
+  [
+   "CHL",
+   "mine_li"
+  ],
+  [
+   "CHN",
+   "mine_li"
+  ],
+  [
+   "ZWE",
+   "mine_li"
+  ],
+  [
+   "AUS",
+   "mine_mn"
+  ],
+  [
+   "BRA",
+   "mine_mn"
+  ],
+  [
+   "CHN",
+   "mine_mn"
+  ],
+  [
+   "CIV",
+   "mine_mn"
+  ],
+  [
+   "GAB",
+   "mine_mn"
+  ],
+  [
+   "GHA",
+   "mine_mn"
+  ],
+  [
+   "IND",
+   "mine_mn"
+  ],
+  [
+   "ZAF",
+   "mine_mn"
+  ],
+  [
+   "AUS",
+   "mine_ni"
+  ],
+  [
+   "BRA",
+   "mine_ni"
+  ],
+  [
+   "CAN",
+   "mine_ni"
+  ],
+  [
+   "CHN",
+   "mine_ni"
+  ],
+  [
+   "IDN",
+   "mine_ni"
+  ],
+  [
+   "NCL",
+   "mine_ni"
+  ],
+  [
+   "PHL",
+   "mine_ni"
+  ],
+  [
+   "RUS",
+   "mine_ni"
+  ],
+  [
+   "CHN",
+   "pcam"
+  ],
+  [
+   "DEU",
+   "pcam"
+  ],
+  [
+   "HUN",
+   "pcam"
+  ],
+  [
+   "KOR",
+   "pcam"
+  ],
+  [
+   "POL",
+   "pcam"
+  ],
+  [
+   "USA",
+   "pcam"
+  ],
+  [
+   "AUS",
+   "refined_co"
+  ],
+  [
+   "CAN",
+   "refined_co"
+  ],
+  [
+   "CHN",
+   "refined_co"
+  ],
+  [
+   "FIN",
+   "refined_co"
+  ],
+  [
+   "JPN",
+   "refined_co"
+  ],
+  [
+   "MDG",
+   "refined_co"
+  ],
+  [
+   "NOR",
+   "refined_co"
+  ],
+  [
+   "AUS",
+   "refined_cu"
+  ],
+  [
+   "CAN",
+   "refined_cu"
+  ],
+  [
+   "CHL",
+   "refined_cu"
+  ],
+  [
+   "CHN",
+   "refined_cu"
+  ],
+  [
+   "COD",
+   "refined_cu"
+  ],
+  [
+   "DEU",
+   "refined_cu"
+  ],
+  [
+   "IDN",
+   "refined_cu"
+  ],
+  [
+   "IND",
+   "refined_cu"
+  ],
+  [
+   "JPN",
+   "refined_cu"
+  ],
+  [
+   "KAZ",
+   "refined_cu"
+  ],
+  [
+   "KOR",
+   "refined_cu"
+  ],
+  [
+   "MEX",
+   "refined_cu"
+  ],
+  [
+   "PER",
+   "refined_cu"
+  ],
+  [
+   "POL",
+   "refined_cu"
+  ],
+  [
+   "RUS",
+   "refined_cu"
+  ],
+  [
+   "USA",
+   "refined_cu"
+  ],
+  [
+   "AUS",
+   "refined_ni"
+  ],
+  [
+   "CAN",
+   "refined_ni"
+  ],
+  [
+   "CHN",
+   "refined_ni"
+  ],
+  [
+   "DEU",
+   "refined_ni"
+  ],
+  [
+   "FIN",
+   "refined_ni"
+  ],
+  [
+   "FRA",
+   "refined_ni"
+  ],
+  [
+   "GBR",
+   "refined_ni"
+  ],
+  [
+   "IDN",
+   "refined_ni"
+  ],
+  [
+   "JPN",
+   "refined_ni"
+  ],
+  [
+   "MDG",
+   "refined_ni"
+  ],
+  [
+   "NLD",
+   "refined_ni"
+  ],
+  [
+   "NOR",
+   "refined_ni"
+  ],
+  [
+   "RUS",
+   "refined_ni"
+  ],
+  [
+   "ZAF",
+   "refined_ni"
+  ]
+ ],
+ "total": 2.0,
+ "baseline": {
+  "status": "optimal",
+  "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+  "phi": 0.0,
+  "dual": -1.942890293094024e-16,
+  "gap": 1.942890293094024e-16,
+  "residual": 1.474514954580286e-17
+ },
+ "cuts": [
+  [
+   [
+    0,
+    6
+   ]
+  ],
+  [
+   [
+    16,
+    6
+   ]
+  ],
+  [
+   [
+    21,
+    3
+   ]
+  ],
+  [
+   [
+    27,
+    3
+   ],
+   [
+    28,
+    6
+   ],
+   [
+    68,
+    6
+   ]
+  ],
+  [
+   [
+    27,
+    6
+   ],
+   [
+    28,
+    6
+   ],
+   [
+    29,
+    3
+   ]
+  ],
+  [
+   [
+    27,
+    6
+   ],
+   [
+    28,
+    6
+   ],
+   [
+    30,
+    3
+   ]
+  ],
+  [
+   [
+    27,
+    6
+   ],
+   [
+    28,
+    6
+   ],
+   [
+    31,
+    3
+   ]
+  ],
+  [
+   [
+    27,
+    6
+   ],
+   [
+    28,
+    6
+   ],
+   [
+    32,
+    3
+   ]
+  ],
+  [
+   [
+    27,
+    6
+   ],
+   [
+    28,
+    6
+   ],
+   [
+    33,
+    3
+   ]
+  ],
+  [
+   [
+    27,
+    6
+   ],
+   [
+    28,
+    6
+   ],
+   [
+    68,
+    3
+   ]
+  ],
+  [
+   [
+    27,
+    6
+   ],
+   [
+    28,
+    6
+   ],
+   [
+    76,
+    6
+   ]
+  ],
+  [
+   [
+    28,
+    6
+   ],
+   [
+    29,
+    6
+   ],
+   [
+    68,
+    6
+   ]
+  ],
+  [
+   [
+    28,
+    6
+   ],
+   [
+    30,
+    6
+   ],
+   [
+    68,
+    6
+   ]
+  ],
+  [
+   [
+    28,
+    6
+   ],
+   [
+    31,
+    3
+   ],
+   [
+    68,
+    6
+   ]
+  ],
+  [
+   [
+    28,
+    6
+   ],
+   [
+    31,
+    6
+   ]
+  ],
+  [
+   [
+    28,
+    6
+   ],
+   [
+    32,
+    6
+   ],
+   [
+    68,
+    6
+   ]
+  ],
+  [
+   [
+    28,
+    12
+   ]
+  ],
+  [
+   [
+    35,
+    6
+   ],
+   [
+    36,
+    6
+   ]
+  ],
+  [
+   [
+    36,
+    12
+   ]
+  ],
+  [
+   [
+    46,
+    12
+   ],
+   [
+    49,
+    12
+   ],
+   [
+    50,
+    12
+   ]
+  ]
+ ],
+ "certificates": [
+  {
+   "phi": 0.377175969116945,
+   "dual": 0.37717596911694506,
+   "gap": 5.551115123125783e-17,
+   "predecessors": [
+    {
+     "v": 0,
+     "D": 3,
+     "phi": 0.14487135234057125
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.36660940474552306,
+   "dual": 0.3666094047455229,
+   "gap": 1.6653345369377348e-16,
+   "predecessors": [
+    {
+     "v": 16,
+     "D": 3,
+     "phi": 0.14236702495737363
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.2273829541586734,
+   "dual": 0.22738295415867338,
+   "gap": 2.7755575615628914e-17,
+   "predecessors": [
+    {
+     "v": 21,
+     "D": 0,
+     "phi": 0.0
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20334733523812712,
+   "dual": 0.20334733523812695,
+   "gap": 1.6653345369377348e-16,
+   "predecessors": [
+    {
+     "v": 27,
+     "D": 0,
+     "phi": 0.19010228475585036
+    },
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.008314674728679753
+    },
+    {
+     "v": 68,
+     "D": 3,
+     "phi": 0.18959935614474938
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20384348755771708,
+   "dual": 0.20384348755771703,
+   "gap": 5.551115123125783e-17,
+   "predecessors": [
+    {
+     "v": 27,
+     "D": 3,
+     "phi": 0.1880847437248005
+    },
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.0009322291813633476
+    },
+    {
+     "v": 29,
+     "D": 0,
+     "phi": 0.19757204162094974
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.2039099907023194,
+   "dual": 0.20390999070231935,
+   "gap": 5.551115123125783e-17,
+   "predecessors": [
+    {
+     "v": 27,
+     "D": 3,
+     "phi": 0.18815124686940282
+    },
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.000991478050932984
+    },
+    {
+     "v": 30,
+     "D": 0,
+     "phi": 0.19757204162094974
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.2138052234934815,
+   "dual": 0.21380522349348147,
+   "gap": 2.7755575615628914e-17,
+   "predecessors": [
+    {
+     "v": 27,
+     "D": 3,
+     "phi": 0.1980464796605649
+    },
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.00980732218146603
+    },
+    {
+     "v": 31,
+     "D": 0,
+     "phi": 0.19757204162094974
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.2055268070227861,
+   "dual": 0.20552680702278597,
+   "gap": 1.3877787807814457e-16,
+   "predecessors": [
+    {
+     "v": 27,
+     "D": 3,
+     "phi": 0.18976806318986952
+    },
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.0024319293237587136
+    },
+    {
+     "v": 32,
+     "D": 0,
+     "phi": 0.19757204162094974
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20272846409810688,
+   "dual": 0.2027284640981068,
+   "gap": 8.326672684688674e-17,
+   "predecessors": [
+    {
+     "v": 27,
+     "D": 3,
+     "phi": 0.1869697202651903
+    },
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.0
+    },
+    {
+     "v": 33,
+     "D": 0,
+     "phi": 0.19757204162094974
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20363910965596277,
+   "dual": 0.20363910965596263,
+   "gap": 1.3877787807814457e-16,
+   "predecessors": [
+    {
+     "v": 27,
+     "D": 3,
+     "phi": 0.18959935614474938
+    },
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.00831467472867977
+    },
+    {
+     "v": 68,
+     "D": 0,
+     "phi": 0.19757204162094974
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.2080308915651568,
+   "dual": 0.2080308915651566,
+   "gap": 1.942890293094024e-16,
+   "predecessors": [
+    {
+     "v": 27,
+     "D": 3,
+     "phi": 0.1939911380539434
+    },
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.0014341060007265205
+    },
+    {
+     "v": 76,
+     "D": 3,
+     "phi": 0.19757204162094974
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20161221761928244,
+   "dual": 0.20161221761928225,
+   "gap": 1.942890293094024e-16,
+   "predecessors": [
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.0006569702966127793
+    },
+    {
+     "v": 29,
+     "D": 3,
+     "phi": 0.1956896308060601
+    },
+    {
+     "v": 68,
+     "D": 3,
+     "phi": 0.18786423852590478
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20173427029059585,
+   "dual": 0.20173427029059574,
+   "gap": 1.1102230246251565e-16,
+   "predecessors": [
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.0007162191661823879
+    },
+    {
+     "v": 30,
+     "D": 3,
+     "phi": 0.19574887967562973
+    },
+    {
+     "v": 68,
+     "D": 3,
+     "phi": 0.18798629119721816
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.2045647238061628,
+   "dual": 0.20456472380616272,
+   "gap": 8.326672684688674e-17,
+   "predecessors": [
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.009532063296715427
+    },
+    {
+     "v": 31,
+     "D": 0,
+     "phi": 0.19010228475585036
+    },
+    {
+     "v": 68,
+     "D": 3,
+     "phi": 0.19081674471278504
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20038691298043296,
+   "dual": 0.20038691298043282,
+   "gap": 1.3877787807814457e-16,
+   "predecessors": [
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.0
+    },
+    {
+     "v": 31,
+     "D": 3,
+     "phi": 0.18317974019554928
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.20470159991261688,
+   "dual": 0.2047015999126167,
+   "gap": 1.942890293094024e-16,
+   "predecessors": [
+    {
+     "v": 28,
+     "D": 3,
+     "phi": 0.002156670439008133
+    },
+    {
+     "v": 32,
+     "D": 3,
+     "phi": 0.1971893309484555
+    },
+    {
+     "v": 68,
+     "D": 3,
+     "phi": 0.19095362081923922
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.5362593985832583,
+   "dual": 0.5362593985832584,
+   "gap": 1.1102230246251565e-16,
+   "predecessors": [
+    {
+     "v": 28,
+     "D": 6,
+     "phi": 0.16694655832301752
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.24232761044418694,
+   "dual": 0.24232761044418683,
+   "gap": 1.1102230246251565e-16,
+   "predecessors": [
+    {
+     "v": 35,
+     "D": 3,
+     "phi": 0.14120451087220587
+    },
+    {
+     "v": 36,
+     "D": 3,
+     "phi": 0.018871557934974414
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.26879195632848074,
+   "dual": 0.2687919563284805,
+   "gap": 2.220446049250313e-16,
+   "predecessors": [
+    {
+     "v": 36,
+     "D": 6,
+     "phi": 0.04580536033260116
+    }
+   ],
+   "certified": true
+  },
+  {
+   "phi": 0.2038299858825035,
+   "dual": 0.20382998588250334,
+   "gap": 1.6653345369377348e-16,
+   "predecessors": [
+    {
+     "v": 46,
+     "D": 6,
+     "phi": 0.0
+    },
+    {
+     "v": 49,
+     "D": 6,
+     "phi": 0.0
+    },
+    {
+     "v": 50,
+     "D": 6,
+     "phi": 0.010882368836351393
+    }
+   ],
+   "certified": true
+  }
+ ],
+ "complete": true,
+ "method": "lattice",
+ "lp_calls": 2175,
+ "legacy_comparison": {
+  "vanish": [
+   [
+    [
+     2,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     29,
+     6
+    ]
+   ],
+   [
+    [
+     2,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     30,
+     6
+    ]
+   ],
+   [
+    [
+     3,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     29,
+     6
+    ]
+   ],
+   [
+    [
+     3,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     30,
+     6
+    ]
+   ],
+   [
+    [
+     25,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     29,
+     6
+    ]
+   ],
+   [
+    [
+     25,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     30,
+     6
+    ]
+   ],
+   [
+    [
+     26,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     29,
+     6
+    ]
+   ],
+   [
+    [
+     26,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     30,
+     6
+    ]
+   ],
+   [
+    [
+     27,
+     3
+    ],
+    [
+     28,
+     6
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     29,
+     3
+    ],
+    [
+     30,
+     6
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     29,
+     3
+    ],
+    [
+     33,
+     6
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     29,
+     6
+    ],
+    [
+     30,
+     3
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     29,
+     6
+    ],
+    [
+     32,
+     3
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     29,
+     6
+    ],
+    [
+     33,
+     3
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     30,
+     3
+    ],
+    [
+     33,
+     6
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     30,
+     6
+    ],
+    [
+     32,
+     3
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     30,
+     6
+    ],
+    [
+     33,
+     3
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     31,
+     3
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     32,
+     3
+    ],
+    [
+     33,
+     6
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     32,
+     6
+    ]
+   ],
+   [
+    [
+     34,
+     6
+    ],
+    [
+     35,
+     3
+    ],
+    [
+     36,
+     6
+    ]
+   ],
+   [
+    [
+     39,
+     12
+    ],
+    [
+     41,
+     6
+    ],
+    [
+     44,
+     12
+    ]
+   ],
+   [
+    [
+     39,
+     12
+    ],
+    [
+     41,
+     12
+    ]
+   ],
+   [
+    [
+     68,
+     6
+    ]
+   ],
+   [
+    [
+     76,
+     12
+    ]
+   ]
+  ],
+  "appear": [
+   [
+    [
+     27,
+     3
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     68,
+     6
+    ]
+   ],
+   [
+    [
+     27,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     29,
+     3
+    ]
+   ],
+   [
+    [
+     27,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     30,
+     3
+    ]
+   ],
+   [
+    [
+     27,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     31,
+     3
+    ]
+   ],
+   [
+    [
+     27,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     32,
+     3
+    ]
+   ],
+   [
+    [
+     27,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     33,
+     3
+    ]
+   ],
+   [
+    [
+     27,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     68,
+     3
+    ]
+   ],
+   [
+    [
+     27,
+     6
+    ],
+    [
+     28,
+     6
+    ],
+    [
+     76,
+     6
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     29,
+     6
+    ],
+    [
+     68,
+     6
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     30,
+     6
+    ],
+    [
+     68,
+     6
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     31,
+     3
+    ],
+    [
+     68,
+     6
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     31,
+     6
+    ]
+   ],
+   [
+    [
+     28,
+     6
+    ],
+    [
+     32,
+     6
+    ],
+    [
+     68,
+     6
+    ]
+   ]
+  ]
+ }
+}

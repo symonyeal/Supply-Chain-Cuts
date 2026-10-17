@@ -289,3 +289,22 @@ Identical cut lists across the 94 runs are a check of this implication, not evid
 that arbitrary chemistry quotas do not matter. Tighter bounds, monthly bounds or
 outages beyond half the horizon would require a different sensitivity. The probability
 law of failure is identical here, so its estimator may be reused with that fact labelled.
+
+## W5: fixed reservations for competing end uses
+
+Approved 2026-10-16. Let eta[p] be the fraction of physical output available to
+batteries after other uses are reserved. Replace u[v] by eta[p(v)] u[v], retaining
+the original demand, normalisation, stocks and recipe coefficients. Apply eta once
+at each affected capacity constraint; mine and refinery stages each have their own
+physical reservation. No coefficient is squared along an edge. The uncertainty is
+allocation, not a second observed outage process. With h = sigma = 0, reducing eta
+can only increase shortfall. A positive undisrupted shortfall is reported as such;
+if it already exceeds the threshold, the sole minimal cut is the empty state.
+
+Use eta[Co] = 0.76 and eta[Ni] = 0.16 on their mined/refined layers. Cobalt's share
+is the sum 43% EV + 30% portables + 3% other batteries in the Cobalt Institute's
+2024 factsheet; nickel's is INSG's estimated 2023 battery share. Their proportional
+allocation to countries and to the model's metal forms is a scenario assumption.
+For Cu, Al and Mn no matching global battery-only primary share is frozen: eta in
+{1, 0.1, 0.01} is an explicitly assumed sensitivity. Reuse the existing LP matrices
+and certified enumerators for both recipe models, at fixed reference demand.

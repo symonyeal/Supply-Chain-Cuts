@@ -1,0 +1,3129 @@
+{
+    "sector":  "joint",
+    "alpha":  0.25,
+    "horizon_months":  24,
+    "inventory":  0,
+    "spare":  0,
+    "durations":  [
+                      3,
+                      6,
+                      12
+                  ],
+    "cuts":  [
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "aam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "aam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "aam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "aam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "aam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "HUN",
+                                        "product":  "aam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "aam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "POL",
+                                        "product":  "aam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "aam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "USA",
+                                        "product":  "aam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "aam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "aam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "aam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "aam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "aam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "HUN",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "KOR",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "POL",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "USA",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "IND",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "MYS",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "module",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "POL",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "DEU",
+                                        "product":  "cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "DEU",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "HUN",
+                                        "product":  "cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "HUN",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "POL",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "HUN",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "KOR",
+                                        "product":  "cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "KOR",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "POL",
+                                        "product":  "cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "POL",
+                                        "product":  "cell",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "POL",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "USA",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "POL",
+                                        "product":  "cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "USA",
+                                        "product":  "cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "USA",
+                                        "product":  "cell",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "graphite",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "graphite",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "graphite",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "graphite",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "graphite",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "graphite",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "graphite",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "graphite",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "ARG",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHL",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHL",
+                                        "product":  "li_carbonate",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHL",
+                                        "product":  "li_carbonate",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHL",
+                                        "product":  "li_carbonate",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHL",
+                                        "product":  "li_carbonate",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "IND",
+                                        "product":  "module",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "MYS",
+                                        "product":  "module",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "NLD",
+                                        "product":  "module",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "module",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "li_carbonate",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "IDN",
+                                        "product":  "mine_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "IDN",
+                                        "product":  "mine_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "IDN",
+                                        "product":  "mine_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "IDN",
+                                        "product":  "mine_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "IDN",
+                                        "product":  "mine_co",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "IDN",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "IDN",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "IDN",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "RUS",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "RUS",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "COD",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "RUS",
+                                        "product":  "mine_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "ARG",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "ARG",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "ARG",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "ARG",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHL",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHL",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHL",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "BRA",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHL",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "ZWE",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "ZWE",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "ZWE",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "BRA",
+                                        "product":  "mine_li",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "BRA",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CAN",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CAN",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "ZWE",
+                                        "product":  "mine_li",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "ZWE",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHL",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHL",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHL",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "mine_li",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pcam",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CAN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "FIN",
+                                        "product":  "refined_co",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pcam",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "THA",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pcam",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "THA",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "THA",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pcam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "POL",
+                                        "product":  "pcam",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "VNM",
+                                        "product":  "module",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pcam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pcam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pcam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pcam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pcam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pcam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "DEU",
+                                        "product":  "pcam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "HUN",
+                                        "product":  "pcam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "HUN",
+                                        "product":  "pcam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "POL",
+                                        "product":  "pcam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "KOR",
+                                        "product":  "pcam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "POL",
+                                        "product":  "pcam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "POL",
+                                        "product":  "pcam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "USA",
+                                        "product":  "pcam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "POL",
+                                        "product":  "pcam",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "USA",
+                                        "product":  "pcam",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CAN",
+                                        "product":  "refined_co",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "FIN",
+                                        "product":  "refined_co",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "JPN",
+                                        "product":  "refined_co",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "MDG",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "NOR",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "polysilicon",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CAN",
+                                        "product":  "refined_co",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "FIN",
+                                        "product":  "refined_co",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "JPN",
+                                        "product":  "refined_co",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "MDG",
+                                        "product":  "refined_co",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "NOR",
+                                        "product":  "refined_co",
+                                        "duration":  6
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "pv_cell",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "THA",
+                                        "product":  "pv_cell",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "AUS",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CAN",
+                                        "product":  "refined_co",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  12
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "FIN",
+                                        "product":  "refined_co",
+                                        "duration":  3
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "JPN",
+                                        "product":  "refined_co",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "MDG",
+                                        "product":  "refined_co",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "NOR",
+                                        "product":  "refined_co",
+                                        "duration":  6
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  3
+                                    }
+                                ]
+                 },
+                 {
+                     "losses":  [
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "refined_co",
+                                        "duration":  12
+                                    },
+                                    {
+                                        "country":  "CHN",
+                                        "product":  "wafer",
+                                        "duration":  6
+                                    }
+                                ]
+                 }
+             ]
+}

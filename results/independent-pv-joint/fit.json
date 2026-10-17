@@ -1,0 +1,1147 @@
+{
+  "events": {
+    "raw_OECD_rows": 44387,
+    "raw_country_HS_measure_variation_years": 3195,
+    "raw_OECD_spells": 788,
+    "derived_fact_spells": 788,
+    "raw_derived_discrepancies": [],
+    "OECD_ids_linked_to_national_acts": [
+      "OECD-0053cad7fa51f965",
+      "OECD-6e8d8e084796c727",
+      "OECD-cb375181c4f52a8f",
+      "OECD-e934f4891d19fdfa"
+    ],
+    "duration_counts": {
+      "12": 169,
+      "6": 3,
+      "3": 4
+    },
+    "short_censored_excluded": [
+      {
+        "id": "OECD-e6ee1592c13800cb",
+        "days": 31
+      },
+      {
+        "id": "OECD-def0304eb196493e",
+        "days": 5
+      },
+      {
+        "id": "OECD-dffe2ec8a435fecf",
+        "days": 5
+      },
+      {
+        "id": "OECD-c35c156490f11b8a",
+        "days": 5
+      },
+      {
+        "id": "OECD-9276f4fee201d7d9",
+        "days": 5
+      },
+      {
+        "id": "OECD-7a5af8cffe88fbe0",
+        "days": 5
+      },
+      {
+        "id": "OECD-cecf950df40f1f5b",
+        "days": 5
+      },
+      {
+        "id": "CHN-MOFCOM-2024-46-GRAPHITE",
+        "days": 29
+      }
+    ],
+    "mapped_surveyed_node_years_all_origins": 2106,
+    "mapped_onset_node_years_all_origins": 108
+  },
+  "rates": {
+    "pooled_prior": {
+      "a": 0.5023644824761219,
+      "b": 6.776046496922889,
+      "objective": 215.79067856159926,
+      "success": true,
+      "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+      "exposed_nodes": 71,
+      "N": 923,
+      "K": 64
+    },
+    "product_priors": {
+      "aam": {
+        "a": 0.5023644824761219,
+        "b": 6.776046496922889,
+        "objective": 215.79067856159926,
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "exposed_nodes": 71,
+        "N": 923,
+        "K": 64,
+        "fallback": "all_exposed_joint_nodes"
+      },
+      "aluminium": {
+        "a": 0.40755751783496064,
+        "b": 17.334785260317556,
+        "objective": 13.86546057287002,
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "exposed_nodes": 10,
+        "N": 130,
+        "K": 3
+      },
+      "cam": {
+        "a": 0.5023644824761219,
+        "b": 6.776046496922889,
+        "objective": 215.79067856159926,
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "exposed_nodes": 71,
+        "N": 923,
+        "K": 64,
+        "fallback": "all_exposed_joint_nodes"
+      },
+      "cell": {
+        "a": 0.5023644824761219,
+        "b": 6.776046496922889,
+        "objective": 215.79067856159926,
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "exposed_nodes": 71,
+        "N": 923,
+        "K": 64,
+        "fallback": "all_exposed_joint_nodes"
+      },
+      "graphite": {
+        "a": 11.24349911548466,
+        "b": 76.48933745255054,
+        "objective": 14.928221003220713,
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "exposed_nodes": 3,
+        "N": 39,
+        "K": 5
+      },
+      "li_carbonate": {
+        "a": 0.6068559116314867,
+        "b": 11.379213982868226,
+        "objective": 7.689017113387791,
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "exposed_nodes": 3,
+        "N": 39,
+        "K": 2
+      },
+      "mine_co": {
+        "a": 1.1056863624927287,
+        "b": 7.30769999555875,
+        "objective": 33.79404335584091,
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "exposed_nodes": 7,
+        "N": 91,
+        "K": 12
+      },
+      "mine_li": {
+        "a": 0.5871025755046972,
+        "b": 9.047850812505427,
+        "objective": 14.345246453452672,
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "exposed_nodes": 5,
+        "N": 65,
+        "K": 4
+      },
+      "mine_mn": {
+        "a": 0.32405944832164457,
+        "b": 7.154881271900586,
+        "objective": 15.195070810944856,
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "exposed_nodes": 7,
+        "N": 91,
+        "K": 4
+      },
+      "mine_ni": {
+        "a": 0.2543336857499261,
+        "b": 3.060278904517717,
+        "objective": 22.911161108505006,
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "exposed_nodes": 8,
+        "N": 104,
+        "K": 8
+      },
+      "module": {
+        "a": 0.5023644824761219,
+        "b": 6.776046496922889,
+        "objective": 215.79067856159926,
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "exposed_nodes": 71,
+        "N": 923,
+        "K": 64,
+        "fallback": "all_exposed_joint_nodes"
+      },
+      "pcam": {
+        "a": 0.5023644824761219,
+        "b": 6.776046496922889,
+        "objective": 215.79067856159926,
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "exposed_nodes": 71,
+        "N": 923,
+        "K": 64,
+        "fallback": "all_exposed_joint_nodes"
+      },
+      "polysilicon": {
+        "a": 0.29381491192898906,
+        "b": 3.751056466549765,
+        "objective": 9.59096774460879,
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "exposed_nodes": 3,
+        "N": 39,
+        "K": 3
+      },
+      "pv_cell": {
+        "a": 0.5023644824761219,
+        "b": 6.776046496922889,
+        "objective": 215.79067856159926,
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "exposed_nodes": 71,
+        "N": 923,
+        "K": 64,
+        "fallback": "all_exposed_joint_nodes"
+      },
+      "refined_co": {
+        "a": 0.58710088181361,
+        "b": 9.047822343010306,
+        "objective": 14.345246453444707,
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "exposed_nodes": 5,
+        "N": 65,
+        "K": 4
+      },
+      "refined_cu": {
+        "a": 1.1858835405666304,
+        "b": 17.296594650274255,
+        "objective": 36.29357614844797,
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "exposed_nodes": 12,
+        "N": 156,
+        "K": 10
+      },
+      "refined_ni": {
+        "a": 0.5898517671700046,
+        "b": 6.24202680011165,
+        "objective": 28.324489004224162,
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "exposed_nodes": 8,
+        "N": 104,
+        "K": 9
+      },
+      "wafer": {
+        "a": 0.5023644824761219,
+        "b": 6.776046496922889,
+        "objective": 215.79067856159926,
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "exposed_nodes": 71,
+        "N": 923,
+        "K": 64,
+        "fallback": "all_exposed_joint_nodes"
+      }
+    },
+    "rho": 0.6557026896815004,
+    "rho_log_loss": 46.017450265564314,
+    "rho_country_years": 195,
+    "rho_multi_onset_years": 17,
+    "rho_objective_at_0": 47.84186099733184,
+    "rho_objective_at_1": 46.13378361325706,
+    "node_rates": [
+      {
+        "country": "ARE",
+        "product": "aluminium",
+        "N": 13,
+        "K": 0,
+        "p": 0.013257204266312363
+      },
+      {
+        "country": "ARG",
+        "product": "li_carbonate",
+        "N": 13,
+        "K": 2,
+        "p": 0.1043323709026102
+      },
+      {
+        "country": "ARG",
+        "product": "mine_li",
+        "N": 13,
+        "K": 0,
+        "p": 0.02593787428851915
+      },
+      {
+        "country": "AUS",
+        "product": "aluminium",
+        "N": 13,
+        "K": 0,
+        "p": 0.013257204266312363
+      },
+      {
+        "country": "AUS",
+        "product": "mine_co",
+        "N": 13,
+        "K": 0,
+        "p": 0.051635287572205424
+      },
+      {
+        "country": "AUS",
+        "product": "mine_li",
+        "N": 13,
+        "K": 0,
+        "p": 0.02593787428851915
+      },
+      {
+        "country": "AUS",
+        "product": "mine_mn",
+        "N": 13,
+        "K": 0,
+        "p": 0.015824033710964715
+      },
+      {
+        "country": "AUS",
+        "product": "mine_ni",
+        "N": 13,
+        "K": 0,
+        "p": 0.015589318124639191
+      },
+      {
+        "country": "AUS",
+        "product": "refined_co",
+        "N": 13,
+        "K": 0,
+        "p": 0.025937834026745512
+      },
+      {
+        "country": "AUS",
+        "product": "refined_cu",
+        "N": 13,
+        "K": 0,
+        "p": 0.03766804929961442
+      },
+      {
+        "country": "AUS",
+        "product": "refined_ni",
+        "N": 13,
+        "K": 0,
+        "p": 0.02974260684225515
+      },
+      {
+        "country": "BHR",
+        "product": "aluminium",
+        "N": 0,
+        "K": 0,
+        "p": 0.022970896399139403
+      },
+      {
+        "country": "BRA",
+        "product": "aluminium",
+        "N": 13,
+        "K": 0,
+        "p": 0.013257204266312363
+      },
+      {
+        "country": "BRA",
+        "product": "graphite",
+        "N": 13,
+        "K": 0,
+        "p": 0.11161702081019802
+      },
+      {
+        "country": "BRA",
+        "product": "mine_li",
+        "N": 0,
+        "K": 0,
+        "p": 0.06093465654284287
+      },
+      {
+        "country": "BRA",
+        "product": "mine_mn",
+        "N": 13,
+        "K": 0,
+        "p": 0.015824033710964715
+      },
+      {
+        "country": "BRA",
+        "product": "mine_ni",
+        "N": 13,
+        "K": 0,
+        "p": 0.015589318124639191
+      },
+      {
+        "country": "CAN",
+        "product": "aluminium",
+        "N": 13,
+        "K": 0,
+        "p": 0.013257204266312363
+      },
+      {
+        "country": "CAN",
+        "product": "mine_co",
+        "N": 13,
+        "K": 0,
+        "p": 0.051635287572205424
+      },
+      {
+        "country": "CAN",
+        "product": "mine_li",
+        "N": 0,
+        "K": 0,
+        "p": 0.06093465654284287
+      },
+      {
+        "country": "CAN",
+        "product": "mine_ni",
+        "N": 13,
+        "K": 0,
+        "p": 0.015589318124639191
+      },
+      {
+        "country": "CAN",
+        "product": "refined_co",
+        "N": 13,
+        "K": 0,
+        "p": 0.025937834026745512
+      },
+      {
+        "country": "CAN",
+        "product": "refined_cu",
+        "N": 13,
+        "K": 0,
+        "p": 0.03766804929961442
+      },
+      {
+        "country": "CAN",
+        "product": "refined_ni",
+        "N": 13,
+        "K": 0,
+        "p": 0.02974260684225515
+      },
+      {
+        "country": "CHL",
+        "product": "li_carbonate",
+        "N": 13,
+        "K": 0,
+        "p": 0.024287769713038237
+      },
+      {
+        "country": "CHL",
+        "product": "mine_li",
+        "N": 13,
+        "K": 0,
+        "p": 0.02593787428851915
+      },
+      {
+        "country": "CHL",
+        "product": "refined_cu",
+        "N": 13,
+        "K": 1,
+        "p": 0.06943174953751143
+      },
+      {
+        "country": "CHN",
+        "product": "aam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "CHN",
+        "product": "aluminium",
+        "N": 13,
+        "K": 1,
+        "p": 0.04578562954659595
+      },
+      {
+        "country": "CHN",
+        "product": "cam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "CHN",
+        "product": "cell",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "CHN",
+        "product": "graphite",
+        "N": 13,
+        "K": 3,
+        "p": 0.141398769266907
+      },
+      {
+        "country": "CHN",
+        "product": "li_carbonate",
+        "N": 13,
+        "K": 0,
+        "p": 0.024287769713038237
+      },
+      {
+        "country": "CHN",
+        "product": "mine_li",
+        "N": 13,
+        "K": 3,
+        "p": 0.15847625192834758
+      },
+      {
+        "country": "CHN",
+        "product": "mine_mn",
+        "N": 13,
+        "K": 0,
+        "p": 0.015824033710964715
+      },
+      {
+        "country": "CHN",
+        "product": "mine_ni",
+        "N": 13,
+        "K": 0,
+        "p": 0.015589318124639191
+      },
+      {
+        "country": "CHN",
+        "product": "module",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "CHN",
+        "product": "pcam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "CHN",
+        "product": "polysilicon",
+        "N": 13,
+        "K": 3,
+        "p": 0.193243752844497
+      },
+      {
+        "country": "CHN",
+        "product": "pv_cell",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "CHN",
+        "product": "refined_co",
+        "N": 13,
+        "K": 3,
+        "p": 0.15847638828655738
+      },
+      {
+        "country": "CHN",
+        "product": "refined_cu",
+        "N": 13,
+        "K": 1,
+        "p": 0.06943174953751143
+      },
+      {
+        "country": "CHN",
+        "product": "refined_ni",
+        "N": 13,
+        "K": 1,
+        "p": 0.08016647347734969
+      },
+      {
+        "country": "CHN",
+        "product": "wafer",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "CIV",
+        "product": "mine_mn",
+        "N": 0,
+        "K": 0,
+        "p": 0.043329591775667316
+      },
+      {
+        "country": "COD",
+        "product": "mine_co",
+        "N": 13,
+        "K": 5,
+        "p": 0.28513408670632695
+      },
+      {
+        "country": "COD",
+        "product": "refined_cu",
+        "N": 13,
+        "K": 2,
+        "p": 0.10119544977540842
+      },
+      {
+        "country": "CUB",
+        "product": "mine_co",
+        "N": 0,
+        "K": 0,
+        "p": 0.13141989627453685
+      },
+      {
+        "country": "DEU",
+        "product": "cell",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "DEU",
+        "product": "graphite",
+        "N": 0,
+        "K": 0,
+        "p": 0.12815611070281005
+      },
+      {
+        "country": "DEU",
+        "product": "pcam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "DEU",
+        "product": "polysilicon",
+        "N": 13,
+        "K": 0,
+        "p": 0.017237731245069207
+      },
+      {
+        "country": "DEU",
+        "product": "refined_cu",
+        "N": 0,
+        "K": 0,
+        "p": 0.06416258297841805
+      },
+      {
+        "country": "DEU",
+        "product": "refined_ni",
+        "N": 0,
+        "K": 0,
+        "p": 0.08633815155832045
+      },
+      {
+        "country": "FIN",
+        "product": "refined_co",
+        "N": 13,
+        "K": 0,
+        "p": 0.025937834026745512
+      },
+      {
+        "country": "FIN",
+        "product": "refined_ni",
+        "N": 13,
+        "K": 0,
+        "p": 0.02974260684225515
+      },
+      {
+        "country": "FRA",
+        "product": "refined_ni",
+        "N": 0,
+        "K": 0,
+        "p": 0.08633815155832045
+      },
+      {
+        "country": "GAB",
+        "product": "mine_mn",
+        "N": 13,
+        "K": 1,
+        "p": 0.0646546843613929
+      },
+      {
+        "country": "GBR",
+        "product": "refined_ni",
+        "N": 0,
+        "K": 0,
+        "p": 0.08633815155832045
+      },
+      {
+        "country": "GHA",
+        "product": "mine_mn",
+        "N": 13,
+        "K": 0,
+        "p": 0.015824033710964715
+      },
+      {
+        "country": "HUN",
+        "product": "aam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "HUN",
+        "product": "cam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "HUN",
+        "product": "cell",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "HUN",
+        "product": "pcam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "IDN",
+        "product": "mine_co",
+        "N": 13,
+        "K": 4,
+        "p": 0.23843432687950264
+      },
+      {
+        "country": "IDN",
+        "product": "mine_ni",
+        "N": 13,
+        "K": 6,
+        "p": 0.38335778132303927
+      },
+      {
+        "country": "IDN",
+        "product": "refined_cu",
+        "N": 13,
+        "K": 4,
+        "p": 0.16472285025120245
+      },
+      {
+        "country": "IDN",
+        "product": "refined_ni",
+        "N": 13,
+        "K": 5,
+        "p": 0.28186194001772785
+      },
+      {
+        "country": "IND",
+        "product": "aluminium",
+        "N": 13,
+        "K": 0,
+        "p": 0.013257204266312363
+      },
+      {
+        "country": "IND",
+        "product": "graphite",
+        "N": 13,
+        "K": 2,
+        "p": 0.13147151978133734
+      },
+      {
+        "country": "IND",
+        "product": "mine_mn",
+        "N": 13,
+        "K": 3,
+        "p": 0.1623159856622493
+      },
+      {
+        "country": "IND",
+        "product": "module",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "IND",
+        "product": "refined_cu",
+        "N": 0,
+        "K": 0,
+        "p": 0.06416258297841805
+      },
+      {
+        "country": "ISL",
+        "product": "aluminium",
+        "N": 0,
+        "K": 0,
+        "p": 0.022970896399139403
+      },
+      {
+        "country": "JPN",
+        "product": "refined_co",
+        "N": 0,
+        "K": 0,
+        "p": 0.06093467151881115
+      },
+      {
+        "country": "JPN",
+        "product": "refined_cu",
+        "N": 0,
+        "K": 0,
+        "p": 0.06416258297841805
+      },
+      {
+        "country": "JPN",
+        "product": "refined_ni",
+        "N": 0,
+        "K": 0,
+        "p": 0.08633815155832045
+      },
+      {
+        "country": "JPN",
+        "product": "wafer",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "KAZ",
+        "product": "refined_cu",
+        "N": 13,
+        "K": 0,
+        "p": 0.03766804929961442
+      },
+      {
+        "country": "KOR",
+        "product": "cam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "KOR",
+        "product": "cell",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "KOR",
+        "product": "pcam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "KOR",
+        "product": "refined_cu",
+        "N": 0,
+        "K": 0,
+        "p": 0.06416258297841805
+      },
+      {
+        "country": "MDG",
+        "product": "graphite",
+        "N": 0,
+        "K": 0,
+        "p": 0.12815611070281005
+      },
+      {
+        "country": "MDG",
+        "product": "mine_co",
+        "N": 13,
+        "K": 1,
+        "p": 0.09833504739902972
+      },
+      {
+        "country": "MDG",
+        "product": "refined_co",
+        "N": 13,
+        "K": 1,
+        "p": 0.07011735211334946
+      },
+      {
+        "country": "MDG",
+        "product": "refined_ni",
+        "N": 13,
+        "K": 1,
+        "p": 0.08016647347734969
+      },
+      {
+        "country": "MEX",
+        "product": "refined_cu",
+        "N": 13,
+        "K": 1,
+        "p": 0.06943174953751143
+      },
+      {
+        "country": "MOZ",
+        "product": "graphite",
+        "N": 0,
+        "K": 0,
+        "p": 0.12815611070281005
+      },
+      {
+        "country": "MYS",
+        "product": "aluminium",
+        "N": 13,
+        "K": 0,
+        "p": 0.013257204266312363
+      },
+      {
+        "country": "MYS",
+        "product": "module",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "NCL",
+        "product": "mine_ni",
+        "N": 13,
+        "K": 0,
+        "p": 0.015589318124639191
+      },
+      {
+        "country": "NLD",
+        "product": "module",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "NLD",
+        "product": "refined_ni",
+        "N": 0,
+        "K": 0,
+        "p": 0.08633815155832045
+      },
+      {
+        "country": "NOR",
+        "product": "aluminium",
+        "N": 13,
+        "K": 0,
+        "p": 0.013257204266312363
+      },
+      {
+        "country": "NOR",
+        "product": "refined_co",
+        "N": 0,
+        "K": 0,
+        "p": 0.06093467151881115
+      },
+      {
+        "country": "NOR",
+        "product": "refined_ni",
+        "N": 0,
+        "K": 0,
+        "p": 0.08633815155832045
+      },
+      {
+        "country": "PER",
+        "product": "refined_cu",
+        "N": 13,
+        "K": 0,
+        "p": 0.03766804929961442
+      },
+      {
+        "country": "PHL",
+        "product": "mine_co",
+        "N": 13,
+        "K": 1,
+        "p": 0.09833504739902972
+      },
+      {
+        "country": "PHL",
+        "product": "mine_ni",
+        "N": 13,
+        "K": 1,
+        "p": 0.0768840619910392
+      },
+      {
+        "country": "POL",
+        "product": "aam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "POL",
+        "product": "cam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "POL",
+        "product": "cell",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "POL",
+        "product": "pcam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "POL",
+        "product": "refined_cu",
+        "N": 13,
+        "K": 0,
+        "p": 0.03766804929961442
+      },
+      {
+        "country": "RUS",
+        "product": "aluminium",
+        "N": 13,
+        "K": 2,
+        "p": 0.07831405482687953
+      },
+      {
+        "country": "RUS",
+        "product": "mine_co",
+        "N": 13,
+        "K": 1,
+        "p": 0.09833504739902972
+      },
+      {
+        "country": "RUS",
+        "product": "mine_ni",
+        "N": 13,
+        "K": 1,
+        "p": 0.0768840619910392
+      },
+      {
+        "country": "RUS",
+        "product": "refined_cu",
+        "N": 13,
+        "K": 1,
+        "p": 0.06943174953751143
+      },
+      {
+        "country": "RUS",
+        "product": "refined_ni",
+        "N": 13,
+        "K": 2,
+        "p": 0.13059034011244425
+      },
+      {
+        "country": "SGP",
+        "product": "wafer",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "THA",
+        "product": "module",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "THA",
+        "product": "pv_cell",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "TZA",
+        "product": "graphite",
+        "N": 0,
+        "K": 0,
+        "p": 0.12815611070281005
+      },
+      {
+        "country": "USA",
+        "product": "aam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "USA",
+        "product": "aluminium",
+        "N": 13,
+        "K": 0,
+        "p": 0.013257204266312363
+      },
+      {
+        "country": "USA",
+        "product": "cam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "USA",
+        "product": "cell",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "USA",
+        "product": "pcam",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "USA",
+        "product": "polysilicon",
+        "N": 13,
+        "K": 0,
+        "p": 0.017237731245069207
+      },
+      {
+        "country": "USA",
+        "product": "refined_cu",
+        "N": 13,
+        "K": 0,
+        "p": 0.03766804929961442
+      },
+      {
+        "country": "VNM",
+        "product": "module",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "VNM",
+        "product": "wafer",
+        "N": 0,
+        "K": 0,
+        "p": 0.06902117562446342
+      },
+      {
+        "country": "ZAF",
+        "product": "mine_mn",
+        "N": 13,
+        "K": 0,
+        "p": 0.015824033710964715
+      },
+      {
+        "country": "ZAF",
+        "product": "refined_ni",
+        "N": 13,
+        "K": 0,
+        "p": 0.02974260684225515
+      },
+      {
+        "country": "ZWE",
+        "product": "mine_li",
+        "N": 13,
+        "K": 1,
+        "p": 0.07011733350179529
+      }
+    ]
+  }
+}

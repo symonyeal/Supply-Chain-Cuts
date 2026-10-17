@@ -69,6 +69,9 @@ with natural hazards matched to production sites.
   cut lists but stored certificates in enumeration order. Predecessor node and shortened
   duration uniquely recover the cut. The builder uses that key; future runs align the
   lists explicitly. Original bundles remain immutable; cut membership and risk are unchanged.
+- **Close W4 with longer unseeded solves.** All seven outstanding MILP legs exhausted
+  and exactly matched the lattice lists; the full alpha = 10% run took 7,806.9 s.
+  No model strengthening was needed. Original time-limited bundles remain immutable.
 
 ## Open
 
@@ -81,3 +84,13 @@ with natural hazards matched to production sites.
 - GDELT as an event source: no product field ([Research](RESEARCH.md) §7).
 - ACLED, Global Trade Alert: licence terms restrict publication ([Research](RESEARCH.md) §4, §6).
 - WTO QR notifications: no filings from the producer countries that matter ([Research](RESEARCH.md) §12).
+
+### 2026-10-16 — keep chemistry flexibility distinct from measured production
+
+Use the approved shared-capacity recipes and 24-month delivered-output share bounds.
+Measured outcome: five rather than seven singleton cuts, seven rather than 37 cuts;
+all 29 former cobalt/precursor cuts have zero shortfall. Actual line switchability
+is unknown. The [25%,75%] bound is nonbinding by the restored-second-year argument,
+so identical results are not evidence of robustness to binding chemistry quotas.
+The site defaults to choice, offers the fixed-mix reference in the same cut controls,
+and explicitly retains fixed-mix labels on the severity study and E1 exhibit.

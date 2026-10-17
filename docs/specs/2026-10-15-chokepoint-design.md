@@ -1,5 +1,12 @@
 # Chokepoint-Lab: design
 
+W5 clarification (2026-10-16, approved): competing-demand reservations multiply
+mined/refined Co and Ni capacities by global battery-use shares 0.76 and 0.16;
+Cu/Al/Mn use assumed available fractions 1, 0.1 and 0.01. Demand stays fixed and
+baseline shortages remain visible (MODEL, W5). New METI data enter an explicit
+supplement variant: Japan's 2024 sealed Li-ion output in kAh times assumed voltage,
+labelled imputed. Original frozen network variants and result bundles remain reproducible.
+
 Implementation clarifications (2026-10-15): [MODEL](../MODEL.md) specifies the dual sign,
 immediate-duration predecessor certificates and upper-orthant exclusions. Exact-state
 no-goods alone do not remove longer-duration supersets. Enumeration reports completeness

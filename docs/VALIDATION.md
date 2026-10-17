@@ -9,7 +9,7 @@ duality gap, a known optimum from a source), never an output snapshot.
 | φ is monotone (design Prop. 1) | Random comparable disruption pairs on the toy network | passing |
 | Block aggregation exact (Lemma A) | Block LP = monthly LP on 60 random states with h, σ > 0 (`test_blocks_exact`) | passing |
 | Lattice search loses no cut (Lemma B) | Lattice = exhaustive on random 3- and 4-layer networks (`test_lattice_equals_brute*`) | passing |
-| Cut sets complete and minimal (Prop. 2) | exhaustive = lattice = MILP on the pruned network (share ≥ 5%), k ≤ 3, whole sweep; MILP = lattice on the full network at h = σ = 0 | passing: exhaustive = lattice in 45/45 Li-ion and 45/45 PV configurations; MILP agrees wherever it completed (25 exhausted, 15 worst state safe, 5 time limits); full network α = 25% exhausted and equal, α = 10% time limit (FINDINGS §4) |
+| Cut sets complete and minimal (Prop. 2) | exhaustive = lattice = MILP on the pruned network (share ≥ 5%), k ≤ 3, whole sweep; MILP = lattice on the full network at h = σ = 0 | passing: exhaustive = lattice in 45/45 Li-ion and 45/45 PV configurations; W4 completes all seven previously unfinished MILP legs, exactly equal to their reference lists (`milp-e0b40e2`); full Li-ion α = 10% exhausted in 7,806.9 s, joint pruned α = 25% in 651.9 s; FINDINGS §4 |
 | Strong duality at every certificate | primal − dual ≤ 1e-6 and every immediate duration predecessor ≤ θ, for every reported cut | passing: largest gap 4.4e-16 over all Li-ion, PV and joint bundles |
 | Bracket and residual estimate (Prop. 3, W1) | Exact L vs hand-enumerated state space; residual vs exact toy and crude MC; positive-width interval with zero residuals | passing: all residual points >= L and within four combined SEs of crude MC in the three `*-residual-2395a5c` bundles; joint alpha = 10% is 0.715669, L = 0.715669, interval 0.715669–0.715853. Original IS point 0.685 retained as a comparison (FINDINGS §2) |
 | W1 changes only the estimator | `analysis/check_residual.py BEFORE AFTER`: compare every legacy risk field, networks and cut-file bytes | passing for Li-ion, PV and joint; `residual_checks.json` records clean revisions, unchanged source lock, R3 and R4 |
@@ -24,3 +24,43 @@ duality gap, a known optimum from a source), never an output snapshot.
 | Events | Derived onsets = research table except Zimbabwe 2022 (`run_data.py`) | passing |
 | Data | MIIT parts vs total; exports vs production (DATA.md); Comtrade tariff lines | done; Comtrade not measured |
 | Headline numbers | Fresh-subagent recomputation from raw data, sharing no code: 111 nodes, layer shares and S, the 7 singletons at 12 months and none at 6, the COD–IDN pair, all 37 cuts failing and minimal, 884/61 node-years, ρ, L = 0.485766 exact and by 2,000,000 Monte Carlo draws | passing (2026-10-15); one documented definitional difference in duration counts (DATA.md) |
+
+## W3: alternative recipes
+
+`tests/test_recipes.py` checks the hand-derived LFP route, bounded-share duals,
+monthly/block equivalence, capacity dominance, random exhaustive/lattice/MILP equality,
+baseline-failure empty cuts, and the restored-second-year share equivalence on 40
+random states. The single LP matrix construction supplies the primal and MILP dual.
+All 94 saved cut configurations are complete with certified primal/dual values and
+immediate duration predecessors. Both registered singleton claims survive; every
+former Co/Ni/pCAM headline cut is explicitly restated in CHEMISTRY. Risk checks the
+unchanged network, rate law and feasible monthly 50/50 reference before reusing the
+same failure event for the bounded interval. These are model certificates, not
+evidence that actual plants can change chemistry.
+
+## W6: fresh independent PV/shared reconstruction
+
+Fresh agent, no production code, tests, analysis or result access. Portable programs
+and named comparison inputs: `independent/pv_joint`; immutable report and numerical
+artifacts: `results/independent-pv-joint`. The agent separately parsed BACI, USGS,
+OECD SDMX, all 1,521 exposure rows from the methodology PDF, and selected primary
+workbook/SI cells. All checked frozen hashes match. No coverage-row discrepancy.
+
+Independent enumeration gives exactly 22 PV cuts (4/5/13 by support) and 180 fixed-mix
+joint cuts (0/61/119). It visits 13,275 PV states and 2,802,195 mixed joint states;
+no supplied cut is missing and no additional cut appears. Separate monthly LPs check
+all 202 cuts and 532 predecessors; the greatest difference from the independent
+cumulative-output recurrence is 2.998e-15. Independent L values are
+0.2444939846405121 (PV) and 0.20382804118895667 (joint), versus production
+0.2444939846075459 and 0.2038280411830003: numerical rate-fit differences below
+3.3e-11. Counts (4,3,169), rho = 0.6557026896815004 and the roster agree.
+
+Two diagnosed definition issues are retained in the report. Linked OECD/national
+records count separately in duration weighting but once in node-year onset counts;
+deduplicating durations would give (2,3,167). The preserved independent HHI output
+initially omitted excluded origins from its numerator, changing cobalt/CAM rounding;
+the portable script uses all origins. Neither issue changes the accepted cut/L
+comparison. MIIT/Fraunhofer transcriptions, product mapping, legal completeness,
+censoring and whole-node outage severity remain shared assumptions. W6 validates
+the fixed-mix PV/shared headlines, not the later chemistry-choice scenario or the
+predictive validity of rates. Raw excerpts with unverified reuse terms remain local.

@@ -110,3 +110,25 @@ shared recipe capacity is a flexibility scenario rather than observed plant capa
 Required independent certificates are stated in the approved design; the MILP and
 primal share one matrix construction, while exhaustive and lattice searches remain
 independent of the MILP.
+
+## W5: battery availability after competing demand (2026-10-16)
+
+Registered before computing this sensitivity. The user approved proportional global
+allocation: 76% for cobalt (Cobalt Institute, 2024) and 16% for nickel (INSG, 2023),
+applied once at each mined/refined node of those metals. These are global end-use
+estimates, not country-specific allocation data. For copper, aluminium and manganese,
+available fractions 1, 0.1 and 0.01 are assumptions, not measured battery-use shares.
+Keep demand, nodes, all other capacities and reference normalisation fixed. Report
+baseline shortages; do not shrink demand to restore feasibility. Compare fixed-mix
+and flexible recipes at alpha = 25%, h = sigma = 0, D <= 12 months, support <= 3.
+
+| Leaf | Falsifiable answer | Kill condition |
+| --- | --- | --- |
+| N1 | Reserving non-battery cobalt/nickel makes at least one former nonfailing state fail in the fixed mix | The certified cut lists and baseline shortfall remain unchanged |
+| N2 | At 1% Cu/Al/Mn availability, baseline shortfall exceeds 25% under either recipe model | An optimal baseline shortfall is at most 25% |
+
+Premortem: consumption shares need not describe supply allocation; cobalt/nickel
+reserves may be redundant when the model can choose LFP. Stainless/superalloy demand
+does not disappear in an outage, but actual industrial allocation may change. The
+proportional reservation is held fixed under disruption. All contrary outcomes and
+baseline failures must be reported. No new probability claim is registered here.

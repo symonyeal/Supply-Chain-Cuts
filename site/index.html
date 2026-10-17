@@ -21,9 +21,10 @@
     <p class="lede">A cut set is a minimal set of (country, product) losses after which the least achievable shortfall, with
       shipments rerouted, inventory drawn and spare capacity ramped, exceeds α of demand over 24 months. All
       <span data-f="ncuts"></span> minimal cut sets of up to three losses are enumerated exactly at α = 25%. The singletons are China's
-      <span data-f="singles"></span>. Three of them, cells, cathode and anode material, hold under every registered test of capacity
-      basis, re-export removal and chemistry, and remain the only cut sets with three months of input stock; graphite, lithium carbonate and refined cobalt hold only on production statistics, and precursor and refined
-      cobalt only with nickel-rich cathodes in the mix. How often such losses occur is a conditional scenario, not a forecast:
+      <span data-f="singles"></span>, when the model may choose LFP or NCM recipes using fixed physical capacities.
+      Precursor and refined cobalt cease to be singletons; all 29 former cobalt or precursor cut sets have zero shortfall.
+      This assumes recipe flexibility; actual plant switchability is unmeasured. The fixed 50/50 reference has seven singletons
+      and 37 cut sets. How often such losses occur is a conditional scenario, not a forecast:
       recorded export-policy onsets do not predict out of sample.</p>
     <div class="facts" id="facts"></div>
   </section>
@@ -44,6 +45,7 @@
       <span><label>stock</label><span class="seg" id="c-h"></span></span>
       <span><label>spare capacity</label><span class="seg" id="c-sigma"></span></span>
       <span><label>ramp</label><span class="seg" id="c-L"></span></span>
+      <span><label>battery chemistry</label><span class="seg" id="c-chemistry"></span></span>
       <input type="search" id="c-q" placeholder="find a country or product">
       <button class="reset" id="c-reset">reset</button>
     </div></div>
@@ -62,6 +64,15 @@
   </section>
 
   <section id="risk">
+    <h2>Chemistry choice lowers the Li-ion scenario estimate from 48.6% to 28.8%</h2>
+    <p class="note">Same fixed reference capacities, node rates and outage lengths; only the recipes change.
+      The cut controls default to chemistry choice. Both approved 24-month NCM-share ranges, [0,1] and [0.25,0.75],
+      give the same failure event: every outage ends by month 12, and the restored second year can supply the reference mix
+      and satisfy either aggregate share limit. This sensitivity is nonbinding under this horizon.
+      All estimates below add residual failures to exact L; 20,000 draws, seed 8, exact-binomial 95% sampling intervals.
+      Zero sampled residuals retain a positive upper endpoint. Full outages remain a scenario.</p>
+    <div class="table-wrap"><table id="chemistry-table"></table></div>
+    <h3>The following risk chart and severity study retain the fixed 50/50 reference</h3>
     <h2>If every recorded export restriction were a full outage, failure would come about every other year (<span data-f="estimate"></span>, L = <span data-f="L"></span>); counting only quotas and bans, <span data-f="hard"></span> (L = <span data-f="hardL"></span>)</h2>
     <p class="note">Onsets 2012–2024 from the OECD Inventory and national acts, pooled by product with empirical-Bayes priors; a
       country shock with ρ = <span data-f="rho"></span> makes losses in one country coincide; <span data-f="w12"></span> of
@@ -102,7 +113,7 @@
 
   <section id="sensitivity">
     <h2>The failure threshold and allowed outage length change the scenario lower bound most</h2>
-    <p class="note">Each interval spans the saved E1 values for one input, with other inputs at α = 25%, D ≤ 12 months,
+    <p class="note">Fixed 50/50 reference. Each interval spans the saved E1 values for one input, with other inputs at α = 25%, D ≤ 12 months,
       h = σ = 0. Spare-capacity cases ramp over six months; the ramp comparison fixes σ = 0.5 because ramp has no effect
       with zero spare capacity. The dotted line is the headline L. These are parameter ranges, not confidence intervals.
       Sources: Li-ion result bundle and the fixed onset law, 2012–2024. Endpoints appear on hover.</p>
@@ -110,7 +121,7 @@
   </section>
 
   <section id="attribution">
-    <h2>China carries <span data-f="chnU"></span> of headline L; attribution changes with the selected losses and recourse</h2>
+    <h2>Country attribution changes with the selected losses, chemistry and recourse</h2>
     <p class="note">For each country, P(some cut set containing one of its nodes is contained in Z)/L, computed exactly for
       the cut-set controls above. A cut set with nodes in two countries counts for both, so country shares overlap.</p>
     <p id="attr-summary"></p>
@@ -119,7 +130,9 @@
 
   <section id="tests">
     <h2>Registered tests: the network adds information beyond concentration, and the probability claims are scenarios</h2>
-    <p class="note">Kill conditions were committed in <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/docs/HYPOTHESES.md">HYPOTHESES.md</a>
+    <p class="note">The table reports the fixed-mix reference tests. W3's registered chemistry-choice claims both survive:
+      a full-year Chinese precursor or refined-cobalt loss has zero shortfall.
+      Kill conditions were committed in <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/docs/HYPOTHESES.md">HYPOTHESES.md</a>
       before any probability was computed. Outcomes and the cut sets they withdraw or qualify:
       <a href="https://github.com/symonyeal/Chokepoint-Lab/blob/main/docs/FINDINGS.md">FINDINGS.md</a>.</p>
     <div class="table-wrap"><table id="tests-table"></table></div>

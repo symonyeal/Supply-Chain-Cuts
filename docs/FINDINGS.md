@@ -4,7 +4,45 @@ Every outcome of the registered tests is reported here, rejections included. Num
 read from the result bundles named in each section; the bundle's `stamp` records the code
 revision and the `SOURCES.lock` digest.
 
-## 1. Answer (Li-ion, v0.1.0)
+## Current answer: chemistry choice (v0.3.0)
+
+With hypothetical LFP/NCM recipe flexibility and unchanged reference capacities, there
+are **seven** minimal Li-ion cuts at alpha = 25%, h = sigma = 0. **Five** are Chinese
+singletons lasting 12 months: AAM (46.795% shortfall), CAM (45.334%), cells (45.658%),
+graphite (39.090%) and lithium carbonate (26.875%). The other two are China cells for
+six months with Poland and US cells for twelve (25.031%, still trade-dependent), and
+Australia, Chile and China lithium mines for twelve (31.006%). The reference fixed
+50/50 model below has 37 cuts and seven singletons. Of those, 31 vanish and one new
+lithium-mining triple appears. All 29 former cobalt or precursor cuts have **zero**
+shortfall under either approved share interval; every one is restated in
+[CHEMISTRY](CHEMISTRY.md). C2a and C2b both survive their registered kill conditions.
+
+The 94 certified cases comprise 45 Li-ion configurations for each share interval and
+two shared-network thresholds for each. The free and bounded lists agree in every
+case. The share sensitivity is mathematically nonbinding here: outages end by month
+12, a feasible 50/50 reference mix can serve the restored second year, and the
+aggregate 24-month share is then between 25% and 75%. This does not test actual
+manufacturing switchability or a monthly chemistry quota. At alpha = 10%, the Li-ion
+list shrinks from 135 to 31; at 50% it remains empty. The shared lists shrink from
+244 to 133 at 10% and from 180 to 100 at 25%.
+
+| Network | Threshold | Exact L | L plus residual (95% sampling interval) | Residual failures / draws |
+| --- | ---: | ---: | --- | ---: |
+| liion | 10% | 0.300286932 | 0.300286932 [0.300286932, 0.300471359] | 0 / 20000 |
+| liion | 25% | 0.288286091 | 0.288286091 [0.288286091, 0.288470518] | 0 / 20000 |
+| joint | 10% | 0.513468830 | 0.513468830 [0.513468830, 0.513653257] | 0 / 20000 |
+| joint | 25% | 0.105885226 | 0.106885226 [0.106496156, 0.107429225] | 20 / 20000 |
+
+Cut bundle `chemistry-896581f` was produced at `d18c743`; risk bundle
+`chemistry-risk-d18c743` at `980b2a7`. All stamps are clean. The cut worktree lacked
+unused local-only event files, listed in its stamp; the locked capacity inputs were
+present. Risk reused the frozen node order, rates and duration law exactly. Intervals
+are Clopper–Pearson residual intervals conditional on this scenario, with seed 8 and
+20,000 draws; they exclude model and source uncertainty. A zero residual count does
+not prove exact equality to L. The approved severity study still cannot identify
+capacity-loss fractions (W2 below), so these probabilities remain scenarios.
+
+## 1. Fixed-mix reference (Li-ion, v0.1.0)
 
 Bundle `results/liion-60eb399` (cuts at `60eb399`; risk at the revision in `risk.json`).
 W1 probability rerun: `results/liion-residual-2395a5c` (risk at `2395a5c`). The comparison
@@ -107,6 +145,8 @@ uncertainty. Every legacy number and cut file is unchanged in the comparison cer
 Certificates on the pruned joint network (45 nodes with share ≥ 5%): at α = 10% exhaustive,
 lattice and MILP lists agree (MILP exhausted in 416 s); at α = 25% exhaustive and lattice
 agree (110 cut sets) and the MILP reached its 900 s limit, an incomplete result.
+W4 reran that check with a 2,700 s limit: it exhausted in 651.9 s and returned exactly
+the 110 lattice cuts (`results/milp-e0b40e2`). The original bundle remains unchanged.
 
 ## 3. Registered tests
 
@@ -252,6 +292,21 @@ immediate predecessor at or below the threshold. On the pruned network (40 nodes
 exhaustion and agreed in 25, proved even the worst state safe in the 15 at α = 50%, and
 reached its 900 s limit in 5 (h > 0, L = 24). On the full network the MILP equals the lattice
 list at α = 25% (exhausted, 3,583 s) and reached its 5,400 s limit at α = 10%.
+
+W4 closes all seven unfinished MILP legs in `results/milp-e0b40e2`. Each unseeded rerun
+reports `exhausted`, has a clean code stamp, and exactly equals its immutable lattice
+reference. Limits were 10,800 s for the full network and 2,700 s for the pruned checks;
+no inequalities or enumeration shortcuts were added.
+
+| Network | α | h | σ | Ramp months | Cuts | Exhaustion seconds |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Li-ion full | 0.10 | 0 | 0 | 6 | 135 | 7,806.9 |
+| Li-ion pruned | 0.10 | 1 | 0.1 | 24 | 11 | 2,318.1 |
+| Li-ion pruned | 0.10 | 1 | 0.5 | 24 | 10 | 1,584.9 |
+| Li-ion pruned | 0.10 | 3 | 0.1 | 24 | 5 | 1,098.7 |
+| Li-ion pruned | 0.10 | 3 | 0.5 | 24 | 5 | 1,156.7 |
+| Li-ion pruned | 0.25 | 1 | 0.5 | 24 | 7 | 807.7 |
+| Joint pruned | 0.25 | 0 | 0 | 6 | 110 | 651.9 |
 
 ## 5. What the data cannot show
 

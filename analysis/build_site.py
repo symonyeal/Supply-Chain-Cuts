@@ -186,6 +186,49 @@ def severity(run):
     return out
 
 
+def chemistry(cut_run, risk_run, sector, reference, law):
+    """Certified recipe-choice cuts and exact country unions under the frozen onset law."""
+    d = ROOT / "results"
+    risk = json.loads((d / risk_run / f"{sector}.json").read_text())
+    assert not risk["stamp"]["dirty"] and risk["network_unchanged"] and risk["rates_unchanged"]
+    V, configs = law["nodes"], {}
+    for key, x in risk["configs"].items():
+        task, DJ = key.rsplit("_D", 1)
+        R = json.loads((d / cut_run / "cuts" / f"{sector}_free_{task}.json").read_text())
+        B = json.loads((d / cut_run / "cuts" / f"{sector}_bounded_{task}.json").read_text())
+        assert R["complete"] and B["complete"] and R["cuts"] == B["cuts"]
+        assert not R["stamp"]["dirty"] and R["nodes"] == V
+        C = certificates(R)
+        S = [s for s in R["cuts"] if all(t <= int(DJ) for _, t in s)]
+        assert len(S) == len(x["attribution"])
+        for s in S:
+            c = C[json.dumps(s)]
+            assert c["certified"] and c["gap"] <= 1e-6
+            assert c["phi"] > R["config"]["alpha"]*R["total"] + 1e-7
+            assert all(p["phi"] <= R["config"]["alpha"]*R["total"] + 1e-7
+                       for p in c["predecessors"])
+        D = [t for t in (3, 6, 12) if t <= int(DJ)]
+        w = [sum(z for t, z in zip((3, 6, 12), law["durations"]["weights"], strict=True)
+                 if min(t, int(DJ)) == e) for e in D]
+        countries = sorted({V[v][0] for s in S for v, _ in s})
+        by_country = {}
+        for country in countries:
+            cuts = [[dict(s).get(v, 0) for v in range(len(V))] for s in S
+                    if any(V[v][0] == country for v, _ in s)]
+            by_country[country] = exact_union(V, law["rates"]["p"], law["rates"]["rho"],
+                                               D, w, cuts)/x["L"]
+        configs[key] = {**x, "cuts": S, "country_union": by_country,
+                        "phi": [C[json.dumps(s)]["phi"]/R["total"] for s in S],
+                        "predecessors": [[[p["v"], p["D"], p["phi"]/R["total"]]
+                                          for p in C[json.dumps(s)]["predecessors"]] for s in S]}
+    for a, e in risk["residual"].items():
+        assert e["L"] == configs[f"a{a}_h0_s0_L6_D12"]["L"] <= e["estimate"]
+        assert e["ci95"][0] <= e["estimate"] <= e["ci95"][1]
+    return {"nodes": reference["nodes"], "configs": configs, "residual": risk["residual"],
+            "meta": {"cut_run": cut_run, "risk_run": risk_run,
+                     "revision": risk["stamp"]["revision"]}}
+
+
 def build(run, pv_run=None, joint_run=None, severity_run=None):
     data, N, risk, checks = block(run)
     layers = sorted(N["supply_ratio"], key=lambda p: -N["hhi"].get(p, 0))
@@ -203,6 +246,10 @@ def build(run, pv_run=None, joint_run=None, severity_run=None):
             data[name] = block(r)[0]
     if severity_run:
         data["severity"] = severity(severity_run)
+    data["choice"] = chemistry("chemistry-896581f", "chemistry-risk-d18c743", "liion", data, risk)
+    if joint_run:
+        data["joint_choice"] = chemistry("chemistry-896581f", "chemistry-risk-d18c743", "joint",
+                                          data["joint"], load(joint_run)[2])
     ranges = {
         "Threshold α = 10–50%": [f"a{a}_h0_s0_L6_D12" for a in (0.1, 0.25, 0.5)],
         "Longest outage = 3–12 mo": [f"a0.25_h0_s0_L6_D{d}" for d in (3, 6, 12)],

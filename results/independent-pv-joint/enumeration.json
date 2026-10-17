@@ -1,0 +1,47 @@
+{
+  "elapsed_seconds": 0.9640852999873459,
+  "epsilon": 1e-09,
+  "sector_shortfall_evaluations": {
+    "pv": 13275,
+    "liion": 55278
+  },
+  "joint_mixed_states": {
+    "1_Liion_1_PV": {
+      "states": 14985,
+      "minimal": 61
+    },
+    "1_Liion_2_PV": {
+      "states": 314685,
+      "minimal": 39
+    },
+    "2_Liion_1_PV": {
+      "states": 2472525,
+      "minimal": 80
+    }
+  },
+  "sectors": {
+    "pv": {
+      "found": 22,
+      "support_counts": {
+        "2": 5,
+        "3": 13,
+        "1": 4
+      },
+      "same_named_list": true,
+      "new_cuts": [],
+      "named_cuts_not_found": [],
+      "complete_through_support": 3
+    },
+    "joint": {
+      "found": 180,
+      "support_counts": {
+        "3": 119,
+        "2": 61
+      },
+      "same_named_list": true,
+      "new_cuts": [],
+      "named_cuts_not_found": [],
+      "complete_through_support": 3
+    }
+  }
+}

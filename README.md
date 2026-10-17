@@ -7,27 +7,25 @@ production, and how likely are they each year?
 
 ## Answer
 
-**Seven single losses, all in China, each stop more than a quarter of two years' Li-ion cell
-output if they last a year:** cells, cathode material (CAM), anode material (AAM), cathode
-precursor (pCAM, imputed), graphite, lithium carbonate and refined cobalt. Three of them,
-cells, CAM and AAM, survive every registered test of capacity basis, re-export removal and
-chemistry mix, and they are the only cut sets left when every plant holds three months of
-input stock. In all, 37 minimal sets of at most three losses do so; the rest combine the
-DRC's cobalt mines with smaller miners, or Australia's and Chile's lithium mines with a third.
-Over the 24-month horizon no combination of outages of six months or less can remove more
-than a quarter, and outages of up to a year cannot remove more than half.
+**Five Chinese single losses remain when the model may choose LFP or NCM recipes:**
+cells, cathode material, anode material, graphite and lithium carbonate, each out for a
+year. There are seven minimal cuts of at most three losses at a 25% shortfall threshold
+over 24 months. China’s precursor and refined-cobalt singletons disappear; all 29 former
+cobalt or precursor cuts have zero shortfall. This assumes recipe flexibility at fixed
+reference capacities; actual plant switchability is unmeasured. The fixed 50/50
+reference retains its original 37 cuts and seven singletons for comparison.
 
-**How likely is a scenario, not a forecast.** If every export restriction recorded 2012–2024
-were a full outage of its node for its recorded length, the annual probability would be about
-0.486 (exact lower bound L = 0.485681; lower bound plus residual 0.485681, 95% binomial
-interval 0.485681–0.485866). Counting only quotas and bans, L and the residual estimate
-are 0.069423 (interval 0.069423–0.069607; post hoc). Recorded onsets do not predict later years
-better than a constant, so neither number is a forecast; cut sets containing a Chinese node
-carry 88% of the scenario risk.
+**Probability remains a scenario.** Under the same full-outage onset law, chemistry
+choice gives Li-ion L = 0.288286 and lower bound plus residual 0.288286 (95% sampling
+interval 0.288286–0.288471), versus 0.485681 for the fixed mix. The approved export
+severity study yields only four isolated events and no identified measure effect;
+its declared full-loss fallback therefore leaves the reference scenario unchanged.
+Recorded onsets fail the predictive test. These are conditional probabilities, not forecasts.
 
-**Solar is more concentrated still.** Each of China's polysilicon, wafer, cell and module
-stages is a cut set on its own (v0.2.0). On one network with batteries, no single loss
-suffices at 25%, but 180 battery–PV pairs and triples do.
+**Solar has four Chinese singleton cuts and 22 cuts in all.** With chemistry choice,
+the shared network has 100 cuts and no singletons at 25%, L = 0.105885 and estimate
+0.106885 (95% sampling interval 0.106496–0.107429). A fresh independent reconstruction
+reproduces all 22 solar and 180 fixed-mix shared cuts from raw inputs.
 
 **What the data cannot show.** Outside China, cell and refined-nickel capacity rests on export
 mass; precursor capacity is imputed from cell output; upstream metals have no competing
@@ -74,6 +72,8 @@ python -m pytest -q                               # fast gate; -m slow for the l
 python run_data.py RUN                            # networks and reconciliations
 python run_cuts.py RUN 7 [liion|pv|joint]         # cut sweep with certificates
 python run_risk.py RUN                            # rates, bracket, estimates, tests
+python run_chemistry.py RUN 7                     # recipe-choice cut sweep
+python run_chemistry_risk.py CUT_RUN OUT_RUN       # frozen-law recipe-choice risk
 python run_severity.py RUN                        # registered trade responses and loss scenarios
 python analysis/build_site.py LIION_RUN PV_RUN JOINT_RUN SEVERITY_RUN  # generated site/data.js
 python analysis/check_residual.py BEFORE AFTER    # unchanged legacy results and W1 checks

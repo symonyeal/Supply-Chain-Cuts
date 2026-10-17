@@ -1,7 +1,13 @@
 # Changelog
 
-## Unreleased — residual estimator and severity study
+## Unreleased — chemistry choice, residual estimator and severity study
 
+- Approved shared-capacity LFP/NCM recipes: five Chinese singletons and seven headline
+  cuts, versus seven and 37 in the fixed-mix reference. All former cobalt/precursor
+  cuts restated; 94 certified configurations and frozen-law residual probabilities.
+- All seven incomplete MILP checks now exhaust and equal their lattice lists.
+- Fresh independent raw-input reconstruction reproduces all PV and shared reference
+  cut sets and L, with definition issues and independence limits disclosed.
 - Estimate annual scenario failure as exact L plus sampled residual failures, with an
   exact-binomial interval even when no residual failure is observed. IS and crude MC
   remain comparisons; original bundles are unchanged.
