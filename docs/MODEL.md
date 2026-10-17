@@ -120,6 +120,29 @@ marginal is p[v]. A shock shares onset, not necessarily duration: durations are 
 from their stated conditional distribution. Zero-duration suspended announcements do
 not create losses. Node-year counts are deduplicated across measure types and products.
 
+### Exact rate-fit definition for independent recomputation
+
+For node v, let N_v count observed years and K_v count onset years. For each product,
+fit a,b by maximizing sum_v [log B(K_v+a,N_v−K_v+b) − log B(a,b)] over exposed nodes.
+Numerical fitting uses log a, log b in [−7,14], L-BFGS-B, initialized at (10m,10(1−m))
+with m = (sum K+0.5)/(sum N+1). Set p_v = (K_v+a)/(N_v+a+b). A product with no exposed
+nodes uses a,b fitted over all exposed nodes in the fitting roster. PV and joint use the
+joint roster; PV then restricts the fitted marginals to its nodes. Li-ion uses its own
+roster. After restriction, country shocks in each scenario use that sector's node set.
+
+To fit rho, each country-year with at least two observed nodes contributes y = 1 if at
+least two onsets were observed. Let J be its observed subset, s = rho min_v p_v over all
+nodes of that country in the fitting roster, and q_v = (p_v−s)/(1−s). Its predicted
+multi-onset probability is s + (1−s) P(sum_(v in J) Bernoulli(q_v) >= 2). Minimize the
+binary log-loss over these country-years on [0,1]; bounded scalar minimization and both
+endpoints are compared. Probabilities in this log-loss are clipped to [1e-12,1−1e-12].
+This describes the existing numerical fit; it does not establish predictive validity.
+
+Duration records are counted once when their onset falls in any surveyed mapped
+country–product year, even if that node is below the capacity cutoff. Bin uncensored
+days/30.44 upward to (3,6,12), capped at 12; a right-censored duration is used only if it
+already exceeds six months. National acts count onsets only where coverage is observed.
+
 The exact lower bound L is the probability of containing at least one enumerated minimal
 duration state. A decision recursion conditions on each country's shock; remaining node
 states are independent. The count tail is a convolution of country support distributions.

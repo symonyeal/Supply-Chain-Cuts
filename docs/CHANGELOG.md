@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased — residual estimator
+## Unreleased — residual estimator and severity study
 
 - Estimate annual scenario failure as exact L plus sampled residual failures, with an
   exact-binomial interval even when no residual failure is observed. IS and crude MC
@@ -9,6 +9,13 @@
 - The site and answer use the residual estimate and show L. On the shared network at
   alpha = 10%, estimate 0.715669, L = 0.715669, interval 0.715669–0.715853.
 - W2 severity design approved and S1–S3 registered before historical BACI acquisition.
+- Freeze BACI 2012–2023 and UN HS concordance. The approved study yields four isolated
+  events, no identified measure effect; S1/S2 untestable. Severity scenarios for all three
+  networks retain the declared full-loss fallback; S3's five-point reduction is killed.
+- Side-by-side scenario and export-response tables; cut-duration predecessors, shared
+  PV controls, and an explanation of U = 100%.
+- Preserve frozen data bytes in Git and verify committed hashes. Recover the association
+  between older sorted cut lists and their unsorted witnesses; future runs align them.
 
 ## v0.2.0 — PV on the shared network
 

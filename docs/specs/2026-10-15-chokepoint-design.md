@@ -30,6 +30,11 @@ W2 clarification (2026-10-16): the user approved the dated policy-severity desig
 registered first-full-year export response informs an explicitly labelled partial-loss
 scenario through the existing per-node loss fractions. Export response is not production.
 
+W3 clarification (2026-10-16): the user approved the dated chemistry-choice design.
+Separate LFP/NCM cathode commodities share each existing node's physical capacity;
+alternative cell recipes choose chemistry within stated 24-month delivered-share bounds.
+The reference capacities and legacy fixed-mix bundles remain distinct from this scenario.
+
 Agreed with the user, 2026-10-15, through brainstorming Sections 1–5. Evidence base:
 `docs/RESEARCH.md` (primary sources, verified 2026-10-15). This spec is canonical; where
 `PROMPT.md` differs, this file wins.

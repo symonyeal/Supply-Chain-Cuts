@@ -1,0 +1,215 @@
+{
+ "stamp": {
+  "revision": "16be0a81fd91a1ff4f558b60b290f911979818aa",
+  "dirty": [],
+  "sources": 88,
+  "absent_local_only": [],
+  "lock_sha256": "8d60b382f46a2cf45c811d94b81bda55478b771971c937ee8de80918d570b9a4",
+  "python": "3.14.7",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1"
+ },
+ "files": [
+  {
+   "path": "data/events/hs07_hs12.json",
+   "expected": "386b18f60f81e161ce341c90a99218b08b70aeff2fefba3dba1e1385b7708097",
+   "git_sha256": "386b18f60f81e161ce341c90a99218b08b70aeff2fefba3dba1e1385b7708097"
+  },
+  {
+   "path": "data/events/raw/oecd-report-2026.pdf",
+   "expected": "22a34b6c6dad42658cd52346f2f2b9c95c097b3f4ed92695f19fefcf53938041",
+   "git_sha256": "22a34b6c6dad42658cd52346f2f2b9c95c097b3f4ed92695f19fefcf53938041"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2012_V202601_selected.csv",
+   "expected": "ec4ebab6debaacba8b9913c003fa362aaff11922dd71e30272b107801b2b7fce",
+   "git_sha256": "ec4ebab6debaacba8b9913c003fa362aaff11922dd71e30272b107801b2b7fce"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2013_V202601_selected.csv",
+   "expected": "a6dd642eb1f31a1620582567aa18f67bf4d6306761cb7d8a5361e6be89ba64b3",
+   "git_sha256": "a6dd642eb1f31a1620582567aa18f67bf4d6306761cb7d8a5361e6be89ba64b3"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2014_V202601_selected.csv",
+   "expected": "6fc66cefbb5e4e32b2c705c37f8addc23b8c333cb89490972a9db5ec9d107fab",
+   "git_sha256": "6fc66cefbb5e4e32b2c705c37f8addc23b8c333cb89490972a9db5ec9d107fab"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2015_V202601_selected.csv",
+   "expected": "ce8c1ebf5dfcf9d8629ab555de3af12b6997583dfe445c1630490ae62aeaa6b2",
+   "git_sha256": "ce8c1ebf5dfcf9d8629ab555de3af12b6997583dfe445c1630490ae62aeaa6b2"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2016_V202601_selected.csv",
+   "expected": "6aa0656740e8382257657eb3407157c0af21c1fe5747dddd55e131039b9fd542",
+   "git_sha256": "6aa0656740e8382257657eb3407157c0af21c1fe5747dddd55e131039b9fd542"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2017_V202601_selected.csv",
+   "expected": "1d89e84c81e5b48680c7a2401d017632664bfd6041fc724bb4863ff319a84b1b",
+   "git_sha256": "1d89e84c81e5b48680c7a2401d017632664bfd6041fc724bb4863ff319a84b1b"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2018_V202601_selected.csv",
+   "expected": "6d483a3d863432058211b18df0b7f5b2266ffa95efe3a2a3b43ad944ece4f661",
+   "git_sha256": "6d483a3d863432058211b18df0b7f5b2266ffa95efe3a2a3b43ad944ece4f661"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2019_V202601_selected.csv",
+   "expected": "c9ed5b1894c53d958ae01c12299dec0fbe3970d7577d20df699fd917d6120c0c",
+   "git_sha256": "c9ed5b1894c53d958ae01c12299dec0fbe3970d7577d20df699fd917d6120c0c"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2020_V202601_selected.csv",
+   "expected": "a29b677997341b5e371daf801e1549c0699b3a70f27a55853cb091c86ca0d0d0",
+   "git_sha256": "a29b677997341b5e371daf801e1549c0699b3a70f27a55853cb091c86ca0d0d0"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2021_V202601_selected.csv",
+   "expected": "d2afed8533bb5581d3b79951760f5f1b5ac057cada4db001929f1861f83bbb58",
+   "git_sha256": "d2afed8533bb5581d3b79951760f5f1b5ac057cada4db001929f1861f83bbb58"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2022_V202601_selected.csv",
+   "expected": "08edea7b2955850d7ec6947ec6f47de39893979269fc9f6e0ef20ee3fb8ae034",
+   "git_sha256": "08edea7b2955850d7ec6947ec6f47de39893979269fc9f6e0ef20ee3fb8ae034"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2023_V202601_selected.csv",
+   "expected": "3ac168b5563b67e307d3b959e49246b3f5d783cc818a9196d45667bc4340aa85",
+   "git_sha256": "3ac168b5563b67e307d3b959e49246b3f5d783cc818a9196d45667bc4340aa85"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS12_Y2024_V202601_selected.csv",
+   "expected": "18919015fd2e66c7a86ef699d59288423f9083c8a3751363dfbf27b55719d7e6",
+   "git_sha256": "18919015fd2e66c7a86ef699d59288423f9083c8a3751363dfbf27b55719d7e6"
+  },
+  {
+   "path": "data/raw/baci/BACI_HS22_Y2024_V202601_selected.csv",
+   "expected": "372071a3e40df5db8ead84932c4c22e2b0d3d8a3e3b8bbe865fc1109be416695",
+   "git_sha256": "372071a3e40df5db8ead84932c4c22e2b0d3d8a3e3b8bbe865fc1109be416695"
+  },
+  {
+   "path": "data/raw/baci/country_codes_V202601.csv",
+   "expected": "c6892f28bea23d689b29b074d299cea7f5196c708b03026fbe419fa4ecb4e820",
+   "git_sha256": "c6892f28bea23d689b29b074d299cea7f5196c708b03026fbe419fa4ecb4e820"
+  },
+  {
+   "path": "data/raw/baci/product_codes_HS12_V202601.csv",
+   "expected": "092789b3f6576c98440e52afcbb7dbc51f646f0db6198d0f6f925cb73d58527e",
+   "git_sha256": "092789b3f6576c98440e52afcbb7dbc51f646f0db6198d0f6f925cb73d58527e"
+  },
+  {
+   "path": "data/raw/baci/product_codes_HS22_V202601.csv",
+   "expected": "1d7dfab3d0c790e111663832b1d101d6ffafe396fb6dbed7035b7283f6614efd",
+   "git_sha256": "1d7dfab3d0c790e111663832b1d101d6ffafe396fb6dbed7035b7283f6614efd"
+  },
+  {
+   "path": "data/raw/cochilco/lithium_chemicals_2024.csv",
+   "expected": "9bf003e5e60916346648ab2ce31ac102cde59843f6fc3d10b0d15e09f26c6156",
+   "git_sha256": "9bf003e5e60916346648ab2ce31ac102cde59843f6fc3d10b0d15e09f26c6156"
+  },
+  {
+   "path": "data/raw/fraunhofer/silicon_usage_2024.csv",
+   "expected": "b21f81e7fcf1799375221fa76cdb772bf139f0277a7efb89a063a090811c8df5",
+   "git_sha256": "b21f81e7fcf1799375221fa76cdb772bf139f0277a7efb89a063a090811c8df5"
+  },
+  {
+   "path": "data/raw/miit/production_2024.csv",
+   "expected": "d42c06f192e69cb80f4d2aac7d138de7aa3db56f46562f0bf5013c76918d9958",
+   "git_sha256": "d42c06f192e69cb80f4d2aac7d138de7aa3db56f46562f0bf5013c76918d9958"
+  },
+  {
+   "path": "data/raw/usgs/MCS2026_Commodities_Data.csv",
+   "expected": "582a0aa231aea53d8a97dc8d1cd3dfa5f885cf3760353e3d029d7f0ae4fbaaf5",
+   "git_sha256": "582a0aa231aea53d8a97dc8d1cd3dfa5f885cf3760353e3d029d7f0ae4fbaaf5"
+  },
+  {
+   "path": "data/raw/usgs/MCS2026_Commodities_Data.xml",
+   "expected": "0588a74c5257484630cd41dbb60cbd9ef4862bd24b6660a762d1aecf3c73e15a",
+   "git_sha256": "0588a74c5257484630cd41dbb60cbd9ef4862bd24b6660a762d1aecf3c73e15a"
+  },
+  {
+   "path": "data/raw/usgs/mcs2026_commodity_metadata.json",
+   "expected": "1acf6e89cb12007345289f59fc67819400158e68691619e1fd008f3445151d84",
+   "git_sha256": "1acf6e89cb12007345289f59fc67819400158e68691619e1fd008f3445151d84"
+  },
+  {
+   "path": "data/raw/usgs/myb1-2023-cobalt.xlsx",
+   "expected": "f56f044cdf72bc83c3ef50f18365ed992d6928482188443d81b655ec6c51119b",
+   "git_sha256": "f56f044cdf72bc83c3ef50f18365ed992d6928482188443d81b655ec6c51119b"
+  },
+  {
+   "path": "data/raw/usgs/myb2023_cobalt_refinery.csv",
+   "expected": "e84abc35dd78e01ac9fc153392c23c7ee649c3a756882015b477ce7e606d5b8f",
+   "git_sha256": "e84abc35dd78e01ac9fc153392c23c7ee649c3a756882015b477ce7e606d5b8f"
+  },
+  {
+   "path": "data/raw/xu2020/bom_mid_size_bev.csv",
+   "expected": "5119119b3075ec7c26cef1a3872eee10c0b18ae5c23b21289c5c1649a25e5f04",
+   "git_sha256": "5119119b3075ec7c26cef1a3872eee10c0b18ae5c23b21289c5c1649a25e5f04"
+  },
+  {
+   "path": "data/raw/xu2020/specific_energy.csv",
+   "expected": "564a3cad625288ee132cb412fe992b80bd065443e6e9122d2cd28a79c313d21f",
+   "git_sha256": "564a3cad625288ee132cb412fe992b80bd065443e6e9122d2cd28a79c313d21f"
+  },
+  {
+   "path": "data/raw/xu2020/supplement.pdf",
+   "expected": "d6e0d777f12be0036a0a21836dda8bfc161da48c27a7d7ec36a3c1e0e3ca5f18",
+   "git_sha256": "d6e0d777f12be0036a0a21836dda8bfc161da48c27a7d7ec36a3c1e0e3ca5f18"
+  },
+  {
+   "path": "data/sites/raw/2024MYBv3_Facilities_table.csv",
+   "expected": "2d6848d75544feca715843a47a031f593bd3310c1cff865deb967486b901f10b",
+   "git_sha256": "2d6848d75544feca715843a47a031f593bd3310c1cff865deb967486b901f10b"
+  },
+  {
+   "path": "data/sites/raw/2024_MYBv3_metadata.xml",
+   "expected": "734ba58ac0450991553b1b9b942823009b7f22247c9dcf89e39461b6a130b46e",
+   "git_sha256": "734ba58ac0450991553b1b9b942823009b7f22247c9dcf89e39461b6a130b46e"
+  },
+  {
+   "path": "data/sites/raw/Mines, smelters, refineries, and recycling facilities in the United States.xml",
+   "expected": "71445a3be3c9d2947e06967ff23dff4268909a4b276391bced4d259832903f90",
+   "git_sha256": "71445a3be3c9d2947e06967ff23dff4268909a4b276391bced4d259832903f90"
+  },
+  {
+   "path": "data/sites/raw/Mines, smelters, refineries, and recycling facilities in the United States_worksheet.xlsx",
+   "expected": "d4e3456dea53968f580e380a2baeec6088bda1dce58c852ff1b31c0732106536",
+   "git_sha256": "d4e3456dea53968f580e380a2baeec6088bda1dce58c852ff1b31c0732106536"
+  },
+  {
+   "path": "data/sites/raw/Outlook 2025 Data Release 031125.csv",
+   "expected": "b57e6ffce82a1956fcfe3d6e92b7f9e58b0d731d595cbad47215f5f223bba182",
+   "git_sha256": "b57e6ffce82a1956fcfe3d6e92b7f9e58b0d731d595cbad47215f5f223bba182"
+  },
+  {
+   "path": "data/sites/raw/Outlook 2025 datarelease March2025.xml",
+   "expected": "674dfcb610af9de1a38f6c7e2fb67b1c46224e3a1966530b7f192e1f603fae0b",
+   "git_sha256": "674dfcb610af9de1a38f6c7e2fb67b1c46224e3a1966530b7f192e1f603fae0b"
+  },
+  {
+   "path": "data/sites/raw/usgs-african-minerals.html",
+   "expected": "fd20c0c96f535c1057511e87f7114d980323127d4c7bd2acc0e1dd3db7a6a51e",
+   "git_sha256": "fd20c0c96f535c1057511e87f7114d980323127d4c7bd2acc0e1dd3db7a6a51e"
+  },
+  {
+   "path": "data/sites/raw/usgs-global-facilities-metadata.json",
+   "expected": "bb945220ac58d2471fad36fea36fe34a2f0ac44322a6ab2f3db852cb0d38048b",
+   "git_sha256": "bb945220ac58d2471fad36fea36fe34a2f0ac44322a6ab2f3db852cb0d38048b"
+  },
+  {
+   "path": "data/sites/raw/usgs-outlook-metadata.json",
+   "expected": "c71835d366a375c8b2cb2fe6c390c11ba906314ad80943b01791e8a6e677f08a",
+   "git_sha256": "c71835d366a375c8b2cb2fe6c390c11ba906314ad80943b01791e8a6e677f08a"
+  },
+  {
+   "path": "data/sites/raw/usgs-us-facilities-metadata.json",
+   "expected": "92fe5049697b711886c9858a7e7c62d5da9e3df268ee08d98aa7c47d6f6635c1",
+   "git_sha256": "92fe5049697b711886c9858a7e7c62d5da9e3df268ee08d98aa7c47d6f6635c1"
+  }
+ ],
+ "git_bytes_match": true
+}

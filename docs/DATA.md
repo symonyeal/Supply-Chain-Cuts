@@ -83,6 +83,11 @@ exports of the same codes. Flagged: DEU, KOR, USA cells; CHN, DEU, FRA, JPN, NLD
 
 ## Events
 
+PV and joint rate fits use the joint node roster, including Li-ion, before PV selects
+its marginals. The fitting objective, numerical domain, country-year calibration and
+duration-record rule are stated in MODEL for independent recomputation. Scenario shocks
+use the minimum marginal among the selected sector's nodes of each country.
+
 `chokepoint/events.py` derives node-year onsets from the frozen OECD Inventory records
 (HS2007 mapped to products in `data/events/product_map.json`) and national acts
 (`data/events/acts.yaml`). Exposure is a surveyed (country, commodity, year) in the OECD
@@ -99,6 +104,61 @@ than six months are reported and unused. Durations are legal-measure lengths, no
 outages. The independent recomputation counted every in-window record instead and found 170
 in the 12-month bin; the extra record is a 2016 Viet Nam lithium export tax
 (OECD-a43d88b43b745c9f) in an unsurveyed node-year. It changes L by 8.6e-5.
+
+## Export-severity study (W2, 2026-10-16)
+
+Bundle `results/severity-26ebd48`; protocol approved before acquisition, S1–S3 registered
+at `aac556d`. BACI HS12 V202601 selected rows are frozen separately for 2012–2023.
+The UN HS2007–HS2012 correspondence supplies verified one-to-one codes. The outcome is
+exports in the first full calendar year after onset, relative to the preceding year
+and surveyed, unrestricted exporters of the same HS6. It is not production.
+
+| OECD measure | Isolated events | Treated countries | Export loss / baseline volume | Country-bootstrap 95% interval | Identification |
+| --- | ---: | ---: | ---: | --- | --- |
+| M1 export tax | 2 | 2 | −0.130681 | [−0.912677, 0.550011] | fewer than five events |
+| M14 other export measures | 1 | 1 | −0.196687 | [−0.803798, 0.173337] | fewer than five; pretrend |
+| M5 fiscal tax on exports | 1 | 1 | 0.041791 | [−0.243097, 0.311436] | fewer than five events |
+| M3 quota | 0 | 0 | not estimable | — | no isolated event |
+| M4 prohibition | 0 | 0 | not estimable | — | no isolated event |
+| M6 licensing | 0 | 0 | not estimable | — | no isolated event |
+| M3 or M4 | 0 | 0 | not estimable | — | no isolated event |
+
+Negative loss means a relative export increase. Effects are unclipped changes in units
+of each exporter's baseline volume; they can exceed one, so they are not physical loss
+fractions. The balanced, equally weighted event estimator equals exporter-within-event
+and year-within-event fixed effects (MODEL). Bootstrap: 2,000 country draws, seed 6;
+valid draws are 1,713, 1,290 and 1,302 respectively for M1, M14 and M5. All have weak
+inference (fewer than ten treated countries). M14's −2 pretrend coefficient is 6.779450,
+interval [6.537103, 7.139638], excluding zero.
+
+Sequential exclusions: 36 source records have HS12 codes outside the original selected
+set; 74 are outside onset years 2014–2022; four national acts lack verified HS6 coverage.
+After deduplication, 43 cohorts have incomplete or zero baseline volumes and 23 have
+overlapping measure types. These counts have different units and must not be added
+as if all were event counts. The 23 overlaps and their descriptive responses remain in
+the bundle; they do not identify effects of a single measure. Tiny baselines can give
+large normalized control growth and coefficients.
+
+No type is identified under the registered rules. Every central and endpoint capacity
+assignment therefore uses the explicitly assumed f = 1 fallback, including unestimated
+marks. This applies to 100% of simulated onsets. The severity scenario consequently has
+the same law as full outage; no empirical loss fraction has entered the capacity model.
+The pooled measure mix for unexposed products and independence of type and duration are
+scenario assumptions. Legal duration is not an observed outage duration.
+
+| Network | Severity/full paired MC | Binomial 95% interval | Reduction, percentage points | 95% reduction interval, points |
+| --- | ---: | --- | ---: | --- |
+| Li-ion | 0.476000 | [0.469057, 0.482950] | 0 | [0, 0.018443] |
+| PV | 0.248950 | [0.242969, 0.255004] | 0 | [0, 0.018443] |
+| Joint | 0.202450 | [0.196900, 0.208087] | 0 | [0, 0.018443] |
+
+Each uses 20,000 paired states, seed 7, alpha = 25%, h = sigma = 0. Central, low and high
+assignments coincide samplewise with full loss; maximum shortfall monotonicity violation
+is zero. These crude MC points are sampling diagnostics, not replacements for W1's
+L-plus-residual estimates. Since the laws are identical here, the site reuses W1 for the
+severity column and labels that equivalence; it does not clip the crude MC points to L.
+In particular, Li-ion's paired MC interval misses exact L = 0.485681. The 2.74-SE
+difference passes the registered four-SE comparison but is reported, not concealed.
 
 ## Natural hazards
 

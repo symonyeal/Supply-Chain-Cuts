@@ -59,6 +59,16 @@ with natural hazards matched to production sites.
   the user; annual trade cannot identify a response within exactly twelve months.
   Controls, exclusions and conversion to capacity scenarios are in the dated design.
   No severity result existed when S1–S3 were registered at `aac556d`.
+- **Do not manufacture severity from unidentified responses (W2).** Only four isolated
+  events survive, and no measure reaches five. S1/S2 are untestable; all capacity marks
+  use the declared full-loss fallback. The site reuses W1's estimator because the laws
+  are identical and reports the paired MC reduction separately. Zero reduction does not
+  imply actual policies remove full capacity. Expanding the selected HS set or relaxing
+  overlap/coverage rules requires a new registered study, not a change after seeing this result.
+- **Recover frozen cut witnesses by predecessor coordinates.** Old runs sorted their
+  cut lists but stored certificates in enumeration order. Predecessor node and shortened
+  duration uniquely recover the cut. The builder uses that key; future runs align the
+  lists explicitly. Original bundles remain immutable; cut membership and risk are unchanged.
 
 ## Open
 

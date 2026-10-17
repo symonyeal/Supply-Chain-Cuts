@@ -90,3 +90,23 @@ export volume, and any export response need not be a capacity loss. Thus f_m = c
 measure effects retain full loss; pooled measure mixes for unexposed nodes are labelled.
 Use 20,000 paired draws per sector, seed 7, at alpha = 25%, h = sigma = 0; samplewise
 partial shortfall <= full shortfall is a mandatory certificate independent of S3.
+
+## W3: chemistry chosen after disruption (2026-10-16)
+
+Registered before chemistry-choice results. The user approved
+`specs/2026-10-16-chemistry-choice-design.md`, including bounds on total delivered
+cell output over 24 months. Physical capacities remain those of the reference 50% mix.
+
+| Leaf | Falsifiable answer | Kill condition |
+| --- | --- | --- |
+| C2a | China's pCAM is no longer a singleton at alpha = 25% with NCM share in [0,1] | Its 12-month loss still exceeds 25% of demand in certified optimal recourse |
+| C2b | China's refined Co is no longer a singleton under the same choice | Its 12-month loss still exceeds 25% in certified optimal recourse |
+
+Report the [0.25,0.75] share sensitivity and every legacy Co/Ni/pCAM cut that changes,
+without treating that sensitivity as a second registered prediction. Premortem:
+reference capacity, anode and lithium requirements, or the lower NCM quota may still
+constrain the LFP route. Steelman: dedicated cathode lines cannot switch chemistry;
+shared recipe capacity is a flexibility scenario rather than observed plant capability.
+Required independent certificates are stated in the approved design; the MILP and
+primal share one matrix construction, while exhaustive and lattice searches remain
+independent of the MILP.

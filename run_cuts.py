@@ -85,7 +85,8 @@ def job(task, out):
            "nodes": [list(v) for v in M["V"]], "theta": theta, "total": M["total"],
            "cuts": sparse(R["cuts"]), "complete": True, "method": "lattice",
            "seconds": time.perf_counter() - t, "lp_calls": R["lp_calls"]}
-    res["certificates"] = [certify(M, D, theta) for D in R["cuts"]]
+    res["certificates"] = [certify(M, [dict(S).get(v, 0) for v in range(len(M["V"]))], theta)
+                           for S in res["cuts"]]
     if "pruned" in checks:
         E = [i for i, x in enumerate(N["nodes"]) if x["share"] >= PRUNE]
         t = time.perf_counter()

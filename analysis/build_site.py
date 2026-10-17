@@ -1,4 +1,4 @@
-"""Build site/data.js: python analysis/build_site.py LIION_RUN [PV_RUN JOINT_RUN].
+"""Build site/data.js: python analysis/build_site.py LIION_RUN [PV_RUN JOINT_RUN SEVERITY_RUN].
 
 The page filters and draws; it computes nothing the model computes. Certificates are
 asserted before anything is written: every cut certified (zero gap, predecessors below the
@@ -10,6 +10,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+from chokepoint.risk import exact_union
 
 
 def plain(o, nd=5):
@@ -82,6 +85,15 @@ def load(run):
             json.loads((d / "risk.json").read_text(encoding="utf-8")), cuts)
 
 
+def certificates(R):
+    """Recover each cut from its predecessors; old bundles sorted cuts but not witnesses."""
+    following = {0: 3, 3: 6, 6: 12}
+    C = {json.dumps(sorted([[p["v"], following[p["D"]]] for p in c["predecessors"]])): c
+         for c in R["certificates"]}
+    assert set(C) == {json.dumps(S) for S in R["cuts"]}
+    return C
+
+
 def block(run):
     """Nodes, certified cut lists with L, U and shortfalls, estimates and attribution."""
     net, checks, risk, cuts = load(run)
@@ -99,11 +111,32 @@ def block(run):
     for k, x in risk["configs"].items():
         assert 0 <= x["L"] <= x["U"] <= 1
         R = cuts["_".join(k.split("_")[:-1])]
-        phi = {json.dumps(S): c["phi"]/R["total"] for S, c in zip(R["cuts"], R["certificates"],
-                                                                  strict=True)}
+        cert = certificates(R)
+        witnesses = []
+        for S in x["cuts"]:
+            c = cert[json.dumps(S)]
+            assert len(c["predecessors"]) == len(S)
+            assert all(p["phi"] <= R["theta"] + 1e-7 for p in c["predecessors"])
+            witnesses.append([[p["v"], p["D"], p["phi"]/R["total"]]
+                              for p in c["predecessors"]])
         configs[k.replace("base_", "")] = {
             "L": x["L"], "U": x["U"], "cuts": x["cuts"], "attribution": x["attribution"],
-            "phi": [phi[json.dumps(S)] for S in x["cuts"]]}
+            "phi": [cert[json.dumps(S)]["phi"]/R["total"] for S in x["cuts"]],
+            "predecessors": witnesses}
+        countries = sorted({V[v][0] for S in x["cuts"] for v, _ in S})
+        D = [d for d in (3, 6, 12) if d <= x["DJ"]]
+        w = [sum(z for d, z in zip((3, 6, 12), risk["durations"]["weights"], strict=True)
+                 if min(d, x["DJ"]) == e) for e in D]
+        by_country = {}
+        for country in countries:
+            C = [[dict(S).get(v, 0) for v in range(len(V))] for S in x["cuts"]
+                 if any(V[v][0] == country for v, _ in S)]
+            by_country[country] = exact_union(V, risk["rates"]["p"], risk["rates"]["rho"],
+                                               D, w, C)/x["L"]
+        assert all(0 <= z <= 1 + 1e-9 for z in by_country.values())
+        configs[k.replace("base_", "")]["country_union"] = by_country
+    head = configs["a0.25_h0_s0_L6_D12"]["country_union"]
+    assert all(math.isclose(head[c], z) for c, z in risk["attribution"]["country_union"].items())
     nodes = {"country": [v[0] for v in V], "product": [v[1] for v in V],
              "basis": [x["basis"] for x in N["nodes"]], "share": [x["share"] for x in N["nodes"]],
              "years": [12*x["capacity"] for x in N["nodes"]],
@@ -128,7 +161,32 @@ def block(run):
     return out, N, risk, checks
 
 
-def build(run, pv_run=None, joint_run=None):
+def severity(run):
+    """Forward identified responses and certified scenarios, without the unused trade panel."""
+    d = ROOT / "results" / run
+    t = json.loads((d / "severity.json").read_text(encoding="utf-8"))
+    assert t["registered"] and not t["stamp"]["dirty"]
+    out = {k: t[k] for k in ("table", "excluded", "method", "bootstrap_draws")}
+    out["run"] = run
+    out["sectors"] = {}
+    for s in ("liion", "pv", "joint"):
+        x = json.loads((d / f"{s}.json").read_text(encoding="utf-8"))
+        assert x["status"] == "optimal" and not x["stamp"]["dirty"]
+        assert x["monotone"] and x["full_agrees_with_W1"]
+        assert x["max_monotonicity_violation"] <= 1e-7
+        assert all(0 <= f <= 1 for a in x["assigned_fractions"].values() for f in a.values())
+        # Unlisted marks also use f=1; equivalence permits reusing W1, without clipping MC.
+        same = all(x["assigned_fractions"]["central"].get(m, 1) == 1
+                   for m in x["onsets_by_measure"])
+        assert not same or (x["scenarios"]["central"]["failures"] ==
+                            x["scenarios"]["full"]["failures"])
+        out["sectors"][s] = {k: x[k] for k in ("scenarios", "full_outage", "hard", "S3",
+                                               "unidentified_onset_share", "n")}
+        out["sectors"][s]["same_as_full"] = same
+    return out
+
+
+def build(run, pv_run=None, joint_run=None, severity_run=None):
     data, N, risk, checks = block(run)
     layers = sorted(N["supply_ratio"], key=lambda p: -N["hhi"].get(p, 0))
     data.update({
@@ -143,12 +201,24 @@ def build(run, pv_run=None, joint_run=None):
     for name, r in (("pv", pv_run), ("joint", joint_run)):
         if r:
             data[name] = block(r)[0]
+    if severity_run:
+        data["severity"] = severity(severity_run)
+    ranges = {
+        "Threshold α = 10–50%": [f"a{a}_h0_s0_L6_D12" for a in (0.1, 0.25, 0.5)],
+        "Longest outage = 3–12 mo": [f"a0.25_h0_s0_L6_D{d}" for d in (3, 6, 12)],
+        "Stock h = 0–3 mo": [f"a0.25_h{h}_s0_L6_D12" for h in (0, 1, 3)],
+        "Spare σ = 0–0.5": [f"a0.25_h0_s{s}_L6_D12" for s in (0, 0.1, 0.5)],
+        "Ramp = 6–24 mo (σ = 0.5)": [f"a0.25_h0_s0.5_L{t}_D12" for t in (6, 24)]}
+    data["sensitivity"] = sorted(
+        [{"label": label, "configs": keys, "values": [data["configs"][k]["L"] for k in keys]}
+         for label, keys in ranges.items()], key=lambda r: max(r["values"]) - min(r["values"]),
+        reverse=True)
     return data
 
 
 def main():
     out = ROOT / "site" / "data.js"
-    data = plain(build(*sys.argv[1:4]))
+    data = plain(build(*sys.argv[1:5]))
     out.write_text("window.DATA = " + json.dumps(data, separators=(",", ":"), ensure_ascii=False,
                                                  allow_nan=False) + ";\n", encoding="utf-8")
     print(f"{out}  {out.stat().st_size/1e6:.2f} MB")

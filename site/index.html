@@ -12,7 +12,7 @@
 <body>
 <header class="top"><div class="wrap">
   <a class="brand" href="#top">Chokepoint Lab</a>
-  <nav><a href="#cuts">Cut sets</a><a href="#layers">Layers</a><a href="#risk">Risk</a><a href="#pv">PV</a><a href="#attribution">Attribution</a><a href="#tests">Tests</a><a href="#hazards">Hazards</a><a href="#provenance">Provenance</a></nav>
+  <nav><a href="#cuts">Cut sets</a><a href="#layers">Layers</a><a href="#risk">Risk</a><a href="#pv">PV</a><a href="#sensitivity">Sensitivity</a><a href="#attribution">Attribution</a><a href="#tests">Tests</a><a href="#hazards">Hazards</a><a href="#provenance">Provenance</a></nav>
 </div></header>
 
 <main class="wrap" id="top">
@@ -36,6 +36,8 @@
       bound L carried by S; shares overlap. Durations are 3, 6 or 12 months; h is months of input stock; σ the spare-capacity
       fraction reached after L months. Basis: <span class="tag">production</span> statistic,
       <span class="tag trade">trade</span> export proxy, <span class="tag imputed">imputed</span> from the bill of materials.</p>
+    <p class="note">The witness column shortens only the named loss, keeping all other losses unchanged; 0 months removes it.
+      Every resulting shortfall is at most α. The controls also drive the PV cut table below.</p>
     <div class="sticky-ctl"><div class="ctl">
       <span><label>shortfall threshold</label><span class="seg" id="c-alpha"></span></span>
       <span><label>longest outage</label><span class="seg" id="c-dj"></span></span>
@@ -72,23 +74,46 @@
       quotas-and-bans scenario (OECD codes M3, M4 and prohibiting acts) was added after the registered tests and is not one of them.
       Each estimate uses 20,000 draws from its scenario law. Intervals cover sampling uncertainty conditional on fixed inputs.</p>
     <div id="risk-chart" class="chart"></div>
+    <h3>The severity study cannot yet replace full-outage assumptions</h3>
+    <p class="note">At α = 25%, h = σ = 0, the three scenario definitions give the following estimates and 95% sampling intervals.
+      Only four isolated events survive the approved trade-data rules; no measure type reaches the five-event minimum.
+      The registered severity calculation therefore assigns full loss to every onset. Its law is identical to full outage,
+      so the table reuses that law's L-plus-residual estimate, rather than treating a different Monte Carlo draw as a change in risk.
+      The paired reduction is zero in 20,000 draws; S3's five-percentage-point reduction is killed under this fallback rule.
+      This does not establish that actual policies remove full capacity. Exports measure shipments leaving a country, not production.</p>
+    <div class="table-wrap"><table id="scenario-table"></table></div>
+    <p class="note">BACI HS12 2012–2023; onset years 2014–2022. Equal-event-weight difference in differences compares the first full calendar
+      year after onset with the preceding year, using surveyed unrestricted exporters of the same HS6. Country bootstrap: 2,000 draws.
+      Losses below are unclipped changes relative to baseline export volume; negative values mean a relative export increase.
+      All intervals have weak inference because there are fewer than ten treated countries. M3/M4 are quota/prohibition;
+      M1 is export tax; M14 is other export measures; M5 is fiscal tax on exports; M6 is licensing. S1 and S2 are untestable.</p>
+    <div class="table-wrap"><table id="severity-table"></table></div>
   </section>
 
   <section id="pv">
     <h2>Solar is more concentrated still: each of China's four PV stages is a cut set on its own, and on the shared network a battery loss and a PV loss together suffice</h2>
     <p class="note">PV chain polysilicon → wafer → cell → module (BACI HS22 2024; MIIT China output; 2.0 g Si/Wp), demand set to the
       undisrupted module output. On the shared network each sector's shortfall is measured in its own annual output, so the two count
-      equally and failure is more than α of their sum. h = σ = 0, outages up to 12 months. PV rates borrow the all-product prior except
+      equally and failure is more than α of their sum. The cut-set controls above also select this PV configuration. PV rates borrow the all-product prior except
       polysilicon, the only PV product the OECD survey covers.</p>
-    <div class="ctl"><span><label>shortfall threshold</label><span class="seg" id="c-pv"></span></span></div>
     <p id="pv-summary"></p>
     <div class="table-wrap"><table id="pv-table"></table></div>
   </section>
 
+  <section id="sensitivity">
+    <h2>The failure threshold and allowed outage length change the scenario lower bound most</h2>
+    <p class="note">Each interval spans the saved E1 values for one input, with other inputs at α = 25%, D ≤ 12 months,
+      h = σ = 0. Spare-capacity cases ramp over six months; the ramp comparison fixes σ = 0.5 because ramp has no effect
+      with zero spare capacity. The dotted line is the headline L. These are parameter ranges, not confidence intervals.
+      Sources: Li-ion result bundle and the fixed onset law, 2012–2024. Endpoints appear on hover.</p>
+    <div id="sens-chart" class="chart"></div>
+  </section>
+
   <section id="attribution">
-    <h2>Cut sets with a Chinese node carry <span data-f="chnU"></span> of the risk; the DRC's cobalt mines, <span data-f="codU"></span></h2>
-    <p class="note">For each country, P(some cut set containing one of its nodes is contained in Z)/L, computed exactly, at α = 25%,
-      D ≤ 12 months, h = σ = 0. A cut set with nodes in two countries counts for both, so shares across countries overlap.</p>
+    <h2>China carries <span data-f="chnU"></span> of headline L; attribution changes with the selected losses and recourse</h2>
+    <p class="note">For each country, P(some cut set containing one of its nodes is contained in Z)/L, computed exactly for
+      the cut-set controls above. A cut set with nodes in two countries counts for both, so country shares overlap.</p>
+    <p id="attr-summary"></p>
     <div id="attr-chart" class="chart"></div>
   </section>
 
