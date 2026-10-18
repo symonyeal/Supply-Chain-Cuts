@@ -20,3 +20,7 @@ data/raw/comtrade/
 data/raw/enduse/raw/
 data/raw/eurostat/unfiltered/
 data/raw/supplement/local/
+
+# Local working material: superseded screenshots, browser profiles, unadopted probes
+# and source extracts whose licence is unverified.
+local/

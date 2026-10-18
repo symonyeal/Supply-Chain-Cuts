@@ -1,0 +1,143 @@
+{
+  "errors": [],
+  "reports": [
+    {
+      "id": "cuts",
+      "width": 390,
+      "overflow": false,
+      "charts": 0,
+      "rows": 7
+    },
+    {
+      "id": "risk",
+      "width": 390,
+      "overflow": false,
+      "charts": 1,
+      "rows": 14
+    },
+    {
+      "id": "pv",
+      "width": 390,
+      "overflow": false,
+      "charts": 0,
+      "rows": 22
+    },
+    {
+      "id": "sensitivity",
+      "width": 390,
+      "overflow": false,
+      "charts": 1,
+      "rows": 0
+    },
+    {
+      "id": "attribution",
+      "width": 390,
+      "overflow": false,
+      "charts": 1,
+      "rows": 0
+    },
+    {
+      "id": "capacity",
+      "width": 390,
+      "overflow": false,
+      "charts": 0,
+      "rows": 14
+    },
+    {
+      "mode": "fixed",
+      "cuts": 37,
+      "pv": "PV alone: 22 minimal cut sets, 4 singletons; L = 24.4%, U = 30.6%. L + residual 24.4% [24.4%, 24.5%]. Shared Li-ion and PV network: 180 cut sets, 0 singletons, L = 20.4%.",
+      "capacity": 14
+    },
+    {
+      "mode": "choice",
+      "cuts": 7,
+      "pv": "PV alone: 22 minimal cut sets, 4 singletons; L = 24.4%, U = 30.6%. L + residual 24.4% [24.4%, 24.5%]. Shared Li-ion and PV network: 100 cut sets, 0 singletons, L = 10.6%.",
+      "capacity": 14
+    },
+    {
+      "configuration": "0.5,3,3,0.5,24",
+      "pv": "PV alone: 0 minimal cut sets, 0 singletons; L = 0.0%, U = 6.2%. Shared-network calculations are available only for α = 10% or 25%, h = σ = 0.",
+      "attribution": "Selected configuration: α = 0.5, D ≤ 3 months, h = 3, σ = 0.5, ramp 24 months. No enumerated cut occurs, so L = 0 and attribution is undefined."
+    },
+    {
+      "configuration": "0.1,6,1,0.1,24",
+      "pv": "PV alone: 4 minimal cut sets, 4 singletons; L = 24.8%, U = 31.0%. Shared-network calculations are available only for α = 10% or 25%, h = σ = 0.",
+      "attribution": "Selected configuration: α = 0.1, D ≤ 6 months, h = 1, σ = 0.1, ramp 24 months. L = 20.5%; country shares overlap."
+    },
+    {
+      "configuration": "0.25,12,0,0,6",
+      "pv": "PV alone: 22 minimal cut sets, 4 singletons; L = 24.4%, U = 30.6%. L + residual 24.4% [24.4%, 24.5%]. Shared Li-ion and PV network: 100 cut sets, 0 singletons, L = 10.6%.",
+      "attribution": "Selected configuration: α = 0.25, D ≤ 12 months, h = 0, σ = 0, ramp 6 months. L = 28.8%; country shares overlap."
+    },
+    {
+      "id": "cuts",
+      "width": 1440,
+      "overflow": false,
+      "charts": 0,
+      "rows": 7
+    },
+    {
+      "id": "risk",
+      "width": 1440,
+      "overflow": false,
+      "charts": 1,
+      "rows": 14
+    },
+    {
+      "id": "pv",
+      "width": 1440,
+      "overflow": false,
+      "charts": 0,
+      "rows": 22
+    },
+    {
+      "id": "sensitivity",
+      "width": 1440,
+      "overflow": false,
+      "charts": 1,
+      "rows": 0
+    },
+    {
+      "id": "attribution",
+      "width": 1440,
+      "overflow": false,
+      "charts": 1,
+      "rows": 0
+    },
+    {
+      "id": "capacity",
+      "width": 1440,
+      "overflow": false,
+      "charts": 0,
+      "rows": 14
+    },
+    {
+      "mode": "fixed",
+      "cuts": 37,
+      "pv": "PV alone: 22 minimal cut sets, 4 singletons; L = 24.4%, U = 30.6%. L + residual 24.4% [24.4%, 24.5%]. Shared Li-ion and PV network: 180 cut sets, 0 singletons, L = 20.4%.",
+      "capacity": 14
+    },
+    {
+      "mode": "choice",
+      "cuts": 7,
+      "pv": "PV alone: 22 minimal cut sets, 4 singletons; L = 24.4%, U = 30.6%. L + residual 24.4% [24.4%, 24.5%]. Shared Li-ion and PV network: 100 cut sets, 0 singletons, L = 10.6%.",
+      "capacity": 14
+    },
+    {
+      "configuration": "0.5,3,3,0.5,24",
+      "pv": "PV alone: 0 minimal cut sets, 0 singletons; L = 0.0%, U = 6.2%. Shared-network calculations are available only for α = 10% or 25%, h = σ = 0.",
+      "attribution": "Selected configuration: α = 0.5, D ≤ 3 months, h = 3, σ = 0.5, ramp 24 months. No enumerated cut occurs, so L = 0 and attribution is undefined."
+    },
+    {
+      "configuration": "0.1,6,1,0.1,24",
+      "pv": "PV alone: 4 minimal cut sets, 4 singletons; L = 24.8%, U = 31.0%. Shared-network calculations are available only for α = 10% or 25%, h = σ = 0.",
+      "attribution": "Selected configuration: α = 0.1, D ≤ 6 months, h = 1, σ = 0.1, ramp 24 months. L = 20.5%; country shares overlap."
+    },
+    {
+      "configuration": "0.25,12,0,0,6",
+      "pv": "PV alone: 22 minimal cut sets, 4 singletons; L = 24.4%, U = 30.6%. L + residual 24.4% [24.4%, 24.5%]. Shared Li-ion and PV network: 100 cut sets, 0 singletons, L = 10.6%.",
+      "attribution": "Selected configuration: α = 0.25, D ≤ 12 months, h = 0, σ = 0, ramp 6 months. L = 28.8%; country shares overlap."
+    }
+  ]
+}

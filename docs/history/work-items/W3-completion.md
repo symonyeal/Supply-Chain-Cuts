@@ -1,0 +1,3 @@
+Implemented and published in e585992 (recourse d18c743; risk 980b2a7).
+
+The approved shared-capacity recipes and 24-month share bounds have 94 complete certified configurations. At the 25% reference headline, five singletons and seven cuts replace seven and 37; all 29 former Co/pCAM cuts have zero shortfall. C2a/C2b survive. All cuts are restated in docs/CHEMISTRY.md. The share intervals are nonbinding-equivalent on this horizon (MODEL). Tests cover the LFP path, primal/dual, blocks, dominance and exhaustive/lattice/MILP agreement. The site offers choice/fixed modes. Plant switchability is assumed; probabilities remain scenarios. CI and Pages succeeded for e585992.

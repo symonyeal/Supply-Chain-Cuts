@@ -6,6 +6,8 @@ markers = ["slow: full-network cut-set enumeration or importance sampling over t
 
 [tool.ruff]
 line-length = 100
+# One-off session scripts, kept as the record of how results were produced.
+extend-exclude = ["docs/history", "local"]
 
 [tool.ruff.lint]
 # E501 is not in ruff's default selection; select it so line-length is enforced.
