@@ -2,8 +2,33 @@
 
 **Explorer: https://symonyeal.github.io/Supply-Chain-Cuts/**
 
-Which minimal sets of (country, product) supply losses stop global lithium-ion cell
-production, and how likely are they each year?
+## In plain terms
+
+The batteries in phones and electric cars, and solar panels, pass through a long chain of
+mines, chemical refineries, component factories and assembly plants spread across many
+countries. This project asks which losses would cut world production by a quarter or more
+over two years. A loss here means one country's output of one product, alone or together
+with up to two others. It also asks how often that might happen.
+
+**What we found.**
+
+- **Batteries:** there are five single weak points, all in China. A year-long loss of
+  China's battery cells, cathode material, anode material, graphite or lithium carbonate
+  would each, on its own, cause that shortfall. This assumes factories can switch between
+  the two main battery recipes (LFP and NCM). If they cannot, China's refined cobalt and a
+  cathode precursor become weak points too.
+- **Solar:** there are four single weak points, again all in China: polysilicon, wafers,
+  cells and modules.
+- **How likely:** in a stress test that treats every export restriction recorded since 2012
+  as a complete shutdown, such a shortfall happens in about 29% of years for batteries and
+  24% for solar. These are what-if numbers, not forecasts. Real restrictions are rarely
+  total, and the recorded history does not predict them well.
+
+**What this does not show.** Much capacity outside China is estimated from export volumes,
+because production figures are missing. No factory locations are modelled, so natural
+disasters are not covered. Nothing here is investment advice.
+
+The rest of this page is written for specialists.
 
 ## Answer
 
