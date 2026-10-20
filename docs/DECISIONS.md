@@ -2,6 +2,14 @@
 
 Each entry: the decision, the alternatives measured, the measurement, the date.
 
+## Nickel source sensitivity, 2026-10-20
+
+| Decision | Reason |
+| --- | --- |
+| Keep USGS 2023 country metal output opt-in and retain the 2024 reference demand. | This isolates source-basis sensitivity without changing the reference network or renormalising shortages away. |
+| Replace matching retained refined-nickel nodes only. | Unobserved or unspecified output does not establish zero production; unmatched origins retain their trade proxy. |
+| Measure baseline and individual 12-month outages through the existing two recipe models. | The approved scope tests singleton classifications at 25%; it supplies neither a complete support-three list nor a revised probability. |
+
 Decisions taken with the user during design (2026-10-15) are recorded in the
 [design](specs/2026-10-15-chokepoint-design.md): country × product nodes over firms;
 Li-ion first, then PV; capacity network with recourse; exact interdiction checked by brute

@@ -1,0 +1,11 @@
+iso3,value,year,form,qualifier,cell,source_label
+AUS,92300,2023,metal,reported,T12!K7,"Australia, metal"
+CHN,244800,2023,metal,reported,T12!K15,Metal
+FIN,43300,2023,metal,estimated,T12!K23,"Metal, electrolytic, including cathode and briquettes"
+FRA,5714,2023,metal,reported,T12!K27,"Metal, cathode"
+JPN,52000,2023,metal,estimated,T12!K38,Metal
+MDG,36000,2023,metal,estimated,T12!K43,"Madagascar, metal"
+NOR,95000,2023,metal,reported,T12!K50,"Norway, metal"
+RUS,156000,2023,metal,reported,T12!K51,"Russia, metal"
+ZAF,37390,2023,metal,reported,T12!K54,Metal
+GBR,34000,2023,metal,estimated,T12!K57,"United Kingdom, metal"

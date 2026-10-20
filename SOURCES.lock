@@ -1684,6 +1684,235 @@
    "committed": true,
    "sha256": "92fe5049697b711886c9858a7e7c62d5da9e3df268ee08d98aa7c47d6f6635c1",
    "bytes": 11966
+  },
+  {
+   "path": "data/raw/usgs/myb1-2023-nicke-ERT.xlsx",
+   "url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/files/myb1-2023-nicke-ERT.xlsx",
+   "landing_url": "https://www.usgs.gov/media/files/nickel-2023-tables-only-release",
+   "published": "2025-06-17",
+   "retrieved": "2026-10-20",
+   "licence": "Public Domain (USGS landing page Sources/Usage)",
+   "committed": true,
+   "sha256": "e39b9ee5f6aa0358505bc05e98f80dd6544695ed2f4134d9aee7c5f88a66b5a6",
+   "bytes": 98476,
+   "table": "T12",
+   "year": 2023,
+   "year_cell": "T12!K6",
+   "unit": "metric tonnes nickel content",
+   "unit_cell": "T12!A4",
+   "observations": [
+    {
+     "iso3": "AUS",
+     "value": 92300,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "reported",
+     "cell": "T12!K7",
+     "source_label": "Australia, metal"
+    },
+    {
+     "iso3": "CHN",
+     "value": 244800,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "reported",
+     "cell": "T12!K15",
+     "source_label": "Metal"
+    },
+    {
+     "iso3": "FIN",
+     "value": 43300,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "estimated",
+     "cell": "T12!K23",
+     "source_label": "Metal, electrolytic, including cathode and briquettes"
+    },
+    {
+     "iso3": "FRA",
+     "value": 5714,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "reported",
+     "cell": "T12!K27",
+     "source_label": "Metal, cathode"
+    },
+    {
+     "iso3": "JPN",
+     "value": 52000,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "estimated",
+     "cell": "T12!K38",
+     "source_label": "Metal"
+    },
+    {
+     "iso3": "MDG",
+     "value": 36000,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "estimated",
+     "cell": "T12!K43",
+     "source_label": "Madagascar, metal"
+    },
+    {
+     "iso3": "NOR",
+     "value": 95000,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "reported",
+     "cell": "T12!K50",
+     "source_label": "Norway, metal"
+    },
+    {
+     "iso3": "RUS",
+     "value": 156000,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "reported",
+     "cell": "T12!K51",
+     "source_label": "Russia, metal"
+    },
+    {
+     "iso3": "ZAF",
+     "value": 37390,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "reported",
+     "cell": "T12!K54",
+     "source_label": "Metal"
+    },
+    {
+     "iso3": "GBR",
+     "value": 34000,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "estimated",
+     "cell": "T12!K57",
+     "source_label": "United Kingdom, metal"
+    }
+   ],
+   "footnotes": {
+    "A65": "eEstimated.  rRevised.  -- Zero.",
+    "A66": "1Table includes data available through November 13, 2024. All data are reported unless otherwise noted; totals may include estimated data. Grand totals and estimated data are rounded to no more than three significant digits; may not add to totals shown.",
+    "A67": "2Primary nickel refers to a nickel product ready for use by downstream consuming industries such as nickel chemicals and salts, ferronickel, nickel metal in various forms, nickel oxide sinter, and nickel pig iron. The U. S. Geological Survey  does not use the terms Class I and Class II nickel as defined by the International Nickel Study Group (INSG). However, nickel metal reported here is generally equivalent to Class I nickel which is defined by the INSG as nickel with a minimum nickel content of 99% in the form of briquettes, cathodes (in other words, electrolytic nickel), flakes or powders, granules, pellets, and rondelles. Ferronickel, nickel oxide sinter, and nickel pig iron are classified by the INSG as Class II. Chemicals, although typically produced at refineries, are differentiated from production of metal when feasible. Several countries produced nickel-containing matte and other intermediates, but output of nickel in such materials has been excluded from this table to avoid double counting. Countries that produced intermediate products for export are listed in table 11.",
+    "A70": "5Includes metal and nickel chloride."
+   }
+  },
+  {
+   "path": "data/raw/usgs/myb2023_nickel_metal.csv",
+   "url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/files/myb1-2023-nicke-ERT.xlsx",
+   "landing_url": "https://www.usgs.gov/media/files/nickel-2023-tables-only-release",
+   "published": "2025-06-17",
+   "retrieved": "2026-10-20",
+   "licence": "Public Domain (USGS landing page Sources/Usage)",
+   "committed": true,
+   "sha256": "9512287830eed2e8c863a3ce79ec5392446ebc901458bfd30abf7bb79cd4f747",
+   "bytes": 619,
+   "table": "T12",
+   "year": 2023,
+   "year_cell": "T12!K6",
+   "unit": "metric tonnes nickel content",
+   "unit_cell": "T12!A4",
+   "observations": [
+    {
+     "iso3": "AUS",
+     "value": 92300,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "reported",
+     "cell": "T12!K7",
+     "source_label": "Australia, metal"
+    },
+    {
+     "iso3": "CHN",
+     "value": 244800,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "reported",
+     "cell": "T12!K15",
+     "source_label": "Metal"
+    },
+    {
+     "iso3": "FIN",
+     "value": 43300,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "estimated",
+     "cell": "T12!K23",
+     "source_label": "Metal, electrolytic, including cathode and briquettes"
+    },
+    {
+     "iso3": "FRA",
+     "value": 5714,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "reported",
+     "cell": "T12!K27",
+     "source_label": "Metal, cathode"
+    },
+    {
+     "iso3": "JPN",
+     "value": 52000,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "estimated",
+     "cell": "T12!K38",
+     "source_label": "Metal"
+    },
+    {
+     "iso3": "MDG",
+     "value": 36000,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "estimated",
+     "cell": "T12!K43",
+     "source_label": "Madagascar, metal"
+    },
+    {
+     "iso3": "NOR",
+     "value": 95000,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "reported",
+     "cell": "T12!K50",
+     "source_label": "Norway, metal"
+    },
+    {
+     "iso3": "RUS",
+     "value": 156000,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "reported",
+     "cell": "T12!K51",
+     "source_label": "Russia, metal"
+    },
+    {
+     "iso3": "ZAF",
+     "value": 37390,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "reported",
+     "cell": "T12!K54",
+     "source_label": "Metal"
+    },
+    {
+     "iso3": "GBR",
+     "value": 34000,
+     "year": 2023,
+     "form": "metal",
+     "qualifier": "estimated",
+     "cell": "T12!K57",
+     "source_label": "United Kingdom, metal"
+    }
+   ],
+   "footnotes": {
+    "A65": "eEstimated.  rRevised.  -- Zero.",
+    "A66": "1Table includes data available through November 13, 2024. All data are reported unless otherwise noted; totals may include estimated data. Grand totals and estimated data are rounded to no more than three significant digits; may not add to totals shown.",
+    "A67": "2Primary nickel refers to a nickel product ready for use by downstream consuming industries such as nickel chemicals and salts, ferronickel, nickel metal in various forms, nickel oxide sinter, and nickel pig iron. The U. S. Geological Survey  does not use the terms Class I and Class II nickel as defined by the International Nickel Study Group (INSG). However, nickel metal reported here is generally equivalent to Class I nickel which is defined by the INSG as nickel with a minimum nickel content of 99% in the form of briquettes, cathodes (in other words, electrolytic nickel), flakes or powders, granules, pellets, and rondelles. Ferronickel, nickel oxide sinter, and nickel pig iron are classified by the INSG as Class II. Chemicals, although typically produced at refineries, are differentiated from production of metal when feasible. Several countries produced nickel-containing matte and other intermediates, but output of nickel in such materials has been excluded from this table to avoid double counting. Countries that produced intermediate products for export are listed in table 11.",
+    "A70": "5Includes metal and nickel chloride."
+   },
+   "transform": "Country metal rows only, column K; qualifier in column L; excluded totals, chemicals, ferronickel/NPI, oxide and unspecified"
   }
  ]
 }

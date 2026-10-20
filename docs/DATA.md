@@ -7,6 +7,24 @@ from `results/liion-60eb399/network.json` and `data_checks.json` (lock digest
 
 ## Nodes and bases
 
+### Opt-in nickel metal source
+
+`run_nickel.py` freezes USGS MYB 2023 Table T12 metal output separately from the
+2024 reference network. The original `build()` output remains unchanged. The sensitivity
+replaces only matching retained `refined_ni` annual output and requirement-unit capacity;
+unobserved countries keep their export proxy and no origin is added or screened again.
+The workbook and ten-row CSV are public domain and hash-locked with exact coordinates,
+source labels and estimated flags. `read_metal()` checks units, year, values and flags
+against the workbook before the experiment runs.
+
+This is annual metal-output sensitivity, not battery-grade output, precursor production
+or installed capacity. Chemicals, ferronickel/NPI, oxide, unspecified and total rows are
+excluded. The fixed 2024 demand and all non-nickel capacities are retained. Node `share`
+labels remain the original pre-screen shares, used only to describe the reference roster;
+they are not recomputed concentration measures for the mixed-source sensitivity.
+
+### Reference network
+
 A node is a (country, product) pair. Origins below 1% of their layer are excluded; the
 retained share of each layer is its coverage. Li-ion: 111 nodes, 73 on a production
 basis, 20 on trade and 18 imputed. PV: 15 nodes, 4 production and 11 trade.

@@ -21,6 +21,18 @@ licences are in [Research](RESEARCH.md).
 | CEPII, BACI HS12 V202601, annual members 2012–2023, https://www.cepii.fr/DATA_DOWNLOAD/baci/data/BACI_HS12_V202601.zip | W2 exporter–HS6–year export quantities; original selected rows and complete-member digests in SOURCES.lock | inspected (12 byte-range extracts, member CRC and length checked; 2026-10-16); Etalab 2.0 as recorded in RESEARCH §1 |
 | UNSD, HS 2012 to HS 2007 Correlation and conversion tables, https://unstats.un.org/unsd/trade/classifications/tables/HS%202012%20to%20HS%202007%20Correlation%20and%20conversion%20tables.xls | Verified one-to-one codes for W2; `data/events/hs07_hs12.json` records numerical concordance facts | inspected (correlation sheet; 2026-10-16); raw workbook local and hash-locked because reuse terms are unverified |
 
+## Nickel metal source sensitivity, 2026-10-20
+
+| Source | Used for | Status |
+| --- | --- | --- |
+| USGS, [Nickel in 2023, tables-only release](https://www.usgs.gov/media/files/nickel-2023-tables-only-release), published 2025-06-17; [workbook](https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/files/myb1-2023-nicke-ERT.xlsx) | Table T12 country metal production, 2023, metric tonnes nickel content; column K and qualifier column L | inspected 2026-10-20; landing page states Public Domain; exact workbook and ten-row transcription frozen in SOURCES.lock, including cells and estimated flags |
+
+Table T12 footnote 2 distinguishes metal, generally equivalent to INSG Class I, from
+chemicals, ferronickel/NPI and oxide sinter. It does not certify battery grade or installed
+capacity. Footnote 1 dates available data to 2024-11-13 and describes estimate/total
+rounding; France's country footnote 5 includes metal and nickel chloride. The sensitivity
+uses only the explicitly labelled metal row, not the country total or chemicals row.
+
 ## W5 source audit
 
 | Source | Used for | Status |

@@ -308,3 +308,25 @@ allocation to countries and to the model's metal forms is a scenario assumption.
 For Cu, Al and Mn no matching global battery-only primary share is frozen: eta in
 {1, 0.1, 0.01} is an explicitly assumed sensitivity. Reuse the existing LP matrices
 and certified enumerators for both recipe models, at fixed reference demand.
+
+## Nickel metal source sensitivity
+
+Approved 2026-10-20. For each retained refined-nickel node with an explicit USGS
+2023 metal observation q[v] in tonnes nickel content, replace annual output by
+q[v]/1000 kt and monthly capacity by
+
+    u'[v] = u[v] (q[v]/1000) / annual[v].
+
+The denominator retains the reference requirement R[refined_ni]. Demand, normalisation,
+the node roster, recipes and all other capacities are fixed. No second `build()` call
+with altered output is used to restore baseline feasibility. Countries without a metal
+observation retain their original trade proxy. Other network diagnostics remain reference
+labels and are not sensitivity concentration estimates.
+
+The bounded experiment calls `recourse.solve` through `net.model` and `chemistry.model`
+at T = 24, h = sigma = 0, L = 6. It measures the undisrupted shortfall and each individual
+12-month outage, comparing total shortfall with 0.25 times total reference demand, using
+the existing 1e-7 comparison tolerance. Block ends 12 and 24 are exact here. Every solve
+retains its primal/dual gap and feasibility residual. A failing baseline is reported
+directly; an outage classification is not a claim of minimality. The experiment neither
+enumerates multi-node cuts nor estimates a probability.

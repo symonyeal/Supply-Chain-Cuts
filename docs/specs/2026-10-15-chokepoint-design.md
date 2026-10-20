@@ -1,5 +1,13 @@
 # Supply-Chain-Cuts: design
 
+Source sensitivity (2026-10-20, approved project follow-up): retain the reference
+nodes, demand and every non-nickel capacity. Replace matching retained refined-nickel
+export proxies with the USGS 2023 Table 12 metal observations, keeping the year and
+estimated flags. This is an opt-in metal-output sensitivity, not battery-grade or
+installed capacity. Compare undisrupted and individual 12-month outages under fixed
+and flexible chemistry. Report baseline shortages and changed failures at the existing
+25% threshold; do not infer a complete multi-loss cut list or a new probability.
+
 W5 clarification (2026-10-16, approved): competing-demand reservations multiply
 mined/refined Co and Ni capacities by global battery-use shares 0.76 and 0.16;
 Cu/Al/Mn use assumed available fractions 1, 0.1 and 0.01. Demand stays fixed and
