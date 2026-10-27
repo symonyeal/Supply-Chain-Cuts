@@ -7,12 +7,7 @@
   const esc = x => String(x ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const pct = (x, d = 1) => x == null ? "Not available" : `${(100 * x).toFixed(d)}%`;
   const num = (x, d = 0) => x == null ? "Withheld / unavailable" : Number(x).toLocaleString("en", {maximumFractionDigits: d});
-  const country = c => C.meta.countries[c] || c;
-  const names = {aam:"Anode material",cam:"Cathode material",pcam:"Cathode precursor",cell:"Battery cells",graphite:"Graphite",
-    mine_li:"Lithium ore",mine_co:"Cobalt ore",mine_ni:"Nickel ore",mine_mn:"Manganese ore",li_carbonate:"Lithium carbonate",
-    refined_co:"Refined cobalt",refined_ni:"Refined nickel",refined_cu:"Refined copper",aluminium:"Aluminium",
-    polysilicon:"Polysilicon",wafer:"Solar wafers",pv_cell:"Solar cells",module:"Solar modules"};
-  const product = p => names[p] || p.replaceAll("_", " ");
+  const country = c => window.LABELS.place(c, C.meta.countries[c]), product = window.LABELS.product;
   const sectors = {liion:"Batteries",pv:"Solar",joint:"Batteries + solar"};
   const P = {sector:"liion",chemistry:"choice",alpha:"0.25",DJ:"12",h:"0",sigma:"0",L:"6"};
   const allowed = {sector:["liion","pv","joint"],chemistry:["choice","fixed"],alpha:["0.1","0.25","0.5"],DJ:["3","6","12"],h:["0","1","3"],sigma:["0","0.1","0.5"],L:["6","24"]};
@@ -66,7 +61,7 @@
       n ? `<em>${n} single ${n === 1 ? "loss" : "losses"}</em> can each exceed ${pct(+S.alpha,0)} shortfall.` : `<em>${c.cuts.length} combinations</em> exceed ${pct(+S.alpha,0)} shortfall. No single loss does.`;
     $("result").innerHTML = `<p class="eyebrow">${esc(sectors[S.sector])} · ${S.sector === "pv" ? "Four-stage solar chain" : S.chemistry === "choice" ? "Flexible battery recipes" : "Fixed 50/50 battery recipes"}</p><h3 class="result-title">${headline}</h3>` +
       `<p class="scenario-caption">Cumulative unmet demand over 24 months, after recourse. Outages last at most ${S.DJ} months; stock ${S.h} months; spare capacity ${pct(+S.sigma,0)}.</p>` +
-      `<div class="metrics">${metric(c.cuts.length,"Minimal cut sets")}${metric(n,"Single-loss cuts")}${metric(pct(c.L),"Conditional annual failure · lower bound L")}${metric(`${delta > 0 ? "+" : ""}${(delta*100).toFixed(1)} pp`,"Change in lower bound vs sector reference")}</div>` +
+      `<div class="metrics">${metric(c.cuts.length,"Failing combinations of up to three losses")}${metric(n,"Single losses that fail on their own")}${metric(pct(c.L),"Stress-test odds per year (lower bound)")}${metric(`${delta > 0 ? "+" : ""}${(delta*100).toFixed(1)} pp`,"Change from the default settings")}</div>` +
       `<p class="scenario-caption">Probability assumes the saved policy-onset and outage law. It is a conditional scenario, not a forecast.</p>` +
       `<details class="result-method"><summary>Probability estimate, sampling interval & bounds</summary><p class="scenario-caption">${est ? `Saved L + residual estimate: ${pct(est.estimate,3)}; 95% sampling interval ${pct(est.ci95[0],3)}–${pct(est.ci95[1],3)}.` : "No residual simulation was saved for this configuration."} Exact scenario bracket: L ${pct(c.L,3)} ≤ failure probability ≤ U ${pct(c.U,3)}.${c.U === 1 ? " U counts all states with more than three losses; it does not assert certain failure." : ""}</p></details>`;
   }
@@ -128,17 +123,17 @@
     const [commodity,stage] = $("mineral").value.split("|"), year = +$("year").value, measure = $("measure").value;
     const rows = C.production.filter(r => r.commodity === commodity && r.stage === stage && r.year === year), summary = C.summaries.find(r => r.commodity === commodity && r.stage === stage && r.year === year);
     const named = rows.filter(r => !r.world && !r.aggregate && r.tonnes !== null).sort((a,b) => b.tonnes-a.tonnes), leader = named[0];
-    $("production-title").textContent = `${leader.country} supplied ${pct(leader.share)} of published ${commodity.toLowerCase()} ${stage} output`;
+    $("production-title").textContent = `${country(leader.country)} supplied ${pct(leader.share)} of published ${commodity.toLowerCase()} ${stage} output`;
     $("production-scope").textContent = `${year} · ${num(summary.world_tonnes)} tonnes published world total · ${summary.coverage_note}`;
     const prior = C.summaries.find(r => r.commodity === commodity && r.stage === stage && r.year === year-1);
     $("production-change").textContent = prior ? `Published world output ${summary.world_tonnes >= prior.world_tonnes ? "rose" : "fell"} ${pct(Math.abs(summary.world_tonnes/prior.world_tonnes-1))} from 2024. The three largest named producers account for ${pct(summary.named_top3_share)} of this total; other-country aggregates and withheld output limit a complete concentration measure.` : "2024 is the reference year shown here. Select 2025 to compare world-output growth.";
     const plotted = [...named.slice(0,10),...rows.filter(r => r.aggregate && r.tonnes > 0)];
-    $("production-chart").innerHTML = plotted.map(r => `<div class="bar-row"><span class="bar-label">${esc(r.country)}${r.estimated ? " *" : ""}</span><span class="track"><span style="width:${100*r.share}%"></span></span><span class="bar-value">${measure === "share" ? pct(r.share) : num(r.tonnes)}</span></div>`).join("");
+    $("production-chart").innerHTML = plotted.map(r => `<div class="bar-row"><span class="bar-label">${esc(country(r.country))}${r.estimated ? " *" : ""}</span><span class="track"><span style="width:${100*r.share}%"></span></span><span class="bar-value">${measure === "share" ? pct(r.share) : num(r.tonnes)}</span></div>`).join("");
     $("production-warning").textContent = `Bars use a 0–100% world-output scale; showing ${Math.min(10,named.length)} largest named producers${rows.some(r => r.aggregate && r.tonnes > 0) ? " plus the Other countries aggregate" : ""}. * Estimated. ${summary.coverage_note} Published totals are rounded; country values may not add to them.`;
     const previous = r => C.production.find(p => p.commodity === commodity && p.stage === stage && p.year === 2024 && p.country === r.country)?.tonnes;
     $("production-table").innerHTML = table(["Country / aggregate","Tonnes","World share","2025 vs 2024","Source flags"],rows.map(r => {
       const prev = previous(r), change = year === 2025 && prev > 0 && r.tonnes !== null ? `${((r.tonnes/prev-1)*100).toFixed(1)}%` : "—";
-      return [esc(r.country),num(r.tonnes),r.world ? "—" : pct(r.share),change,esc([r.missing,r.estimated ? "Estimated" : "",r.notes].filter(Boolean).join("; "))];
+      return [esc(country(r.country)),num(r.tonnes),r.world ? "—" : pct(r.share),change,esc([r.missing,r.estimated ? "Estimated" : "",r.notes].filter(Boolean).join("; "))];
     }));
   }
   function refining() {

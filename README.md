@@ -2,11 +2,16 @@
 
 **Explorer: https://symonyeal.github.io/Supply-Chain-Cuts/**
 
-![Supply-chain explorer with scenario controls and certified battery disruption results](site/preview.png)
+![Overview: battery and solar supply both depend on China](site/preview.png)
 
 ## Explore the results
 
-The explorer compares certified battery, solar and shared-network disruption scenarios.
+The [overview](https://symonyeal.github.io/Supply-Chain-Cuts/) states the findings in
+plain language: who makes each battery and solar part, which single losses cause a major
+shortfall, how long they must last, and what stockpiles and spare capacity change.
+
+The [scenario explorer](https://symonyeal.github.io/Supply-Chain-Cuts/explore.html)
+compares certified battery, solar and shared-network disruption scenarios.
 Choose the shortfall threshold, maximum outage, battery recipes, input stock and spare
 capacity. Pin a scenario to compare it with another, share its URL, filter the minimal
 cut sets, inspect their shorter-outage checks, and download the displayed cuts or nodes.
