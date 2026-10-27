@@ -1,11 +1,11 @@
 name: pages
 
-# Publishes site/ as it stands on main. site/data.js is generated locally by analysis/build_site.py
-# and committed, so the deploy needs no Python.
+# Deploy the exact revision whose numerical and browser checks succeeded.
 on:
-  push:
+  workflow_run:
+    workflows: [checks]
     branches: [main]
-    paths: ["site/**", ".github/workflows/pages.yml"]
+    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -19,12 +19,18 @@ concurrency:
 
 jobs:
   deploy:
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event != 'pull_request')
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

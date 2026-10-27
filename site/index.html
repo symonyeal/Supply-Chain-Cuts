@@ -1,185 +1,66 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Supply Chain Cuts</title>
-<meta name="description" content="Which minimal sets of country–product losses stop global lithium-ion cell production, and how likely they are each year: exact network interdiction with a hazard-rate bracket.">
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@4.1.1/plotly.min.js"></script>
-<script src="data.js"></script>
-</head>
-<body>
-<header class="top"><div class="wrap">
-  <a class="brand" href="#top">Supply Chain Cuts</a>
-  <nav><a href="#cuts">Cut sets</a><a href="#layers">Layers</a><a href="#risk">Risk</a><a href="#pv">PV</a><a href="#sensitivity">Sensitivity</a><a href="#capacity">Capacity data</a><a href="#attribution">Attribution</a><a href="#tests">Tests</a><a href="#hazards">Hazards</a><a href="#provenance">Provenance</a></nav>
-</div></header>
-
-<main class="wrap" id="top">
-  <section class="hero">
-    <h1>At reference capacities, losing any one of <span data-f="nsingle"></span> Chinese nodes for a year stops more than a quarter of two years' lithium-ion cell output</h1>
-    <p class="lede">A cut set is a minimal set of (country, product) losses after which the least achievable shortfall, with
-      shipments rerouted, inventory drawn and spare capacity ramped, exceeds α of demand over 24 months. All
-      <span data-f="ncuts"></span> minimal cut sets of up to three losses are enumerated exactly at α = 25%. The singletons are China's
-      <span data-f="singles"></span>, when the model may choose LFP or NCM recipes using fixed physical capacities.
-      Precursor and refined cobalt cease to be singletons; all 29 former cobalt or precursor cut sets have zero shortfall.
-      This assumes recipe flexibility; actual plant switchability is unmeasured. The fixed 50/50 reference has seven singletons
-      and 37 cut sets. How often such losses occur is a conditional scenario, not a forecast:
-      recorded export-policy onsets do not predict out of sample.</p>
-    <div class="facts" id="facts"></div>
-  </section>
-
-  <section id="cuts">
-    <h2>Every minimal cut set of at most three losses, with its shortfall and its share of the risk</h2>
-    <p class="note">φ(S) is the least cumulative shortfall over 24 months when the nodes in S are out for the stated months,
-      as a share of demand; a cut set fails (φ &gt; α) and every immediate predecessor (one loss shortened by one level)
-      does not. Each φ is a primal LP value with a matching dual (gap ≤ 10⁻⁶). P(S ⊆ Z)/L is the share of the exact lower
-      bound L carried by S; shares overlap. Durations are 3, 6 or 12 months; h is months of input stock; σ the spare-capacity
-      fraction reached after L months. Basis: <span class="tag">production</span> statistic,
-      <span class="tag trade">trade</span> export proxy, <span class="tag imputed">imputed</span> from the bill of materials.</p>
-    <p class="note">The witness column shortens only the named loss, keeping all other losses unchanged; 0 months removes it.
-      Every resulting shortfall is at most α. The controls also drive the PV cut table below.</p>
-    <div class="sticky-ctl"><div class="ctl">
-      <span><label>shortfall threshold</label><span class="seg" id="c-alpha"></span></span>
-      <span><label>longest outage</label><span class="seg" id="c-dj"></span></span>
-      <span><label>stock</label><span class="seg" id="c-h"></span></span>
-      <span><label>spare capacity</label><span class="seg" id="c-sigma"></span></span>
-      <span><label>ramp</label><span class="seg" id="c-L"></span></span>
-      <span><label>battery chemistry</label><span class="seg" id="c-chemistry"></span></span>
-      <input type="search" id="c-q" placeholder="find a country or product">
-      <button class="reset" id="c-reset">reset</button>
-    </div></div>
-    <p id="cuts-summary"></p>
-    <div class="table-wrap"><table id="cuts-table"></table></div>
-  </section>
-
-  <section id="layers">
-    <h2>One loss can cut a layer only where the rest of it supplies less than half the requirement: cells, precursor, cathode, anode, graphite, lithium carbonate and refined cobalt</h2>
-    <p class="note">Each bar is a country's 2024 output in years of the layer's requirement per year; a layer's total is its supply
-      ratio S. A twelve-month loss of a node fails at α = 25% only if the rest of its layer falls below half the requirement over
-      the year. Copper, aluminium and manganese hold 25–165 years of requirement because the model lets every tonne serve
-      batteries: it has no competing demand, which makes upstream cuts harder to reach than in reality. Sources and bases:
-      <a href="https://github.com/symonyeal/Supply-Chain-Cuts/blob/main/docs/DATA.md">DATA.md</a>.</p>
-    <div id="layers-chart" class="chart"></div>
-  </section>
-
-  <section id="risk">
-    <h2>Chemistry choice lowers the Li-ion scenario estimate from 48.6% to 28.8%</h2>
-    <p class="note">Same fixed reference capacities, node rates and outage lengths; only the recipes change.
-      The cut controls default to chemistry choice. Both approved 24-month NCM-share ranges, [0,1] and [0.25,0.75],
-      give the same failure event: every outage ends by month 12, and the restored second year can supply the reference mix
-      and satisfy either aggregate share limit. This sensitivity is nonbinding under this horizon.
-      All estimates below add residual failures to exact L; 20,000 draws, seed 8, exact-binomial 95% sampling intervals.
-      Zero sampled residuals retain a positive upper endpoint. Full outages remain a scenario.</p>
-    <div class="table-wrap"><table id="chemistry-table"></table></div>
-    <h3>The following risk chart and severity study retain the fixed 50/50 reference</h3>
-    <h2>If every recorded export restriction were a full outage, failure would come about every other year (<span data-f="estimate"></span>, L = <span data-f="L"></span>); counting only quotas and bans, <span data-f="hard"></span> (L = <span data-f="hardL"></span>)</h2>
-    <p class="note">Onsets 2012–2024 from the OECD Inventory and national acts, pooled by product with empirical-Bayes priors; a
-      country shock with ρ = <span data-f="rho"></span> makes losses in one country coincide; <span data-f="w12"></span> of
-      spells last 12 months. L is the exact probability of containing an enumerated cut; U = min(1, L + P(more than three losses)) =
-      <span data-f="U"></span> is too loose to use, since about <span data-f="sump"></span> nodes are hit per year. The point estimate
-      is L plus a Monte Carlo estimate of failures containing no enumerated cut, with exact-binomial 95% interval
-      [<span data-f="estimateLo"></span>, <span data-f="estimateHi"></span>], checked
-      against crude Monte Carlo (<span data-f="MC"></span>). The registered predictive test failed (log-loss
-      <span data-f="d1m"></span> against <span data-f="d1c"></span> for a constant), so these are scenarios under stated rates. The
-      quotas-and-bans scenario (OECD codes M3, M4 and prohibiting acts) was added after the registered tests and is not one of them.
-      Each estimate uses 20,000 draws from its scenario law. Intervals cover sampling uncertainty conditional on fixed inputs.</p>
-    <div id="risk-chart" class="chart"></div>
-    <h3>The severity study cannot yet replace full-outage assumptions</h3>
-    <p class="note">At α = 25%, h = σ = 0, the three scenario definitions give the following estimates and 95% sampling intervals.
-      Only four isolated events survive the approved trade-data rules; no measure type reaches the five-event minimum.
-      The registered severity calculation therefore assigns full loss to every onset. Its law is identical to full outage,
-      so the table reuses that law's L-plus-residual estimate, rather than treating a different Monte Carlo draw as a change in risk.
-      The paired reduction is zero in 20,000 draws; S3's five-percentage-point reduction is killed under this fallback rule.
-      This does not establish that actual policies remove full capacity. Exports measure shipments leaving a country, not production.</p>
-    <div class="table-wrap"><table id="scenario-table"></table></div>
-    <p class="note">BACI HS12 2012–2023; onset years 2014–2022. Equal-event-weight difference in differences compares the first full calendar
-      year after onset with the preceding year, using surveyed unrestricted exporters of the same HS6. Country bootstrap: 2,000 draws.
-      Losses below are unclipped changes relative to baseline export volume; negative values mean a relative export increase.
-      All intervals have weak inference because there are fewer than ten treated countries. M3/M4 are quota/prohibition;
-      M1 is export tax; M14 is other export measures; M5 is fiscal tax on exports; M6 is licensing. S1 and S2 are untestable.</p>
-    <div class="table-wrap"><table id="severity-table"></table></div>
-  </section>
-
-  <section id="pv">
-    <h2>Solar is more concentrated still: each of China's four PV stages is a cut set on its own, and on the shared network a battery loss and a PV loss together suffice</h2>
-    <p class="note">PV chain polysilicon → wafer → cell → module (BACI HS22 2024; MIIT China output; 2.0 g Si/Wp), demand set to the
-      undisrupted module output. On the shared network each sector's shortfall is measured in its own annual output, so the two count
-      equally and failure is more than α of their sum. The cut-set controls above also select this PV configuration. PV rates borrow the all-product prior except
-      polysilicon, the only PV product the OECD survey covers.</p>
-    <p id="pv-summary"></p>
-    <div class="table-wrap"><table id="pv-table"></table></div>
-  </section>
-
-  <section id="sensitivity">
-    <h2>The failure threshold and allowed outage length change the scenario lower bound most</h2>
-    <p class="note">Fixed 50/50 reference. Each interval spans the saved E1 values for one input, with other inputs at α = 25%, D ≤ 12 months,
-      h = σ = 0. Spare-capacity cases ramp over six months; the ramp comparison fixes σ = 0.5 because ramp has no effect
-      with zero spare capacity. The dotted line is the headline L. These are parameter ranges, not confidence intervals.
-      Sources: Li-ion result bundle and the fixed onset law, 2012–2024. Endpoints appear on hover.</p>
-    <div id="sens-chart" class="chart"></div>
-  </section>
-
-  <section id="attribution">
-    <h2>Country attribution changes with the selected losses, chemistry and recourse</h2>
-    <p class="note">For each country, P(some cut set containing one of its nodes is contained in Z)/L, computed exactly for
-      the cut-set controls above. A cut set with nodes in two countries counts for both, so country shares overlap.</p>
-    <p id="attr-summary"></p>
-    <div id="attr-chart" class="chart"></div>
-  </section>
-
-  <section id="capacity">
-    <h2>Japan’s output data remove one cell triple; five Chinese singletons remain</h2>
-    <p class="note">METI 2024 sealed-cell output totals 5,136,311 kAh: 16.436 GWh at assumed 3.2 V or 19.004 GWh at 3.7 V.
-      The conversion is imputed. Both variants remove the China cells 6-month + Poland and US cells 12-month triple from
-      the seven chemistry-choice cuts, leaving six. These capacity variants are separate from the reference cut controls
-      and probability comparison; their onset probabilities have not been refitted. German Prodcom sold carbonate
-      (24,728 tonnes, both purity grades, imputed proxy) changes no headline cut. Sold output is not actual production.</p>
-    <p class="note">The competing-demand sensitivity reserves non-battery uses, applying global battery shares 76% Co and 16% Ni
-      proportionally to countries. Cu/Al/Mn availability of 100%, 10% or 1% is assumed. Demand stays fixed.
-      A positive baseline shortage is shown; when it exceeds 25%, the sole minimal cut is the empty set.
-      Thus one empty cut means failure without any outage, not a new single-node chokepoint. N1 and N2 survive.</p>
-    <div class="table-wrap"><table id="capacity-table"></table></div>
-    <p class="note">All cases: α = 25%, h = σ = 0, 24 months, outages ≤ 12 months, at most three losses.
-      Complete lattice lists have primal/dual and shorter-duration certificates. Source: <code>supply-4ae36c1</code>.
-      China tariff-line partner batches match the preview rows, but repeated dimensions, a precursor sum above its BACI
-      parent, and four empty graphite queries prevent a complete-flow or production claim. Korean domestic physical
-      cell output remains unlocated, so its flagged trade basis is retained.
-      <a href="https://github.com/symonyeal/Supply-Chain-Cuts/blob/main/docs/DATA.md">Data, licences and limitations</a>.</p>
-  </section>
-
-  <section id="tests">
-    <h2>Registered tests: the network adds information beyond concentration, and the probability claims are scenarios</h2>
-    <p class="note">The table reports the fixed-mix reference tests. W3's registered chemistry-choice claims both survive:
-      a full-year Chinese precursor or refined-cobalt loss has zero shortfall.
-      Kill conditions were committed in <a href="https://github.com/symonyeal/Supply-Chain-Cuts/blob/main/docs/HYPOTHESES.md">HYPOTHESES.md</a>
-      before any probability was computed. Outcomes and the cut sets they withdraw or qualify:
-      <a href="https://github.com/symonyeal/Supply-Chain-Cuts/blob/main/docs/FINDINGS.md">FINDINGS.md</a>.</p>
-    <div class="table-wrap"><table id="tests-table"></table></div>
-  </section>
-
-  <section id="hazards">
-    <h2>Natural hazards enter only as a scenario: no production site has located capacity</h2>
-    <p class="note">Located capacity covers 0% of every layer, below the registered 70% threshold, so hazards are not matched to
-      sites. Instead each country with nodes loses a fixed fraction of all its capacity; the table lists the losses that fail at
-      α = 25%, with the years 2012–2024 in which GDACS issued an orange or red alert for the country. An alert is not a loss.</p>
-    <div class="table-wrap"><table id="haz-table"></table></div>
-  </section>
-
-  <section id="provenance">
-    <h2>Every number on this page is read from a named result bundle</h2>
-    <p class="note">Runs <code data-f="runs"></code>. Reference risk code <code data-f="revision"></code>,
-      chemistry risk code <code data-f="choiceRevision"></code>, capacity code <code data-f="capacityRevision"></code>.
-      Reference source lock
-      <code data-f="lock"></code>. Raw inputs are frozen with URL, date, SHA-256 and licence in
-      <a href="https://github.com/symonyeal/Supply-Chain-Cuts/blob/main/SOURCES.lock">SOURCES.lock</a>; derivations are in
-      <a href="https://github.com/symonyeal/Supply-Chain-Cuts/blob/main/docs/MODEL.md">MODEL.md</a>. Data: CEPII BACI (Etalab 2.0),
-      USGS (public domain), MIIT, Cochilco, Xu et al. 2020 (CC BY 4.0), OECD Inventory of Export Restrictions, GDACS.
-      No investment or price claim is made.</p>
-  </section>
-</main>
-
-<footer class="wrap note">Data: <code>site/data.js</code>, written by <code>python analysis/build_site.py RUN_ID</code>.</footer>
-<script src="app.js"></script>
-</body>
-</html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supply Chain Cuts · Battery and solar resilience</title>
+<meta name="description" content="Explore certified battery and solar supply disruptions, compare inventory and spare-capacity scenarios, and inspect 2025 mineral production and refining concentration.">
+<meta property="og:title" content="Supply Chain Cuts"><meta property="og:description" content="An interactive atlas of battery and solar supply vulnerabilities. Certified scenarios, current mineral data, and the limits of both.">
+<meta property="og:image" content="https://symonyeal.github.io/Supply-Chain-Cuts/preview.png">
+<meta name="color-scheme" content="light dark"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="atlas.css">
+<script src="data.js" defer></script><script src="context.js" defer></script><script src="explorer.js" defer></script>
+</head><body>
+<a class="skip" href="#main">Skip to the explorer</a>
+<header class="masthead"><div class="wrap masthead-row">
+<a href="./" class="brand"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><path d="M3 8h9m8 0h9M3 24h26M8 8v16m16-16v16"/><path class="cut-mark" d="m13 3 6 10"/></svg>Supply Chain Cuts</a>
+<nav aria-label="Main"><a href="#explore">Explore</a><a href="#minerals">Minerals</a><a href="#compare">Compare</a><a href="#evidence">Evidence</a></nav>
+<button id="theme" class="quiet" type="button" aria-label="Switch to dark theme">Dark view</button></div></header>
+<main id="main" class="wrap">
+<section class="intro" aria-labelledby="title"><div><p class="eyebrow">Battery & solar supply · Research explorer</p>
+<h1 id="title">Which supply losses<br>cause major shortfalls?</h1>
+<p class="intro-copy">Explore battery and solar supply vulnerabilities. Compare country–product losses, input stock and spare capacity.</p><a class="intro-link" href="#result">Explore the reference scenario ↓</a></div>
+<aside class="scope"><span class="scope-number">24<span>months</span></span><p>Demand horizon in the model</p><p class="subtle">Model: 2024 reference network<br>Production context: 2024–2025<br>Policy history: 2012–2024</p><a href="#evidence">Read the assumptions ↗</a></aside></section>
+<section id="explore" class="chapter" aria-labelledby="explore-title">
+<div class="section-top"><h2 id="explore-title"><span class="section-no">01</span> Explore a disruption</h2><span class="subtle">Saved, certified model results</span></div>
+<div class="explorer-grid"><aside class="scenario" aria-label="Scenario settings">
+<div class="side-title">Scenario <button id="reset" class="text-button" type="button">Reset</button></div>
+<label for="sector">Supply chain</label><select id="sector"><option value="liion">Lithium-ion batteries</option><option value="pv">Solar photovoltaics</option><option value="joint">Batteries + solar</option></select>
+<label for="alpha">Failure threshold · more than</label><select id="alpha"><option value="0.1">10% shortfall</option><option value="0.25" selected>25% shortfall</option><option value="0.5">50% shortfall</option></select>
+<label for="DJ">Longest outage</label><select id="DJ"><option value="3">3 months</option><option value="6">6 months</option><option value="12" selected>12 months</option></select>
+<label for="chemistry">Battery recipes</label><select id="chemistry"><option value="choice">Flexible LFP / NCM</option><option value="fixed">Fixed 50 / 50 mix</option></select><p class="field-note" id="chemistry-note">Flexibility is assumed; real plant switchability is unmeasured.</p>
+<details id="advanced"><summary>Inventory & recovery</summary>
+<label for="h">Input stock</label><select id="h"><option value="0">No stock</option><option value="1">1 month</option><option value="3">3 months</option></select>
+<label for="sigma">Spare capacity</label><select id="sigma"><option value="0">None</option><option value="0.1">10% additional capacity</option><option value="0.5">50% additional capacity</option></select>
+<label for="L">Time to reach spare capacity</label><select id="L"><option value="6">6 months</option><option value="24">24 months</option></select><p class="field-note" id="ramp-note">Ramp time has no effect without spare capacity.</p></details>
+<p id="availability" class="field-note"></p><button id="pin" type="button" class="button">Pin for comparison</button><button id="share" type="button" class="quiet">Copy scenario link</button><span id="share-status" class="field-note" role="status"></span>
+</aside><div class="scenario-results"><div id="result" aria-live="polite" aria-atomic="true"></div>
+<div class="subsection-head"><div><h3>Concentration along the chain</h3><p class="subtle">Each bar shows one product’s leading retained supplier; rows do not trace material flows. Click a stage to inspect its data.</p></div><span class="legend-key"><i></i> Has a single-loss cut</span></div><div id="chain" class="chain"></div>
+<p class="source-note">Reference quantities mix production statistics, export proxies and imputed output. Concentration alone does not establish a disruption cut. Suppliers below the model’s 1% retention cutoff are omitted.</p>
+<div class="subsection-head"><div><h3>Minimal combinations that fail</h3><p class="subtle">Every shorter immediate predecessor stays below the threshold.</p></div><button id="download-cuts" type="button" class="quiet">Download cuts CSV ↓</button></div>
+<div class="filters cut-filters"><div><label for="cut-query">Country or product</label><input id="cut-query" type="search" placeholder="e.g. China, graphite"></div><div><label for="cut-size">Losses in combination</label><select id="cut-size"><option value="all">All combinations</option><option value="1">Single losses</option><option value="2">Two losses</option><option value="3">Three losses</option></select></div><div><label for="cut-sort">Sort by</label><select id="cut-sort"><option value="phi">Largest shortfall</option><option value="risk">Largest share of lower bound</option><option value="size">Fewest losses</option></select></div></div>
+<p id="cut-count" class="source-note" role="status"></p><div id="cut-list" class="cut-list"></div><p class="source-note">A minimal cut fails, with no shorter combination that fails. Shortfall is optimised after rerouting shipments, drawing stock and ramping spare capacity. Risk contributions overlap and do not add to 100%.</p>
+</div></div></section>
+<section id="minerals" class="chapter" aria-labelledby="minerals-title">
+<div class="section-top"><h2 id="minerals-title"><span class="section-no">02</span> Mineral production & refining</h2><span class="pill">2025 context · separate from the model</span></div>
+<p class="section-lede">Mining and refining have different geographic concentrations. These newer observations describe the market; they do not update the model’s frozen capacities or disruption probabilities.</p>
+<div class="data-grid"><div class="production-panel">
+<div class="filters"><div><label for="mineral">Mineral & process</label><select id="mineral"></select></div><div><label for="year">Year</label><select id="year"><option value="2025">2025</option><option value="2024">2024</option></select></div><div><label for="measure">Display</label><select id="measure"><option value="share">Share of published world total</option><option value="tonnes">Production, tonnes</option></select></div></div>
+<h3 id="production-title"></h3><p id="production-scope" class="subtle"></p><p id="production-change" class="production-change"></p><div id="production-chart" class="bar-chart"></div><p id="production-warning" class="source-note"></p>
+<details><summary>All production observations & source flags</summary><div class="table-wrap"><table id="production-table"></table></div></details>
+<p class="source-note">Source: <a href="https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries">USGS Mineral Commodity Summaries 2026</a>, frozen source bytes. 2025 values are generally estimates. Shares use the published rounded world total.</p><a href="context.csv" download class="download-link">Download production & refining data ↓</a>
+</div><div class="refining-panel"><div class="subsection-head"><div><p class="eyebrow">Processing concentration</p><h3>Largest producer’s refining share</h3></div><label class="check-label"><input id="all-refining" type="checkbox"> All minerals</label></div>
+<p class="subtle">Largest refining country, 2025. Leaders may differ by mineral; the source chart does not name them.</p><div id="refining-chart" class="bar-chart"></div>
+<p class="source-note">Source: <a href="https://www.iea.org/data-and-statistics/charts/market-size-and-top-refining-country-share-for-select-minerals-2025">IEA, Global Critical Minerals Outlook 2026</a>, chart updated 9 July 2026. CC BY 4.0. Refined output differs in scope from mined output.</p><details><summary>Refining data & market values</summary><div class="table-wrap"><table id="refining-table"></table></div></details>
+</div></div></section>
+<section id="compare" class="chapter" aria-labelledby="compare-title">
+<div class="section-top"><h2 id="compare-title"><span class="section-no">03</span> Compare the assumptions</h2><span class="subtle">Conditional scenarios, not forecasts</span></div>
+<div class="compare-grid"><div><h3>What changes from the reference?</h3><p class="subtle" id="comparison-note"></p><div id="comparison"></div><button id="clear-pin" type="button" class="text-button" hidden>Clear pinned scenario</button></div><div><h3 id="risk-title">Recipe flexibility changes the failure scenario</h3><p class="subtle" id="risk-scope"></p><div id="risk-chart"></div><p class="source-note">Intervals describe Monte Carlo sampling uncertainty conditional on fixed inputs. They exclude input and model uncertainty. Recorded policy onsets did worse than a constant baseline out of sample, so these are what-if scenarios.</p></div></div>
+<details class="wide-details"><summary>Capacity-source & competing-demand sensitivities</summary><p>These saved variants retain demand, including cases that already fail without an outage. Their probabilities have not been refitted. Japan’s cell energy uses an assumed voltage; German carbonate uses sold output. Neither is measured installed capacity.</p><div class="table-wrap"><table id="capacity-table"></table></div></details></section>
+<section id="evidence" class="chapter" aria-labelledby="evidence-title">
+<div class="section-top"><h2 id="evidence-title"><span class="section-no">04</span> Inspect the evidence</h2><a href="research.html">Full research tables ↗</a></div>
+<div class="evidence-intro"><p>Each model node is a country producing one product. <b>Production</b> comes from output statistics; <b>trade</b> uses exports as a proxy; <b>imputed</b> includes conversions or material requirements. These bases can change the conclusions.</p><p>There is no located capacity for natural-hazard calibration. Export restrictions are policies, not measured shutdowns. The model covers neither prices nor investment returns.</p></div>
+<div class="filters"><div><label for="node-query">Find a supplier</label><input id="node-query" type="search" placeholder="Country, product or source"></div><div><label for="node-product">Product</label><select id="node-product"><option value="all">All products</option></select></div><div><label for="node-basis">Capacity basis</label><select id="node-basis"><option value="all">All bases</option><option value="production">Production</option><option value="trade">Trade proxy</option><option value="imputed">Imputed</option></select></div><button id="download-nodes" type="button" class="quiet">Download nodes CSV ↓</button></div>
+<p id="node-count" class="source-note" role="status"></p><div class="table-wrap node-scroll"><table id="node-table"></table></div>
+<div class="method-grid"><details open><summary>What the model answers</summary><p>Over 24 months, minimise unmet demand subject to capacities, material balances, inventories and spare-capacity ramps. Failure means a strictly larger shortfall than the threshold. Cuts contain at most three losses, lasting 3, 6 or 12 months.</p><p>The shared network weights batteries and solar equally after dividing each sector’s shortage by its own annual reference output. This is not combined GWh or economic value.</p></details><details open><summary>What the probability means</summary><p>The exact lower bound L is the probability that at least one enumerated cut occurs under the saved policy-onset law. It is not a prediction of actual failure. U includes all states with more than three losses and can reach 100% without implying certain failure.</p><p>A Monte Carlo residual adds failures outside those cuts. Only reference configurations with saved runs display that estimate. Other settings show L and U alone.</p></details></div>
+<div id="provenance" class="provenance"></div><div class="source-links"><a href="https://github.com/symonyeal/Supply-Chain-Cuts/blob/main/docs/MODEL.md">Formulation</a><a href="https://github.com/symonyeal/Supply-Chain-Cuts/blob/main/docs/VALIDATION.md">Validation</a><a href="https://github.com/symonyeal/Supply-Chain-Cuts/blob/main/docs/SOURCES.md">Sources & licences</a><a href="https://github.com/symonyeal/Supply-Chain-Cuts/blob/main/SOURCES.lock">Frozen input hashes</a><a href="https://github.com/symonyeal/Supply-Chain-Cuts/blob/main/docs/CONTEXT-DATA.md">Context definitions</a></div></section>
+</main><footer class="wrap"><span>Supply Chain Cuts <span class="subtle">/ Public research</span></span><a href="https://github.com/symonyeal/Supply-Chain-Cuts">Source code ↗</a><span class="subtle">Explorer updated 27 October 2026</span></footer>
+<noscript><p class="wrap">Enable JavaScript to explore saved scenarios. Read the <a href="https://github.com/symonyeal/Supply-Chain-Cuts/blob/main/docs/FINDINGS.md">findings</a> or download the <a href="context.csv">context CSV</a>.</p></noscript>
+</body></html>

@@ -1,2 +1,4 @@
 data/** -text -whitespace
 SOURCES.lock -text whitespace=cr-at-eol
+site/context.js text eol=lf
+site/context.csv text eol=lf

@@ -1,0 +1,2 @@
+# Browser verification is separate from the numerical runtime.
+playwright==1.64.0

@@ -1913,6 +1913,17 @@
     "A70": "5Includes metal and nickel chloride."
    },
    "transform": "Country metal rows only, column K; qualifier in column L; excluded totals, chemicals, ferronickel/NPI, oxide and unspecified"
+  },
+  {
+   "path": "data/raw/iea/market-size-refining-2025-chart-options.json",
+   "url": "https://www.iea.org/data-and-statistics/charts/market-size-and-top-refining-country-share-for-select-minerals-2025",
+   "retrieved": "2026-10-27",
+   "licence": "CC BY 4.0",
+   "committed": true,
+   "sha256": "3756ed36c261c456eb1a177b813588da184426f01d2c729135ce3c2458c00f0a",
+   "bytes": 2389,
+   "transform": "HTML-unescaped data-chart-chartoptions attribute, parsed and pretty-printed; all source series retained",
+   "source_html_sha256": "1662f20d700b3adf876f8c8980642d953ee5b9cad78ea35718a18ee7a6675cbf"
   }
  ]
 }
