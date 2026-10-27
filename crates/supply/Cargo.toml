@@ -1,0 +1,12 @@
+[package]
+name = "supply"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+cut-risk = { path = "../cut-risk" }
+sc-data = { path = "../sc-data" }
+sc-model = { path = "../sc-model" }
+sc-site = { path = "../sc-site" }
+serde_json = { workspace = true }

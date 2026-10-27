@@ -1,4 +1,4 @@
-"""Optional JSON-lines exact-union backend; recourse remains in SciPy."""
+"""JSON-lines bridge to the native exact-union executable, for oracle comparisons."""
 # V: country/product nodes; p: onset probabilities; rho: country-shock share.
 # D: outage months; w: categorical weights; L: exact cut-union probability.
 import json
@@ -34,7 +34,7 @@ def batch(inputs, *, binary=None):
 
 
 def exact_union(V, p, rho, durations, weights, cuts, *, binary=None):
-    """P(any duration cut), using the optional Rust executable."""
+    """P(any duration cut), using the native Rust executable."""
     row = {"V": [list(v) for v in V], "p": [float(x) for x in p], "rho": float(rho),
            "durations": [int(d) for d in durations], "weights": [float(w) for w in weights],
            "cuts": [[int(d) for d in cut] for cut in cuts]}

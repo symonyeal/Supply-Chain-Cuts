@@ -1,6 +1,22 @@
 # Decisions
 
-## Explorer and Rust probability kernel, 2026-10-27
+## Native Rust production pipeline, 2026-10-27
+
+This implements the user's native-execution amendment and supersedes the initial
+optional-kernel scope below.
+
+| Decision | Reason |
+| --- | --- |
+| Make `supply` the normal source-to-explorer and scenario-computation entry point. | Source verification, context, networks, recourse, cut search, exact probability, residual sampling, payload generation and serving run natively without launching Python. |
+| Keep Python as the independent oracle and historical calibration toolkit. | Separate implementations can detect port errors; existing severity studies, fitted rates and immutable result bundles retain their provenance. |
+| Keep `chokepoint.risk.exact_union` on its Python backend by default. | The native path is `supply`; an oracle that silently called the native kernel would no longer be independent, and Python checks would need a Rust build. |
+| Require an explicit frozen onset law for new native risk runs. | Reusing a declared law must not imply that the port refitted or validated policy predictions. |
+| Link the pinned HiGHS 1.12.0 source through its C API. | The recourse comparison matches all 23,848 numerical fields across 192 cases and 5,962 states; the source revision, tree hash and MIT licence are recorded with the vendored code. |
+| Treat incomplete searches as incomplete. | A time limit does not establish an exhaustive cut list or a certified probability upper bound. |
+| Retain reference defaults and expose scenario configuration. | New capacities, thresholds, stock, spare capacity or recipes must remain explicit changes to the declared scenario. |
+| Limit numerical equivalence claims to the measured range. | The recourse comparison uses T = 24 months with limited stock cases; other horizons and a whole-pipeline speedup are unmeasured. |
+
+## Initial explorer and optional-kernel decisions, 2026-10-27
 
 | Decision | Reason |
 | --- | --- |

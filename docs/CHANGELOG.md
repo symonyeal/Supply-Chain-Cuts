@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-10-27: native Rust pipeline
+
+- Add the `supply` executable: source verification, observational context, networks,
+  recourse LPs on vendored HiGHS 1.12.0, lattice cut enumeration, exact cut-union
+  bracket, residual Monte Carlo, explorer payload and a local static server.
+- Native risk runs take an explicit frozen onset law and refuse a cut certificate from
+  a different network, configuration or incomplete search.
+- Python remains the default backend of `chokepoint` and the independent oracle; CI
+  compares networks, LP certificates, cut lists, brackets, sampling streams and the
+  rebuilt explorer payload with it.
+
 ## 2026-10-27: explorer redesign and optional Rust kernel
 
 - Add a responsive supply-chain atlas with battery, solar and shared-network settings,

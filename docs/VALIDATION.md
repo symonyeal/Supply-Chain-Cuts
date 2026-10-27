@@ -1,6 +1,28 @@
 # Validation
 
-## Explorer and optional Rust kernel, 2026-10-27
+## Native Rust pipeline, 2026-10-27
+
+| Check | Measured result |
+| --- | --- |
+| Recourse primal/dual comparison, `analysis/check_native_model.py` | 192 cases, 5,962 states and 23,848 numerical fields; no structural, missing-key or numerical differences; every compared number binary64-identical |
+| Native data comparison, `analysis/check_native_data.py` | 62 network configurations plus context JSON and exact CSV bytes: 64 checks with no differences |
+| Native explorer builder, `analysis/check_native_site.py` | 90,912 JSON nodes, including 63,956 scalar/empty-container leaves; full-precision and presentation outputs match Python, and presentation output matches committed `site/data.js` |
+| Exact probability kernel, `analysis/check_rust.py` | All 417 saved configurations and 15 boundary cases binary64-identical; saved-value and two-way key differences empty |
+| Comparator controls | Incorrect numbers, missing keys and structural changes are rejected before the comparisons are accepted |
+
+The native recourse range uses the reference T = 24 months. Stock cases are limited
+to the comparison inputs; other horizons are unmeasured. These results establish
+equivalence for their stated inputs, not new empirical support for capacities,
+chemistry switchability or policy probabilities. Full native cut-search and
+whole-pipeline checks are separate from the LP and payload comparisons.
+Whole-pipeline performance is unmeasured.
+
+The `supply` source implements verification, context and network construction,
+recourse, cut enumeration, frozen-law risk, payload building and serving directly.
+Python remains the independent oracle and historical calibration toolkit. The new
+market observations remain separate from the frozen reference model.
+
+## Earlier explorer and optional-kernel checks, 2026-10-27
 
 | Check | Result |
 | --- | --- |
@@ -19,8 +41,8 @@
 | Static checks | Ruff, Rustfmt, Clippy with warnings denied, JavaScript syntax and pip dependency check passed |
 | Frozen scientific output | No changes to existing result bundles, reference payload or historical USGS/BACI inputs |
 
-These checks cover the optional probability kernel and explorer. The new context does
-not certify new cut lists or refit probabilities. Browser values use the existing
+These earlier checks cover the initial optional probability kernel and explorer.
+The new context does not certify new cut lists or refit probabilities. Browser values use the existing
 five-significant-digit payload; parity uses full-precision result bundles. The batch
 timing does not measure whole-pipeline or browser acceleration.
 

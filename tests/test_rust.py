@@ -1,7 +1,5 @@
 """Optional executable protocol and boundary checks against the Python oracle."""
 # L: exact cut union; V: country/product nodes; rho: common-shock share.
-import os
-
 import pytest
 
 from analysis.check_rust import bits, differences, edges
@@ -25,8 +23,8 @@ def test_backend_selection_is_explicit():
         exact_union(**row, backend='missing')
 
 
-@pytest.mark.skipif(not os.environ.get('CUT_RISK_BIN'), reason='CUT_RISK_BIN not set')
-def test_rust_boundary_parity_and_bad_request():
+def test_rust_boundary_parity_and_bad_request(native, monkeypatch):
+    monkeypatch.setenv('CUT_RISK_BIN', str(native('cut-risk')))
     cases = edges()
     out = batch([case['input'] for case in cases])
     assert [row['bits'] for row in out] == [bits(exact_union(**case['input']))

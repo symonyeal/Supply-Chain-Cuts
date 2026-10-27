@@ -1,5 +1,11 @@
 # Sources
 
+## Native solver, 2026-10-27
+
+| Source | Used for | Status |
+| --- | --- | --- |
+| [ERGO-Code/HiGHS](https://github.com/ERGO-Code/HiGHS/tree/755a8e027a99a8d4ecf153a8dde4b2a767cdf384), version 1.12.0, revision `755a8e027a99a8d4ecf153a8dde4b2a767cdf384` | Native recourse primal and dual LP solves through the HiGHS C API | inspected 2026-10-27: vendored source metadata and MIT licence; `crates/sc-model/UPSTREAM.json` records the revision and complete source-tree digest; `crates/sc-model/HiGHS/LICENSE.txt` retains the licence |
+
 ## Explorer observational context, 2026-10-27
 
 | Source | Used for | Status |

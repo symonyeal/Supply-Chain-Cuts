@@ -1,4 +1,4 @@
-// Draws site/data.js (written by analysis/build_site.py). Each section draws when it comes into
+// Draws site/data.js (written by supply build; reference builder analysis/build_site.py). Each section draws when it comes into
 // view and redraws when a control it reads changes. Colours are the theme tokens in style.css.
 "use strict";
 
