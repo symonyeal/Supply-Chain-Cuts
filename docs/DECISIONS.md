@@ -16,6 +16,14 @@ optional-kernel scope below.
 | Retain reference defaults and expose scenario configuration. | New capacities, thresholds, stock, spare capacity or recipes must remain explicit changes to the declared scenario. |
 | Limit numerical equivalence claims to the measured range. | The recourse comparison uses T = 24 months with limited stock cases; other horizons and a whole-pipeline speedup are unmeasured. |
 
+## Plain-language overview, 2026-10-27
+
+| Decision | Reason |
+| --- | --- |
+| Open the site on a plain-language overview and move the explorer to `explore.html`. | Readers reported that the explorer's terms (cut sets, L, U, φ) gave no usable insight; each overview section states one finding and shows one exhibit. |
+| Read every overview number from `data.js` and `context.js`. | The page cannot drift from the certified results; the browser check compares its counts with the saved configurations. |
+| Show the policy comparison as weak-point counts, with stress-test odds as a secondary figure. | Counts of single losses that still fail are certified exactly; the odds depend on a policy-onset law that failed its predictive test. |
+
 ## Initial explorer and optional-kernel decisions, 2026-10-27
 
 | Decision | Reason |

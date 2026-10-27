@@ -1,5 +1,5 @@
-"""Exercise saved scenarios, filters, downloads, links and themes in a real browser."""
-# R: repository root; o: evidence directory; u: local or deployed explorer URL.
+"""Exercise the overview and the explorer: scenarios, filters, downloads, links, themes."""
+# R: repository root; o: evidence directory; u: local or deployed site URL; x: explorer URL.
 # W: viewport widths; p: browser page; c: one saved configuration.
 from __future__ import annotations
 
@@ -54,8 +54,8 @@ PROBE = """() => {
     .reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
   const contrast = (a,b) => {const x=lum(resolve(a)),y=lum(resolve(b));
     return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
-  const chain=document.getElementById('chain'), bounds=chain.getBoundingClientRect();
-  const chainOverflow=[...chain.querySelectorAll('.stage-caption')].some(e=>
+  const chain=document.getElementById('chain'), bounds=chain?.getBoundingClientRect();
+  const chainOverflow=!!chain&&[...chain.querySelectorAll('.stage-caption')].some(e=>
     e.getBoundingClientRect().bottom>bounds.bottom+1);
   return {overflow:d.scrollWidth>d.clientWidth+1,missing,tiny,
     chainOverflow,
@@ -63,6 +63,33 @@ PROBE = """() => {
     accent:contrast('--accent','--bg'),button:contrast('--accent-ink','--accent'),
     mark:contrast('--context','--soft'),bg:cs.getPropertyValue('--bg').trim()};
 }"""
+
+
+OVERVIEW = """() => {
+  const R = 'a0.25_h0_s0_L6_D12', n = B => B.configs[R].cuts.filter(c => c.length === 1).length;
+  const count = s => document.querySelectorAll(s).length;
+  return {fact: document.querySelector('.fact b').textContent,
+    expected: String(n(DATA.choice) + n(DATA.pv)),
+    weak: count('#chain-liion .row.weak, #chain-pv .row.weak'),
+    duration: count('#duration .dot.long'), policies: count('#policies .policy-row:not(.head)'),
+    minerals: count('#mine-refine .dot.long')};
+}"""
+
+
+def probe(p, report: dict, o: Path, name: str, width: int):
+    """Check layout, labels, type size and contrast in both themes; screenshot each theme."""
+    for theme in ('light', 'dark'):
+        p.evaluate('(theme)=>document.documentElement.dataset.theme=theme', theme)
+        x = p.evaluate(PROBE)
+        assert not any(x[k] for k in ('overflow', 'missing', 'tiny', 'chainOverflow')), (name, x)
+        for key in ('text', 'muted', 'accent', 'button'):
+            assert x[key] >= 4.5, (name, key, x)
+        assert x['mark'] >= 3, (name, x)
+        p.screenshot(path=str(o / f'{name}-{width}-{theme}.png'), full_page=name == 'overview')
+        report['views'].append({'page': name, 'width': width, 'theme': theme, **x})
+    before = p.evaluate('getComputedStyle(document.body).backgroundColor')
+    p.locator('#theme').click()
+    assert p.evaluate('getComputedStyle(document.body).backgroundColor') != before
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -86,7 +113,20 @@ def check(u: str, o: Path, preview: Path | None = None) -> dict:
         p = browser.new_page(viewport={'width': 1440, 'height': 1000})
         p.on('pageerror', lambda error: report['errors'].append(str(error)))
         p.goto(u)
+        p.wait_for_selector('#duration .row')
+        report['overview'] = p.evaluate(OVERVIEW)
+        x = report['overview']
+        assert x == {'fact': x['expected'], 'expected': '9', 'weak': 9, 'duration': 9,
+                     'policies': 5, 'minerals': 4}, x
+        for width in (1440, 768, 390):
+            p.set_viewport_size({'width': width, 'height': 1000 if width > 600 else 844})
+            p.goto(u)
+            probe(p, report, o, 'overview', width)
+        p.set_viewport_size({'width': 1440, 'height': 1000})
+        p.locator('nav a[href="explore.html"]').click()
         p.wait_for_selector('.cut-row')
+        x = p.url.split('?')[0]
+        assert x.endswith('explore.html'), x
         report['configurations'] = p.evaluate(SWEEP)
         assert len(report['configurations']) == 417
         p.locator('#reset').click()
@@ -137,24 +177,11 @@ def check(u: str, o: Path, preview: Path | None = None) -> dict:
         assert '2024' in p.locator('#production-scope').inner_text()
         for width in (1440, 768, 390):
             p.set_viewport_size({'width': width, 'height': 1000 if width > 600 else 844})
-            p.goto(u)
-            for theme in ('light', 'dark'):
-                p.evaluate('(theme)=>document.documentElement.dataset.theme=theme', theme)
-                probe = p.evaluate(PROBE)
-                assert not any(probe[k] for k in (
-                    'overflow', 'missing', 'tiny', 'chainOverflow')), probe
-                for key in ('text', 'muted', 'accent', 'button'):
-                    assert probe[key] >= 4.5, (key, probe)
-                assert probe['mark'] >= 3, probe
-                p.screenshot(path=str(o / f'page-{width}-{theme}.png'))
-                for selector in ('#result', '#chain', '#minerals', '#compare'):
-                    p.locator(selector).screenshot(
-                        path=str(o / f'{selector[1:]}-{width}-{theme}.png'))
-                report['views'].append({'width': width, 'theme': theme, **probe})
-            before = p.evaluate('getComputedStyle(document.body).backgroundColor')
-            p.locator('#theme').click()
-            assert p.evaluate('getComputedStyle(document.body).backgroundColor') != before
-        p.goto(u + '?sector=joint&alpha=0.5&h=3&sigma=0.5&chemistry=bad')
+            p.goto(x)
+            for selector in ('#result', '#chain', '#minerals', '#compare'):
+                p.locator(selector).screenshot(path=str(o / f'{selector[1:]}-{width}.png'))
+            probe(p, report, o, 'explorer', width)
+        p.goto(x + '?sector=joint&alpha=0.5&h=3&sigma=0.5&chemistry=bad')
         assert p.locator('#alpha').input_value() == '0.25'
         assert p.locator('#h').input_value() == '0'
         assert p.locator('#chemistry').input_value() == 'choice'
@@ -163,7 +190,6 @@ def check(u: str, o: Path, preview: Path | None = None) -> dict:
             p.set_viewport_size({'width': 1200, 'height': 630})
             p.goto(u)
             p.evaluate("document.documentElement.dataset.theme='light'")
-            p.locator('#explore').scroll_into_view_if_needed()
             preview.parent.mkdir(parents=True, exist_ok=True)
             p.screenshot(path=str(preview))
         browser.close()

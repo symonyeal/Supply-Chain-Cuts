@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-10-27: plain-language overview
+
+- Make the home page a plain-language summary: who makes each battery and solar part,
+  which single losses cause a major shortfall, how long they must last, what stockpiles
+  and spare capacity change, mining versus refining concentration, the stress-test odds
+  and what the model does not cover. Every number is read from the saved results.
+- Move the scenario explorer to `explore.html` with plainer result labels. Show readable
+  country names (BACI's Côte d'Ivoire row is double-encoded in the frozen source file).
+- Extend the browser check to the overview: its counts must match the saved results,
+  and both pages must pass layout, label, type-size and contrast checks at three widths
+  in both themes.
+
 ## 2026-10-27: native Rust pipeline
 
 - Add the `supply` executable: source verification, observational context, networks,
