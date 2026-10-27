@@ -29,6 +29,13 @@ transcription. `chokepoint/brute.py` is the independent check: it enumerates dis
 and calls φ directly, and shares no code with `cuts.py`. Agreement of the two cut-set
 lists is the certificate; a shared helper would destroy it.
 
+The native pipeline in `crates/` is a second transcription of the same mathematics,
+not a source of new results: `sc-model` (recourse LP), `supply/src/cuts.rs` (lattice
+enumeration), `cut-risk` (exact union, bracket, sampling), `sc-data` (networks, context)
+and `sc-site` (explorer payload). It shares no code with the Python modules, which stay
+the default backend and the oracle. A change to the model lands in both, and the
+`analysis/check_native_*.py` comparisons must still agree before it is finished.
+
 ## Code
 
 Code transcribes the mathematics: symbol names from the documents, the problem stated in
@@ -53,10 +60,17 @@ Single-context: `CONTEXT.md` and `docs/adr/` at the root, created when needed. S
 ## Before a change is finished
 
 ```text
+cargo build --workspace --release --locked
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets --release --locked -- -D warnings
+cargo test --workspace --release --locked
 python -m pytest -q
 python -m ruff check .
 python -m pip check
 ```
+
+Native tests skip until the release build exists in `$CARGO_TARGET_DIR/release`
+(default `target/release`); a finished change runs them, not skips them.
 
 A behavioural change states its effect in numbers, with the instance and revision.
 Committed result bundles carry the revision that produced them.

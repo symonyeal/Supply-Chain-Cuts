@@ -1,5 +1,15 @@
 # Supply-Chain-Cuts: design
 
+Native Rust execution amendment (2026-10-27, explicit user follow-up): make Rust the
+normal execution path from frozen inputs through computation and explorer data. Extend
+the validated probability kernel with native source/context processing, network/recourse
+evaluation and a reproducible CLI. Keep Python as an independent oracle and retain a
+Python runtime stage only where a comparison demonstrates its advantage or a documented
+numerical incompatibility prevents faithful replacement. Preserve reference parameters,
+complete cut-list checks, source hashes, random laws and numerical certificates. A Rust
+CLI that only launches Python does not satisfy this amendment. Measure stage timings;
+do not project a kernel speedup onto the full pipeline.
+
 Explorer and computation extension (2026-10-27, user request): redesign the public
 explorer for both a general overview and advanced research controls. Present saved
 battery, solar and shared-network scenarios with explicit unsupported states rather

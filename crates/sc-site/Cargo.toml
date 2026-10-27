@@ -1,0 +1,9 @@
+[package]
+name = "sc-site"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+cut-risk = { path = "../cut-risk" }
+serde_json = { workspace = true }

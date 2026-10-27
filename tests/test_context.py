@@ -96,7 +96,11 @@ def test_offline_hash_verification():
 def test_deterministic_artifacts_and_complete_download(c):
     js, text = outputs(c)
     assert outputs(build()) == (js, text)
-    assert (R / "site/context.js").read_bytes() == js.encode("utf8")
+    saved = (R / "site/context.js").read_text(encoding="utf8")
+    prefix = "window.CONTEXT="
+    assert saved.startswith(prefix) and saved.endswith(";\n")
+    # Rust's JSON serializer may order object keys differently; every value must match.
+    assert json.loads(saved[len(prefix):-2]) == json.loads(js[len(prefix):-2])
     assert (R / "site/context.csv").read_bytes() == text.encode("utf8")
     rows = list(csv.DictReader(io.StringIO(text)))
     assert len(rows) == 256

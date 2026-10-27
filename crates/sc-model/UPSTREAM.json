@@ -1,0 +1,10 @@
+{
+  "upstream": "https://github.com/ERGO-Code/HiGHS",
+  "revision": "755a8e027a99a8d4ecf153a8dde4b2a767cdf384",
+  "version": "1.12.0",
+  "licence": "MIT",
+  "files": 527,
+  "bytes": 7580036,
+  "tree_sha256": "47a908223d526c437f818e5f5b3ada4560ee1a100fcdf051adaf3fd05b29e2e4",
+  "digest_rule": "sorted relative POSIX path UTF8, NUL, file bytes"
+}
