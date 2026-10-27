@@ -1,5 +1,15 @@
 # Sources
 
+## Explorer observational context, 2026-10-27
+
+| Source | Used for | Status |
+| --- | --- | --- |
+| USGS, Mineral Commodity Summaries 2026 data release, [DOI 10.5066/P14BRF29](https://doi.org/10.5066/P14BRF29), `MCS2026_Commodities_Data.csv` and metadata XML | Country and world production for eight commodity/process pairs, 2024 and 2025; raw values, estimate and withheld flags | inspected 2026-10-27; existing frozen CC0-1.0 source and metadata hashes verified by the builder; metadata defines em dash as zero |
+| IEA, [Market size and top refining country share for select minerals, 2025](https://www.iea.org/data-and-statistics/charts/market-size-and-top-refining-country-share-for-select-minerals-2025) | All 16 chart points: leading refining-country share and market size in billion USD; no country identity inferred | inspected 2026-10-27; chart-options series extracted from original HTML, frozen and SHA-256 locked; chart credit states IEA, Licence: CC BY 4.0; source spelling Geranium preserved |
+
+The observational context is independent from the frozen reference model.
+Transformations and limitations are in [CONTEXT-DATA](CONTEXT-DATA.md).
+
 A method is validated by the source it implements. Cite only what this file records, and
 add the entry in the change that uses it. Status is **inspected** (read for this project,
 with what was read and when) or **cited** (not yet read). Data sources, endpoints and

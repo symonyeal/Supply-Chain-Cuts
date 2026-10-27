@@ -1,5 +1,16 @@
 # Supply-Chain-Cuts: design
 
+Explorer and computation extension (2026-10-27, user request): redesign the public
+explorer for both a general overview and advanced research controls. Present saved
+battery, solar and shared-network scenarios with explicit unsupported states rather
+than interpolating missing configurations. Add primary-source mineral production and
+demand context with its own vintage, units and source lock, separate from frozen
+reference capacities and policy rates. Existing result bundles remain immutable.
+An optional Rust implementation of the exact cut-union recursion may accelerate the
+probability calculation after comparison with the Python oracle on the complete saved
+configuration range and boundary cases. Retain the SciPy recourse LP and independent
+cut enumerators. No new forecast, hazard calibration or refitted outage law is implied.
+
 Source sensitivity (2026-10-20, approved project follow-up): retain the reference
 nodes, demand and every non-nickel capacity. Replace matching retained refined-nickel
 export proxies with the USGS 2023 Table 12 metal observations, keeping the year and

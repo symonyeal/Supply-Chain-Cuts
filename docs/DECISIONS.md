@@ -1,5 +1,16 @@
 # Decisions
 
+## Explorer and Rust probability kernel, 2026-10-27
+
+| Decision | Reason |
+| --- | --- |
+| Keep saved model runs separate from 2024–2025 market observations. | Updating concentration context does not certify new capacities, cut lists or policy-onset probabilities. |
+| Use local browser assets and native controls for the main explorer. | The result can be inspected without a chart-library download; source flags and numbers remain available without hover. |
+| Disable unavailable shared-network configurations. | Six saved configurations per recipe model do not justify interpolating inventory, spare-capacity or 50% threshold results. |
+| Port only the exact cut-union kernel to an optional Rust backend. | All 432 compared outputs match bit for bit; the main verification batch took 30.216 s in Python and 5.044 s through Rust. LP, sampling and fitting remain on the established paths. |
+| Keep the Python backend as the default. | Single-process batch timing does not establish a benefit for every isolated subprocess call. |
+| Gate Pages deployment on successful checks for its exact SHA. | The published revision must have numerical, source, parity and browser evidence. |
+
 Each entry: the decision, the alternatives measured, the measurement, the date.
 
 ## Nickel source sensitivity, 2026-10-20

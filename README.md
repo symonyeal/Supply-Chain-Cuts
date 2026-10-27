@@ -2,6 +2,28 @@
 
 **Explorer: https://symonyeal.github.io/Supply-Chain-Cuts/**
 
+![Supply-chain explorer with scenario controls and certified battery disruption results](site/preview.png)
+
+## Explore the results
+
+The explorer compares certified battery, solar and shared-network disruption scenarios.
+Choose the shortfall threshold, maximum outage, battery recipes, input stock and spare
+capacity. Pin a scenario to compare it with another, share its URL, filter the minimal
+cut sets, inspect their shorter-outage checks, and download the displayed cuts or nodes.
+Unavailable shared-network settings are disabled; the browser selects saved results
+without interpolating or solving a new optimisation.
+
+The mineral view adds 240 USGS production observations for 2024–2025 and 16 IEA refining
+concentration observations for 2025. It preserves estimates, withheld values, country
+aggregates and rounded world totals. These newer observations are context: the historical
+model capacities, policy rates and certified result bundles retain their original inputs.
+[Definitions and limitations](docs/CONTEXT-DATA.md) explain the distinction.
+
+The page uses local HTML, CSS and JavaScript with no runtime library or font downloads.
+The [full research tables](https://symonyeal.github.io/Supply-Chain-Cuts/research.html)
+retain the severity study, registered hypotheses, natural-hazard scenarios and detailed
+reference results. That technical appendix uses Plotly from its existing pinned CDN URL.
+
 ## In plain terms
 
 The batteries in phones and electric cars, and solar panels, pass through a long chain of
@@ -108,7 +130,21 @@ python run_chemistry_risk.py CUT_RUN OUT_RUN       # frozen-law recipe-choice ri
 python run_severity.py RUN                        # registered trade responses and loss scenarios
 python analysis/build_site.py LIION_RUN PV_RUN JOINT_RUN SEVERITY_RUN  # generated site/data.js
 python analysis/check_residual.py BEFORE AFTER    # unchanged legacy results and W1 checks
+python analysis/build_context.py                  # hash-check and rebuild context JS/CSV offline
 ```
+
+Install the pinned numerical dependencies with `python -m pip install -r requirements.txt`.
+Serve the explorer with `python -m http.server --directory site 8000` and open
+`http://localhost:8000/`. Browser verification additionally needs
+`python -m pip install -r requirements-browser.txt` and
+`python -m playwright install chromium`; run
+`python analysis/check_explorer.py --out evidence/browser`.
+
+An optional [Rust backend](docs/RUST.md) implements the exact cut-union probability
+kernel. Python remains the default. The Rust comparison checks all 417 saved
+configurations and 15 boundary cases using binary64 identity; the recourse LP, fitting
+and Monte Carlo sampling remain in Python/SciPy. CI runs both numerical and browser
+checks, and Pages deploys the successful checked revision.
 
 System Python 3.14 with numpy and scipy (HiGHS). Raw inputs are frozen in `data/` with URL,
 date, SHA-256 and licence in `SOURCES.lock`; sources whose licence is unverified stay out

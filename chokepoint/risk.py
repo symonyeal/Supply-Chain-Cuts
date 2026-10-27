@@ -41,8 +41,13 @@ def state_probability(V, p, rho, durations, weights, D):
     return float(prob)
 
 
-def exact_union(V, p, rho, durations, weights, cuts):
+def exact_union(V, p, rho, durations, weights, cuts, *, backend="python"):
     """P(any minimal duration cut is contained in Z), by a memoised decision recursion."""
+    if backend == "rust":
+        from chokepoint.rust import exact_union as rust_union
+        return rust_union(V, p, rho, durations, weights, cuts)
+    if backend != "python":
+        raise ValueError("backend must be python or rust")
     _, w, groups, s, q = _parameters(V, p, rho, durations, weights)
     C = tuple(sorted({tuple((v, int(D)) for v, D in enumerate(S) if D) for S in cuts}))
     relevant = {v for S in C for v, _ in S}

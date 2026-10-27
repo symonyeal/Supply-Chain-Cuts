@@ -9,6 +9,9 @@ on:
 jobs:
   checks:
     runs-on: ubuntu-latest
+    env:
+      CARGO_TARGET_DIR: ${{ github.workspace }}/evidence/rust-target
+      CUT_RISK_BIN: ${{ github.workspace }}/evidence/rust-target/release/cut-risk
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -16,6 +19,26 @@ jobs:
           python-version: "3.14"
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -r requirements.txt
-      - run: python -m pytest -q -m "not slow"
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.99.1"
+          components: clippy, rustfmt
+      - run: cargo build --release --locked --manifest-path crates/cut-risk/Cargo.toml
+      - run: cargo fmt --check --manifest-path crates/cut-risk/Cargo.toml
+      - run: cargo clippy --locked --manifest-path crates/cut-risk/Cargo.toml -- -D warnings
+      - run: python -m pytest -q --basetemp evidence/pytest
       - run: python -m ruff check .
       - run: python -m pip check
+      - run: python -m analysis.check_rust --binary "$CUT_RISK_BIN" --out evidence/rust
+      - run: python analysis/build_context.py
+      - run: git diff --exit-code -- site/context.js site/context.csv
+      - run: python -m pip install -r requirements-browser.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: python analysis/check_explorer.py --out evidence/browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verification
+          path: |
+            evidence/rust/*.json
+            evidence/browser/*

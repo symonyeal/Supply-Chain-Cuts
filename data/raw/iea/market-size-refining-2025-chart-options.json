@@ -1,0 +1,133 @@
+{
+  "series": [
+    {
+      "name": "Base metals",
+      "colorIndex": 18,
+      "data": [
+        {
+          "name": "Aluminium",
+          "x": 60,
+          "y": 310.6
+        },
+        {
+          "name": "Copper",
+          "x": 47,
+          "y": 345.5
+        },
+        {
+          "name": "Zinc",
+          "x": 49,
+          "y": 45.3
+        },
+        {
+          "name": "Lead",
+          "x": 42,
+          "y": 27.0
+        }
+      ]
+    },
+    {
+      "name": "Strategic minor minerals",
+      "colorIndex": 15,
+      "data": [
+        {
+          "name": "Antimony",
+          "x": 74,
+          "y": 4.28
+        },
+        {
+          "name": "Titanium",
+          "x": 69,
+          "y": 2.58
+        },
+        {
+          "name": "Gallium",
+          "x": 99,
+          "y": 0.36
+        },
+        {
+          "name": "Geranium",
+          "x": 74,
+          "y": 0.4
+        },
+        {
+          "name": "Tungsten",
+          "x": 79,
+          "y": 0.21
+        },
+        {
+          "name": "Indium",
+          "x": 70,
+          "y": 0.6
+        },
+        {
+          "name": "Tellurium",
+          "x": 77,
+          "y": 0.16
+        },
+        {
+          "name": "Tantalum",
+          "x": 46,
+          "y": 2.12
+        }
+      ]
+    },
+    {
+      "name": "Battery materials",
+      "colorIndex": 20,
+      "data": [
+        {
+          "name": "Lithium",
+          "x": 74,
+          "y": 28.85
+        },
+        {
+          "name": "Nickel",
+          "x": 45,
+          "y": 60.22
+        },
+        {
+          "name": "Cobalt",
+          "x": 76,
+          "y": 13.93
+        }
+      ]
+    },
+    {
+      "name": "Magnet rare earths",
+      "colorIndex": 12,
+      "data": [
+        {
+          "name": "Rare earths",
+          "x": 85,
+          "y": 6.4
+        }
+      ]
+    }
+  ],
+  "plotOptions": {
+    "scatter": {
+      "dataLabels": {
+        "enabled": true,
+        "allowOverlap": true,
+        "format": "{point.name}"
+      }
+    }
+  },
+  "yAxis": {
+    "type": "logarithmic",
+    "title": {
+      "text": "billion USD"
+    }
+  },
+  "xAxis": {
+    "min": 30,
+    "max": 100,
+    "title": {
+      "text": "Top 1 refining country share"
+    },
+    "labels": {
+      "format": "{value}%"
+    }
+  }
+}

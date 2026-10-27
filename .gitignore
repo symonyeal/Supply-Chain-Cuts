@@ -24,3 +24,7 @@ data/raw/supplement/local/
 # Local working material: superseded screenshots, browser profiles, unadopted probes
 # and source extracts whose licence is unverified.
 local/
+
+# Build and CI evidence; publication assets are explicitly stored in site/.
+target/
+evidence/

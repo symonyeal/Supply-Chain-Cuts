@@ -1,5 +1,29 @@
 # Validation
 
+## Explorer and optional Rust kernel, 2026-10-27
+
+| Check | Result |
+| --- | --- |
+| Baseline full Python suite before changes | 45 passed in 134.12 s |
+| Full Python suite with Rust executable after implementation | 55 passed in 149.74 s |
+| Full-precision Python/Rust comparison | 432 probabilities binary64-identical: 417 saved configurations and 15 boundary cases; no missing keys or saved-value differences |
+| Comparator negative controls | Incorrect probability and disjoint-key cases rejected |
+| Independent timing of the same complete input batch | Python 30.216494 s; Rust including process/JSON 5.043552 s; 5.991 times faster for this batch |
+| Source manifest | 131 sources checked; 76 permitted local-only inputs absent; no committed source missing or changed |
+| Offline observational context | 240 production records, 16 refining points, 16 summaries; deterministic JS and 256-row CSV |
+| IEA reacquisition | Named chart extracted from the live source and matched the frozen numerical JSON SHA-256 |
+| Browser configuration sweep | All 417 saved configurations display the expected cut counts, singletons and lower bound |
+| Browser interaction checks | Filtered cut/node downloads, reset, scenario pinning, URL reload, unavailable shared settings, malformed settings and theme button passed |
+| Responsive views | 1440, 768 and 390 px in light and dark; no page overflow, unlabelled form inputs, text below 12 px or chain-caption overflow |
+| Theme contrast | Muted text 5.03:1 light / 8.44:1 dark; accent 6.07:1 / 9.13:1; chart mark/track contrast at least 3:1 |
+| Static checks | Ruff, Rustfmt, Clippy with warnings denied, JavaScript syntax and pip dependency check passed |
+| Frozen scientific output | No changes to existing result bundles, reference payload or historical USGS/BACI inputs |
+
+These checks cover the optional probability kernel and explorer. The new context does
+not certify new cut lists or refit probabilities. Browser values use the existing
+five-significant-digit payload; parity uses full-precision result bundles. The batch
+timing does not measure whole-pipeline or browser acceleration.
+
 What must be checked, how, and what has been. A check is a certificate (feasibility, a
 duality gap, a known optimum from a source), never an output snapshot.
 

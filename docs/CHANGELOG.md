@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-10-27: explorer redesign and optional Rust kernel
+
+- Add a responsive supply-chain atlas with battery, solar and shared-network settings,
+  input-stock and recovery controls, pinned comparisons, saved scenario URLs, cut-size
+  and supplier filters, and CSV downloads. Keep full reference research tables accessible.
+- Expose all 417 saved configurations without interpolation. Explain conditional
+  probability, unsupported settings, overlapping contributions and source-basis limits.
+- Add 240 USGS production records for 2024–2025 and 16 frozen IEA refining observations
+  for 2025, with raw flags, source hashes, world-total denominators and downloadable data.
+- Add an opt-in Rust exact-union backend, full-range binary64 comparator and measured
+  batch timing. Retain the reference LP, independent enumerators and Python default.
+- Add browser verification across the full saved range, downloads, URL round trips,
+  invalid settings and six viewport/theme pairs. Gate Pages on the checked revision.
+
 ## v0.3.0 — 2026-10-17: chemistry choice, residual estimator and severity study
 
 - Approved shared-capacity LFP/NCM recipes: five Chinese singletons and seven headline
