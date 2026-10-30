@@ -190,11 +190,8 @@ $("chemistry-table").innerHTML = `<thead><tr><th>Network</th><th>Threshold</th><
         `<td>L = ${pct(f.L, 3)}; ${pct(f.estimate, 3)} [${pct(f.ci95[0], 3)}, ${pct(f.ci95[1], 3)}]</td></tr>`;
     })).join("") + `</tbody>`;
 
-const capacityLabel = (name) => name.startsWith("japan") ? `Japan, assumed ${name.slice(5)} V` :
-  name === "eu_sold" ? "German sold carbonate" : name === "supplement" ? "Japan 3.7 V + German carbonate" :
-    `Co/Ni reservation; Cu/Al/Mn ${pct(+name.slice(7), 0)} available`;
 $("capacity-table").innerHTML = `<thead><tr><th>Capacity scenario</th><th>Chemistry</th><th class="num">Baseline shortfall</th><th class="num">Minimal cuts</th><th class="num">Vanish / appear</th></tr></thead><tbody>` +
-  D.supply.cases.map((x) => `<tr><td>${capacityLabel(x.case.replace(/_(choice|fixed)$/, ""))}</td>` +
+  D.supply.cases.map((x) => `<tr><td>${window.LABELS.capacityCase(x.case, "Japan, assumed")}</td>` +
     `<td>${x.choice ? "Choice" : "Fixed 50/50"}</td><td class="num">${pct(x.baseline, 3)}</td>` +
     `<td class="num">${x.baseline > 0.25 ? "1 empty set" : x.cuts}</td><td class="num">${x.vanish} / ${x.appear}</td></tr>`).join("") + `</tbody>`;
 

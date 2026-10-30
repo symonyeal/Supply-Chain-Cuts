@@ -143,6 +143,9 @@ onset law. Time-limited searches report incomplete results and cannot certify a 
 upper bound. [Rust commands and measured scope](docs/RUST.md) document configuration,
 certificates and the remaining limits.
 
+[Module ownership](docs/STRUCTURE.md) records the whole-repository redundancy review
+and the boundaries between production code, independent checks and frozen evidence.
+
 Python is the independent comparison oracle and retains the historical calibration,
 severity and importance-sampling tools. The original reproduction commands remain:
 

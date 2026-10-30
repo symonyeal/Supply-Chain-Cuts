@@ -110,6 +110,26 @@ fn witness(c: &Value, total: f64) -> Value {
     )
 }
 
+// A bundle owns the historical coordinate join, independent of presentation duration.
+struct CutBundle {
+    row: Value,
+    cert: BTreeMap<String, Value>,
+}
+
+impl CutBundle {
+    fn load(path: &Path) -> Result<Self, String> {
+        let row = read(path)?;
+        let cert = certificates(&row)?;
+        Ok(Self { row, cert })
+    }
+
+    fn certificate(&self, cut: &Value) -> Result<&Value, String> {
+        self.cert
+            .get(&cut_key(cut))
+            .ok_or_else(|| "Missing cut certificate".into())
+    }
+}
+
 fn country_union(law: &Value, cuts: &Value, dj: i64, l: f64) -> Result<Value, String> {
     let v: Vec<(String, String)> =
         serde_json::from_value(law["nodes"].clone()).map_err(|e| e.to_string())?;
@@ -192,7 +212,8 @@ fn block(root: &Path, run: &str) -> Result<(Value, Value, Value, Value), String>
     );
     let mut cuts = BTreeMap::new();
     for path in files(&d.join("cuts"))? {
-        let r = read(&path)?;
+        let bundle = CutBundle::load(&path)?;
+        let r = &bundle.row;
         check!(
             a(&r["certificates"]).iter().all(|c| b(&c["certified"])),
             "Uncertified cut"
@@ -217,7 +238,10 @@ fn block(root: &Path, run: &str) -> Result<(Value, Value, Value, Value), String>
                 "Full brute disagreement"
             );
         }
-        cuts.insert(path.file_stem().unwrap().to_string_lossy().into_owned(), r);
+        cuts.insert(
+            path.file_stem().unwrap().to_string_lossy().into_owned(),
+            bundle,
+        );
     }
     let mut configs = Map::new();
     for (key, x) in obj(&risk["configs"])? {
@@ -229,14 +253,14 @@ fn block(root: &Path, run: &str) -> Result<(Value, Value, Value, Value), String>
             .rsplit_once('_')
             .ok_or("Configuration missing duration")?
             .0;
-        let r = cuts
+        let bundle = cuts
             .get(task)
             .ok_or_else(|| format!("Missing task {task}"))?;
-        let cert = certificates(r)?;
+        let r = &bundle.row;
         let mut phi = Vec::new();
         let mut predecessors = Vec::new();
         for cut in a(&x["cuts"]) {
-            let c = cert.get(&cut_key(cut)).ok_or("Missing cut certificate")?;
+            let c = bundle.certificate(cut)?;
             check!(
                 len(&c["predecessors"]) == len(cut),
                 "Predecessor count differs"
@@ -350,30 +374,36 @@ fn chemistry(
         "Chemistry changed frozen network/rates"
     );
     let mut configs = Map::new();
+    let mut bundles = BTreeMap::new();
     for (key, x) in obj(&risk["configs"])? {
         let (task, dj) = key
             .rsplit_once("_D")
             .ok_or("Invalid chemistry configuration")?;
         let dj = dj.parse::<i64>().map_err(|e| e.to_string())?;
-        let r = read(
-            &d.join(cut_run)
-                .join("cuts")
-                .join(format!("{sector}_free_{task}.json")),
-        )?;
-        let bounded = read(
-            &d.join(cut_run)
-                .join("cuts")
-                .join(format!("{sector}_bounded_{task}.json")),
-        )?;
-        check!(
-            b(&r["complete"]) && b(&bounded["complete"]) && r["cuts"] == bounded["cuts"],
-            "Chemistry free/bounded lists differ or are incomplete"
-        );
-        check!(
-            !b(&r["stamp"]["dirty"]) && r["nodes"] == law["nodes"],
-            "Dirty chemistry or roster differs"
-        );
-        let cert = certificates(&r)?;
+        if !bundles.contains_key(task) {
+            let bundle = CutBundle::load(
+                &d.join(cut_run)
+                    .join("cuts")
+                    .join(format!("{sector}_free_{task}.json")),
+            )?;
+            let r = &bundle.row;
+            let bounded = read(
+                &d.join(cut_run)
+                    .join("cuts")
+                    .join(format!("{sector}_bounded_{task}.json")),
+            )?;
+            check!(
+                b(&r["complete"]) && b(&bounded["complete"]) && r["cuts"] == bounded["cuts"],
+                "Chemistry free/bounded lists differ or are incomplete"
+            );
+            check!(
+                !b(&r["stamp"]["dirty"]) && r["nodes"] == law["nodes"],
+                "Dirty chemistry or roster differs"
+            );
+            bundles.insert(task.to_string(), bundle);
+        }
+        let bundle = &bundles[task];
+        let r = &bundle.row;
         let cuts = Value::Array(
             a(&r["cuts"])
                 .iter()
@@ -392,7 +422,7 @@ fn chemistry(
         let mut phi = Vec::new();
         let mut predecessors = Vec::new();
         for cut in a(&cuts) {
-            let c = cert.get(&cut_key(cut)).ok_or("Missing chemistry witness")?;
+            let c = bundle.certificate(cut)?;
             let theta = f(&r["config"]["alpha"]) * f(&r["total"]);
             check!(
                 b(&c["certified"]) && f(&c["gap"]) <= 1e-6,

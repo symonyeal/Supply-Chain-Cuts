@@ -4,6 +4,7 @@
 // j: country index; v/u: node indices; a: required outage; z: categorical mass.
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet, HashMap};
+mod law;
 pub mod sampling;
 pub mod stats;
 
@@ -23,7 +24,7 @@ pub struct Input {
     pub cuts: Vec<Vec<i64>>,
 }
 
-fn law(p: f64, durations: &[i64], weights: &[f64]) -> Vec<(i64, f64)> {
+fn categorical(p: f64, durations: &[i64], weights: &[f64]) -> Vec<(i64, f64)> {
     let mut out = BTreeMap::from([(0, 1.0 - p)]);
     for (&d, &w) in durations.iter().zip(weights) {
         *out.entry(d).or_insert(0.0) += p * w;
@@ -85,29 +86,14 @@ impl Recursion {
 }
 
 pub fn exact_union(input: Input) -> Result<f64, &'static str> {
+    let law = law::Law::new(&input)?;
+    Ok(union(&input, &law, &input.cuts))
+}
+
+fn union(input: &Input, law: &law::Law, cuts: &[Vec<i64>]) -> f64 {
     let Input {
-        v,
-        p,
-        rho,
-        durations,
-        weights,
-        cuts,
+        durations, weights, ..
     } = input;
-    let sum: f64 = weights.iter().sum();
-    if p.len() != v.len()
-        || p.iter().any(|x| !x.is_finite() || !(0.0..=1.0).contains(x))
-        || !(0.0..=1.0).contains(&rho)
-        || durations.len() != weights.len()
-        || weights.iter().any(|x| !x.is_finite() || *x < 0.0)
-        || (sum - 1.0).abs() > 1e-8 + 1e-5
-        || cuts.iter().any(|cut| cut.len() != v.len())
-    {
-        return Err("Valid node probabilities, rho, weights and dense cuts required");
-    }
-    let mut groups: BTreeMap<&str, Vec<usize>> = BTreeMap::new();
-    for (i, (country, _)) in v.iter().enumerate() {
-        groups.entry(country).or_default().push(i);
-    }
     let c: BTreeSet<Cut> = cuts
         .iter()
         .map(|cut| {
@@ -119,12 +105,8 @@ pub fn exact_union(input: Input) -> Result<f64, &'static str> {
         })
         .collect();
     let relevant: BTreeSet<usize> = c.iter().flatten().map(|&(v, _)| v).collect();
-    let mut s = Vec::new();
-    let mut q = p.clone();
     let mut variables = Vec::new();
-    for (j, group) in groups.values().enumerate() {
-        let x = rho * group.iter().map(|&v| p[v]).fold(f64::INFINITY, f64::min);
-        s.push(x);
+    for (j, group) in law.groups.iter().enumerate() {
         let nodes: Vec<usize> = group
             .iter()
             .copied()
@@ -134,16 +116,17 @@ pub fn exact_union(input: Input) -> Result<f64, &'static str> {
             variables.push((j, None));
             variables.extend(nodes.into_iter().map(|v| (j, Some(v))));
         }
-        for &v in group {
-            q[v] = if x < 1.0 { (p[v] - x) / (1.0 - x) } else { 0.0 };
-        }
     }
     let mut recursion = Recursion {
         variables,
-        s,
-        independent: q.iter().map(|&p| law(p, &durations, &weights)).collect(),
-        common: law(1.0, &durations, &weights),
+        s: law.s.clone(),
+        independent: law
+            .q
+            .iter()
+            .map(|&p| categorical(p, durations, weights))
+            .collect(),
+        common: categorical(1.0, durations, weights),
         cache: HashMap::new(),
     };
-    Ok(recursion.visit(0, c.into_iter().collect(), false))
+    recursion.visit(0, c.into_iter().collect(), false)
 }

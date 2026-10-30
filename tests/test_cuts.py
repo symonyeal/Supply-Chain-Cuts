@@ -5,6 +5,7 @@ import pytest
 from chokepoint.recourse import matrices, solve
 from chokepoint.cuts import enumerate_cuts
 from chokepoint.brute import enumerate_brute
+from chokepoint.sweep import certified_lattice, sparse
 
 
 def test_duration_lattice():
@@ -23,6 +24,18 @@ def test_duration_lattice():
         assert S["phi"] > 4.8
         assert abs(S["phi"] - S["dual"]) < 1e-7
         assert all(x["phi"] <= 4.8 + 1e-7 for x in S["predecessors"])
+
+
+def test_shared_sweep_returns_sparse_cuts_and_certificates():
+    M = matrices([("A", "ore"), ("B", "ore"), ("C", "cell")],
+                 [4, 4, 8], {("ore", "cell"): 1}, [8, 8])
+    result = certified_lattice(M, alpha=0.3, durations=(1, 2), k=3)
+    expected = sparse(enumerate_brute(M, [1, 2], alpha=0.3, k=3))
+    assert expected
+    assert result["cuts"] == expected
+    assert result["lp_calls"] > 0 and result["seconds"] >= 0
+    assert len(result["certificates"]) == len(expected)
+    assert all(c["certified"] for c in result["certificates"])
 
 
 def test_absent_input_is_not_free_material():

@@ -1,8 +1,7 @@
 //! Scenario bracket and exact-binomial tail inversion, MODEL Annual probability.
 //! n,m: draws/events; L,U: scenario bounds; k: complete cut support; p: binomial rate.
-use crate::{Input, exact_union};
+use crate::{Input, law::Law, union};
 use serde_json::{Value, json};
-use std::collections::BTreeMap;
 
 // NumPy 2.4's positive-number pairwise sum order (loops_utils.h).
 pub fn pairwise(x: &[f64]) -> f64 {
@@ -42,11 +41,8 @@ pub fn bracket(input: &Input, k: usize, complete: bool) -> Result<Value, &'stati
     if !complete {
         return Err("A complete cut enumeration through k is required for U");
     }
-    let lower = exact_union(input.clone())?;
-    let mut groups: BTreeMap<&str, Vec<usize>> = BTreeMap::new();
-    for (v, (c, _)) in input.v.iter().enumerate() {
-        groups.entry(c).or_default().push(v);
-    }
+    let law = Law::new(input)?;
+    let lower = union(input, &law, &input.cuts);
     let positive: f64 = input
         .durations
         .iter()
@@ -55,20 +51,11 @@ pub fn bracket(input: &Input, k: usize, complete: bool) -> Result<Value, &'stati
         .map(|(_, w)| w)
         .sum();
     let mut counts = vec![1.0];
-    for group in groups.values() {
-        let s = input.rho
-            * group
-                .iter()
-                .map(|&v| input.p[v])
-                .fold(f64::INFINITY, f64::min);
+    for (group, &s) in law.groups.iter().zip(&law.s) {
         let mut independent = vec![1.0];
         let mut common = vec![1.0];
         for &v in group {
-            let q = if s < 1.0 {
-                (input.p[v] - s) / (1.0 - s)
-            } else {
-                0.0
-            };
+            let q = law.q[v];
             independent = convolve(&independent, &[1.0 - q * positive, q * positive]);
             common = convolve(&common, &[1.0 - positive, positive]);
         }
@@ -84,22 +71,20 @@ pub fn bracket(input: &Input, k: usize, complete: bool) -> Result<Value, &'stati
     } else {
         0.0
     };
-    let attribution: Result<Vec<f64>, _> = input
+    let attribution: Vec<f64> = input
         .cuts
         .iter()
         .map(|cut| {
             if lower == 0.0 {
-                Ok(0.0)
+                0.0
             } else {
-                let mut x = input.clone();
-                x.cuts = vec![cut.clone()];
-                Ok(exact_union(x)? / lower)
+                union(input, &law, std::slice::from_ref(cut)) / lower
             }
         })
         .collect();
     Ok(
         json!({"L":lower,"U":(lower+tail).min(1.0),"tail":tail,"k":k,
-        "attribution":attribution?,"attribution_overlaps":true}),
+        "attribution":attribution,"attribution_overlaps":true}),
     )
 }
 

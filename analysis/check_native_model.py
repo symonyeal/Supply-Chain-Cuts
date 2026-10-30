@@ -15,7 +15,7 @@ from scipy.optimize._highspy import _core
 from chokepoint.bom import bill
 from chokepoint import chemistry, net
 from chokepoint.recourse import solve
-from run_risk import dense
+from chokepoint.sweep import dense
 
 
 def cases():

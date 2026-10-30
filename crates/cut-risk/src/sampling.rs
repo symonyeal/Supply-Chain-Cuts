@@ -2,8 +2,7 @@
 //! s,inc: 128-bit PCG state/stream; ss: SeedSequence pool; H: country shocks.
 //! Adapted from symonyeal/Sparse-Portfolio-Optimization pf-core/rng.rs (MIT).
 //! Original algorithms: NumPy 2.4 SeedSequence and PCG64 XSL-RR 128/64.
-use crate::Input;
-use std::collections::BTreeMap;
+use crate::{Input, law::Law};
 
 const M: u128 = (2549297995355413924u128 << 64) | 4865540595714422341u128;
 
@@ -80,30 +79,7 @@ impl Gen {
 }
 
 pub fn states(input: &Input, n: usize, seed: u64) -> Result<Vec<Vec<i64>>, &'static str> {
-    crate::exact_union(input.clone())?; // Apply exactly the same parameter validation.
-    let mut groups: BTreeMap<&str, Vec<usize>> = BTreeMap::new();
-    for (v, (country, _)) in input.v.iter().enumerate() {
-        groups.entry(country).or_default().push(v);
-    }
-    let mut q = input.p.clone();
-    let s: Vec<f64> = groups
-        .values()
-        .map(|group| {
-            let s = input.rho
-                * group
-                    .iter()
-                    .map(|&v| input.p[v])
-                    .fold(f64::INFINITY, f64::min);
-            for &v in group {
-                q[v] = if s < 1.0 {
-                    (input.p[v] - s) / (1.0 - s)
-                } else {
-                    0.0
-                };
-            }
-            s
-        })
-        .collect();
+    let Law { groups, s, q } = Law::new(input)?;
     let mut rng = Gen::new(seed);
     let h: Vec<Vec<bool>> = (0..n)
         .map(|_| s.iter().map(|&s| rng.random() < s).collect())
@@ -111,7 +87,7 @@ pub fn states(input: &Input, n: usize, seed: u64) -> Result<Vec<Vec<i64>>, &'sta
     let mut onset: Vec<Vec<bool>> = (0..n)
         .map(|_| q.iter().map(|&q| rng.random() < q).collect())
         .collect();
-    for (j, group) in groups.values().enumerate() {
+    for (j, group) in groups.iter().enumerate() {
         for i in 0..n {
             for &v in group {
                 onset[i][v] |= h[i][j];

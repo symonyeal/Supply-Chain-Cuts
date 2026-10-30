@@ -3,7 +3,7 @@ import pytest
 
 from chokepoint.net import build, model
 from chokepoint.recourse import solve
-from run_supply import reserve
+from chokepoint.sweep import reserve
 
 
 def test_reservation_keeps_demand_and_exposes_baseline_failure():
