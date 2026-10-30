@@ -4,7 +4,6 @@ use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use std::{collections::BTreeMap, fs, path::Path};
 mod network;
-pub use network::{bill, network};
 
 /// SHA-256 for result provenance; raw-input verification uses the same digest.
 pub fn digest(bytes: &[u8]) -> String {
@@ -17,47 +16,68 @@ const B: &str = "data/raw/baci/country_codes_V202601.csv";
 const X: &str = "data/raw/usgs/MCS2026_Commodities_Data.xml";
 pub(crate) type Row = BTreeMap<String, String>;
 
-pub(crate) fn manifest(root: &Path) -> Result<Value, String> {
-    serde_json::from_slice(&fs::read(root.join("SOURCES.lock")).map_err(|e| e.to_string())?)
-        .map_err(|e| e.to_string())
+/// Build a physical network from hash-verified sources.
+pub fn network(root: &Path, opts: &Value) -> Result<Value, String> {
+    network::network(&Sources::open(root)?, opts)
 }
 
-pub(crate) fn read(root: &Path, path: &str) -> Result<Vec<u8>, String> {
-    let lock = manifest(root)?;
-    let source = lock["sources"]
-        .as_array()
-        .ok_or("Missing source list")?
-        .iter()
-        .find(|s| s["path"] == path)
-        .ok_or_else(|| format!("Unmanifested source: {path}"))?;
-    let bytes = fs::read(root.join(path)).map_err(|e| format!("{path}: {e}"))?;
-    let hash = digest(&bytes);
-    if source["sha256"] != hash {
-        return Err(format!("Source hash mismatch: {path}"));
+/// Reference bill of materials at an explicit NCM622 fraction.
+pub fn bill(root: &Path, ncm: f64) -> Result<Value, String> {
+    network::bill(&Sources::open(root)?, ncm)
+}
+
+struct Sources<'a> {
+    root: &'a Path,
+    entries: Vec<Value>,
+}
+
+impl<'a> Sources<'a> {
+    fn open(root: &'a Path) -> Result<Self, String> {
+        let lock: Value = serde_json::from_slice(
+            &fs::read(root.join("SOURCES.lock")).map_err(|e| e.to_string())?,
+        )
+        .map_err(|e| e.to_string())?;
+        let entries = lock["sources"]
+            .as_array()
+            .ok_or("Missing source list")?
+            .clone();
+        Ok(Self { root, entries })
     }
-    Ok(bytes)
-}
 
-pub(crate) fn rows(root: &Path, path: &str, cp1252: bool) -> Result<Vec<Row>, String> {
-    let bytes = read(root, path)?;
-    let text = if cp1252 {
-        decode_cp1252(&bytes)?
-    } else {
-        String::from_utf8(bytes).map_err(|e| e.to_string())?
-    };
-    let mut reader = csv::Reader::from_reader(text.as_bytes());
-    let header = reader.headers().map_err(|e| e.to_string())?.clone();
-    reader
-        .records()
-        .map(|row| {
-            let row = row.map_err(|e| e.to_string())?;
-            Ok(header
-                .iter()
-                .zip(row.iter())
-                .map(|(k, v)| (k.to_string(), v.to_string()))
-                .collect())
-        })
-        .collect()
+    fn read(&self, path: &str) -> Result<Vec<u8>, String> {
+        let source = self
+            .entries
+            .iter()
+            .find(|s| s["path"] == path)
+            .ok_or_else(|| format!("Unmanifested source: {path}"))?;
+        let bytes = fs::read(self.root.join(path)).map_err(|e| format!("{path}: {e}"))?;
+        if source["sha256"] != digest(&bytes) {
+            return Err(format!("Source hash mismatch: {path}"));
+        }
+        Ok(bytes)
+    }
+
+    fn rows(&self, path: &str, cp1252: bool) -> Result<Vec<Row>, String> {
+        let bytes = self.read(path)?;
+        let text = if cp1252 {
+            decode_cp1252(&bytes)?
+        } else {
+            String::from_utf8(bytes).map_err(|e| e.to_string())?
+        };
+        let mut reader = csv::Reader::from_reader(text.as_bytes());
+        let header = reader.headers().map_err(|e| e.to_string())?.clone();
+        reader
+            .records()
+            .map(|row| {
+                let row = row.map_err(|e| e.to_string())?;
+                Ok(header
+                    .iter()
+                    .zip(row.iter())
+                    .map(|(k, v)| (k.to_string(), v.to_string()))
+                    .collect())
+            })
+            .collect()
+    }
 }
 
 fn decode_cp1252(bytes: &[u8]) -> Result<String, String> {
@@ -91,14 +111,14 @@ pub(crate) fn num(s: &str) -> Result<f64, String> {
 
 /// Verify every committed raw source, returning paths, lengths and digests.
 pub fn verify(root: &Path) -> Result<Value, String> {
-    let lock = manifest(root)?;
+    let sources = Sources::open(root)?;
     let mut verified = vec![];
-    for source in lock["sources"].as_array().ok_or("Missing source list")? {
+    for source in &sources.entries {
         if source["committed"] != true {
             continue;
         }
         let path = source["path"].as_str().ok_or("Missing source path")?;
-        let bytes = read(root, path)?;
+        let bytes = sources.read(path)?;
         verified.push(json!({"path":path,"bytes":bytes.len(),"sha256":source["sha256"]}));
     }
     Ok(json!({"count":verified.len(),"verified":verified}))
@@ -106,10 +126,10 @@ pub fn verify(root: &Path) -> Result<Value, String> {
 
 /// Observational context, independent of the historical network and cut results.
 pub fn context(root: &Path) -> Result<Value, String> {
-    let sources = manifest(root)?;
-    read(root, X)?;
+    let sources = Sources::open(root)?;
+    sources.read(X)?;
     let mut production = vec![];
-    for r in rows(root, U, true)? {
+    for r in sources.rows(U, true)? {
         if ![
             "Lithium",
             "Cobalt",
@@ -226,7 +246,7 @@ pub fn context(root: &Path) -> Result<Value, String> {
             "concentration_label":"Named-country shares; top-three sum is a lower bound when aggregate or withheld output is present, subject to rounded totals."}));
         start = end;
     }
-    let chart: Value = serde_json::from_slice(&read(root, I)?).map_err(|e| e.to_string())?;
+    let chart: Value = serde_json::from_slice(&sources.read(I)?).map_err(|e| e.to_string())?;
     let mut refining = vec![];
     for series in chart["series"].as_array().ok_or("Missing IEA series")? {
         for point in series["data"].as_array().ok_or("Missing IEA points")? {
@@ -234,12 +254,11 @@ pub fn context(root: &Path) -> Result<Value, String> {
         }
     }
     let mut countries = serde_json::Map::new();
-    for r in rows(root, B, false)? {
+    for r in sources.rows(B, false)? {
         countries.insert(r["country_iso3"].clone(), json!(r["country_name"]));
     }
-    let sources: Vec<Value> = sources["sources"]
-        .as_array()
-        .ok_or("Missing sources")?
+    let sources: Vec<Value> = sources
+        .entries
         .iter()
         .filter(|s| [U, I, B, X].contains(&s["path"].as_str().unwrap_or("")))
         .map(|s| {
@@ -303,30 +322,22 @@ pub fn context_csv(c: &Value) -> Result<String, String> {
         .terminator(csv::Terminator::Any(b'\n'))
         .from_writer(vec![]);
     writer.write_record(fields).map_err(|e| e.to_string())?;
-    for r in c["production"].as_array().ok_or("Missing production")? {
-        let record: Vec<String> = fields
-            .iter()
-            .map(|k| {
-                if *k == "dataset" {
-                    "USGS production".into()
-                } else {
-                    py_text(&r[*k])
-                }
-            })
-            .collect();
-        writer.write_record(record).map_err(|e| e.to_string())?;
-    }
-    for r in c["refining"].as_array().ok_or("Missing refining")? {
-        let record: Vec<String> = fields
-            .iter()
-            .map(|k| match *k {
-                "dataset" => "IEA refining".into(),
-                "commodity" => py_text(&r["name"]),
-                "stage" => "refining".into(),
-                _ => py_text(&r[*k]),
-            })
-            .collect();
-        writer.write_record(record).map_err(|e| e.to_string())?;
+    for (key, label) in [
+        ("production", "USGS production"),
+        ("refining", "IEA refining"),
+    ] {
+        for r in c[key].as_array().ok_or_else(|| format!("Missing {key}"))? {
+            let record: Vec<String> = fields
+                .iter()
+                .map(|k| match (*k, key) {
+                    ("dataset", _) => label.into(),
+                    ("commodity", "refining") => py_text(&r["name"]),
+                    ("stage", "refining") => "refining".into(),
+                    _ => py_text(&r[*k]),
+                })
+                .collect();
+            writer.write_record(record).map_err(|e| e.to_string())?;
+        }
     }
     String::from_utf8(writer.into_inner().map_err(|e| e.to_string())?).map_err(|e| e.to_string())
 }

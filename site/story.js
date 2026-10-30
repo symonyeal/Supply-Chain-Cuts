@@ -102,15 +102,5 @@
     $("recipe-note").textContent = `This assumes battery makers can switch between the two main recipes. If they cannot, ${word(extra.length)} more Chinese parts become weak points (${extra.join(" and ")}) and the battery figure rises from ${pct(D.choice.configs[R].L)} to ${pct(fixed.L)}.`;
   }
 
-  function theme() {
-    const mode = matchMedia("(prefers-color-scheme: dark)"), root = document.documentElement;
-    let stored; try { stored = localStorage.getItem("supply-theme"); } catch { /* Storage can be disabled. */ }
-    if (["light","dark"].includes(stored)) root.dataset.theme = stored;
-    const dark = () => root.dataset.theme ? root.dataset.theme === "dark" : mode.matches;
-    const label = () => { $("theme").textContent = dark() ? "Light view" : "Dark view"; $("theme").setAttribute("aria-label", `Switch to ${dark() ? "light" : "dark"} theme`); };
-    $("theme").onclick = () => { root.dataset.theme = dark() ? "light" : "dark"; try { localStorage.setItem("supply-theme", root.dataset.theme); } catch { /* Theme still works for this page. */ } label(); };
-    mode.addEventListener("change", label); label();
-  }
-
-  theme(); hero(); chain("liion"); chain("pv"); cobalt(); duration(); policies(); minerals(); odds();
+  hero(); chain("liion"); chain("pv"); cobalt(); duration(); policies(); minerals(); odds();
 })();

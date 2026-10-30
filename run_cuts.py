@@ -13,62 +13,14 @@ import json
 import sys
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from itertools import product
 from pathlib import Path
 
 from chokepoint.brute import enumerate_brute, enumerate_lattice
 from chokepoint.cuts import enumerate_cuts
 from chokepoint.fetch import stamp
-from chokepoint.net import build, model, reexport_flags
-from chokepoint.recourse import solve
-
-DURATIONS, K, EPS, PRUNE = (3, 6, 12), 3, 1e-7, 0.05
-ALPHA, H, SIGMA, LEAD = (0.10, 0.25, 0.50), (0, 1, 3), (0, 0.1, 0.5), (6, 24)
-BASE = {"sector": "liion", "ncm": 0.5, "basis": "production"}
-
-
-def sparse(cuts):
-    return sorted([[v, int(d)] for v, d in enumerate(D) if d] for D in cuts)
-
-
-def certify(M, D, theta):
-    """phi(S) > theta with zero gap; each immediate duration predecessor has phi <= theta."""
-    R = solve(M, D)
-    pred = []
-    for v, d in enumerate(D):
-        if d:
-            E = list(D)
-            E[v] = max([0, *(x for x in DURATIONS if x < d)])
-            pred.append({"v": v, "D": E[v], "phi": solve(M, E, dual=False)["phi"]})
-    ok = (R["status"] == "optimal" and R["phi"] > theta + EPS and R["gap"] <= 10*EPS
-          and all(x["phi"] <= theta + EPS for x in pred))
-    return {"phi": R["phi"], "dual": R["dual"], "gap": R["gap"], "predecessors": pred,
-            "certified": ok}
-
-
-def tasks(sector="liion"):
-    if sector != "liion":
-        kw = {**BASE, "sector": sector}
-        for alpha, h, sigma in product(ALPHA, H, SIGMA):
-            for L in (LEAD if sigma else (6,)):
-                if sector == "joint" and (h or sigma or alpha == 0.5):
-                    continue
-                cfg = {"alpha": alpha, "h": h, "sigma": sigma, "L": L}
-                yield (f"base_a{alpha}_h{h}_s{sigma}_L{L}", kw, cfg,
-                       ["brute_full"] if sector == "pv" else ["pruned"])
-        return
-    for alpha, h, sigma in product(ALPHA, H, SIGMA):
-        for L in (LEAD if sigma else (6,)):
-            cfg = {"alpha": alpha, "h": h, "sigma": sigma, "L": L}
-            checks = ["pruned"] + (["milp_full"] if h == sigma == 0 else [])
-            yield f"base_a{alpha}_h{h}_s{sigma}_L{L}", BASE, cfg, checks
-    flagged = [tuple(x[:2]) for x in reexport_flags(build(**BASE))]
-    variants = {"B1": {**BASE, "exclude": flagged}, "B2": {**BASE, "basis": "trade"},
-                **{f"C1_ncm{x}": {**BASE, "ncm": x} for x in (0.0, 0.25, 0.75, 1.0)}}
-    for name, kw in variants.items():
-        for alpha in (0.10, 0.25):
-            yield f"{name}_a{alpha}", kw, {"alpha": alpha, "h": 0, "sigma": 0, "L": 6}, []
-
+from chokepoint.net import build, model
+from chokepoint.sweep import (DURATIONS, EPS, K, PRUNE, certified_lattice, sparse,
+                              tasks)
 
 def job(task, out):
     name, kw, cfg, checks = task
@@ -78,15 +30,13 @@ def job(task, out):
     N = build(**kw)
     M = model(N, h=cfg["h"], sigma=cfg["sigma"], L=cfg["L"], durations=DURATIONS)
     theta = cfg["alpha"]*M["total"]
-    t = time.perf_counter()
-    R = enumerate_lattice(M, DURATIONS, alpha=cfg["alpha"], k=K, eps=EPS)
+    C = certified_lattice(M, cfg["alpha"])
     res = {"task": name, "config": cfg, "network": {k: (sorted(map(list, v)) if k == "exclude"
                                                          else v) for k, v in kw.items()},
            "nodes": [list(v) for v in M["V"]], "theta": theta, "total": M["total"],
-           "cuts": sparse(R["cuts"]), "complete": True, "method": "lattice",
-           "seconds": time.perf_counter() - t, "lp_calls": R["lp_calls"]}
-    res["certificates"] = [certify(M, [dict(S).get(v, 0) for v in range(len(M["V"]))], theta)
-                           for S in res["cuts"]]
+           "cuts": C["cuts"], "complete": True, "method": "lattice",
+           "seconds": C["seconds"], "lp_calls": C["lp_calls"],
+           "certificates": C["certificates"]}
     if "pruned" in checks:
         E = [i for i, x in enumerate(N["nodes"]) if x["share"] >= PRUNE]
         t = time.perf_counter()

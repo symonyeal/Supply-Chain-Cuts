@@ -13,7 +13,7 @@
   const allowed = {sector:["liion","pv","joint"],chemistry:["choice","fixed"],alpha:["0.1","0.25","0.5"],DJ:["3","6","12"],h:["0","1","3"],sigma:["0","0.1","0.5"],L:["6","24"]};
   const read = raw => Object.fromEntries(Object.entries(P).map(([k,v]) => [k,allowed[k].includes(raw[k]) ? raw[k] : v]));
   const S = read(Object.fromEntries(new URLSearchParams(location.search)));
-  let pin = null, notice = "", cutRows = [], nodeRows = [];
+  let pin = null, cutRows = [], nodeRows = [];
   const k = s => `a${s.alpha}_h${s.h}_s${s.sigma}_L${s.sigma === "0" ? "6" : s.L}_D${s.DJ}`;
   const block = s => s.sector === "pv" ? D.pv : s.sector === "joint" ? (s.chemistry === "choice" ? D.joint_choice : D.joint) : s.chemistry === "choice" ? D.choice : D;
   const config = s => block(s).configs[k(s)];
@@ -51,7 +51,7 @@
     $("chemistry").disabled = S.sector === "pv";
     $("chemistry-note").textContent = S.sector === "pv" ? "Battery recipes do not apply to the solar chain." : "Flexibility is assumed; real plant switchability is unmeasured.";
     $("ramp-note").textContent = S.sigma === "0" ? "Ramp time has no effect without spare capacity." : "Additional capacity ramps linearly to the selected level.";
-    $("availability").textContent = joint ? "Shared-network runs cover 10% or 25% thresholds, zero stock and zero spare capacity. Other settings are unavailable." : notice;
+    $("availability").textContent = joint ? "Shared-network runs cover 10% or 25% thresholds, zero stock and zero spare capacity. Other settings are unavailable." : "";
   }
   function results() {
     const c = config(S), n = c.cuts.filter(cut => cut.length === 1).length;
@@ -145,23 +145,16 @@
   Object.keys(P).forEach(key => $(key).onchange = () => { S[key] = $(key).value; normalise(S); render(); });
   ["cut-query","cut-size","cut-sort"].forEach(id => $(id).addEventListener(id === "cut-query" ? "input" : "change",cuts));
   ["node-query","node-product","node-basis"].forEach(id => $(id).addEventListener(id === "node-query" ? "input" : "change",nodes));
-  $("reset").onclick = () => { Object.assign(S,P); $("cut-query").value = ""; $("cut-size").value = "all"; $("cut-sort").value = "phi"; $("node-query").value = ""; $("node-basis").value = "all"; $("node-product").value = "all"; notice = ""; render(); };
+  $("reset").onclick = () => { Object.assign(S,P); $("cut-query").value = ""; $("cut-size").value = "all"; $("cut-sort").value = "phi"; $("node-query").value = ""; $("node-basis").value = "all"; $("node-product").value = "all"; render(); };
   $("pin").onclick = () => { pin = {...S}; comparison(); save(); $("share-status").textContent = "Scenario pinned. Change a setting to compare below."; };
   $("clear-pin").onclick = () => { pin = null; comparison(); save(); };
   $("share").onclick = async () => { try { await navigator.clipboard.writeText(url().href); $("share-status").textContent = "Scenario link copied."; } catch { $("share-status").textContent = "Copy the current address from your browser; it contains these scenario settings."; } };
   $("download-cuts").onclick = () => { const N = block(S).nodes; csv(`supply-cuts-${S.sector}-${k(S)}.csv`,["sector","chemistry","configuration","cut_id","losses","shortfall_fraction","occurrence_probability_over_L","shorter_outage_checks"],cutRows.map(r => [S.sector,S.chemistry,k(S),r.id,r.cut.map(([v,d]) => `${duration(v,d,N)} (${N.basis[v]})`).join(" + "),r.phi,r.risk,r.pred.map(([v,d,phi]) => `${duration(v,d,N)}: ${phi}`).join("; ")])); };
   $("download-nodes").onclick = () => { const N = block(S).nodes; csv(`supply-nodes-${S.sector}.csv`,["country_iso3","country","product","annual_output","unit","layer_share","basis","source"],nodeRows.map(v => [N.country[v],country(N.country[v]),N.product[v],N.annual[v],N.unit[v],N.share[v],N.basis[v],N.source[v]])); };
-  const mode = matchMedia("(prefers-color-scheme: dark)");
-  let stored; try { stored = localStorage.getItem("supply-theme"); } catch { /* Storage can be disabled. */ }
-  if (["light","dark"].includes(stored)) document.documentElement.dataset.theme = stored;
-  const themeLabel = () => { const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : mode.matches; $("theme").textContent = dark ? "Light view" : "Dark view"; $("theme").setAttribute("aria-label",`Switch to ${dark ? "light" : "dark"} theme`); };
-  $("theme").onclick = () => { const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : mode.matches; document.documentElement.dataset.theme = dark ? "light" : "dark"; try { localStorage.setItem("supply-theme",dark ? "light" : "dark"); } catch { /* Theme still works for this page. */ } themeLabel(); };
-  mode.addEventListener("change",themeLabel); themeLabel();
   const pairs = [...new Set(C.production.map(r => `${r.commodity}|${r.stage}`))].sort();
   $("mineral").innerHTML = pairs.map(p => `<option value="${esc(p)}">${esc(p.replace("|"," · "))}</option>`).join(""); $("mineral").value = "Lithium|mine";
   ["mineral","year","measure"].forEach(id => $(id).onchange = minerals); $("all-refining").onchange = refining;
-  const labelCase = x => x.startsWith("japan") ? `Japan at assumed ${x.slice(5)} V` : x === "eu_sold" ? "German sold carbonate" : x === "supplement" ? "Japan 3.7 V + German carbonate" : `Co/Ni reservation; Cu/Al/Mn ${pct(+x.slice(7),0)} available`;
-  $("capacity-table").innerHTML = table(["Capacity scenario","Recipes","Baseline shortfall","Cuts","Vanish / appear"],D.supply.cases.map(x => [esc(labelCase(x.case.replace(/_(choice|fixed)$/,""))),x.choice ? "Flexible" : "Fixed 50/50",pct(x.baseline,3),x.baseline > .25 ? "1 empty set (baseline fails)" : x.cuts,`${x.vanish} / ${x.appear}`]));
+  $("capacity-table").innerHTML = table(["Capacity scenario","Recipes","Baseline shortfall","Cuts","Vanish / appear"],D.supply.cases.map(x => [esc(window.LABELS.capacityCase(x.case)),x.choice ? "Flexible" : "Fixed 50/50",pct(x.baseline,3),x.baseline > .25 ? "1 empty set (baseline fails)" : x.cuts,`${x.vanish} / ${x.appear}`]));
   $("provenance").textContent = `Reference result bundles: ${D.meta.run}, ${D.pv.meta.run}, ${D.joint.meta.run}. Flexible recipes: ${D.choice.meta.cut_run}, ${D.choice.meta.risk_run}. Capacity sensitivity: ${D.supply.run}. Source revisions: ${D.meta.revision.slice(0,7)} / ${D.choice.meta.revision.slice(0,7)}. Source lock at reference run: ${D.meta.lock}. Context: ${C.production.length} production observations and ${C.refining.length} refining points; hash-checked against the source lock. Explorer result payload uses five significant digits; full-precision results and certificates are in the repository.`;
   minerals(); refining(); render();
 })();

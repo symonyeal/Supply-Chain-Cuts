@@ -140,7 +140,6 @@ input[type="checkbox"] { width: var(--s-4); accent-color: var(--accent); }
 .download-link { font-size: var(--t-sm); display: inline-block; min-height: var(--target); padding-top: var(--s-3); }
 .comparison-table { margin-top: var(--s-5); }
 .comparison-table th:first-child { width: 38%; }
-.delta { color: var(--accent); }
 .risk-row { margin-bottom: var(--s-4); }
 .risk-label { display: flex; justify-content: space-between; gap: var(--s-3); font-size: var(--t-sm); }
 .risk-track { height: var(--s-5); background: var(--soft); position: relative; margin-top: var(--s-2); }

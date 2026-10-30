@@ -8,12 +8,11 @@ import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
-from chokepoint.brute import enumerate_lattice
 from chokepoint.chemistry import model
 from chokepoint.fetch import stamp
 from chokepoint.net import build
 from chokepoint.recourse import solve
-from run_cuts import DURATIONS, EPS, K, certify, sparse, tasks
+from chokepoint.sweep import EPS, certified_lattice, tasks
 
 METALS = {'mine_co', 'refined_co', 'mine_ni', 'refined_ni', 'mine_mn', 'pcam'}
 
@@ -30,10 +29,8 @@ def job(sector, bounds, cfg, run):
     M = model(N, bounds, h=cfg['h'], sigma=cfg['sigma'], L=cfg['L'])
     baseline = solve(M, [0]*len(M['V']))
     assert baseline['status'] == 'optimal' and baseline['phi'] <= EPS
-    C = enumerate_lattice(M, DURATIONS, cfg['alpha'], K, EPS)
-    cuts = sparse(C['cuts'])
-    dense = [[dict(S).get(v, 0) for v in range(len(M['V']))] for S in cuts]
-    cert = [certify(M, D, cfg['alpha']*M['total']) for D in dense]
+    C = certified_lattice(M, cfg['alpha'])
+    cuts, cert = C['cuts'], C['certificates']
     assert all(c['certified'] for c in cert)
     legacy_name = f"base_a{cfg['alpha']}_h{cfg['h']}_s{cfg['sigma']}_L{cfg['L']}"
     old = json.loads((Path('results') / f'{sector}-residual-2395a5c' / 'cuts' /

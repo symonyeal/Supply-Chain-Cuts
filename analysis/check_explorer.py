@@ -97,6 +97,36 @@ class Handler(SimpleHTTPRequestHandler):
         pass
 
 
+def themes(browser, u):
+    """Exercise shared preference behavior across pages, reloads and denied storage."""
+    rows = []
+    for system in ('light', 'dark'):
+        for blocked in (False, True):
+            context = browser.new_context(color_scheme=system)
+            if blocked:
+                context.add_init_script("""Object.defineProperty(window, 'localStorage', {
+                    get() { throw new DOMException('Storage disabled', 'SecurityError'); }
+                });""")
+            p = context.new_page()
+            expected = system
+            for name in ('', 'explore.html'):
+                p.goto(u + name)
+                button = p.locator('#theme')
+                label = lambda theme: 'Light view' if theme == 'dark' else 'Dark view'
+                assert button.inner_text() == label(expected)
+                changed = 'light' if expected == 'dark' else 'dark'
+                button.click()
+                assert button.inner_text() == label(changed)
+                assert p.evaluate('document.documentElement.dataset.theme') == changed
+                expected = system if blocked else changed
+                p.reload()
+                assert button.inner_text() == label(expected)
+                rows.append({'page': name or 'index.html', 'system': system,
+                             'storage_blocked': blocked, 'after_reload': expected})
+            context.close()
+    return rows
+
+
 def check(u: str, o: Path, preview: Path | None = None) -> dict:
     report = {'url': u, 'views': [], 'errors': []}
     with sync_playwright() as pw:
@@ -110,6 +140,7 @@ def check(u: str, o: Path, preview: Path | None = None) -> dict:
                 launch_errors.append(str(error).splitlines()[0])
         if browser is None:
             raise RuntimeError(f'No Chromium available: {launch_errors}')
+        report['themes'] = themes(browser, u)
         p = browser.new_page(viewport={'width': 1440, 'height': 1000})
         p.on('pageerror', lambda error: report['errors'].append(str(error)))
         p.goto(u)

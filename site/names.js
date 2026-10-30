@@ -9,5 +9,11 @@ window.LABELS = (() => {
     polysilicon:"Polysilicon",wafer:"Solar wafers",pv_cell:"Solar cells",module:"Solar panels"};
   const places = {CIV:"Côte d'Ivoire",COD:"DR Congo",DEU:"Germany",KOR:"South Korea",RUS:"Russia",TZA:"Tanzania",
     USA:"United States",VNM:"Vietnam","Congo (Kinshasa)":"DR Congo","Korea, Republic of":"South Korea","Korea, North":"North Korea"};
-  return {product: p => products[p] || p.replaceAll("_"," "), place: (code, name) => places[code] || name || code};
+  const capacityCase = (scenario, japan = "Japan at assumed") => {
+    const name = scenario.replace(/_(choice|fixed)$/, "");
+    return name.startsWith("japan") ? `${japan} ${name.slice(5)} V` :
+      name === "eu_sold" ? "German sold carbonate" : name === "supplement" ? "Japan 3.7 V + German carbonate" :
+        `Co/Ni reservation; Cu/Al/Mn ${(100 * +name.slice(7)).toFixed(0)}% available`;
+  };
+  return {product: p => products[p] || p.replaceAll("_"," "), place: (code, name) => places[code] || name || code, capacityCase};
 })();

@@ -1,11 +1,8 @@
 //! Physical network, preserving raw-row accumulation and node insertion order.
 // B: bill of materials; E/I: exports/imports; a: physical coefficients; R/S: requirement/supply.
-use crate::{num, read, rows};
+use crate::{Sources, num};
 use serde_json::{Value, json};
-use std::{
-    collections::{BTreeMap, BTreeSet},
-    path::Path,
-};
+use std::collections::{BTreeMap, BTreeSet};
 
 const HS: [(&str, &str); 9] = [
     ("li_carbonate", "283691"),
@@ -36,11 +33,11 @@ fn sum(values: impl IntoIterator<Item = f64>) -> f64 {
     hi + lo
 }
 
-pub fn bill(root: &Path, ncm: f64) -> Result<Value, String> {
+pub(super) fn bill(sources: &Sources<'_>, ncm: f64) -> Result<Value, String> {
     if !(0.0..=1.0).contains(&ncm) {
         return Err("NCM622 fraction must be in [0,1]".into());
     }
-    let rows = rows(root, "data/raw/xu2020/bom_mid_size_bev.csv", false)?;
+    let rows = sources.rows("data/raw/xu2020/bom_mid_size_bev.csv", false)?;
     let (mut b, mut lfp, mut ncmb) = (
         BTreeMap::<String, f64>::new(),
         BTreeMap::<String, f64>::new(),
@@ -56,11 +53,11 @@ pub fn bill(root: &Path, ncm: f64) -> Result<Value, String> {
         *b.entry(r["material"].clone()).or_default() += weight * kg / num(&r["pack_kwh"])?;
         (if chem == "LFP" { &mut lfp } else { &mut ncmb }).insert(r["material"].clone(), kg / 66.0);
     }
-    let energies: BTreeMap<String, f64> =
-        crate::rows(root, "data/raw/xu2020/specific_energy.csv", false)?
-            .iter()
-            .map(|r| Ok((r["chemistry"].clone(), num(&r["wh_per_kg"])?)))
-            .collect::<Result<_, String>>()?;
+    let energies: BTreeMap<String, f64> = sources
+        .rows("data/raw/xu2020/specific_energy.csv", false)?
+        .iter()
+        .map(|r| Ok((r["chemistry"].clone(), num(&r["wh_per_kg"])?)))
+        .collect::<Result<_, String>>()?;
     let cam_lfp = lfp["Li"] * (6.94 + 55.845 + 30.974 + 4.0 * 15.999) / 6.94;
     let cam_ncm =
         sum(["Li", "Ni", "Co", "Mn"].iter().map(|m| ncmb[*m])) + ncmb["Li"] * 2.0 * 15.999 / 6.94;
@@ -127,7 +124,7 @@ fn trade(c: &str, p: &str, e: &BTreeMap<&str, Flows>, scale: f64) -> f64 {
             .unwrap_or(0.0)
 }
 
-pub fn network(root: &Path, opts: &Value) -> Result<Value, String> {
+pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, String> {
     let sector = opts["sector"].as_str().unwrap_or("liion");
     let ncm = opts["ncm"].as_f64().unwrap_or(0.5);
     let cutoff = opts["cutoff"].as_f64().unwrap_or(0.01);
@@ -153,8 +150,8 @@ pub fn network(root: &Path, opts: &Value) -> Result<Value, String> {
             ));
         }
     }
-    let b = bill(root, ncm)?;
-    let country_rows = rows(root, crate::B, false)?;
+    let b = bill(sources, ncm)?;
+    let country_rows = sources.rows(crate::B, false)?;
     let countries: BTreeMap<String, String> = country_rows
         .iter()
         .map(|r| (r["country_code"].clone(), r["country_iso3"].clone()))
@@ -186,8 +183,7 @@ pub fn network(root: &Path, opts: &Value) -> Result<Value, String> {
     for hs in ["12", "22"] {
         let (mut e, mut i) = (Flows::new(), Flows::new());
         let mut gaps = 0;
-        for r in rows(
-            root,
+        for r in sources.rows(
             &format!("data/raw/baci/BACI_HS{hs}_Y2024_V202601_selected.csv"),
             false,
         )? {
@@ -228,7 +224,7 @@ pub fn network(root: &Path, opts: &Value) -> Result<Value, String> {
     ]);
     let mut prod: Vec<(String, String, f64)> = vec![];
     let mut unparsed = vec![];
-    for r in rows(root, crate::U, true)? {
+    for r in sources.rows(crate::U, true)? {
         if r["Year"] != "2024"
             || !r["Section"].starts_with("World")
             || r["Statistics"] != "Production"
@@ -261,7 +257,8 @@ pub fn network(root: &Path, opts: &Value) -> Result<Value, String> {
             prod.push((c.clone(), p.into(), value));
         }
     }
-    let miit: BTreeMap<String, f64> = rows(root, "data/raw/miit/production_2024.csv", false)?
+    let miit: BTreeMap<String, f64> = sources
+        .rows("data/raw/miit/production_2024.csv", false)?
         .iter()
         .filter(|r| r["statistic"] == "production")
         .map(|r| Ok((r["product"].clone(), num(&r["value"])?)))
@@ -343,7 +340,7 @@ pub fn network(root: &Path, opts: &Value) -> Result<Value, String> {
             }
         }
         if basis == "production" {
-            for r in rows(root, "data/raw/usgs/myb2023_cobalt_refinery.csv", false)? {
+            for r in sources.rows("data/raw/usgs/myb2023_cobalt_refinery.csv", false)? {
                 if !r["value"].is_empty() {
                     put(
                         &mut nodes,
@@ -383,7 +380,7 @@ pub fn network(root: &Path, opts: &Value) -> Result<Value, String> {
                     "Battery-grade carbonate + LiOH·H2O as LCE",
                 ],
             );
-            for r in rows(root, "data/raw/cochilco/lithium_chemicals_2024.csv", false)? {
+            for r in sources.rows("data/raw/cochilco/lithium_chemicals_2024.csv", false)? {
                 if r["product_source_label"] == "CARBONATO DE LITIO" {
                     put(
                         &mut nodes,
@@ -401,7 +398,8 @@ pub fn network(root: &Path, opts: &Value) -> Result<Value, String> {
                 }
             }
             if let Some(voltage) = opts["japan_voltage"].as_f64() {
-                let q = sum(rows(root, "data/raw/meti/liion_2024.csv", false)?
+                let q = sum(sources
+                    .rows("data/raw/meti/liion_2024.csv", false)?
                     .iter()
                     .map(|r| num(&r["production_kAh"]).unwrap()));
                 let text = opts["japan_voltage"].to_string();
@@ -422,9 +420,10 @@ pub fn network(root: &Path, opts: &Value) -> Result<Value, String> {
                 );
             }
             if opts["eu_sold"] == true {
-                let e: Value =
-                    serde_json::from_slice(&read(root, "data/raw/supplement/reconciliation.json")?)
-                        .map_err(|e| e.to_string())?;
+                let e: Value = serde_json::from_slice(
+                    &sources.read("data/raw/supplement/reconciliation.json")?,
+                )
+                .map_err(|e| e.to_string())?;
                 let q = e["eurostat"]["201343Z1"]["DE"]["PRODQNT"]
                     .as_f64()
                     .or_else(|| {
@@ -471,40 +470,32 @@ pub fn network(root: &Path, opts: &Value) -> Result<Value, String> {
             .collect();
         for (c, output) in cells {
             let china = c == "CHN" && basis == "production";
-            put(
-                &mut nodes,
-                &excluded,
-                &c,
-                "cam",
-                if china {
-                    miit["cathode_active_material"] / 1000.0
-                } else {
-                    output * val(&b, "cam_kg_kwh")
-                },
-                [
-                    if china { "production" } else { "imputed" },
-                    "kt",
-                    if china { "MIIT 2024" } else { "BOM x cell" },
-                    "",
-                ],
-            );
-            put(
-                &mut nodes,
-                &excluded,
-                &c,
-                "aam",
-                if china {
-                    miit["anode_active_material"] / 1000.0
-                } else {
-                    output * b["kg_kwh"]["Graphite"].as_f64().unwrap()
-                },
-                [
-                    if china { "production" } else { "imputed" },
-                    "kt",
-                    if china { "MIIT 2024" } else { "BOM x cell" },
-                    "",
-                ],
-            );
+            for (p, statistic, coefficient) in [
+                ("cam", "cathode_active_material", val(&b, "cam_kg_kwh")),
+                (
+                    "aam",
+                    "anode_active_material",
+                    val(&b["kg_kwh"], "Graphite"),
+                ),
+            ] {
+                put(
+                    &mut nodes,
+                    &excluded,
+                    &c,
+                    p,
+                    if china {
+                        miit[statistic] / 1000.0
+                    } else {
+                        output * coefficient
+                    },
+                    [
+                        if china { "production" } else { "imputed" },
+                        "kt",
+                        if china { "MIIT 2024" } else { "BOM x cell" },
+                        "",
+                    ],
+                );
+            }
             if ncm != 0.0 {
                 put(
                     &mut nodes,

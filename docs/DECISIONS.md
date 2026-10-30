@@ -1,5 +1,13 @@
 # Decisions
 
+## Shared decisions behind module boundaries, 2026-10-30
+
+Consolidate repeated preparation and orchestration within each implementation:
+probability laws, verified source access, cut-certificate joins, sweep configuration,
+seeded draws and browser preferences. Keep the Python/Rust transcriptions and
+independent enumerators separate so their agreement remains meaningful. The
+[repository-wide review](STRUCTURE.md) records each owner and the preserved scope.
+
 ## Native Rust production pipeline, 2026-10-27
 
 This implements the user's native-execution amendment and supersedes the initial

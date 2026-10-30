@@ -10,7 +10,7 @@ import time
 
 from chokepoint.risk import exact_union
 from chokepoint.rust import batch
-from run_risk import dense, truncate
+from chokepoint.sweep import dense, truncate
 
 
 def bits(value):
@@ -115,7 +115,8 @@ def main():
               'python_seconds': python_seconds, 'rust_batch_seconds': rust_seconds,
               'batch_speedup': python_seconds / rust_seconds,
               'timing_scope': 'one complete batch; Rust includes process and JSON overhead',
-              'not_tested': 'recourse LP, Monte Carlo and data fitting are not ported'}
+              'not_tested': 'this kernel check does not exercise recourse LP, Monte Carlo '
+                            'or data fitting'}
     (args.out / 'rust-output.json').write_text(json.dumps(new, indent=1) + '\n')
     (args.out / 'rust-parity.json').write_text(json.dumps(report, indent=1) + '\n')
     print(json.dumps(report, indent=1), flush=True)

@@ -6,29 +6,13 @@ No probabilities are computed; HYPOTHESES N1/N2 govern the reservation cases.
 """
 import json
 import sys
-from copy import deepcopy
 from pathlib import Path
 
-from chokepoint.brute import enumerate_lattice
 from chokepoint.chemistry import model as choice
 from chokepoint.fetch import stamp
 from chokepoint.net import build, model
 from chokepoint.recourse import solve
-from run_cuts import DURATIONS, EPS, K, certify, sparse
-
-
-def reserve(N, eta):
-    """u[v] <- eta[p(v)] u[v]; keep requirements and final demand fixed (MODEL, W5)."""
-    N = deepcopy(N)
-    for x in N['nodes']:
-        f = eta.get(x['product'], 1)
-        x['annual'] *= f
-        x['capacity'] *= f
-    for p, f in eta.items():
-        N['supply_ratio'][p] *= f
-        N['annual_totals'][p] *= f
-    N['availability'] = eta
-    return N
+from chokepoint.sweep import EPS, certified_lattice, reserve
 
 
 def job(name, N, flexible, run):
@@ -37,10 +21,8 @@ def job(name, N, flexible, run):
     M = choice(N) if flexible else model(N)
     baseline = solve(M, [0]*len(M['V']))
     assert baseline['status'] == 'optimal' and baseline['gap'] <= 10*EPS
-    C = enumerate_lattice(M, DURATIONS, 0.25, K, EPS)
-    cuts = sparse(C['cuts'])
-    cert = [certify(M, [dict(s).get(v, 0) for v in range(len(M['V']))],
-                    0.25*M['total']) for s in cuts]
+    C = certified_lattice(M, 0.25)
+    cuts, cert = C['cuts'], C['certificates']
     assert all(c['certified'] for c in cert)
     named = lambda S, V: sorted(tuple((V[v][0], V[v][1], d) for v, d in s) for s in S)
     if flexible:

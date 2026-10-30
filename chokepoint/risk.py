@@ -30,6 +30,17 @@ def _law(p, durations, weights):
     return sorted((int(D), float(x)) for D, x in out.items() if x)
 
 
+def _sample_states(rng, n, groups, s, q, durations, weights):
+    """Draw shocks, pre-shock onsets, propagated onsets, and durations in that order."""
+    H = rng.random((n, len(s))) < s
+    B = rng.random((n, len(q))) < q
+    onset = B.copy()
+    for j, I in enumerate(groups):
+        onset[:, I] |= H[:, j, None]
+    D = rng.choice(durations, size=onset.shape, p=weights)*onset
+    return H, B, onset, D
+
+
 def state_probability(V, p, rho, durations, weights, D):
     """Exact probability of one complete categorical node state D."""
     _, w, groups, s, q = _parameters(V, p, rho, durations, weights)
@@ -119,11 +130,7 @@ def residual_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,
     rng = np.random.default_rng(seed)
     cut = np.asarray(cuts, int).reshape((-1, len(V)))
     L = exact_union(V, p, rho, durations, w, cuts)
-    H = rng.random((n, len(s))) < s
-    onset = rng.random((n, len(q))) < q
-    for j, I in enumerate(groups):
-        onset[:, I] |= H[:, j, None]
-    D = rng.choice(durations, size=onset.shape, p=w)*onset
+    _, _, _, D = _sample_states(rng, n, groups, s, q, durations, w)
     theta, cache, m = alpha*M["total"], {}, 0
     for x in D:
         if len(cut) and np.any(np.all(x >= cut, axis=1)):
@@ -158,11 +165,7 @@ def partial_sampling(M, p, rho, durations, weights, mixtures, losses, alpha=0.25
         raise ValueError("At least two samples and one measure mixture per node required")
     _, w, groups, s, q = _parameters(M["V"], p, rho, durations, weights)
     rng = np.random.default_rng(seed)
-    H = rng.random((n, len(s))) < s
-    onset = rng.random((n, len(q))) < q
-    for j, I in enumerate(groups):
-        onset[:, I] |= H[:, j, None]
-    D = rng.choice(durations, size=onset.shape, p=w)*onset
+    _, _, onset, D = _sample_states(rng, n, groups, s, q, durations, w)
     marks = [rng.choice(list(m), n, p=list(m.values())) for m in mixtures]
     values = {name: np.array([[f.get(m, 1.0) for m in column] for column in marks]).T
               for name, f in losses.items()}
@@ -232,12 +235,7 @@ def importance_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,
         return cache[key]
 
     def sample(N, sh, qi):
-        H = rng.random((N, len(s))) < sh
-        B = rng.random((N, len(q))) < qi
-        onset = B.copy()
-        for j, I in enumerate(groups):
-            onset[:, I] |= H[:, j, None]
-        D = rng.choice(durations, size=onset.shape, p=w)*onset
+        H, B, _, D = _sample_states(rng, N, groups, sh, qi, durations, w)
         logw = np.zeros(N)
         for X, original, proposal in ((H, s, sh), (B, q, qi)):
             I = (original > 0) & (original < 1)

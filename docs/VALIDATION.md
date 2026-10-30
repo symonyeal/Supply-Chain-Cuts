@@ -1,5 +1,30 @@
 # Validation
 
+## Redundancy refactor checks, 2026-10-30
+
+The [structure review](STRUCTURE.md) accounts for all 1,175 baseline files and
+four added modules/documentation files. The 1,039 frozen vendor, input, evidence
+and generated files retain their exact bytes. Local checks after the refactor:
+
+| Check | Result |
+| --- | --- |
+| Release build, formatting, Clippy with warnings denied, Rust tests | Passed; 5 Rust tests |
+| Full Python suite, Ruff, installed dependency check | 76 tests passed, none skipped; static/dependency checks passed |
+| Native recourse comparison | 192 cases, 5,962 states, all 23,848 numeric fields bit-identical |
+| Native networks and context | 64 checks, zero differences; exact context CSV bytes |
+| Native site payload | 90,912 JSON nodes agree at full precision and presentation precision |
+| Exact union and complete brackets | 432 cases; exact L, attribution, U and tail |
+| Seeded native sampling | 12 streams across three sectors and four seeds, including a 64-bit seed; exact categorical states |
+| Complete cut searches | Solar, flexible battery, fixed battery, flexible shared network and stock/ramp solar: 22, 7, 37, 100 and 4 cuts; two-way differences empty |
+| Python sampler extraction | Before/after binary64 equality for residual, marked partial-loss and pilot-based importance sampling; nonzero failures exercised |
+| Runner grid and display labels | All 57/45/2 sector tasks and all 28 page-specific capacity labels unchanged |
+| Generated files | Native rebuild of `data.js`, `context.js` and `context.csv` byte-identical to committed files |
+| Browser | 417 configurations, 12 responsive/theme views, 8 preference/reload/storage-denial cases; zero page errors |
+
+Comparators rejected planted wrong values and missing keys/states before their
+passes were accepted. These checks preserve the measured numerical scope below;
+they do not establish a whole-pipeline speedup or extend the scientific model.
+
 ## Native Rust pipeline, 2026-10-27
 
 | Check | Measured result |

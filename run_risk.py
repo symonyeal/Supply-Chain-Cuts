@@ -19,28 +19,15 @@ from chokepoint.net import build, model, reexport_flags
 from chokepoint.rates import duration_weights, fit_rates, prequential
 from chokepoint.recourse import solve
 from chokepoint.risk import bracket, exact_union, importance_sampling, residual_sampling
+from chokepoint.sweep import DURATIONS, K, dense, truncate
 
-DURATIONS, K = (3, 6, 12), 3
 MIDSTREAM = ("pcam", "cam", "aam")                   # design §3: the midstream layer
 REFINED = ("li_carbonate", "refined_co", "refined_ni")
 NAMES = ("mine_co", "refined_co", "mine_ni", "refined_ni", "mine_mn", "pcam")
 
 
-def dense(cut, n):
-    D = [0]*n
-    for v, d in cut:
-        D[v] = d
-    return D
-
-
 def label(cut, V):
     return sorted(f"{V[v][0]} {V[v][1]} {d}" for v, d in cut)
-
-
-def truncate(w, DJ):
-    """Duration law with outages longer than D_J truncated to D_J."""
-    D = [d for d in DURATIONS if d <= DJ]
-    return D, [sum(x for d, x in zip(DURATIONS, w, strict=True) if min(d, DJ) == e) for e in D]
 
 
 def hazards(N, root):

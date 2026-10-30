@@ -17,9 +17,8 @@ from chokepoint.net import build, model
 from chokepoint.rates import duration_weights, fit_rates
 from chokepoint.risk import bracket, partial_sampling, residual_sampling
 from chokepoint.severity import cohorts, estimate
-from run_risk import dense
+from chokepoint.sweep import DURATIONS, dense
 
-DURATIONS = (3, 6, 12)
 BASE = {s: f"{s}-residual-2395a5c" for s in ("liion", "pv", "joint")}
 
 
