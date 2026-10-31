@@ -4,7 +4,7 @@
 
 ![Overview: battery and solar supply both depend on China](site/preview.png)
 
-## Explore the results
+## Explore
 
 The [overview](https://symonyeal.github.io/Supply-Chain-Cuts/) states the findings in
 plain language: who makes each battery and solar part, which single losses cause a major
@@ -29,7 +29,7 @@ The [full research tables](https://symonyeal.github.io/Supply-Chain-Cuts/researc
 retain the severity study, registered hypotheses, natural-hazard scenarios and detailed
 reference results. That technical appendix uses Plotly from its existing pinned CDN URL.
 
-## In plain terms
+## Main findings
 
 The batteries in phones and electric cars, and solar panels, pass through a long chain of
 mines, chemical refineries, component factories and assembly plants spread across many
@@ -37,55 +37,30 @@ countries. This project asks which losses would cut world production by a quarte
 over two years. A loss here means one country's output of one product, alone or together
 with up to two others. It also asks how often that might happen.
 
-**What we found.**
-
-- **Batteries:** there are five single weak points, all in China. A year-long loss of
-  China's battery cells, cathode material, anode material, graphite or lithium carbonate
-  would each, on its own, cause that shortfall. This assumes factories can switch between
-  the two main battery recipes (LFP and NCM). If they cannot, China's refined cobalt and a
-  cathode precursor become weak points too.
-- **Solar:** there are four single weak points, again all in China: polysilicon, wafers,
+- In the fixed 50/50 reference, seven single-loss cuts are in China. With recipe choice,
+  five remain: cells, cathode material, anode material, graphite and lithium carbonate.
+  The other two fixed-mix singletons are refined cobalt and a cathode precursor.
+- The solar chain has four single-loss cuts in China: polysilicon, wafers,
   cells and modules.
-- **How likely:** in a stress test that treats every export restriction recorded since 2012
-  as a complete shutdown, such a shortfall happens in about 29% of years for batteries and
-  24% for solar. These are what-if numbers, not forecasts. Real restrictions are rarely
-  total, and the recorded history does not predict them well.
+- Probabilities use recorded export-restriction onsets and are conditional scenarios, not forecasts.
 
-**What this does not show.** Much capacity outside China is estimated from export volumes,
-because production figures are missing. No factory locations are modelled, so natural
-disasters are not covered. Nothing here is investment advice.
+## Updated model results
 
-The rest of this page is written for specialists.
+With recipe choice and fixed reference capacities, there are seven Li-ion minimal cuts of up to three year-long losses at the 25% threshold over 24 months. The 29 former cobalt or precursor cuts have zero shortfall. Actual plant switchability is unmeasured. The fixed 50/50 reference has 37 cuts.
 
-## Answer
+Under the full-outage onset law, recipe choice gives Li-ion L = 0.288286 and lower bound plus residual 0.288286 (95% sampling interval 0.288286 to 0.288471), versus 0.485681 for the fixed mix. The severity study found only four isolated events and no identified measure effect, so its declared full-loss fallback leaves the reference scenario unchanged. Recorded onsets fail the predictive test; these values are conditional scenarios, not forecasts.
 
-**Five Chinese single losses remain when the model may choose LFP or NCM recipes:**
-cells, cathode material, anode material, graphite and lithium carbonate, each out for a
-year. There are seven minimal cuts of at most three losses at a 25% shortfall threshold
-over 24 months. China’s precursor and refined-cobalt singletons disappear; all 29 former
-cobalt or precursor cuts have zero shortfall. This assumes recipe flexibility at fixed
-reference capacities; actual plant switchability is unmeasured. The fixed 50/50
-reference retains its original 37 cuts and seven singletons for comparison.
-
-**Probability remains a scenario.** Under the same full-outage onset law, chemistry
-choice gives Li-ion L = 0.288286 and lower bound plus residual 0.288286 (95% sampling
-interval 0.288286–0.288471), versus 0.485681 for the fixed mix. The approved export
-severity study yields only four isolated events and no identified measure effect;
-its declared full-loss fallback therefore leaves the reference scenario unchanged.
-Recorded onsets fail the predictive test. These are conditional probabilities, not forecasts.
-
-**Solar has four Chinese singleton cuts and 22 cuts in all.** With chemistry choice,
-the shared network has 100 cuts and no singletons at 25%, L = 0.105885 and estimate
+The fixed-mix solar probability lower bound is L = 0.244494. The shared network has 100 cuts and no singletons at 25%, L = 0.105885 and estimate
 0.106885 (95% sampling interval 0.106496–0.107429). A fresh independent reconstruction
 reproduces all 22 solar and 180 fixed-mix shared cuts from raw inputs.
 
-**New capacity data matter.** The METI Japan supplement (assumed voltage, imputed)
+The METI Japan supplement (assumed voltage, imputed)
 removes the trade-dependent cell triple, leaving six choice cuts and the same five
 singletons. A German sold-carbonate proxy changes no headline cut. The registered
 competing-demand sensitivity exposes baseline failures under some allocations;
 it is reported without reducing demand to hide them.
 
-**What the data cannot show.** Most non-China cell and refined-nickel capacity still
+Limits: Most non-China cell and refined-nickel capacity still
 rests on export mass; precursor is imputed; country-specific competing demand is unknown;
 a recorded policy measure is not an observed outage; no production site has located
 capacity, so natural hazards are a scenario. Details: [FINDINGS](docs/FINDINGS.md).
