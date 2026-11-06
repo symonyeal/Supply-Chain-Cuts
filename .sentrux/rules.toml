@@ -1,0 +1,13 @@
+# Advisory first-party Rust scan; Python remains an independent oracle.
+[constraints]
+max_cycles = 0
+
+[[layers]]
+name = "kernels"
+paths = ["crates/sc-model/src/**", "crates/cut-risk/src/**"]
+order = 1
+
+[[layers]]
+name = "pipeline"
+paths = ["crates/supply/src/**", "crates/sc-site/src/**"]
+order = 0
