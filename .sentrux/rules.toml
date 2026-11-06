@@ -3,8 +3,8 @@
 max_cycles = 0
 
 [[layers]]
-name = "kernels"
-paths = ["crates/sc-model/src/**", "crates/cut-risk/src/**"]
+name = "libraries"
+paths = ["crates/sc-model/src/**", "crates/cut-risk/src/**", "crates/sc-data/src/**"]
 order = 1
 
 [[layers]]

@@ -18,7 +18,11 @@ remain. Logs and source hashes stay under the shared runner's `evidence/` direct
 
 Known limitation, reproduced on 2026-11-06: the checker rejects a planted `use sc_site;` from
 `sc-model`, but misses the qualified form `use sc_site::build;`. Passing rules therefore cannot
-certify workspace boundaries. Keep the tool advisory; no CI gate is added. Direct whole-repository
+certify workspace boundaries. The shared runner now first checks Cargo's declared normal/build
+workspace dependencies against these layers, regardless of import spelling. That check fails on
+forbidden dependencies or unassigned crates; it includes target-specific declarations and excludes
+dev dependencies. All five crates are assigned to library or pipeline layers. Sentrux's metrics and
+within-crate graph remain advisory; no CI gate is added. Direct whole-repository
 scans include tracked HiGHS and generated material and produce incomparable scores.
 
 The local runtime has analytics disabled. Another machine needs Sentrux 0.5.7, its grammars and
