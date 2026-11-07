@@ -47,6 +47,7 @@ pub fn input(network: &Value, law: &Value, cuts: &Value) -> Result<Input, String
         let row = row.as_array().ok_or("Invalid cut state")?;
         if row.is_empty() || row[0].is_array() {
             let mut d = vec![0; v.len()];
+            let mut seen = std::collections::BTreeSet::new();
             for pair in row {
                 let pair = pair
                     .as_array()
@@ -55,7 +56,7 @@ pub fn input(network: &Value, law: &Value, cuts: &Value) -> Result<Input, String
                     return Err("Sparse pair needs node and duration".into());
                 }
                 let i = pair[0].as_u64().ok_or("Invalid node index")? as usize;
-                if i >= v.len() {
+                if i >= v.len() || !seen.insert(i) {
                     return Err("Cut node outside network".into());
                 }
                 d[i] = pair[1].as_i64().ok_or("Invalid outage duration")?;
@@ -87,7 +88,14 @@ pub fn input(network: &Value, law: &Value, cuts: &Value) -> Result<Input, String
     })
 }
 
-pub fn run(network: &Value, config: &Value, law: &Value, cuts: &Value) -> Result<Value, String> {
+pub fn run(
+    network: &Value,
+    config: &Value,
+    law: &Value,
+    accepted: &crate::cuts::Accepted,
+) -> Result<Value, String> {
+    sc_data::config::validate(config)?;
+    let cuts = accepted.report();
     if cuts["complete"] != true {
         return Err("Risk requires a completed native cut search".into());
     }
@@ -156,7 +164,7 @@ pub fn run(network: &Value, config: &Value, law: &Value, cuts: &Value) -> Result
                 return Err(format!("Recourse solve: {solved}"));
             }
             let fail = solved["phi"].as_f64().ok_or("Primal objective missing")?
-                > alpha * model.total + 1e-7;
+                > alpha * model.total() + 1e-7;
             cache.insert(state.clone(), fail);
             fail
         };

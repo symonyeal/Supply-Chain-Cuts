@@ -164,3 +164,33 @@ and the empty-cut certificates; do not renormalise demand or label them forecast
 The first reconciliation incorrectly printed zero for an unselected BACI parent;
 retain it as v1 and correct that field to missing in the current snapshot, preserving
 all source hashes. No model result uses that field.
+
+## 2026-11-06: analytical admission and publication
+
+Present scenario values must have the declared type. Defaults apply only to absent
+fields. Unknown fields, contradictory duration grids, duplicate input coefficients
+and repeated sparse coordinates fail admission. Recourse metadata is read-only.
+
+Risk consumes a complete locally accepted cut family. An imported family is
+re-enumerated on the selected network and scenario; its complete family and witnesses
+must match. A claim of completeness or a family digest cannot replace that check.
+A timed-out admission fails rather than supplying a certified risk upper bound.
+Fresh native runs pass the accepted family directly without repeating the search.
+
+Native run directories are write-once. Computation finishes in an isolated directory,
+the manifest binds all three result payloads, and one directory rename publishes it.
+Native site and context builders hold one operating-system writer lease for their
+output directory. They retain immutable generations and separate acceptance pointers
+for the complete site-data and context inventories. Fixed paths are compatibility
+projections with journalled rollback and recovery on the next writer. Readers needing
+a consistent inventory pin the accepted generation. File sync does not establish
+directory durability under power loss.
+
+Python sweep reuse requires a task/input/code fingerprint, an intact payload digest
+and complete certificates and requested independent checks. Dirty source bytes change
+the fingerprint. A task lease excludes competing writers; unique synced candidates
+protect the previous result on interruption. A run identity cannot change midway:
+legacy runs or a changed source/input identity require a new RUN_ID. Existing frozen
+campaigns are preserved. `release.json` owns the seven publication bundle names for
+both builders; positional run arguments remain explicit overrides. No model equation,
+frozen source or published campaign result changes here.

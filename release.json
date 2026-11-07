@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "runs": ["liion-residual-2395a5c", "pv-residual-2395a5c", "joint-residual-2395a5c", "severity-26ebd48"],
+  "chemistry": "chemistry-896581f",
+  "chemistry_risk": "chemistry-risk-d18c743",
+  "supply": "supply-4ae36c1"
+}

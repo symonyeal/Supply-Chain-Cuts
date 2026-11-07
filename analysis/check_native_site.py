@@ -9,10 +9,9 @@ import sys
 import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from analysis.build_site import ROOT, build, plain
+from analysis.build_site import ROOT, build, plain, release
 
-RUNS = ['liion-residual-2395a5c', 'pv-residual-2395a5c',
-        'joint-residual-2395a5c', 'severity-26ebd48']
+RUNS = release()['runs']
 
 
 def leaves(value, path=''):

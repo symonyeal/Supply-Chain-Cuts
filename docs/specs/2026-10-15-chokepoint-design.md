@@ -261,3 +261,17 @@ Gate: `ruff check`, `pytest -q` (fast < 2 min; long runs marked `slow`), GitHub 
 2. e-Stat appId (`ESTAT_APPID`).
 3. Licence enquiry to BGS before publishing BGS-derived tables.
 4. Confirm the repo is public.
+# Analytical acceptance and file generations (2026-11-06)
+
+The mathematical models and independent implementations remain unchanged. The
+publication boundary admits required path-list provenance and a closed scenario
+schema. Imported native cut families require a fresh complete search and matching
+witnesses before supporting the residual shortcut. Fresh producer output carries
+that acceptance directly.
+
+Runs publish once from isolated generations with hashes of every result payload.
+Site-data and context output each have an immutable accepted inventory and a
+recoverable fixed-path projection under one output-directory writer lease. Sweep
+reuse binds actual task, source and input bytes, requires intact completed
+certificates, and excludes competing task writers. Release bundle selection lives
+in `release.json` for both public builders.

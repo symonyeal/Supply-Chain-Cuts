@@ -116,6 +116,21 @@ def test_native_risk_rejects_unmatched_certificates(supply, toy, change, expecte
     assert not result.stdout.strip()
 
 
+@pytest.mark.parametrize('tamper', ['missing_cut', 'false_witness', 'extra_witness'])
+def test_imported_complete_claim_cannot_replace_exhaustion_evidence(supply, toy, tamper):
+    _, _, _, certificate, paths = toy
+    if tamper == 'missing_cut':
+        certificate['cuts'].pop()
+        certificate['certificates'].pop()
+    elif tamper == 'false_witness':
+        certificate['certificates'][0]['phi'] = 0
+    else:
+        certificate['certificates'].append(certificate['certificates'][0])
+    save(paths['cuts'], certificate)
+    result = invoke(supply, 'risk', **paths)
+    assert result.returncode != 0 and 'fails admission' in result.stderr
+
+
 def request(port, method, path):
     client = http.client.HTTPConnection('127.0.0.1', port, timeout=2)
     try:

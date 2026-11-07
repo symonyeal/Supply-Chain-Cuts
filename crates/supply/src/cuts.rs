@@ -163,7 +163,8 @@ fn patterns(
     }
 }
 
-pub fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
+fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
+    sc_data::config::validate(config)?;
     if config.get("f").is_some() {
         return Err(
             "Cut enumeration currently certifies full outages; use evaluate for partial losses"
@@ -171,7 +172,7 @@ pub fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
         );
     }
     let model = Model::from_network(network, config)?;
-    let n = model.v.len();
+    let n = model.nodes().len();
     let alpha = config["alpha"].as_f64().unwrap_or(0.25);
     let k = config["k"].as_u64().unwrap_or(3) as usize;
     let seconds = config["time_limit"].as_f64().unwrap_or(60.0);
@@ -190,16 +191,16 @@ pub fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
     if ds.is_empty()
         || ds
             .iter()
-            .any(|&d| d <= 0 || !model.ends.contains(&(d as usize)))
+            .any(|&d| d <= 0 || !model.ends().contains(&(d as usize)))
     {
         return Err("Durations must be positive model block ends".into());
     }
     let nodes = network["nodes"].as_array().ok_or("Missing network nodes")?;
     let mut order: Vec<usize> = (0..n).collect();
     order.sort_by(|&a, &b| {
-        model.v[a]
+        model.nodes()[a]
             .1
-            .cmp(&model.v[b].1)
+            .cmp(&model.nodes()[b].1)
             .then_with(|| {
                 nodes[b]["capacity"]
                     .as_f64()
@@ -210,7 +211,10 @@ pub fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
     });
     let mut layers: BTreeMap<String, Vec<usize>> = BTreeMap::new();
     for v in order {
-        layers.entry(model.v[v].1.clone()).or_default().push(v);
+        layers
+            .entry(model.nodes()[v].1.clone())
+            .or_default()
+            .push(v);
     }
     let start = Instant::now();
     let mut search = Search {
@@ -221,7 +225,7 @@ pub fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
         cuts: vec![],
         found: vec![],
         dmax: vec![*ds.last().unwrap(); n],
-        theta: alpha * model.total,
+        theta: alpha * model.total(),
         deadline: start + Duration::from_secs_f64(seconds),
     };
     if search.fails(&vec![0; n])? {
@@ -288,7 +292,78 @@ pub fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
     Ok(
         json!({"complete":true,"status":"optimal","algorithm":"capacity_dominance_lattice",
         "network":network,
-        "nodes":model.v,"cuts":search.cuts,"certificates":certificates,"config":config,
-        "total":model.total,"lp_calls":search.cache.len(),"seconds":start.elapsed().as_secs_f64()}),
+        "nodes":model.nodes(),"cuts":search.cuts,"certificates":certificates,"config":config,
+        "total":model.total(),"lp_calls":search.cache.len(),"seconds":start.elapsed().as_secs_f64()}),
     )
+}
+
+/// Only a complete local search can construct an accepted cut family.
+pub struct Accepted(Value);
+impl Accepted {
+    pub fn report(&self) -> &Value {
+        &self.0
+    }
+}
+pub enum Outcome {
+    Complete(Accepted),
+    Incomplete(Value),
+}
+impl Outcome {
+    pub fn report(&self) -> &Value {
+        match self {
+            Self::Complete(c) => c.report(),
+            Self::Incomplete(v) => v,
+        }
+    }
+}
+pub fn search(network: &Value, config: &Value) -> Result<Outcome, String> {
+    let value = enumerate(network, config)?;
+    Ok(if value["complete"] == true {
+        Outcome::Complete(Accepted(value))
+    } else {
+        Outcome::Incomplete(value)
+    })
+}
+/// Individual witnesses cannot establish exhaustion. Re-enumerate imported families.
+pub fn admit(network: &Value, config: &Value, supplied: &Value) -> Result<Accepted, String> {
+    if supplied["complete"] != true {
+        return Err("Risk requires a complete cut family".into());
+    }
+    if supplied["network"] != *network {
+        return Err("Cut certificate requires this exact network".into());
+    }
+    let defaults = json!({"alpha":0.25,"h":0,"sigma":0,"L":6,"T":24,"choice":false,"shares":[0,1],"durations":[3,6,12],"aggregate":true,"k":3});
+    for (key, default) in defaults.as_object().unwrap() {
+        let selected = config.get(key).unwrap_or(default);
+        let certified = supplied["config"].get(key).unwrap_or(default);
+        if !(selected == certified
+            || selected.is_number()
+                && certified.is_number()
+                && selected.as_f64() == certified.as_f64())
+        {
+            return Err(format!("Cut certificate configuration mismatch: {key}"));
+        }
+    }
+    let Outcome::Complete(fresh) = search(network, config)? else {
+        return Err("Imported cut admission requires a completed independent search".into());
+    };
+    for key in [
+        "complete",
+        "status",
+        "algorithm",
+        "network",
+        "nodes",
+        "cuts",
+        "certificates",
+        "total",
+    ] {
+        if supplied.get(key) != fresh.report().get(key) {
+            return Err(if key == "nodes" {
+                "Cut roster differs from selected network".into()
+            } else {
+                format!("Imported cut family fails admission: {key}")
+            });
+        }
+    }
+    Ok(Accepted(supplied.clone()))
 }

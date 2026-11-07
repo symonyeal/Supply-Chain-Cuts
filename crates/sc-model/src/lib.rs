@@ -20,9 +20,9 @@ struct Recipe {
 }
 
 pub struct Model {
-    pub v: Vec<(String, String)>,
-    pub ends: Vec<usize>,
-    pub total: f64,
+    v: Vec<(String, String)>,
+    ends: Vec<usize>,
+    total: f64,
     a: Matrix,
     b: Vec<f64>,
     e: Matrix,
@@ -59,7 +59,22 @@ fn array<'a>(value: &'a Value, key: &str) -> Result<&'a Vec<Value>, String> {
 }
 
 impl Model {
+    pub fn nodes(&self) -> &[(String, String)] {
+        &self.v
+    }
+    pub fn ends(&self) -> &[usize] {
+        &self.ends
+    }
+    pub fn total(&self) -> f64 {
+        self.total
+    }
+
     pub fn from_network(network: &Value, config: &Value) -> Result<Self, String> {
+        for key in ["aggregate", "choice", "dual"] {
+            if config.get(key).is_some_and(|x| !x.is_boolean()) {
+                return Err(format!("Invalid {key}: boolean required"));
+            }
+        }
         let h = number(config, "h", 0.0)?;
         let sigma = number(config, "sigma", 0.0)?;
         let ramp_l = number(config, "L", 6.0)?;
@@ -134,7 +149,9 @@ impl Model {
                 .ok_or("Positive input coefficients required")?;
             let rp = *requirement.get(&p).ok_or("Missing input requirement")?;
             let rq = *requirement.get(&q).ok_or("Missing output requirement")?;
-            coefficients.insert((p, q), x * rq / rp);
+            if coefficients.insert((p, q), x * rq / rp).is_some() {
+                return Err("Duplicate input coefficient coordinate".into());
+            }
         }
         let layers: BTreeSet<String> = v.iter().map(|(_, p)| p.clone()).collect();
         let mut recipes: BTreeMap<String, Vec<Recipe>> = layers
@@ -303,11 +320,20 @@ impl Model {
             .get("durations")
             .cloned()
             .unwrap_or(json!([3, 6, 12]));
-        for d in durations.as_array().ok_or("Invalid durations")? {
+        let durations = durations.as_array().ok_or("Invalid durations")?;
+        if durations.is_empty() {
+            return Err("Nonempty duration grid required".into());
+        }
+        let mut previous = 0;
+        for d in durations {
             let d = d
                 .as_u64()
                 .filter(|x| *x > 0)
                 .ok_or("Positive integer durations required")?;
+            if d <= previous || d > horizon as u64 {
+                return Err("Durations must increase strictly within the horizon".into());
+            }
+            previous = d;
             if d < horizon as u64 {
                 ends.insert(d as usize);
             }

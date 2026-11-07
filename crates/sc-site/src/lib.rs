@@ -34,6 +34,30 @@ fn s(x: &Value) -> &str {
 fn b(x: &Value) -> bool {
     x.as_bool().unwrap_or(false)
 }
+fn clean(stamp: &Value) -> bool {
+    stamp
+        .get("dirty")
+        .and_then(Value::as_array)
+        .is_some_and(|paths| paths.is_empty())
+}
+
+#[cfg(test)]
+mod provenance_tests {
+    use super::*;
+    #[test]
+    fn clean_requires_the_producers_empty_path_list() {
+        assert!(clean(&json!({"dirty":[]})));
+        for stamp in [
+            json!({}),
+            json!({"dirty":null}),
+            json!({"dirty":false}),
+            json!({"dirty":["changed.rs"]}),
+            json!({"dirty":[0]}),
+        ] {
+            assert!(!clean(&stamp));
+        }
+    }
+}
 fn len(x: &Value) -> usize {
     a(x).len()
 }
@@ -370,7 +394,7 @@ fn chemistry(
     let d = root.join("results");
     let risk = read(&d.join(risk_run).join(format!("{sector}.json")))?;
     check!(
-        !b(&risk["stamp"]["dirty"]) && b(&risk["network_unchanged"]) && b(&risk["rates_unchanged"]),
+        clean(&risk["stamp"]) && b(&risk["network_unchanged"]) && b(&risk["rates_unchanged"]),
         "Chemistry changed frozen network/rates"
     );
     let mut configs = Map::new();
@@ -397,7 +421,7 @@ fn chemistry(
                 "Chemistry free/bounded lists differ or are incomplete"
             );
             check!(
-                !b(&r["stamp"]["dirty"]) && r["nodes"] == law["nodes"],
+                clean(&r["stamp"]) && r["nodes"] == law["nodes"],
                 "Dirty chemistry or roster differs"
             );
             bundles.insert(task.to_string(), bundle);
@@ -467,7 +491,7 @@ fn severity(root: &Path, run: &str) -> Result<Value, String> {
     let d = root.join("results").join(run);
     let t = read(&d.join("severity.json"))?;
     check!(
-        b(&t["registered"]) && !b(&t["stamp"]["dirty"]),
+        b(&t["registered"]) && clean(&t["stamp"]),
         "Unregistered/dirty severity"
     );
     let mut out = select(&t, &["table", "excluded", "method", "bootstrap_draws"]);
@@ -476,7 +500,7 @@ fn severity(root: &Path, run: &str) -> Result<Value, String> {
     for sector in ["liion", "pv", "joint"] {
         let x = read(&d.join(format!("{sector}.json")))?;
         check!(
-            x["status"] == "optimal" && !b(&x["stamp"]["dirty"]),
+            x["status"] == "optimal" && clean(&x["stamp"]),
             "Severity not clean/optimal"
         );
         check!(
@@ -522,7 +546,7 @@ fn supply(root: &Path, run: &str) -> Result<Value, String> {
     for path in files(&root.join("results").join(run))? {
         let x = read(&path)?;
         check!(
-            b(&x["complete"]) && !b(&x["stamp"]["dirty"]),
+            b(&x["complete"]) && clean(&x["stamp"]),
             "Supply incomplete/dirty"
         );
         check!(
@@ -720,6 +744,37 @@ fn test_rows(t: &Value) -> Result<Value, String> {
     ]))
 }
 
+/// One release owns all seven result selections; positional runs remain explicit overrides.
+pub fn release(root: &Path) -> Result<Value, String> {
+    let path = root.join("release.json");
+    let value = if path.exists() {
+        read(&path)?
+    } else {
+        serde_json::from_str(include_str!("../../../release.json")).map_err(|e| e.to_string())?
+    };
+    check!(
+        value["schema"] == 1 && a(&value["runs"]).len() == 4,
+        "Invalid release manifest"
+    );
+    for name in a(&value["runs"]).iter().chain([
+        &value["chemistry"],
+        &value["chemistry_risk"],
+        &value["supply"],
+    ]) {
+        let name = name.as_str().ok_or("Release bundle name required")?;
+        check!(
+            !name.is_empty()
+                && Path::new(name).components().count() == 1
+                && matches!(
+                    Path::new(name).components().next(),
+                    Some(std::path::Component::Normal(_))
+                ),
+            "Invalid release bundle path"
+        );
+    }
+    Ok(value)
+}
+
 /// Assemble certified model exhibits from immutable result bundles, before presentation rounding.
 pub fn build(root: &Path, runs: &[String]) -> Result<Value, String> {
     check!(
@@ -754,23 +809,19 @@ pub fn build(root: &Path, runs: &[String]) -> Result<Value, String> {
     if runs.len() > 3 {
         data["severity"] = severity(root, &runs[3])?;
     }
-    data["choice"] = chemistry(
-        root,
-        "liion",
-        &data,
-        &risk,
-        "chemistry-896581f",
-        "chemistry-risk-d18c743",
-    )?;
-    data["supply"] = supply(root, "supply-4ae36c1")?;
+    let release = release(root)?;
+    let chemistry_run = release["chemistry"].as_str().unwrap();
+    let chemistry_risk = release["chemistry_risk"].as_str().unwrap();
+    data["choice"] = chemistry(root, "liion", &data, &risk, chemistry_run, chemistry_risk)?;
+    data["supply"] = supply(root, release["supply"].as_str().unwrap())?;
     if let Some(law) = joint_law {
         data["joint_choice"] = chemistry(
             root,
             "joint",
             &data["joint"],
             &law,
-            "chemistry-896581f",
-            "chemistry-risk-d18c743",
+            chemistry_run,
+            chemistry_risk,
         )?;
     }
     let ranges: Vec<(&str, Vec<String>)> = vec![

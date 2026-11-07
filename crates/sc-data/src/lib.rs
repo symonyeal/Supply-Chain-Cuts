@@ -3,6 +3,7 @@
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use std::{collections::BTreeMap, fs, path::Path};
+pub mod config;
 mod network;
 
 /// SHA-256 for result provenance; raw-input verification uses the same digest.

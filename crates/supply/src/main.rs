@@ -1,5 +1,6 @@
 // Native entry point. R: source root; N: physical network; c: scenario configuration.
 mod cuts;
+mod publication;
 mod risk;
 mod server;
 use serde_json::{Value, json};
@@ -119,6 +120,7 @@ fn execute() -> Result<(), String> {
     if let Some(sector) = opts.get("sector") {
         config["sector"] = json!(sector);
     }
+    sc_data::config::validate(&config)?;
     match command.as_str() {
         "verify" => emit(&sc_data::verify(&root)?, opts.get("out")),
         "context" => {
@@ -126,7 +128,10 @@ fn execute() -> Result<(), String> {
                 .get("out")
                 .map(PathBuf::from)
                 .unwrap_or(root.join("site"));
-            emit(&context(&root, &out)?, None)
+            let generation = publication::Generation::new(&out, "context")?;
+            let result = context(&root, generation.root())?;
+            generation.project()?;
+            emit(&result, None)
         }
         "build" => {
             let checked = sc_data::verify(&root)?;
@@ -134,16 +139,11 @@ fn execute() -> Result<(), String> {
                 .get("out")
                 .map(PathBuf::from)
                 .unwrap_or(root.join("site"));
-            let c = context(&root, &out)?;
-            let runs: Vec<String> = [
-                "liion-residual-2395a5c",
-                "pv-residual-2395a5c",
-                "joint-residual-2395a5c",
-                "severity-26ebd48",
-            ]
-            .iter()
-            .map(|s| s.to_string())
-            .collect();
+            let generation = publication::Generation::new(&out, "site")?;
+            let c = context(&root, generation.root())?;
+            let runs: Vec<String> =
+                serde_json::from_value(sc_site::release(&root)?["runs"].clone())
+                    .map_err(|e| e.to_string())?;
             let data = sc_site::plain(sc_site::build(&root, &runs)?);
             let saved: usize = [
                 &data,
@@ -156,9 +156,10 @@ fn execute() -> Result<(), String> {
             .filter_map(|block| block["configs"].as_object().map(|x| x.len()))
             .sum();
             write(
-                &out.join("data.js"),
+                &generation.root().join("data.js"),
                 format!("window.DATA = {data};\n").as_bytes(),
             )?;
+            generation.project()?;
             emit(
                 &json!({"sources":checked["count"],"context":c,"builder":"native Rust",
                 "saved_configurations":saved}),
@@ -184,35 +185,38 @@ fn execute() -> Result<(), String> {
             )
         }
         "cuts" => emit(
-            &cuts::enumerate(&network(&root, &opts, &config)?, &config)?,
+            cuts::search(&network(&root, &opts, &config)?, &config)?.report(),
             opts.get("out"),
         ),
         "risk" => {
             let law = read(Path::new(opts.get("law").ok_or("--law FILE required")?))?;
             let cuts = read(Path::new(opts.get("cuts").ok_or("--cuts FILE required")?))?;
-            emit(
-                &risk::run(&network(&root, &opts, &config)?, &config, &law, &cuts)?,
-                opts.get("out"),
-            )
+            let n = network(&root, &opts, &config)?;
+            let accepted = cuts::admit(&n, &config, &cuts)?;
+            emit(&risk::run(&n, &config, &law, &accepted)?, opts.get("out"))
         }
         "run" => {
             let out = PathBuf::from(opts.get("out").ok_or("--out DIRECTORY required")?);
+            let generation = publication::Generation::new(&out, "run")?;
+            generation.require_new()?;
+            let out = generation.root();
             let law_path = Path::new(opts.get("law").ok_or("--law FILE required")?);
             let law_bytes = fs::read(law_path).map_err(|e| e.to_string())?;
             let law: Value = serde_json::from_slice(&law_bytes).map_err(|e| e.to_string())?;
             let checked = sc_data::verify(&root)?;
             let n = network(&root, &opts, &config)?;
-            let cut = cuts::enumerate(&n, &config)?;
+            let search = cuts::search(&n, &config)?;
+            let cut = search.report();
             emit(
                 &n,
                 Some(&out.join("network.json").to_string_lossy().into_owned()),
             )?;
             emit(
-                &cut,
+                cut,
                 Some(&out.join("cuts.json").to_string_lossy().into_owned()),
             )?;
-            let result = if cut["complete"] == true {
-                risk::run(&n, &config, &law, &cut)?
+            let result = if let cuts::Outcome::Complete(accepted) = &search {
+                risk::run(&n, &config, &law, accepted)?
             } else {
                 json!({"status":"incomplete_cuts","complete":false})
             };
@@ -222,7 +226,10 @@ fn execute() -> Result<(), String> {
             )?;
             let executable = fs::read(std::env::current_exe().map_err(|e| e.to_string())?)
                 .map_err(|e| e.to_string())?;
+            let hashes: [(&str, String); 3] = ["network.json", "cuts.json", "risk.json"]
+                .map(|name| (name, sc_data::digest(&fs::read(out.join(name)).unwrap())));
             let stamp = json!({"engine":"native Rust","version":env!("CARGO_PKG_VERSION"),
+                "output_sha256":hashes.into_iter().collect::<BTreeMap<_,_>>(),
                 "binary_sha256":sc_data::digest(&executable),"source_lock_sha256":sc_data::digest(
                     &fs::read(root.join("SOURCES.lock")).map_err(|e|e.to_string())?),
                 "law_sha256":sc_data::digest(&law_bytes),"network_sha256":sc_data::digest(
@@ -233,6 +240,7 @@ fn execute() -> Result<(), String> {
                 &stamp,
                 Some(&out.join("manifest.json").to_string_lossy().into_owned()),
             )?;
+            generation.accept_new()?;
             emit(&stamp, None)
         }
         "sample-law" => {

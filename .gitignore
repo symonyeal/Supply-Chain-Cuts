@@ -28,3 +28,6 @@ local/
 # Build and CI evidence; publication assets are explicitly stored in site/.
 target/
 evidence/
+# Local accepted generations and cooperating output ownership.
+.supply-releases/
+.*.writer.lock

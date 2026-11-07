@@ -15,6 +15,11 @@ sys.path.insert(0, str(ROOT))
 from chokepoint.risk import exact_union
 
 
+def clean(stamp):
+    """Admit the producer's required path-list provenance, never a boolean fallback."""
+    return isinstance(stamp, dict) and isinstance(stamp.get("dirty"), list) and stamp["dirty"] == []
+
+
 def plain(o, nd=5):
     """JSON-native copy: floats to nd significant digits, NaN to None."""
     if isinstance(o, dict):
@@ -165,13 +170,13 @@ def severity(run):
     """Forward identified responses and certified scenarios, without the unused trade panel."""
     d = ROOT / "results" / run
     t = json.loads((d / "severity.json").read_text(encoding="utf-8"))
-    assert t["registered"] and not t["stamp"]["dirty"]
+    assert t["registered"] and clean(t["stamp"])
     out = {k: t[k] for k in ("table", "excluded", "method", "bootstrap_draws")}
     out["run"] = run
     out["sectors"] = {}
     for s in ("liion", "pv", "joint"):
         x = json.loads((d / f"{s}.json").read_text(encoding="utf-8"))
-        assert x["status"] == "optimal" and not x["stamp"]["dirty"]
+        assert x["status"] == "optimal" and clean(x["stamp"])
         assert x["monotone"] and x["full_agrees_with_W1"]
         assert x["max_monotonicity_violation"] <= 1e-7
         assert all(0 <= f <= 1 for a in x["assigned_fractions"].values() for f in a.values())
@@ -190,14 +195,14 @@ def chemistry(cut_run, risk_run, sector, reference, law):
     """Certified recipe-choice cuts and exact country unions under the frozen onset law."""
     d = ROOT / "results"
     risk = json.loads((d / risk_run / f"{sector}.json").read_text())
-    assert not risk["stamp"]["dirty"] and risk["network_unchanged"] and risk["rates_unchanged"]
+    assert clean(risk["stamp"]) and risk["network_unchanged"] and risk["rates_unchanged"]
     V, configs = law["nodes"], {}
     for key, x in risk["configs"].items():
         task, DJ = key.rsplit("_D", 1)
         R = json.loads((d / cut_run / "cuts" / f"{sector}_free_{task}.json").read_text())
         B = json.loads((d / cut_run / "cuts" / f"{sector}_bounded_{task}.json").read_text())
         assert R["complete"] and B["complete"] and R["cuts"] == B["cuts"]
-        assert not R["stamp"]["dirty"] and R["nodes"] == V
+        assert clean(R["stamp"]) and R["nodes"] == V
         C = certificates(R)
         S = [s for s in R["cuts"] if all(t <= int(DJ) for _, t in s)]
         assert len(S) == len(x["attribution"])
@@ -234,7 +239,7 @@ def supply(run):
     out, revisions = [], set()
     for p in sorted((ROOT / 'results' / run).glob('*.json')):
         x = json.loads(p.read_text())
-        assert x['complete'] and not x['stamp']['dirty']
+        assert x['complete'] and clean(x['stamp'])
         assert all(c['certified'] and c['gap'] <= 1e-6 for c in x['certificates'])
         assert x['baseline']['status'] == 'optimal' and x['baseline']['gap'] <= 1e-6
         revisions.add(x['stamp']['revision'])
@@ -249,7 +254,21 @@ def supply(run):
     return {'run': run, 'revision': revisions.pop(), 'cases': out}
 
 
+def release():
+    """Read the same seven-bundle selection as the native builder."""
+    path = ROOT / 'release.json'
+    if not path.exists():
+        path = Path(__file__).resolve().parents[1] / 'release.json'
+    value = json.loads(path.read_text(encoding='utf-8'))
+    assert value.get('schema') == 1 and len(value['runs']) == 4
+    for name in [*value['runs'], value['chemistry'], value['chemistry_risk'], value['supply']]:
+        assert (isinstance(name, str) and name and name not in ('.', '..')
+                and '/' not in name and '\\' not in name)
+    return value
+
+
 def build(run, pv_run=None, joint_run=None, severity_run=None):
+    selected = release()
     data, N, risk, checks = block(run)
     layers = sorted(N["supply_ratio"], key=lambda p: -N["hhi"].get(p, 0))
     data.update({
@@ -266,10 +285,11 @@ def build(run, pv_run=None, joint_run=None, severity_run=None):
             data[name] = block(r)[0]
     if severity_run:
         data["severity"] = severity(severity_run)
-    data["choice"] = chemistry("chemistry-896581f", "chemistry-risk-d18c743", "liion", data, risk)
-    data['supply'] = supply('supply-4ae36c1')
+    data["choice"] = chemistry(selected['chemistry'], selected['chemistry_risk'],
+                               "liion", data, risk)
+    data['supply'] = supply(selected['supply'])
     if joint_run:
-        data["joint_choice"] = chemistry("chemistry-896581f", "chemistry-risk-d18c743", "joint",
+        data["joint_choice"] = chemistry(selected['chemistry'], selected['chemistry_risk'], "joint",
                                           data["joint"], load(joint_run)[2])
     ranges = {
         "Threshold α = 10–50%": [f"a{a}_h0_s0_L6_D12" for a in (0.1, 0.25, 0.5)],
@@ -286,7 +306,7 @@ def build(run, pv_run=None, joint_run=None, severity_run=None):
 
 def main():
     out = ROOT / "site" / "data.js"
-    data = plain(build(*sys.argv[1:5]))
+    data = plain(build(*(sys.argv[1:5] or release()['runs'])))
     out.write_text("window.DATA = " + json.dumps(data, separators=(",", ":"), ensure_ascii=False,
                                                  allow_nan=False) + ";\n", encoding="utf-8")
     print(f"{out}  {out.stat().st_size/1e6:.2f} MB")

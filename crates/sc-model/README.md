@@ -38,9 +38,8 @@ explicit SciPy `linprog(method="highs")` settings. The solver's other defaults
 remain at the matching version's defaults.
 
 Keep `CARGO_TARGET_DIR` in the working folder. Deep Windows paths can exceed
-MSBuild's path limit; a `subst` alias to that folder keeps generated paths short.
-This changes the path used by the build while retaining files in the working
-folder. Build and cache paths are runtime configuration, never source paths in
+MSBuild's path limit; choose a shorter real directory inside the working folder.
+Build and cache paths are runtime configuration, never source paths in
 the manifest.
 
 ## Comparison

@@ -125,6 +125,7 @@ fn trade(c: &str, p: &str, e: &BTreeMap<&str, Flows>, scale: f64) -> f64 {
 }
 
 pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, String> {
+    crate::config::validate(opts)?;
     let sector = opts["sector"].as_str().unwrap_or("liion");
     let ncm = opts["ncm"].as_f64().unwrap_or(0.5);
     let cutoff = opts["cutoff"].as_f64().unwrap_or(0.01);
