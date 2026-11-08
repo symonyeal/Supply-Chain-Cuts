@@ -183,6 +183,38 @@ def solve(M, D, dual=True, f=None):
     return out
 
 
+def verdict(M, D, theta, eps=1e-7):
+    """Classify state D against theta: "fail", "survive", or the status that blocks a decision.
+
+    Survival needs a feasible primal (residual <= 10 eps) with phi <= theta + eps, since the
+    primal value bounds the minimum from above. Failure needs the dual value above theta + eps
+    with gap <= 10 eps, since the dual value bounds it from below; other cases are "boundary".
+    """
+    R = solve(M, D, dual=False)
+    if R["status"] != "optimal":
+        return R["status"]
+    if R["residual"] > 10*eps:
+        return "residual"
+    if R["phi"] <= theta + eps:
+        return "survive"
+    R = solve(M, D)
+    if R["status"] != "optimal":
+        return R["status"]
+    return "fail" if R["dual"] > theta + eps and R["gap"] <= 10*eps else "boundary"
+
+
+class Blocked(Exception):
+    """Unwinds a search at a state whose verdict is neither fail nor survive; args[0] is it."""
+
+
+def fails(M, D, theta, eps=1e-7):
+    """True for a certified failure, False for survival; raises Blocked otherwise."""
+    v = verdict(M, D, theta, eps)
+    if v not in ("fail", "survive"):
+        raise Blocked(v)
+    return v == "fail"
+
+
 def phi(V, u, a, d, D, h=0.0, sigma=0.0, L=1.0, final="cell"):
     """Return minimum cumulative shortfall and status; design §4."""
     R = solve(matrices(V, u, a, d, h, sigma, L, final), D, dual=False)

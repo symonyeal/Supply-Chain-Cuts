@@ -54,7 +54,7 @@ def test_recipe_lattice_brute_and_milp_agree():
         M = matrices(W, u, {}, [10]*4,
                      recipes=R, shares={'cell': bounds})
         assert solve(M, [0]*6)['phi'] == pytest.approx(0)
-        brute = {tuple(D) for D in enumerate_brute(M, [2, 4], alpha=0.25, k=2)}
+        brute = {tuple(D) for D in enumerate_brute(M, [2, 4], alpha=0.25, k=2)["cuts"]}
         lattice = {tuple(D) for D in enumerate_lattice(M, [2, 4], alpha=0.25, k=2)['cuts']}
         C = enumerate_cuts(M, [2, 4], alpha=0.25, k=2, time_limit=120)
         assert C['complete'] and {tuple(c['D']) for c in C['cuts']} == brute == lattice
@@ -62,7 +62,7 @@ def test_recipe_lattice_brute_and_milp_agree():
 
 def test_baseline_failure_is_the_empty_cut():
     M = matrices([('A', 'cell')], [0.1], {}, [1, 1])
-    assert enumerate_brute(M, [1, 2], k=0) == [[0]]
+    assert enumerate_brute(M, [1, 2], k=0)["cuts"] == [[0]]
     assert enumerate_lattice(M, [1, 2], k=0)['cuts'] == [[0]]
 
 

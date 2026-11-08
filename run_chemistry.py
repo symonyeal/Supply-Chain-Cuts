@@ -30,6 +30,7 @@ def job(sector, bounds, cfg, run):
     baseline = solve(M, [0]*len(M['V']))
     assert baseline['status'] == 'optimal' and baseline['phi'] <= EPS
     C = certified_lattice(M, cfg['alpha'])
+    assert C['status'] == 'optimal', C['status']
     cuts, cert = C['cuts'], C['certificates']
     assert all(c['certified'] for c in cert)
     legacy_name = f"base_a{cfg['alpha']}_h{cfg['h']}_s{cfg['sigma']}_L{cfg['L']}"

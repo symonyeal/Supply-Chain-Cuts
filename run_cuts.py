@@ -41,6 +41,8 @@ def compute(task, out, receipt):
     M = model(N, h=cfg["h"], sigma=cfg["sigma"], L=cfg["L"], durations=DURATIONS)
     theta = cfg["alpha"]*M["total"]
     C = certified_lattice(M, cfg["alpha"])
+    if C["status"] != "optimal":
+        raise RuntimeError(f"{name}: lattice enumeration blocked: {C['status']}")
     res = {"task": name, "config": cfg, "network": {k: (sorted(map(list, v)) if k == "exclude"
                                                          else v) for k, v in kw.items()},
            "nodes": [list(v) for v in M["V"]], "theta": theta, "total": M["total"],
@@ -50,7 +52,7 @@ def compute(task, out, receipt):
     if "pruned" in checks:
         E = [i for i, x in enumerate(N["nodes"]) if x["share"] >= PRUNE]
         t = time.perf_counter()
-        b = sparse(enumerate_brute(M, DURATIONS, cfg["alpha"], K, EPS, eligible=E))
+        b = sparse(enumerate_brute(M, DURATIONS, cfg["alpha"], K, EPS, eligible=E)["cuts"])
         tb = time.perf_counter() - t
         lat = sparse(enumerate_lattice(M, DURATIONS, cfg["alpha"], K, EPS, eligible=E)["cuts"])
         C = enumerate_cuts(M, DURATIONS, cfg["alpha"], K, EPS, time_limit=900, eligible=E)
@@ -61,7 +63,7 @@ def compute(task, out, receipt):
                          "milp_equals_brute": C["complete"] and milp == b}
     if "brute_full" in checks:
         t = time.perf_counter()
-        b = sparse(enumerate_brute(M, DURATIONS, cfg["alpha"], K, EPS))
+        b = sparse(enumerate_brute(M, DURATIONS, cfg["alpha"], K, EPS)["cuts"])
         res["brute_full"] = {"cuts": b, "seconds": time.perf_counter() - t,
                              "equals_lattice": b == res["cuts"]}
     if "milp_full" in checks:

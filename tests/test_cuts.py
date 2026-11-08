@@ -14,7 +14,7 @@ def test_duration_lattice():
     u, a, d = [4, 4, 8], {("ore", "cell"): 1}, [8, 8]
     M = matrices(V, u, a, d)
     C = enumerate_cuts(M, [1, 2], alpha=0.3, k=2)
-    B = enumerate_brute(M, [1, 2], alpha=0.3, k=2)
+    B = enumerate_brute(M, [1, 2], alpha=0.3, k=2)["cuts"]
     assert C["complete"]
     assert {tuple(x["D"]) for x in C["cuts"]} == {
         (2, 0, 0), (0, 2, 0), (0, 0, 1), (1, 1, 0)
@@ -30,7 +30,7 @@ def test_shared_sweep_returns_sparse_cuts_and_certificates():
     M = matrices([("A", "ore"), ("B", "ore"), ("C", "cell")],
                  [4, 4, 8], {("ore", "cell"): 1}, [8, 8])
     result = certified_lattice(M, alpha=0.3, durations=(1, 2), k=3)
-    expected = sparse(enumerate_brute(M, [1, 2], alpha=0.3, k=3))
+    expected = sparse(enumerate_brute(M, [1, 2], alpha=0.3, k=3)["cuts"])
     assert expected
     assert result["cuts"] == expected
     assert result["lp_calls"] > 0 and result["seconds"] >= 0
@@ -96,7 +96,7 @@ def test_lattice_equals_brute():
         h, sigma = (0, 0) if trial < 3 else (0.4, 0.2)
         M = matrices(V, u, a, np.full(6, 1.2), h, sigma, 2)
         for alpha in (0.1, 0.3):
-            B = sorted(map(tuple, enumerate_brute(M, [2, 4], alpha=alpha, k=3)))
+            B = sorted(map(tuple, enumerate_brute(M, [2, 4], alpha=alpha, k=3)["cuts"]))
             C = sorted(map(tuple, enumerate_lattice(M, [2, 4], alpha=alpha, k=3)["cuts"]))
             assert B == C
 
@@ -115,7 +115,7 @@ def test_lattice_equals_brute_deep():
         h, sigma = ((0, 0), (0.5, 0), (0, 0.3), (0.5, 0.3))[trial % 4]
         M = matrices(V, u/12, a, np.full(12, 1/12), h, sigma, 2, ends=[1, 2, 3, 6, 12])
         for alpha in (0.08, 0.2):
-            B = sorted(map(tuple, enumerate_brute(M, [1, 3, 6], alpha=alpha, k=3)))
+            B = sorted(map(tuple, enumerate_brute(M, [1, 3, 6], alpha=alpha, k=3)["cuts"]))
             C = sorted(map(tuple, enumerate_lattice(M, [1, 3, 6], alpha=alpha, k=3)["cuts"]))
             assert B == C
             seen += sum(sum(x > 0 for x in S) > 1 for S in B)
@@ -132,11 +132,73 @@ def test_non_optimal_worst_state_is_incomplete(monkeypatch):
     assert not C["complete"] and C["status"] == "worst_state_numerical"
 
 
-def test_certificate_requires_dual_above_threshold(monkeypatch):
-    from chokepoint import sweep
+def _stub(theta, **kw):
+    """A solver whose primal sits at theta + 2e-7 and whose dual sits at theta - 8e-7."""
+    def solve(M, D, dual=True, **_):
+        R = {"status": "optimal", "phi": theta + 2e-7, "dual": theta - 8e-7, "gap": 1e-6,
+             "residual": 0.0, **kw}
+        return R if dual else {**R, "dual": None, "gap": None}
+    return solve
 
-    out = {"status": "optimal", "phi": 5.0 + 2e-7, "dual": 5.0 - 8e-7, "gap": 1e-6}
+
+def _net():
+    M = matrices([("A", "ore"), ("B", "ore"), ("C", "cell")], [4, 4, 8],
+                 {("ore", "cell"): 1}, [8, 8])
+    return M, 0.3*M["total"]
+
+
+def _blocked():
+    """Primal-only classifiers would call the crafted state a failure; each path must refuse."""
+    from chokepoint import brute, risk
+    M, theta = _net()
+    p, w = [0.3, 0.3, 0.3], [0.5, 0.5]
+    return {
+        "brute": lambda: brute.enumerate_brute(M, [1, 2], alpha=0.3, k=2),
+        "lattice": lambda: brute.enumerate_lattice(M, [1, 2], alpha=0.3, k=2),
+        "residual": lambda: risk.residual_sampling(M, p, 0.4, [1, 2], w, [], alpha=0.3, n=50),
+        "importance": lambda: risk.importance_sampling(M, p, 0.4, [1, 2], w, [], alpha=0.3,
+                                                       n=50, pilot=0),
+    }, theta
+
+
+@pytest.mark.parametrize("path", ["brute", "lattice", "residual", "importance"])
+def test_crafted_boundary_state_is_refused(monkeypatch, path):
+    from chokepoint import recourse
+    calls, theta = _blocked()
+    monkeypatch.setattr(recourse, "solve", _stub(theta))
+    out = calls[path]()
+    assert out["status"] == "boundary" and not out.get("cuts")
+
+
+@pytest.mark.parametrize("path", ["brute", "lattice", "residual", "importance"])
+@pytest.mark.parametrize("fault", [{"status": "numerical"}, {"status": "limit"},
+                                   {"status": "infeasible"}, {"residual": 2e-6}])
+def test_solver_outcomes_are_values(monkeypatch, path, fault):
+    from chokepoint import recourse
+    calls, theta = _blocked()
+    monkeypatch.setattr(recourse, "solve", _stub(theta, **fault))
+    out = calls[path]()
+    assert out["status"] == fault.get("status", "residual") and not out.get("cuts")
+
+
+@pytest.mark.parametrize("fault", [{"status": "numerical"}, {"status": "infeasible"},
+                                   {"residual": 2e-6}, {"dual": 5.0 + 3e-7, "gap": 2e-6}])
+def test_certificate_requires_dual_residual_and_status(monkeypatch, fault):
+    from chokepoint import sweep
+    good = {"status": "optimal", "phi": 5.0 + 3e-7, "dual": 5.0 + 3e-7, "gap": 0.0,
+            "residual": 0.0}
+    out = dict(good)
     monkeypatch.setattr(sweep, "solve", lambda *a, **k: out)
-    assert not sweep.certify(None, [0], 5.0)["certified"]
-    out["dual"] = 5.0 + 2e-7
     assert sweep.certify(None, [0], 5.0)["certified"]
+    out.update(fault)
+    assert not sweep.certify(None, [0], 5.0)["certified"]
+    out.update(good, dual=5.0 - 8e-7, phi=5.0 + 2e-7, gap=1e-6)
+    assert not sweep.certify(None, [0], 5.0)["certified"]
+
+
+def test_certificate_predecessor_status_is_a_value(monkeypatch):
+    from chokepoint import sweep
+    good = {"status": "optimal", "phi": 6.0, "dual": 6.0, "gap": 0.0, "residual": 0.0}
+    monkeypatch.setattr(sweep, "solve", lambda M, D, dual=True: good if dual
+                        else {"status": "numerical"})
+    assert not sweep.certify(None, [3], 5.0)["certified"]

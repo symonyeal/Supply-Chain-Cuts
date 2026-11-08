@@ -98,7 +98,7 @@ def test_residual_matches_crude_on_random_network():
     V = [("A", "ore"), ("B", "ore"), ("A", "cell"), ("C", "cell")]
     u = rng.uniform(0.6, 1.2, len(V))
     M = matrices(V, u, {("ore", "cell"): 1}, [min(u[:2].sum(), u[2:].sum())]*2)
-    C = enumerate_brute(M, [1, 2], alpha=0.25, k=1)
+    C = enumerate_brute(M, [1, 2], alpha=0.25, k=1)["cuts"]
     p, w = [0.13, 0.2, 0.18, 0.24], [0.4, 0.6]
     R = residual_sampling(M, p, 0.4, [1, 2], w, C, n=6000, seed=7,
                           complete=True, k=1)

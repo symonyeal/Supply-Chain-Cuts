@@ -22,10 +22,13 @@ def enumerate_cuts(M, durations, alpha=0.25, k=3, eps=1e-7, time_limit=120,
     n, J = len(M["V"]), len(durations)
     eligible = set(range(n) if eligible is None else eligible)
     worst = solve(M, [max(durations) if v in eligible else 0 for v in range(n)])
-    if worst["status"] != "optimal" or worst["phi"] <= alpha*M["total"] + eps:
-        safe = worst["status"] == "optimal"
+    held = worst["status"]
+    if held == "optimal" and worst["residual"] > 10*eps:
+        held = "residual"
+    if held != "optimal" or worst["phi"] <= alpha*M["total"] + eps:
+        safe = held == "optimal"
         return {"cuts": [], "complete": safe,
-                "status": "worst_state_safe" if safe else "worst_state_" + worst["status"],
+                "status": "worst_state_safe" if safe else "worst_state_" + held,
                 "calls": 0,
                 "seconds": perf_counter() - start, "alpha": alpha, "durations": durations,
                 "k": k, "eps": eps, "worst_state": worst}
@@ -120,7 +123,8 @@ def enumerate_cuts(M, durations, alpha=0.25, k=3, eps=1e-7, time_limit=120,
                 if R.x[z0 + v*J + j] > 0.5:
                     D[v] = durations[j]
         R0 = solve(M, D)
-        if R0["status"] != "optimal" or R0["phi"] <= theta + eps:
+        if (R0["status"] != "optimal" or R0["dual"] <= theta + eps
+                or R0["residual"] > 10*eps):
             status = "certificate_failure"
             break
         shrunk = True
@@ -147,9 +151,9 @@ def enumerate_cuts(M, durations, alpha=0.25, k=3, eps=1e-7, time_limit=120,
                 Dp[v] = [0, *durations][durations.index(D[v])]
                 P = solve(M, Dp)
                 predecessors.append({"v": v, "D": Dp, **P})
-        if R0.get("gap", np.inf) > eps*10 or any(
-            x.get("gap", np.inf) > eps*10 or x["phi"] > theta + eps for x in predecessors
-        ):
+        if (R0.get("gap", np.inf) > eps*10 or R0["residual"] > eps*10 or any(
+                x.get("gap", np.inf) > eps*10 or x["residual"] > eps*10 or x["phi"] > theta + eps
+                for x in predecessors)):
             status = "certificate_failure"
             break
         cuts.append({"D": D, **R0, "predecessors": predecessors})

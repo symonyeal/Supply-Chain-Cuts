@@ -1,5 +1,5 @@
-// A: sparse constraint matrix; c: objective; l/u: column bounds; lo/hi: row bounds.
-// x: primal solution; h: owned HiGHS instance; st: native status; p/i/v: CSC storage.
+// A: sparse constraint matrix; c: objective; lower/upper: column bounds; lo/hi: row bounds.
+// x: primal solution; h: owned HiGHS instance; st: native status; p/indices/values: CSC storage.
 use std::collections::BTreeMap;
 use std::ffi::{CStr, c_char, c_void};
 
@@ -27,6 +27,15 @@ unsafe extern "C" {
     fn Highs_setBoolOptionValue(h: *mut c_void, key: *const c_char, value: i32) -> i32;
     fn Highs_setIntOptionValue(h: *mut c_void, key: *const c_char, value: i32) -> i32;
     fn Highs_setStringOptionValue(h: *mut c_void, key: *const c_char, value: *const c_char) -> i32;
+    fn Highs_clearSolver(h: *mut c_void) -> i32;
+    fn Highs_changeColsCostByRange(h: *mut c_void, from: i32, to: i32, cost: *const f64) -> i32;
+    fn Highs_changeRowsBoundsByRange(
+        h: *mut c_void,
+        from: i32,
+        to: i32,
+        lower: *const f64,
+        upper: *const f64,
+    ) -> i32;
     fn Highs_run(h: *mut c_void) -> i32;
     fn Highs_getModelStatus(h: *const c_void) -> i32;
     fn Highs_getObjectiveValue(h: *const c_void) -> f64;
@@ -136,100 +145,121 @@ impl Csc {
     }
 }
 
-pub fn linprog(
-    c: &[f64],
-    csc: &Csc,
-    b: &[f64],
-    f: &[f64],
-    lower: &[f64],
-    upper: &[f64],
-) -> Result<ResultLp, String> {
-    let n = c.len();
-    let m = csc.ma + csc.me;
-    if csc.n != n || b.len() != csc.ma || f.len() != csc.me || lower.len() != n || upper.len() != n
-    {
-        return Err("Invalid LP dimensions".into());
-    }
-    let (p, indices, values) = (&csc.p, &csc.indices, &csc.values);
-    let lo: Vec<f64> = b
-        .iter()
-        .map(|_| f64::NEG_INFINITY)
-        .chain(f.iter().copied())
-        .collect();
-    let hi: Vec<f64> = b.iter().chain(f).copied().collect();
-    let ni = i32::try_from(n).map_err(|_| "LP too large")?;
-    let mi = i32::try_from(m).map_err(|_| "LP too large")?;
-    let mut x = vec![0.0; n];
-    // SAFETY: all arrays have the validated C API lengths and live through each call.
-    // The owned handle does not escape this call. HiGHS copies the passed LP.
-    unsafe {
-        let h = Handle(Highs_create());
-        if h.0.is_null() {
-            return Err("HiGHS allocation failed".into());
+/// One owned HiGHS instance per LP: the matrix and column bounds are passed once; each solve
+/// changes the cost and row bounds, drops the previous basis and presolves from scratch.
+pub struct Lp {
+    h: Handle,
+    csc: Csc,
+}
+
+impl Lp {
+    pub fn new(csc: Csc, lower: &[f64], upper: &[f64]) -> Result<Self, String> {
+        let (n, m) = (csc.n, csc.ma + csc.me);
+        if lower.len() != n || upper.len() != n {
+            return Err("Invalid LP dimensions".into());
         }
-        for (key, value) in [(c"output_flag", 0), (c"log_to_console", 0)] {
-            if Highs_setBoolOptionValue(h.0, key.as_ptr(), value) < 0 {
+        let ni = i32::try_from(n).map_err(|_| "LP too large")?;
+        let mi = i32::try_from(m).map_err(|_| "LP too large")?;
+        let c = vec![0.0; n];
+        let lo = vec![f64::NEG_INFINITY; m];
+        let hi = vec![f64::INFINITY; m];
+        // SAFETY: all arrays have the validated C API lengths and live through each call.
+        // HiGHS copies the passed LP; the handle is destroyed once, by its owner.
+        unsafe {
+            let h = Handle(Highs_create());
+            if h.0.is_null() {
+                return Err("HiGHS allocation failed".into());
+            }
+            for (key, value) in [(c"output_flag", 0), (c"log_to_console", 0)] {
+                if Highs_setBoolOptionValue(h.0, key.as_ptr(), value) < 0 {
+                    return Err("HiGHS option failed".into());
+                }
+            }
+            // SciPy linprog(method='highs') sets presolve on and dual simplex strategy 1,
+            // while leaving solver at its default 'choose'.
+            if Highs_setStringOptionValue(h.0, c"presolve".as_ptr(), c"on".as_ptr()) < 0
+                || Highs_setIntOptionValue(h.0, c"simplex_strategy".as_ptr(), 1) < 0
+            {
                 return Err("HiGHS option failed".into());
             }
-        }
-        // SciPy linprog(method='highs') sets presolve on and dual simplex strategy 1,
-        // while leaving solver at its default 'choose'. No warm start is reused.
-        if Highs_setStringOptionValue(h.0, c"presolve".as_ptr(), c"on".as_ptr()) < 0
-            || Highs_setIntOptionValue(h.0, c"simplex_strategy".as_ptr(), 1) < 0
-        {
-            return Err("HiGHS option failed".into());
-        }
-        if Highs_passLp(
-            h.0,
-            ni,
-            mi,
-            indices.len() as i32,
-            1,
-            1,
-            0.0,
-            c.as_ptr(),
-            lower.as_ptr(),
-            upper.as_ptr(),
-            lo.as_ptr(),
-            hi.as_ptr(),
-            p.as_ptr(),
-            indices.as_ptr(),
-            values.as_ptr(),
-        ) < 0
-        {
-            return Err("HiGHS rejected LP".into());
-        }
-        let run = Highs_run(h.0);
-        let st = Highs_getModelStatus(h.0);
-        let status = match st {
-            7 => "optimal",
-            8 => "infeasible",
-            10 => "unbounded",
-            13 | 14 | 16 | 17 => "limit",
-            _ => "numerical",
-        };
-        if status != "optimal" {
-            return Ok(ResultLp {
-                status,
-                fun: f64::NAN,
-                x: Vec::new(),
-            });
-        }
-        if run < 0
-            || Highs_getSolution(
+            if Highs_passLp(
                 h.0,
-                x.as_mut_ptr(),
-                std::ptr::null_mut(),
-                std::ptr::null_mut(),
-                std::ptr::null_mut(),
+                ni,
+                mi,
+                csc.indices.len() as i32,
+                1,
+                1,
+                0.0,
+                c.as_ptr(),
+                lower.as_ptr(),
+                upper.as_ptr(),
+                lo.as_ptr(),
+                hi.as_ptr(),
+                csc.p.as_ptr(),
+                csc.indices.as_ptr(),
+                csc.values.as_ptr(),
             ) < 0
-        {
-            return Err("HiGHS solution retrieval failed".into());
+            {
+                return Err("HiGHS rejected LP".into());
+            }
+            Ok(Self { h, csc })
         }
-        Ok(ResultLp {
-            status,
-            fun: Highs_getObjectiveValue(h.0),
-            x,
-        })
+    }
+
+    /// Minimise `c x` subject to `a x <= b`, `e x = f` and the column bounds.
+    pub fn solve(&mut self, c: &[f64], b: &[f64], f: &[f64]) -> Result<ResultLp, String> {
+        let (n, m) = (self.csc.n, self.csc.ma + self.csc.me);
+        if c.len() != n || b.len() != self.csc.ma || f.len() != self.csc.me {
+            return Err("Invalid LP dimensions".into());
+        }
+        let lo: Vec<f64> = b
+            .iter()
+            .map(|_| f64::NEG_INFINITY)
+            .chain(f.iter().copied())
+            .collect();
+        let hi: Vec<f64> = b.iter().chain(f).copied().collect();
+        let mut x = vec![0.0; n];
+        // SAFETY: the arrays have the C API lengths and live through each call.
+        unsafe {
+            let h = self.h.0;
+            if Highs_changeColsCostByRange(h, 0, n as i32 - 1, c.as_ptr()) < 0
+                || Highs_changeRowsBoundsByRange(h, 0, m as i32 - 1, lo.as_ptr(), hi.as_ptr()) < 0
+                || Highs_clearSolver(h) < 0
+            {
+                return Err("HiGHS update failed".into());
+            }
+            let run = Highs_run(h);
+            let st = Highs_getModelStatus(h);
+            let status = match st {
+                7 => "optimal",
+                8 => "infeasible",
+                10 => "unbounded",
+                13 | 14 | 16 | 17 => "limit",
+                _ => "numerical",
+            };
+            if status != "optimal" {
+                return Ok(ResultLp {
+                    status,
+                    fun: f64::NAN,
+                    x: Vec::new(),
+                });
+            }
+            if run < 0
+                || Highs_getSolution(
+                    h,
+                    x.as_mut_ptr(),
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                ) < 0
+            {
+                return Err("HiGHS solution retrieval failed".into());
+            }
+            Ok(ResultLp {
+                status,
+                fun: Highs_getObjectiveValue(h),
+                x,
+            })
+        }
     }
 }

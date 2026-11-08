@@ -5,7 +5,7 @@ from collections import Counter
 import numpy as np
 from scipy.stats import beta
 
-from chokepoint.recourse import solve
+from chokepoint.recourse import Blocked, fails, solve
 
 
 def _parameters(V, p, rho, durations, weights):
@@ -121,7 +121,8 @@ def residual_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,
 
     INPUT   M, cuts ... recourse model and certified failing duration states
             complete .. enumeration complete through support k
-    OUTPUT  exact L, unbiased estimate, sample SE, exact-binomial 95% MC interval
+    OUTPUT  exact L, unbiased estimate, sample SE, exact-binomial 95% MC interval; a state
+            without a certified verdict gives {"status", "samples_completed"} instead
     """
     if n < 2:
         raise ValueError("At least two inference samples required")
@@ -132,17 +133,17 @@ def residual_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,
     L = exact_union(V, p, rho, durations, w, cuts)
     _, _, _, D = _sample_states(rng, n, groups, s, q, durations, w)
     theta, cache, m = alpha*M["total"], {}, 0
-    for x in D:
+    for i, x in enumerate(D):
         if len(cut) and np.any(np.all(x >= cut, axis=1)):
             continue
         if complete and np.count_nonzero(x) <= k:
             continue
         key = tuple(x)
         if key not in cache:
-            R = solve(M, x, dual=False)
-            if R["status"] != "optimal":
-                raise RuntimeError(R)
-            cache[key] = R["phi"] > theta + 1e-7
+            try:
+                cache[key] = fails(M, x, theta)
+            except Blocked as e:
+                return {"status": e.args[0], "samples_completed": i}
         m += cache[key]
     r = m/n
     lo, hi = binomial_interval(m, n)
@@ -206,8 +207,16 @@ def partial_sampling(M, p, rho, durations, weights, mixtures, losses, alpha=0.25
     return out
 
 
-def importance_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,
-                        pilot=400, seed=0, complete=False, k=3, crude=False):
+def importance_sampling(*args, **kw):
+    """`_importance_sampling`, or {"status": s} when a sampled state has no certified verdict."""
+    try:
+        return _importance_sampling(*args, **kw)
+    except Blocked as e:
+        return {"status": e.args[0]}
+
+
+def _importance_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,
+                         pilot=400, seed=0, complete=False, k=3, crude=False):
     """Estimate failure with a separate cross-entropy pilot and exact latent likelihoods.
 
     OUTPUT estimate, standard error, normal 95% Monte Carlo interval, weight ESS.
@@ -228,10 +237,7 @@ def importance_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,
             return False
         key = tuple(D)
         if key not in cache:
-            R = solve(M, D, dual=False)
-            if R["status"] != "optimal":
-                raise RuntimeError(R)
-            cache[key] = R["phi"] > theta + 1e-7
+            cache[key] = fails(M, D, theta)
         return cache[key]
 
     def sample(N, sh, qi):

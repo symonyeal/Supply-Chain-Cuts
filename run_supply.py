@@ -22,6 +22,7 @@ def job(name, N, flexible, run):
     baseline = solve(M, [0]*len(M['V']))
     assert baseline['status'] == 'optimal' and baseline['gap'] <= 10*EPS
     C = certified_lattice(M, 0.25)
+    assert C['status'] == 'optimal', C['status']
     cuts, cert = C['cuts'], C['certificates']
     assert all(c['certified'] for c in cert)
     named = lambda S, V: sorted(tuple((V[v][0], V[v][1], d) for v, d in s) for s in S)

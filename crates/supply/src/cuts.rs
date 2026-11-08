@@ -1,6 +1,6 @@
 //! Native lattice enumeration from chokepoint/brute.py, MODEL Lemma B.
 //! D: node outage months; p: layer; r: node capacity rank; k: max support.
-use sc_model::Model;
+use sc_model::{Model, certified_failure, survives};
 use serde_json::{Value, json};
 use std::collections::{BTreeMap, BTreeSet};
 use std::time::{Duration, Instant};
@@ -44,11 +44,7 @@ impl Search<'_> {
             return Ok(v);
         }
         let state: Vec<f64> = d.iter().map(|&x| x as f64).collect();
-        let result = self.model.solve(&state, false, None)?;
-        if result["status"] != "optimal" {
-            return Err(format!("Recourse solve: {result}"));
-        }
-        let fail = result["phi"].as_f64().ok_or("Missing primal objective")? > self.theta + 1e-7;
+        let fail = self.model.fails(&state, self.theta)?;
         self.cache.insert(d.to_vec(), fail);
         Ok(fail)
     }
@@ -269,9 +265,7 @@ fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
         if solved["status"] != "optimal" {
             return Err(format!("Cut certificate solve: {solved}"));
         }
-        if solved["dual"].as_f64().ok_or("Missing dual objective")? <= search.theta + 1e-7
-            || solved["gap"].as_f64().ok_or("Missing dual gap")? > 1e-6
-        {
+        if !certified_failure(&solved, search.theta) {
             return Err("Invalid failing-state or dual-gap certificate".into());
         }
         let mut pred = vec![];
@@ -280,9 +274,7 @@ fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
             let mut p = state.clone();
             p[v] = previous as f64;
             let solved = model.solve(&p, false, None)?;
-            if solved["status"] != "optimal"
-                || solved["phi"].as_f64().unwrap() > search.theta + 1e-7
-            {
+            if !survives(&solved, search.theta) {
                 return Err("Nonminimal cut certificate".into());
             }
             pred.push(json!({"v":v,"D":previous,"phi":solved["phi"]}));

@@ -159,12 +159,7 @@ pub fn run(
             fail
         } else {
             let durations: Vec<f64> = state.iter().map(|&d| d as f64).collect();
-            let solved = model.solve(&durations, false, None)?;
-            if solved["status"] != "optimal" {
-                return Err(format!("Recourse solve: {solved}"));
-            }
-            let fail = solved["phi"].as_f64().ok_or("Primal objective missing")?
-                > alpha * model.total() + 1e-7;
+            let fail = model.fails(&durations, alpha * model.total())?;
             cache.insert(state.clone(), fail);
             fail
         };

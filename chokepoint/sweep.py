@@ -40,34 +40,42 @@ def dense(cut, n):
 
 
 def certify(M, D, theta, durations=DURATIONS, eps=EPS):
-    """Check that a failing cut's immediate duration predecessors survive."""
+    """Check that D fails (dual > theta + eps; gap and residual <= 10 eps) and its immediate
+    duration predecessors survive. A non-optimal solve gives certified False, not an error."""
     R = solve(M, D)
-    pred = []
+    pred, survive = [], True
     for v, d in enumerate(D):
         if d:
             E = list(D)
             E[v] = max([0, *(x for x in durations if x < d)])
-            pred.append({"v": v, "D": E[v], "phi": solve(M, E, dual=False)["phi"]})
+            P = solve(M, E, dual=False)
+            pred.append({"v": v, "D": E[v], "phi": P.get("phi")})
+            survive &= (P["status"] == "optimal" and P["residual"] <= 10*eps
+                        and P["phi"] <= theta + eps)
     ok = (R["status"] == "optimal" and R["dual"] > theta + eps and R["gap"] <= 10*eps
-          and all(x["phi"] <= theta + eps for x in pred))
-    return {"phi": R["phi"], "dual": R["dual"], "gap": R["gap"], "predecessors": pred,
-            "certified": ok}
+          and R["residual"] <= 10*eps and survive)
+    return {"phi": R.get("phi"), "dual": R.get("dual"), "gap": R.get("gap"),
+            "predecessors": pred, "certified": ok}
 
 
 def certified_lattice(M, alpha=0.25, *, durations=DURATIONS, k=K, eps=EPS):
     """Enumerate minimal cuts of support <= k and attach primal/dual certificates.
 
     The reported seconds cover lattice enumeration only, matching the original runner
-    timing boundary. The exact lattice implementation remains in `chokepoint.brute`.
+    timing boundary. A blocked enumeration returns its status with no certificates.
+    The exact lattice implementation remains in `chokepoint.brute`.
     """
     start = perf_counter()
     R = enumerate_lattice(M, durations, alpha=alpha, k=k, eps=eps)
     seconds = perf_counter() - start
     cuts = sparse(R["cuts"])
+    if R["status"] != "optimal":
+        return {"cuts": cuts, "certificates": [], "lp_calls": R["lp_calls"],
+                "seconds": seconds, "status": R["status"]}
     certificates = [certify(M, dense(S, len(M["V"])), alpha*M["total"], durations, eps)
                     for S in cuts]
     return {"cuts": cuts, "certificates": certificates, "lp_calls": R["lp_calls"],
-            "seconds": seconds}
+            "seconds": seconds, "status": "optimal"}
 
 
 def tasks(sector="liion"):

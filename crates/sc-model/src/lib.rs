@@ -8,8 +8,9 @@
 mod highs;
 pub use highs::version;
 
-use highs::{Csc, Matrix, linprog};
+use highs::{Csc, Lp, Matrix};
 use serde_json::{Value, json};
+use std::cell::RefCell;
 use std::collections::{BTreeMap, BTreeSet};
 
 #[derive(Clone)]
@@ -26,13 +27,12 @@ pub struct Model {
     a: Matrix,
     b: Vec<f64>,
     e: Matrix,
-    primal: Csc,
-    dual: Csc,
+    primal: RefCell<Lp>,
+    dual: RefCell<Lp>,
     f: Vec<f64>,
     c: Vec<f64>,
     cap: Vec<Vec<usize>>,
     u: Vec<Vec<f64>>,
-    mcap: Vec<Vec<f64>>,
 }
 
 fn number(value: &Value, key: &str, default: f64) -> Result<f64, String> {
@@ -460,7 +460,7 @@ impl Model {
                 }
             })
             .collect();
-        let cap = (0..k)
+        let cap: Vec<Vec<usize>> = (0..k)
             .map(|t| mapping.iter().map(|&i| t * n + i).collect())
             .collect();
         let u = ramp
@@ -477,7 +477,7 @@ impl Model {
                         .fold(f64::NEG_INFINITY, f64::max)
             })
             .collect();
-        let mcap = ell
+        let mcap: Vec<Vec<f64>> = ell
             .iter()
             .map(|&t| mv.iter().map(|&x| t * x).collect())
             .collect();
@@ -493,8 +493,21 @@ impl Model {
                 at.set(j, ma + i, x);
             }
         }
-        let primal = Csc::new(&a, &e)?;
-        let dual = Csc::new(&at, &Matrix::new(0, ma + me))?;
+        let primal = Lp::new(
+            Csc::new(&a, &e)?,
+            &vec![0.0; c.len()],
+            &vec![f64::INFINITY; c.len()],
+        )?;
+        // Dual columns are the multipliers of a's rows (>= 0, capacity rows <= mcap) and of e's (free).
+        let mut lower = vec![0.0; ma];
+        lower.extend(vec![f64::NEG_INFINITY; me]);
+        let mut upper = vec![f64::INFINITY; ma + me];
+        for t in 0..ends.len() {
+            for v in 0..mapping.len() {
+                upper[cap[t][v]] = mcap[t][v];
+            }
+        }
+        let dual = Lp::new(Csc::new(&at, &Matrix::new(0, ma + me))?, &lower, &upper)?;
         Ok(Self {
             v,
             ends,
@@ -502,13 +515,12 @@ impl Model {
             a,
             b,
             e,
-            primal,
-            dual,
+            primal: RefCell::new(primal),
+            dual: RefCell::new(dual),
             f,
             c,
             cap,
             u,
-            mcap,
         })
     }
 
@@ -543,9 +555,7 @@ impl Model {
                 b[self.cap[t][v]] += self.u[t][v] * (1.0 - loss[v] * active);
             }
         }
-        let lower = vec![0.0; self.c.len()];
-        let upper = vec![f64::INFINITY; self.c.len()];
-        let result = linprog(&self.c, &self.primal, &b, &self.f, &lower, &upper)?;
+        let result = self.primal.borrow_mut().solve(&self.c, &b, &self.f)?;
         if result.status != "optimal" {
             return Ok(json!({"status": result.status}));
         }
@@ -567,18 +577,8 @@ impl Model {
         let mut out = json!({"status":"optimal", "message":"Optimization terminated successfully. (HiGHS Status 7: Optimal)",
             "phi":result.fun, "dual":null, "gap":null, "residual":residual});
         if dual {
-            let ma = self.a.rows.len();
-            let me = self.e.rows.len();
-            let mut lower = vec![0.0; ma];
-            lower.extend(vec![f64::NEG_INFINITY; me]);
-            let mut upper = vec![f64::INFINITY; ma + me];
-            for t in 0..self.ends.len() {
-                for v in 0..self.v.len() {
-                    upper[self.cap[t][v]] = self.mcap[t][v];
-                }
-            }
             let objective: Vec<f64> = b.iter().copied().chain(self.f.iter().map(|x| -x)).collect();
-            let result_dual = linprog(&objective, &self.dual, &self.c, &[], &lower, &upper)?;
+            let result_dual = self.dual.borrow_mut().solve(&objective, &self.c, &[])?;
             if result_dual.status != "optimal" {
                 return Ok(json!({"status":format!("dual_{}", result_dual.status)}));
             }
@@ -588,8 +588,66 @@ impl Model {
         Ok(out)
     }
 
+    /// Certified verdict on a state against the failure threshold `theta`; see `verdict`.
+    pub fn fails(&self, state: &[f64], theta: f64) -> Result<bool, String> {
+        verdict(
+            &self.solve(state, false, None)?,
+            || self.solve(state, true, None),
+            theta,
+        )
+    }
+
     pub fn shape(&self) -> [usize; 3] {
         [self.a.rows.len(), self.e.rows.len(), self.c.len()]
+    }
+}
+
+/// Verdict tolerance: gap and residual may reach 10 EPS.
+pub const EPS: f64 = 1e-7;
+
+fn num(solved: &Value, key: &str) -> f64 {
+    solved[key].as_f64().unwrap_or(f64::NAN)
+}
+
+/// A solved state survives when its primal is feasible (residual <= 10 EPS) and phi <= theta + EPS:
+/// the primal value bounds the minimum from above.
+pub fn survives(solved: &Value, theta: f64) -> bool {
+    solved["status"] == "optimal"
+        && num(solved, "residual") <= 10.0 * EPS
+        && num(solved, "phi") <= theta + EPS
+}
+
+/// A solved state fails when the dual value, a lower bound on the minimum, exceeds theta + EPS
+/// with gap and residual <= 10 EPS.
+pub fn certified_failure(solved: &Value, theta: f64) -> bool {
+    solved["status"] == "optimal"
+        && num(solved, "dual") > theta + EPS
+        && num(solved, "gap") <= 10.0 * EPS
+        && num(solved, "residual") <= 10.0 * EPS
+}
+
+/// Ok(false) if `primal` survives, Ok(true) if the dual solve certifies failure; any other
+/// outcome (non-optimal status, residual, unresolved boundary) is an Err. `dual` runs only for a
+/// primal that does not survive.
+pub fn verdict(
+    primal: &Value,
+    dual: impl FnOnce() -> Result<Value, String>,
+    theta: f64,
+) -> Result<bool, String> {
+    if survives(primal, theta) {
+        return Ok(false);
+    }
+    if primal["status"] != "optimal" || num(primal, "residual") > 10.0 * EPS {
+        return Err(format!("Recourse solve: {primal}"));
+    }
+    let solved = dual()?;
+    if solved["status"] != "optimal" {
+        return Err(format!("Recourse dual solve: {solved}"));
+    }
+    if certified_failure(&solved, theta) {
+        Ok(true)
+    } else {
+        Err(format!("Unresolved boundary state: {solved}"))
     }
 }
 
@@ -616,4 +674,47 @@ pub fn evaluate(network: &Value, config: &Value, states: &[Vec<f64>]) -> Result<
         json!({"ends":model.ends, "total":model.total, "shape":model.shape(), "states":out,
         "highs":version()}),
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn solved(phi: f64, dual: f64, gap: f64, residual: f64) -> Value {
+        json!({"status":"optimal","phi":phi,"dual":dual,"gap":gap,"residual":residual})
+    }
+
+    #[test]
+    fn primal_theta_plus_2e7_with_dual_theta_minus_8e7_is_refused() {
+        let theta = 5.0;
+        let crafted = solved(theta + 2e-7, theta - 8e-7, 1e-6, 0.0);
+        let r = verdict(&crafted, || Ok(crafted.clone()), theta);
+        assert!(r.unwrap_err().starts_with("Unresolved boundary state"));
+        let r = verdict(
+            &crafted,
+            || Ok(solved(theta + 3e-7, theta + 3e-7, 0.0, 0.0)),
+            theta,
+        );
+        assert_eq!(r, Ok(true));
+        assert!(!certified_failure(&crafted, theta));
+    }
+
+    #[test]
+    fn faults_are_errors_not_verdicts() {
+        let theta = 5.0;
+        let primal = solved(theta + 1.0, theta + 1.0, 0.0, 0.0);
+        let numerical = json!({"status":"numerical"});
+        let residual = solved(theta + 1.0, theta + 1.0, 0.0, 2e-6);
+        let gap = solved(theta + 1.0, theta + 1.0, 2e-6, 0.0);
+        for b in [&numerical, &residual] {
+            assert!(verdict(b, || Ok(primal.clone()), theta).is_err());
+        }
+        for b in [&numerical, &residual, &gap] {
+            assert!(verdict(&primal, || Ok(b.clone()), theta).is_err());
+        }
+        assert_eq!(
+            verdict(&solved(theta, theta, 0.0, 0.0), || unreachable!(), theta),
+            Ok(false)
+        );
+    }
 }

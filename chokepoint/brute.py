@@ -1,6 +1,7 @@
 """Independent enumeration of minimal failing states; deliberately imports no interdiction code.
 
-Both enumerators call φ only. `enumerate_brute` visits every state of support ≤ k, skipping
+Both enumerators classify states by `recourse.verdict` (primal bound to survive, dual to
+fail). `enumerate_brute` visits every state of support ≤ k, skipping
 supersets of found cuts and supports whose top state survives (Prop. 1). `enumerate_lattice`
 also uses capacity dominance (docs/MODEL.md, Lemma B): moving a disruption to a no-smaller
 node of the same layer, or lengthening it, does not lower φ.
@@ -9,7 +10,7 @@ from itertools import combinations, combinations_with_replacement, product
 
 import numpy as np
 
-from chokepoint.recourse import solve
+from chokepoint.recourse import Blocked, fails as _fails
 
 
 def _minimal(cuts):
@@ -18,16 +19,23 @@ def _minimal(cuts):
 
 
 def enumerate_brute(M, durations, alpha=0.25, k=3, eps=1e-7, eligible=None):
-    """Enumerate all duration-minimal failing states of support <= k by primal solves."""
+    """Enumerate all duration-minimal failing states of support <= k.
+
+    OUTPUT cuts and status: "optimal", or the first blocking verdict with no cuts."""
+    try:
+        return {"cuts": _minimal(_brute(M, durations, alpha, k, eps, eligible)),
+                "status": "optimal"}
+    except Blocked as e:
+        return {"cuts": [], "status": e.args[0]}
+
+
+def _brute(M, durations, alpha, k, eps, eligible):
     n, theta, top = len(M["V"]), alpha*M["total"], max(durations)
     eligible = list(range(n) if eligible is None else eligible)
     cuts = []
 
     def fails(D):
-        R = solve(M, D, dual=False)
-        if R["status"] != "optimal":
-            raise RuntimeError(R)
-        return R["phi"] > theta + eps
+        return _fails(M, D, theta, eps)
 
     for l in range(min(k, n) + 1):
         for I in combinations(eligible, l):
@@ -45,16 +53,28 @@ def enumerate_brute(M, durations, alpha=0.25, k=3, eps=1e-7, eligible=None):
                     continue
                 if fails(D):
                     cuts.append(D)
-    return _minimal(cuts)
+    return cuts
 
 
 def enumerate_lattice(M, durations, alpha=0.25, k=3, eps=1e-7, eligible=None):
-    """Enumerate the same set by branch and bound over layer patterns.
+    """Enumerate the same set by branch and bound over layer patterns (see `_lattice`).
+
+    OUTPUT cuts, LP count and status: "optimal", or the first blocking verdict with no cuts."""
+    cache = {}
+    try:
+        cuts = _lattice(M, durations, alpha, k, eps, eligible, cache)
+    except Blocked as e:
+        return {"cuts": [], "lp_calls": len(cache), "status": e.args[0]}
+    return {"cuts": cuts, "lp_calls": len(cache), "status": "optimal"}
+
+
+def _lattice(M, durations, alpha, k, eps, eligible, cache):
+    """Branch and bound over layer patterns.
 
     For a pattern λ (layers with multiplicities) the nodes of each layer are taken in
     decreasing capacity. A partial state is completed optimistically: every open slot gets
     the largest admissible node at D_J. If that completion survives, so does every state in
-    the subtree (Lemma B and Prop. 1). OUTPUT minimal failing states and the LP count.
+    the subtree (Lemma B and Prop. 1). OUTPUT minimal failing states.
     """
     n, theta = len(M["V"]), alpha*M["total"]
     durations = sorted(durations)
@@ -62,7 +82,7 @@ def enumerate_lattice(M, durations, alpha=0.25, k=3, eps=1e-7, eligible=None):
     layers = {}
     for v in sorted(eligible, key=lambda v: (M["V"][v][1], -M["u"][v], v)):
         layers.setdefault(M["V"][v][1], []).append(v)
-    cache, cuts, found = {}, [], []
+    cuts, found = [], []
 
     def dominates(D):
         return any(all(x <= y for x, y in zip(S, D, strict=True)) for S in cuts + found)
@@ -72,14 +92,11 @@ def enumerate_lattice(M, durations, alpha=0.25, k=3, eps=1e-7, eligible=None):
         if dominates(key):
             return True
         if key not in cache:
-            R = solve(M, np.array(key, float), dual=False)
-            if R["status"] != "optimal":
-                raise RuntimeError(R)
-            cache[key] = R["phi"] > theta + eps
+            cache[key] = _fails(M, np.array(key, float), theta, eps)
         return cache[key]
 
     if fails([0]*n):
-        return {"cuts": [[0]*n], "lp_calls": len(cache)}
+        return [[0]*n]
 
     dmax = {v: durations[-1] for v in eligible}      # longest duration below v's singleton cut
 
@@ -136,4 +153,4 @@ def enumerate_lattice(M, durations, alpha=0.25, k=3, eps=1e-7, eligible=None):
             for S in cuts:
                 v = next(v for v, d in enumerate(S) if d)
                 dmax[v] = max([0, *(d for d in durations if d < S[v])])
-    return {"cuts": cuts, "lp_calls": len(cache)}
+    return cuts

@@ -4,9 +4,15 @@
 `docs/MODEL.md` from the same physical-network JSON used by the Python reference.
 `Model::solve(state, dual, loss)` solves the primal and, when requested, its
 separate bounded dual. It returns status, cumulative shortfall `phi`, dual
-objective, primal-dual gap and maximum primal residual. The model retains its
-matrices across states; each solve creates a fresh HiGHS instance, matching the
-reference's cold solves.
+objective, primal-dual gap and maximum primal residual. The model keeps one HiGHS instance for the primal and one for the dual: the
+matrices are passed once and each solve changes only the cost and row bounds,
+clears the basis and presolves again, matching the reference's cold solves.
+`Model::fails(state, theta)` returns the certified verdict used by the lattice
+and Monte Carlo searches: a state survives on a feasible primal with
+`phi <= theta + 1e-7` and fails when its dual exceeds `theta + 1e-7` (gap and
+residual at most `1e-6`); anything else is an error. Final demand is fixed at
+one twelfth of the annual reference per month, so the model represents the
+unit-normalised network only.
 
 The configuration accepts `T`, `h`, `sigma`, `L`, `durations`, `aggregate`,
 `choice` and `shares`. Chemistry choice requires the original 50% reference

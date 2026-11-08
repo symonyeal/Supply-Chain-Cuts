@@ -22,8 +22,12 @@ assumption; it is not a measured inventory. Capacity in month t is
 Every final product has a separate demand row. A joint Li-ion/PV instance measures each
 sector's output in its own baseline annual output units, so adding shortfalls gives
 equal sector weights. It does not add battery kWh to PV kW. Failure means phi > alpha
-times total demand. Numerical certificates use a stated absolute epsilon around that
-boundary; unresolved boundary cases stop enumeration rather than being called complete.
+times total demand. Numerical certificates use an absolute epsilon eps = 1e-7 around that
+boundary. A state survives when its primal is feasible (residual <= 10 eps) with
+phi <= theta + eps, because the primal value bounds the minimum from above. It fails when
+the dual value exceeds theta + eps with gap <= 10 eps, because the dual value bounds the
+minimum from below. A state that is neither, or any non-optimal solve, stops enumeration
+and sampling with that status rather than being called complete.
 
 ## Units and blocks
 
