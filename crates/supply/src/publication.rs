@@ -184,7 +184,10 @@ impl Generation {
             )
         })();
         match result {
-            Ok(()) => self.recover(),
+            Ok(()) => {
+                self.recover()?;
+                fs::remove_dir_all(self.stage.parent().unwrap()).map_err(|e| e.to_string())
+            }
             Err(e) => {
                 self.recover()?;
                 Err(e)
