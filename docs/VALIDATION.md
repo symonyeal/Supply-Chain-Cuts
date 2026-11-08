@@ -111,7 +111,7 @@ evidence that actual plants can change chemistry.
 
 ## W6: fresh independent PV/shared reconstruction
 
-Fresh agent, no production code, tests, analysis or result access. Portable programs
+Written without production code, tests, analysis or result access. Portable programs
 and named comparison inputs: `independent/pv_joint`; immutable report and numerical
 artifacts: `results/independent-pv-joint`. The agent separately parsed BACI, USGS,
 OECD SDMX, all 1,521 exposure rows from the methodology PDF, and selected primary
