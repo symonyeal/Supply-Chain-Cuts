@@ -29,5 +29,6 @@ local/
 target/
 evidence/
 # Local accepted generations and cooperating output ownership.
+.releases/
 .supply-releases/
 .*.writer.lock

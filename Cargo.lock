@@ -276,6 +276,7 @@ dependencies = [
  "sc-model",
  "sc-site",
  "serde_json",
+ "sha2",
 ]
 
 [[package]]

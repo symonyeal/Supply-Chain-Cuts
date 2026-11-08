@@ -1,5 +1,7 @@
 //! Immutable analytical generations with one writer and recoverable fixed-path projection.
+//! One file shared byte for byte by Chokepoint-Lab and Resilient-Supplier-Panels; `tests/publication_parity.rs` pins its hash in both.
 use serde_json::{Value, json};
+use sha2::{Digest, Sha256};
 use std::{
     fs::{self, File, OpenOptions},
     io::Write,
@@ -71,7 +73,7 @@ impl Generation {
             .map_err(|e| e.to_string())?;
         lock.try_lock()
             .map_err(|e| format!("Output writer already active: {e}"))?;
-        let store = parent.join(".supply-releases").join(name).join(kind);
+        let store = parent.join(".releases").join(name).join(kind);
         fs::create_dir_all(&store).map_err(|e| e.to_string())?;
         let id = format!(
             "{}-{}",
@@ -159,8 +161,9 @@ impl Generation {
             inventory.push(json!({"path":name,"existed":existed}));
             hashes.insert(
                 name.clone(),
-                json!(sc_data::digest(
-                    &fs::read(self.stage.join(name)).map_err(|e| e.to_string())?
+                json!(format!(
+                    "{:x}",
+                    Sha256::digest(fs::read(self.stage.join(name)).map_err(|e| e.to_string())?)
                 )),
             );
         }
@@ -200,7 +203,7 @@ impl Generation {
 mod tests {
     use super::*;
     fn fixture() -> PathBuf {
-        let base = std::env::var_os("SUPPLY_TEST_ROOT")
+        let base = std::env::var_os("PUBLICATION_TEST_ROOT")
             .map(PathBuf::from)
             .unwrap_or_else(|| {
                 Path::new(env!("CARGO_MANIFEST_DIR")).join("target/publication-tests")

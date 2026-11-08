@@ -10,3 +10,4 @@ sc-data = { path = "../sc-data" }
 sc-model = { path = "../sc-model" }
 sc-site = { path = "../sc-site" }
 serde_json = { workspace = true }
+sha2 = "0.10"
