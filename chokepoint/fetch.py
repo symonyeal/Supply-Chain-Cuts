@@ -52,6 +52,13 @@ def fetch_source(source, root=Path(".")):
     return p
 
 
+def sampled(R):
+    """Return a sampler result; exit non-zero, writing nothing, if it carries a blocked status."""
+    if R.get("status", "optimal") != "optimal":
+        raise SystemExit(f"Sampler blocked, nothing written: {R}")
+    return R
+
+
 def stamp(root=Path(".")):
     """Provenance of a result bundle: code revision, tree state, lock digest, versions."""
     import numpy

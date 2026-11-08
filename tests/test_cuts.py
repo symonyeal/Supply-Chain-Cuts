@@ -158,10 +158,12 @@ def _blocked():
         "residual": lambda: risk.residual_sampling(M, p, 0.4, [1, 2], w, [], alpha=0.3, n=50),
         "importance": lambda: risk.importance_sampling(M, p, 0.4, [1, 2], w, [], alpha=0.3,
                                                        n=50, pilot=0),
+        "partial": lambda: risk.partial_sampling(
+            M, p, 0.4, [1, 2], w, [{"a": 1.0}]*3, {"c": {"a": 0.5}}, alpha=0.3, n=50),
     }, theta
 
 
-@pytest.mark.parametrize("path", ["brute", "lattice", "residual", "importance"])
+@pytest.mark.parametrize("path", ["brute", "lattice", "residual", "importance", "partial"])
 def test_crafted_boundary_state_is_refused(monkeypatch, path):
     from chokepoint import recourse
     calls, theta = _blocked()
@@ -170,7 +172,7 @@ def test_crafted_boundary_state_is_refused(monkeypatch, path):
     assert out["status"] == "boundary" and not out.get("cuts")
 
 
-@pytest.mark.parametrize("path", ["brute", "lattice", "residual", "importance"])
+@pytest.mark.parametrize("path", ["brute", "lattice", "residual", "importance", "partial"])
 @pytest.mark.parametrize("fault", [{"status": "numerical"}, {"status": "limit"},
                                    {"status": "infeasible"}, {"residual": 2e-6}])
 def test_solver_outcomes_are_values(monkeypatch, path, fault):
@@ -202,3 +204,11 @@ def test_certificate_predecessor_status_is_a_value(monkeypatch):
     monkeypatch.setattr(sweep, "solve", lambda M, D, dual=True: good if dual
                         else {"status": "numerical"})
     assert not sweep.certify(None, [3], 5.0)["certified"]
+
+
+def test_runner_exits_on_blocked_sampler():
+    from chokepoint.fetch import sampled
+    ok = {"estimate": 0.1}
+    assert sampled(ok) is ok and sampled({"status": "optimal"})
+    with pytest.raises(SystemExit, match="boundary"):
+        sampled({"status": "boundary", "samples_completed": 3})

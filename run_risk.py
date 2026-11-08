@@ -14,7 +14,7 @@ import numpy as np
 from scipy.stats import spearmanr
 
 from chokepoint.events import YEARS, node_years
-from chokepoint.fetch import stamp
+from chokepoint.fetch import sampled, stamp
 from chokepoint.net import build, model, reexport_flags
 from chokepoint.rates import duration_weights, fit_rates, prequential
 from chokepoint.recourse import solve
@@ -95,12 +95,15 @@ def main():
     out["IS"], out["MC"], out["residual"] = {}, {}, {}
     for a in (a for a in (0.10, 0.25, 0.50) if f"base_a{a}_h0_s0_L6_D12" in out["configs"]):
         S = [dense(x, n) for x in out["configs"][f"base_a{a}_h0_s0_L6_D12"]["cuts"]]
-        out["IS"][a] = importance_sampling(M, p, rho, DURATIONS, law["weights"], S, alpha=a,
-                                           n=20000, pilot=2000, seed=1, complete=True, k=K)
-        out["MC"][a] = importance_sampling(M, p, rho, DURATIONS, law["weights"], S, alpha=a,
-                                           n=20000, seed=2, complete=True, k=K, crude=True)
-        out["residual"][a] = residual_sampling(M, p, rho, DURATIONS, law["weights"], S,
-                                               alpha=a, n=20000, seed=4, complete=True, k=K)
+        out["IS"][a] = sampled(importance_sampling(
+            M, p, rho, DURATIONS, law["weights"], S, alpha=a,
+            n=20000, pilot=2000, seed=1, complete=True, k=K))
+        out["MC"][a] = sampled(importance_sampling(
+            M, p, rho, DURATIONS, law["weights"], S, alpha=a,
+            n=20000, seed=2, complete=True, k=K, crude=True))
+        out["residual"][a] = sampled(residual_sampling(
+            M, p, rho, DURATIONS, law["weights"], S,
+            alpha=a, n=20000, seed=4, complete=True, k=K))
     L = head["L"]
     attr = dict(zip((tuple(map(tuple, S)) for S in head["cuts"]), head["attribution"],
                     strict=True))
@@ -182,12 +185,12 @@ def main():
     lh = duration_weights(used_h, DURATIONS)
     Bh = bracket(V, rh["p"], rh["rho"], list(DURATIONS), lh["weights"], cuts, k=K, complete=True)
     out["hard"] = {"rates": rh, "onsets": ids_h, "durations": lh, "L": Bh["L"], "U": Bh["U"],
-                   "IS": importance_sampling(M, rh["p"], rh["rho"], DURATIONS, lh["weights"],
-                                             cuts, alpha=0.25, n=20000, pilot=2000, seed=3,
-                                             complete=True, k=K),
-                   "residual": residual_sampling(M, rh["p"], rh["rho"], DURATIONS,
-                                                 lh["weights"], cuts, alpha=0.25, n=20000,
-                                                 seed=5, complete=True, k=K),
+                   "IS": sampled(importance_sampling(
+                       M, rh["p"], rh["rho"], DURATIONS, lh["weights"], cuts, alpha=0.25,
+                       n=20000, pilot=2000, seed=3, complete=True, k=K)),
+                   "residual": sampled(residual_sampling(
+                       M, rh["p"], rh["rho"], DURATIONS, lh["weights"], cuts, alpha=0.25,
+                       n=20000, seed=5, complete=True, k=K)),
                    "registered": False}
     out.update(tests=tests, hazards=hazards(N, root))
     (run / "risk.json").write_text(json.dumps(out, indent=1, default=float) + "\n",

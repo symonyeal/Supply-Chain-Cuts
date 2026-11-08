@@ -5,7 +5,7 @@ from collections import Counter
 import numpy as np
 from scipy.stats import beta
 
-from chokepoint.recourse import Blocked, fails, solve
+from chokepoint.recourse import Blocked, fails, solve, verdict
 
 
 def _parameters(V, p, rho, durations, weights):
@@ -181,12 +181,11 @@ def partial_sampling(M, p, rho, durations, weights, mixtures, losses, alpha=0.25
             f = np.ones(len(d)) if name == "full" else values[name][i]
             key = tuple((v, int(d[v]), float(f[v])) for v in np.flatnonzero(d))
             if key not in cache:
-                R = solve(M, d, dual=False, f=f)
-                if R["status"] != "optimal":
-                    return {"status": R["status"], "samples_completed": i}
-                cache[key] = R["phi"]
-            phi[name] = cache[key]
-            F[name][i] = phi[name] > alpha*M["total"] + 1e-7
+                call = verdict(M, d, alpha*M["total"], f=f)
+                if call not in ("fail", "survive"):
+                    return {"status": call, "samples_completed": i}
+                cache[key] = solve(M, d, dual=False, f=f)["phi"], call == "fail"
+            phi[name], F[name][i] = cache[key]
             violation = max(violation, phi[name] - phi["full"])
     counts = Counter()
     for v, column in enumerate(marks):

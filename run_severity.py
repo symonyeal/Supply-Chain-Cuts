@@ -12,7 +12,7 @@ from pathlib import Path
 import numpy as np
 
 from chokepoint.events import ALIAS, node_years
-from chokepoint.fetch import stamp
+from chokepoint.fetch import sampled, stamp
 from chokepoint.net import build, model
 from chokepoint.rates import duration_weights, fit_rates
 from chokepoint.risk import bracket, partial_sampling, residual_sampling
@@ -59,8 +59,8 @@ def job(sector, table, run, n=20000):
         for name, j in (("low", 0), ("high", 1)):
             losses[name][m] = float(np.clip(row["loss_ci95"][j], 0, 1)) if (
                 row["identified"]) else 1.0
-    R = partial_sampling(M, base["rates"]["p"], base["rates"]["rho"], DURATIONS,
-                         base["durations"]["weights"], mixes, losses, n=n)
+    R = sampled(partial_sampling(M, base["rates"]["p"], base["rates"]["rho"], DURATIONS,
+                                 base["durations"]["weights"], mixes, losses, n=n))
     if R["status"] == "optimal":
         assert R["monotone"]
         full, previous = R["scenarios"]["full"], base["residual"]["0.25"]
@@ -82,8 +82,8 @@ def job(sector, table, run, n=20000):
         p = [rh["p"][W.index(v)] for v in V]
         C = [dense(S, len(V)) for S in base["configs"]["base_a0.25_h0_s0_L6_D12"]["cuts"]]
         B = bracket(V, p, rh["rho"], DURATIONS, law["weights"], C, complete=True)
-        hard = {"L": B["L"], "U": B["U"], "residual": residual_sampling(
-            M, p, rh["rho"], DURATIONS, law["weights"], C, n=20000, seed=5, complete=True)}
+        hard = {"L": B["L"], "U": B["U"], "residual": sampled(residual_sampling(
+            M, p, rh["rho"], DURATIONS, law["weights"], C, n=20000, seed=5, complete=True))}
     R.update(sector=sector, base_bundle=BASE[sector], stamp=run_stamp, mixtures=mixes,
              pooled_mixture_fallback_nodes=[list(v) for v, f in zip(V, fallback, strict=True) if f],
              assigned_fractions=losses, full_outage=previous if R["status"] == "optimal" else None,

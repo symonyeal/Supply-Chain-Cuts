@@ -183,21 +183,23 @@ def solve(M, D, dual=True, f=None):
     return out
 
 
-def verdict(M, D, theta, eps=1e-7):
-    """Classify state D against theta: "fail", "survive", or the status that blocks a decision.
+def verdict(M, D, theta, eps=1e-7, f=None):
+    """Classify state D (loss fractions f, default full) against theta.
+
+    OUTPUT "fail", "survive", or the status that blocks a decision.
 
     Survival needs a feasible primal (residual <= 10 eps) with phi <= theta + eps, since the
     primal value bounds the minimum from above. Failure needs the dual value above theta + eps
     with gap <= 10 eps, since the dual value bounds it from below; other cases are "boundary".
     """
-    R = solve(M, D, dual=False)
+    R = solve(M, D, dual=False, f=f)
     if R["status"] != "optimal":
         return R["status"]
     if R["residual"] > 10*eps:
         return "residual"
     if R["phi"] <= theta + eps:
         return "survive"
-    R = solve(M, D)
+    R = solve(M, D, f=f)
     if R["status"] != "optimal":
         return R["status"]
     return "fail" if R["dual"] > theta + eps and R["gap"] <= 10*eps else "boundary"

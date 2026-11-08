@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 from chokepoint.chemistry import model
-from chokepoint.fetch import stamp
+from chokepoint.fetch import sampled, stamp
 from chokepoint.net import build
 from chokepoint.recourse import solve
 from chokepoint.risk import bracket, residual_sampling
@@ -46,8 +46,8 @@ def job(sector, run, out):
     for alpha in ((0.1, 0.25, 0.5) if sector == 'liion' else (0.1, 0.25)):
         R = json.loads((source / f'{sector}_free_a{alpha}_h0_s0_L6.json').read_text())
         S = [dense(s, len(M['V'])) for s in R['cuts']]
-        estimates[str(alpha)] = residual_sampling(M, p, rho, DURATIONS, w, S,
-                                                  alpha=alpha, n=20000, seed=8, complete=True)
+        estimates[str(alpha)] = sampled(residual_sampling(
+            M, p, rho, DURATIONS, w, S, alpha=alpha, n=20000, seed=8, complete=True))
         print(sector, alpha, estimates[str(alpha)]['estimate'], flush=True)
     data = {'stamp': run_stamp, 'sector': sector, 'cut_bundle': run,
             'reference_bundle': previous.name, 'network_unchanged': True,
