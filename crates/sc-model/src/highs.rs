@@ -94,42 +94,63 @@ pub struct ResultLp {
     pub x: Vec<f64>,
 }
 
+/// Column-compressed stack of inequality rows `a` over equality rows `e`, built once per model.
+pub struct Csc {
+    n: usize,
+    ma: usize,
+    me: usize,
+    p: Vec<i32>,
+    indices: Vec<i32>,
+    values: Vec<f64>,
+}
+
+impl Csc {
+    pub fn new(a: &Matrix, e: &Matrix) -> Result<Self, String> {
+        if a.n != e.n {
+            return Err("Invalid LP dimensions".into());
+        }
+        let mut cols = vec![Vec::new(); a.n];
+        for (i, row) in a.rows.iter().chain(&e.rows).enumerate() {
+            for (&j, &v) in row {
+                cols[j].push((i as i32, v));
+            }
+        }
+        let mut p = vec![0_i32];
+        let mut indices = Vec::new();
+        let mut values = Vec::new();
+        for col in cols {
+            for (i, v) in col {
+                indices.push(i);
+                values.push(v);
+            }
+            p.push(indices.len().try_into().map_err(|_| "LP too large")?);
+        }
+        Ok(Self {
+            n: a.n,
+            ma: a.rows.len(),
+            me: e.rows.len(),
+            p,
+            indices,
+            values,
+        })
+    }
+}
+
 pub fn linprog(
     c: &[f64],
-    a: &Matrix,
+    csc: &Csc,
     b: &[f64],
-    e: &Matrix,
     f: &[f64],
     lower: &[f64],
     upper: &[f64],
 ) -> Result<ResultLp, String> {
     let n = c.len();
-    let m = a.rows.len() + e.rows.len();
-    if a.n != n
-        || e.n != n
-        || b.len() != a.rows.len()
-        || f.len() != e.rows.len()
-        || lower.len() != n
-        || upper.len() != n
+    let m = csc.ma + csc.me;
+    if csc.n != n || b.len() != csc.ma || f.len() != csc.me || lower.len() != n || upper.len() != n
     {
         return Err("Invalid LP dimensions".into());
     }
-    let mut cols = vec![Vec::new(); n];
-    for (i, row) in a.rows.iter().chain(&e.rows).enumerate() {
-        for (&j, &v) in row {
-            cols[j].push((i as i32, v));
-        }
-    }
-    let mut p = vec![0_i32];
-    let mut indices = Vec::new();
-    let mut values = Vec::new();
-    for col in cols {
-        for (i, v) in col {
-            indices.push(i);
-            values.push(v);
-        }
-        p.push(indices.len().try_into().map_err(|_| "LP too large")?);
-    }
+    let (p, indices, values) = (&csc.p, &csc.indices, &csc.values);
     let lo: Vec<f64> = b
         .iter()
         .map(|_| f64::NEG_INFINITY)

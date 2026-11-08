@@ -8,7 +8,7 @@
 mod highs;
 pub use highs::version;
 
-use highs::{Matrix, linprog};
+use highs::{Csc, Matrix, linprog};
 use serde_json::{Value, json};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -26,6 +26,8 @@ pub struct Model {
     a: Matrix,
     b: Vec<f64>,
     e: Matrix,
+    primal: Csc,
+    dual: Csc,
     f: Vec<f64>,
     c: Vec<f64>,
     cap: Vec<Vec<usize>>,
@@ -479,6 +481,20 @@ impl Model {
             .iter()
             .map(|&t| mv.iter().map(|&x| t * x).collect())
             .collect();
+        let (ma, me) = (a.rows.len(), e.rows.len());
+        let mut at = Matrix::new(c.len(), ma + me);
+        for (i, row) in a.rows.iter().enumerate() {
+            for (&j, &x) in row {
+                at.set(j, i, -x);
+            }
+        }
+        for (i, row) in e.rows.iter().enumerate() {
+            for (&j, &x) in row {
+                at.set(j, ma + i, x);
+            }
+        }
+        let primal = Csc::new(&a, &e)?;
+        let dual = Csc::new(&at, &Matrix::new(0, ma + me))?;
         Ok(Self {
             v,
             ends,
@@ -486,6 +502,8 @@ impl Model {
             a,
             b,
             e,
+            primal,
+            dual,
             f,
             c,
             cap,
@@ -527,7 +545,7 @@ impl Model {
         }
         let lower = vec![0.0; self.c.len()];
         let upper = vec![f64::INFINITY; self.c.len()];
-        let result = linprog(&self.c, &self.a, &b, &self.e, &self.f, &lower, &upper)?;
+        let result = linprog(&self.c, &self.primal, &b, &self.f, &lower, &upper)?;
         if result.status != "optimal" {
             return Ok(json!({"status": result.status}));
         }
@@ -551,17 +569,6 @@ impl Model {
         if dual {
             let ma = self.a.rows.len();
             let me = self.e.rows.len();
-            let mut a = Matrix::new(self.c.len(), ma + me);
-            for (i, row) in self.a.rows.iter().enumerate() {
-                for (&j, &x) in row {
-                    a.set(j, i, -x);
-                }
-            }
-            for (i, row) in self.e.rows.iter().enumerate() {
-                for (&j, &x) in row {
-                    a.set(j, ma + i, x);
-                }
-            }
             let mut lower = vec![0.0; ma];
             lower.extend(vec![f64::NEG_INFINITY; me]);
             let mut upper = vec![f64::INFINITY; ma + me];
@@ -571,15 +578,7 @@ impl Model {
                 }
             }
             let objective: Vec<f64> = b.iter().copied().chain(self.f.iter().map(|x| -x)).collect();
-            let result_dual = linprog(
-                &objective,
-                &a,
-                &self.c,
-                &Matrix::new(0, ma + me),
-                &[],
-                &lower,
-                &upper,
-            )?;
+            let result_dual = linprog(&objective, &self.dual, &self.c, &[], &lower, &upper)?;
             if result_dual.status != "optimal" {
                 return Ok(json!({"status":format!("dual_{}", result_dual.status)}));
             }
