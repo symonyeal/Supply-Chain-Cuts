@@ -9,7 +9,13 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
     let mut input = String::new();
     io::stdin().read_to_string(&mut input).unwrap();
-    let opts: Value = serde_json::from_str(&input).unwrap_or(serde_json::json!({}));
+    let opts: Value = match serde_json::from_str(&input) {
+        Ok(v) => v,
+        Err(error) => {
+            eprintln!("Invalid JSON on stdin: {error}");
+            std::process::exit(1);
+        }
+    };
     let root = Path::new(args.get(2).map(String::as_str).unwrap_or("."));
     let result = match args.get(1).map(String::as_str) {
         Some("context") => sc_data::context(root).map(|v| v.to_string()),

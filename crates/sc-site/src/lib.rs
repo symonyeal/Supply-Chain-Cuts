@@ -452,7 +452,7 @@ fn chemistry(
                 b(&c["certified"]) && f(&c["gap"]) <= 1e-6,
                 "Uncertified chemistry cut"
             );
-            check!(f(&c["phi"]) > theta + 1e-7, "Chemistry cut does not fail");
+            check!(f(&c["dual"]) > theta + 1e-7, "Chemistry cut does not fail");
             check!(
                 a(&c["predecessors"])
                     .iter()

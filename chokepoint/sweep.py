@@ -48,7 +48,7 @@ def certify(M, D, theta, durations=DURATIONS, eps=EPS):
             E = list(D)
             E[v] = max([0, *(x for x in durations if x < d)])
             pred.append({"v": v, "D": E[v], "phi": solve(M, E, dual=False)["phi"]})
-    ok = (R["status"] == "optimal" and R["phi"] > theta + eps and R["gap"] <= 10*eps
+    ok = (R["status"] == "optimal" and R["dual"] > theta + eps and R["gap"] <= 10*eps
           and all(x["phi"] <= theta + eps for x in pred))
     return {"phi": R["phi"], "dual": R["dual"], "gap": R["gap"], "predecessors": pred,
             "certified": ok}

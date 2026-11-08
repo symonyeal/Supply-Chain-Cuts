@@ -75,7 +75,7 @@ def reusable(path, fingerprint):
             ):
                 return False
             if (
-                not cert["phi"] > theta + 1e-7
+                not cert["dual"] > theta + 1e-7
                 or not 0 <= cert["gap"] <= 1e-6
                 or abs(cert["phi"] - cert["dual"]) > 1e-6
             ):

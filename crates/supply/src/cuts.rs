@@ -176,7 +176,7 @@ fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
     let alpha = config["alpha"].as_f64().unwrap_or(0.25);
     let k = config["k"].as_u64().unwrap_or(3) as usize;
     let seconds = config["time_limit"].as_f64().unwrap_or(60.0);
-    if !(0.0..=1.0).contains(&alpha) || !seconds.is_finite() || seconds <= 0.0 {
+    if !(0.0..1.0).contains(&alpha) || !seconds.is_finite() || seconds <= 0.0 {
         return Err("Invalid threshold/time limit".into());
     }
     let ds: Vec<i64> = config["durations"]
@@ -269,7 +269,7 @@ fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
         if solved["status"] != "optimal" {
             return Err(format!("Cut certificate solve: {solved}"));
         }
-        if solved["phi"].as_f64().ok_or("Missing primal objective")? <= search.theta + 1e-7
+        if solved["dual"].as_f64().ok_or("Missing dual objective")? <= search.theta + 1e-7
             || solved["gap"].as_f64().ok_or("Missing dual gap")? > 1e-6
         {
             return Err("Invalid failing-state or dual-gap certificate".into());

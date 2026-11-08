@@ -120,3 +120,23 @@ def test_lattice_equals_brute_deep():
             assert B == C
             seen += sum(sum(x > 0 for x in S) > 1 for S in B)
     assert seen > 10
+
+
+def test_non_optimal_worst_state_is_incomplete(monkeypatch):
+    from chokepoint import cuts
+
+    M = matrices([("A", "ore"), ("B", "ore"), ("C", "cell")], [4, 4, 8],
+                 {("ore", "cell"): 1}, [8, 8])
+    monkeypatch.setattr(cuts, "solve", lambda *a, **k: {"status": "numerical"})
+    C = enumerate_cuts(M, [1, 2], alpha=0.3, k=2)
+    assert not C["complete"] and C["status"] == "worst_state_numerical"
+
+
+def test_certificate_requires_dual_above_threshold(monkeypatch):
+    from chokepoint import sweep
+
+    out = {"status": "optimal", "phi": 5.0 + 2e-7, "dual": 5.0 - 8e-7, "gap": 1e-6}
+    monkeypatch.setattr(sweep, "solve", lambda *a, **k: out)
+    assert not sweep.certify(None, [0], 5.0)["certified"]
+    out["dual"] = 5.0 + 2e-7
+    assert sweep.certify(None, [0], 5.0)["certified"]

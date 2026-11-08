@@ -22,8 +22,11 @@ def enumerate_cuts(M, durations, alpha=0.25, k=3, eps=1e-7, time_limit=120,
     n, J = len(M["V"]), len(durations)
     eligible = set(range(n) if eligible is None else eligible)
     worst = solve(M, [max(durations) if v in eligible else 0 for v in range(n)])
-    if worst["status"] == "optimal" and worst["phi"] <= alpha*M["total"] + eps:
-        return {"cuts": [], "complete": True, "status": "worst_state_safe", "calls": 0,
+    if worst["status"] != "optimal" or worst["phi"] <= alpha*M["total"] + eps:
+        safe = worst["status"] == "optimal"
+        return {"cuts": [], "complete": safe,
+                "status": "worst_state_safe" if safe else "worst_state_" + worst["status"],
+                "calls": 0,
                 "seconds": perf_counter() - start, "alpha": alpha, "durations": durations,
                 "k": k, "eps": eps, "worst_state": worst}
     A, E, b, f, c = (M[x] for x in ("A", "E", "b", "f", "c"))
@@ -120,17 +123,22 @@ def enumerate_cuts(M, durations, alpha=0.25, k=3, eps=1e-7, time_limit=120,
         if R0["status"] != "optimal" or R0["phi"] <= theta + eps:
             status = "certificate_failure"
             break
+        shrunk = True
         for v in range(n):
-            while D[v]:
+            while D[v] and shrunk:
                 prev = [0, *durations][durations.index(D[v])]
                 Dp = D.copy()
                 Dp[v] = prev
                 P = solve(M, Dp, dual=False)
                 if P["status"] != "optimal":
-                    raise RuntimeError(P)
+                    shrunk = False
+                    break
                 if P["phi"] <= theta + eps:
                     break
                 D = Dp
+        if not shrunk:
+            status = "predecessor_" + P["status"]
+            break
         R0 = solve(M, D)
         predecessors = []
         for v in range(n):
