@@ -1,5 +1,19 @@
 # Validation
 
+## Certificates and solver reuse, 2026-11-09
+
+Failure is certified only when the dual value exceeds θ + ε with gap and residual
+within 10ε; one HiGHS instance is reused per LP. Checks at `10390cc`:
+
+| Check | Result |
+| --- | --- |
+| Crafted state (primal θ + 2e-7, dual θ − 8e-7) | Refused by brute, lattice, residual, importance and partial-loss sampling and `sweep.certify` |
+| Native recourse comparison | 23,848 numeric fields, maximum absolute difference 0.0 |
+| PV cut search, `analysis/check_native_pipeline.py`, three runs | 22 cuts each side; Python 1.754, 1.629, 1.709 s; Rust 0.257, 0.241, 0.246 s |
+
+The timing runs shared the laptop with one single-threaded process; other
+whole-pipeline stages remain unmeasured.
+
 ## Redundancy refactor checks, 2026-10-30
 
 The [structure review](STRUCTURE.md) accounts for all 1,175 baseline files and
