@@ -111,8 +111,8 @@
     "pypdf": "6.19.0"
   },
   "repository_code_sha256": {
-    "recompute.py": "15e44ca42b8da2094995d6a5bd57a50aacbdf7486560afcbd3bc867256acc6f2",
+    "recompute.py": "d5208b1a67fdc44636ac9b3de433f0fbbd5cb44837d1a7c8f3386723f05593b1",
     "trace_sources.py": "4ac062ad7bf5efe8b89681ea8bfdaffde1886bc577adf684fded8698bfa3a3bf"
   },
-  "repository_formatting": "ruff format, line length 100; abstract syntax trees equal to portable originals"
+  "repository_formatting": "ruff format, line length 100; trace_sources.py abstract syntax tree equal to its portable original; recompute.py split into smaller functions, outputs byte-identical (timing masked) to the unsplit repository version on the same inputs"
 }

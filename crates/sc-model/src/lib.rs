@@ -13,6 +13,11 @@ use serde_json::{Value, json};
 use std::cell::RefCell;
 use std::collections::{BTreeMap, BTreeSet};
 
+// (country, product)
+type Node = (String, String);
+// (layer replaced, endpoint recipe)
+type Layer = (&'static str, Recipe);
+
 #[derive(Clone)]
 struct Recipe {
     name: String,
@@ -60,316 +65,344 @@ fn array<'a>(value: &'a Value, key: &str) -> Result<&'a Vec<Value>, String> {
         .ok_or_else(|| format!("Missing {key} array"))
 }
 
-impl Model {
-    pub fn nodes(&self) -> &[(String, String)] {
-        &self.v
-    }
-    pub fn ends(&self) -> &[usize] {
-        &self.ends
-    }
-    pub fn total(&self) -> f64 {
-        self.total
-    }
+/// Recourse options: stock months h, spare fraction sigma, ramp months L, horizon T.
+struct Recourse {
+    h: f64,
+    sigma: f64,
+    ramp_l: f64,
+    horizon: usize,
+    aggregate: bool,
+    choice: bool,
+}
 
-    pub fn from_network(network: &Value, config: &Value) -> Result<Self, String> {
-        for key in ["aggregate", "choice", "dual"] {
-            if config.get(key).is_some_and(|x| !x.is_boolean()) {
-                return Err(format!("Invalid {key}: boolean required"));
-            }
+fn recourse(config: &Value) -> Result<Recourse, String> {
+    for key in ["aggregate", "choice", "dual"] {
+        if config.get(key).is_some_and(|x| !x.is_boolean()) {
+            return Err(format!("Invalid {key}: boolean required"));
         }
-        let h = number(config, "h", 0.0)?;
-        let sigma = number(config, "sigma", 0.0)?;
-        let ramp_l = number(config, "L", 6.0)?;
-        let horizon = number(config, "T", 24.0)?;
-        if h < 0.0 || sigma < 0.0 || ramp_l <= 0.0 || horizon < 1.0 || horizon.fract() != 0.0 {
-            return Err("Nonnegative recourse, positive L and positive integer T required".into());
+    }
+    let h = number(config, "h", 0.0)?;
+    let sigma = number(config, "sigma", 0.0)?;
+    let ramp_l = number(config, "L", 6.0)?;
+    let horizon = number(config, "T", 24.0)?;
+    if h < 0.0 || sigma < 0.0 || ramp_l <= 0.0 || horizon < 1.0 || horizon.fract() != 0.0 {
+        return Err("Nonnegative recourse, positive L and positive integer T required".into());
+    }
+    let flag = |key, default| config.get(key).and_then(Value::as_bool).unwrap_or(default);
+    Ok(Recourse {
+        h,
+        sigma,
+        ramp_l,
+        horizon: horizon as usize,
+        aggregate: flag("aggregate", true),
+        choice: flag("choice", false),
+    })
+}
+
+/// Distinct nodes V and their monthly capacities u.
+fn nodes(network: &Value) -> Result<(Vec<Node>, Vec<f64>), String> {
+    let mut v = Vec::new();
+    let mut original_u = Vec::new();
+    for node in array(network, "nodes")? {
+        let country = node["country"]
+            .as_str()
+            .ok_or("Missing country")?
+            .to_owned();
+        let product = node["product"]
+            .as_str()
+            .ok_or("Missing product")?
+            .to_owned();
+        let u = required(node, "capacity")?;
+        if u < 0.0 {
+            return Err("Nonnegative capacity required".into());
         }
-        let horizon = horizon as usize;
-        let aggregate = config
-            .get("aggregate")
-            .and_then(Value::as_bool)
-            .unwrap_or(true);
-        let choice = config
-            .get("choice")
-            .and_then(Value::as_bool)
-            .unwrap_or(false);
-        let nodes = array(network, "nodes")?;
-        let mut v = Vec::new();
-        let mut original_u = Vec::new();
-        for node in nodes {
-            let country = node["country"]
-                .as_str()
-                .ok_or("Missing country")?
-                .to_owned();
-            let product = node["product"]
-                .as_str()
-                .ok_or("Missing product")?
-                .to_owned();
-            let u = required(node, "capacity")?;
-            if u < 0.0 {
-                return Err("Nonnegative capacity required".into());
-            }
-            v.push((country, product));
-            original_u.push(u);
-        }
-        if v.is_empty() || v.iter().collect::<BTreeSet<_>>().len() != v.len() {
-            return Err("Distinct nonempty nodes required".into());
-        }
-        let finals: Vec<String> = array(network, "finals")?
-            .iter()
-            .map(|x| {
-                x.as_str()
-                    .map(str::to_owned)
-                    .ok_or_else(|| "Invalid final product".to_string())
-            })
-            .collect::<Result<_, _>>()?;
-        if finals.is_empty() {
-            return Err("At least one final product required".into());
-        }
-        let mut requirement: BTreeMap<String, f64> = network["requirement"]
-            .as_object()
-            .ok_or("Missing requirements")?
-            .iter()
-            .map(|(key, x)| {
-                x.as_f64()
-                    .filter(|x| x.is_finite() && *x > 0.0)
-                    .map(|x| (key.clone(), x))
-                    .ok_or_else(|| "Positive requirements required".to_string())
-            })
-            .collect::<Result<_, _>>()?;
-        let mut coefficients = BTreeMap::new();
-        for row in array(network, "a")? {
-            let row = row.as_array().ok_or("Invalid input arc")?;
-            if row.len() != 3 {
-                return Err("Input arc needs three entries".into());
-            }
-            let p = row[0].as_str().ok_or("Invalid input product")?.to_owned();
-            let q = row[1].as_str().ok_or("Invalid output product")?.to_owned();
-            let x = row[2]
-                .as_f64()
+        v.push((country, product));
+        original_u.push(u);
+    }
+    if v.is_empty() || v.iter().collect::<BTreeSet<_>>().len() != v.len() {
+        return Err("Distinct nonempty nodes required".into());
+    }
+    Ok((v, original_u))
+}
+
+/// Final products and the positive annual requirements R_p.
+fn demand(network: &Value) -> Result<(Vec<String>, BTreeMap<String, f64>), String> {
+    let finals: Vec<String> = array(network, "finals")?
+        .iter()
+        .map(|x| {
+            x.as_str()
+                .map(str::to_owned)
+                .ok_or_else(|| "Invalid final product".to_string())
+        })
+        .collect::<Result<_, _>>()?;
+    if finals.is_empty() {
+        return Err("At least one final product required".into());
+    }
+    let requirement = network["requirement"]
+        .as_object()
+        .ok_or("Missing requirements")?
+        .iter()
+        .map(|(key, x)| {
+            x.as_f64()
                 .filter(|x| x.is_finite() && *x > 0.0)
-                .ok_or("Positive input coefficients required")?;
-            let rp = *requirement.get(&p).ok_or("Missing input requirement")?;
-            let rq = *requirement.get(&q).ok_or("Missing output requirement")?;
-            if coefficients.insert((p, q), x * rq / rp).is_some() {
-                return Err("Duplicate input coefficient coordinate".into());
-            }
+                .map(|x| (key.clone(), x))
+                .ok_or_else(|| "Positive requirements required".to_string())
+        })
+        .collect::<Result<_, _>>()?;
+    Ok((finals, requirement))
+}
+
+/// Input coefficients in requirement units, a'[p,q] = a[p,q] R_q / R_p.
+fn coefficients(
+    network: &Value,
+    requirement: &BTreeMap<String, f64>,
+) -> Result<BTreeMap<(String, String), f64>, String> {
+    let mut coefficients = BTreeMap::new();
+    for row in array(network, "a")? {
+        let row = row.as_array().ok_or("Invalid input arc")?;
+        if row.len() != 3 {
+            return Err("Input arc needs three entries".into());
         }
-        let layers: BTreeSet<String> = v.iter().map(|(_, p)| p.clone()).collect();
-        let mut recipes: BTreeMap<String, Vec<Recipe>> = layers
-            .iter()
-            .map(|p| {
-                let inputs = coefficients
-                    .iter()
-                    .filter(|((_, q), _)| q == p)
-                    .map(|((q, _), &x)| (q.clone(), x))
-                    .collect();
-                (
-                    p.clone(),
-                    vec![Recipe {
-                        name: p.clone(),
-                        output: p.clone(),
-                        inputs,
-                    }],
-                )
+        let p = row[0].as_str().ok_or("Invalid input product")?.to_owned();
+        let q = row[1].as_str().ok_or("Invalid output product")?.to_owned();
+        let x = row[2]
+            .as_f64()
+            .filter(|x| x.is_finite() && *x > 0.0)
+            .ok_or("Positive input coefficients required")?;
+        let rp = *requirement.get(&p).ok_or("Missing input requirement")?;
+        let rq = *requirement.get(&q).ok_or("Missing output requirement")?;
+        if coefficients.insert((p, q), x * rq / rp).is_some() {
+            return Err("Duplicate input coefficient coordinate".into());
+        }
+    }
+    Ok(coefficients)
+}
+
+/// Delivered NCM share bounds 0 <= lo <= hi <= 1.
+fn shares(config: &Value) -> Result<(f64, f64), String> {
+    let share = config.get("shares").cloned().unwrap_or(json!([0, 1]));
+    let share = share
+        .as_array()
+        .filter(|x| x.len() == 2)
+        .ok_or("Two shares required")?;
+    let lo = share[0].as_f64().ok_or("Invalid share")?;
+    let hi = share[1].as_f64().ok_or("Invalid share")?;
+    if !(0.0..=1.0).contains(&lo) || !(lo..=1.0).contains(&hi) {
+        return Err("Chemistry shares require 0 <= lo <= hi <= 1".into());
+    }
+    Ok((lo, hi))
+}
+
+/// One endpoint chemistry's cathode and cell recipes in requirement units, with its cathode
+/// mass per kWh.
+fn endpoint(
+    b: &Value,
+    name: &str,
+    requirement: &BTreeMap<String, f64>,
+) -> Result<(f64, Vec<Layer>), String> {
+    let cam = required(b, "cam_kg_kwh")?;
+    let output = format!("cam_{name}");
+    let mut cam_inputs =
+        BTreeMap::from([("li_carbonate".to_string(), required(b, "lce_kg_kwh")? / cam)]);
+    if name == "ncm" {
+        cam_inputs.insert("pcam".into(), required(b, "pcam_kg_kwh")? / cam);
+    }
+    let cell_inputs = BTreeMap::from([
+        (output.clone(), cam),
+        ("aam".into(), required(&b["kg_kwh"], "Graphite")?),
+        ("refined_cu".into(), required(&b["kg_kwh"], "Cu")?),
+        ("aluminium".into(), required(&b["kg_kwh"], "Al")?),
+    ]);
+    let mut out = Vec::new();
+    for (layer, output, inputs) in [
+        ("cam", output, cam_inputs),
+        ("cell", "cell".to_string(), cell_inputs),
+    ] {
+        let inputs = inputs
+            .into_iter()
+            .map(|(p, x)| {
+                let rp = *requirement
+                    .get(&p)
+                    .ok_or("Missing recipe input requirement")?;
+                let rq = *requirement
+                    .get(&output)
+                    .ok_or("Missing recipe output requirement")?;
+                Ok((p, x * rq / rp))
             })
-            .collect();
-        let mut stock = coefficients.clone();
-        let mut shares = Vec::new();
-        if choice {
-            if network["ncm"].as_f64() != Some(0.5) || !finals.iter().any(|p| p == "cell") {
-                return Err("Chemistry choice requires the 50% reference cell network".into());
-            }
-            let share = config.get("shares").cloned().unwrap_or(json!([0, 1]));
-            let share = share
-                .as_array()
-                .filter(|x| x.len() == 2)
-                .ok_or("Two shares required")?;
-            let lo = share[0].as_f64().ok_or("Invalid share")?;
-            let hi = share[1].as_f64().ok_or("Invalid share")?;
-            if !(0.0..=1.0).contains(&lo) || !(lo..=1.0).contains(&hi) {
-                return Err("Chemistry shares require 0 <= lo <= hi <= 1".into());
-            }
-            shares.push(("cell".to_string(), lo, hi));
-            let bom = array(network, "recipe_bom")?;
-            if bom.len() != 2 {
-                return Err("Two endpoint recipe BOMs required".into());
-            }
-            let cam_req = *requirement.get("cam").ok_or("Missing cam requirement")?;
-            requirement.insert("cam_lfp".into(), cam_req);
-            requirement.insert("cam_ncm".into(), cam_req);
-            recipes.insert("cam".into(), Vec::new());
-            recipes.insert("cell".into(), Vec::new());
-            stock.retain(|(_, q), _| q != "cam" && q != "cell");
-            let blend_cam =
-                (required(&bom[0], "cam_kg_kwh")? + required(&bom[1], "cam_kg_kwh")?) / 2.0;
-            for (name, b) in ["lfp", "ncm"].into_iter().zip(bom) {
-                let cam = required(b, "cam_kg_kwh")?;
-                let output = format!("cam_{name}");
-                let mut cam_inputs = BTreeMap::from([(
-                    "li_carbonate".to_string(),
-                    required(b, "lce_kg_kwh")? / cam,
-                )]);
-                if name == "ncm" {
-                    cam_inputs.insert("pcam".into(), required(b, "pcam_kg_kwh")? / cam);
-                }
-                let cell_inputs = BTreeMap::from([
-                    (output.clone(), cam),
-                    ("aam".into(), required(&b["kg_kwh"], "Graphite")?),
-                    ("refined_cu".into(), required(&b["kg_kwh"], "Cu")?),
-                    ("aluminium".into(), required(&b["kg_kwh"], "Al")?),
-                ]);
-                for (layer, out, inputs) in [
-                    ("cam", output, cam_inputs),
-                    ("cell", "cell".to_string(), cell_inputs),
-                ] {
-                    let inputs: BTreeMap<String, f64> = inputs
-                        .into_iter()
-                        .map(|(p, x)| {
-                            let rp = *requirement
-                                .get(&p)
-                                .ok_or("Missing recipe input requirement")?;
-                            let rq = *requirement
-                                .get(&out)
-                                .ok_or("Missing recipe output requirement")?;
-                            Ok((p, x * rq / rp))
-                        })
-                        .collect::<Result<_, String>>()?;
-                    let weight = if layer == "cam" {
-                        cam / (2.0 * blend_cam)
-                    } else {
-                        0.5
-                    };
-                    for (p, &x) in &inputs {
-                        *stock.entry((p.clone(), layer.to_owned())).or_default() += weight * x;
-                    }
-                    recipes.get_mut(layer).unwrap().push(Recipe {
-                        name: name.into(),
-                        output: out,
-                        inputs,
-                    });
-                }
-            }
-            for rs in recipes.values_mut() {
-                rs.retain(|r| {
-                    !(r.output == "cell"
-                        && ((hi == 0.0 && r.name == "ncm") || (lo == 1.0 && r.name != "ncm")))
-                });
-            }
-        }
-        let arcs: Vec<(String, String, f64)> = recipes
-            .values()
-            .flatten()
-            .flat_map(|r| {
-                r.inputs
-                    .iter()
-                    .map(|(p, &x)| (p.clone(), r.output.clone(), x))
-            })
-            .collect();
-        let products: BTreeSet<String> = recipes
-            .values()
-            .flatten()
-            .map(|r| r.output.clone())
-            .chain(arcs.iter().map(|(p, _, _)| p.clone()))
-            .chain(finals.iter().cloned())
-            .collect();
-        let mut remaining = products.clone();
-        let mut order = Vec::new();
-        while !remaining.is_empty() {
-            let next: Vec<String> = remaining
-                .iter()
-                .filter(|p| {
-                    !arcs
-                        .iter()
-                        .any(|(r, q, _)| q == *p && remaining.contains(r))
-                })
-                .cloned()
-                .collect();
-            if next.is_empty() {
-                return Err("Product graph must be acyclic".into());
-            }
-            for p in next {
-                remaining.remove(&p);
-                order.push(p);
-            }
-        }
-        let mut bound: BTreeMap<String, f64> = products
-            .iter()
-            .map(|p| (p.clone(), if finals.contains(p) { 1.0 } else { 0.0 }))
-            .collect();
-        for p in order.iter().rev() {
-            let x = arcs
-                .iter()
-                .filter(|(r, _, _)| r == p)
-                .map(|(_, q, x)| bound[q] / x)
-                .fold(bound[p], f64::max);
-            bound.insert(p.clone(), x);
-        }
-        let gamma = shares.iter().fold(1.0_f64, |z, (_, lo, hi)| {
-            z.max(if *lo > 0.0 && *lo < 1.0 {
-                1.0 / lo
+            .collect::<Result<_, String>>()?;
+        out.push((
+            layer,
+            Recipe {
+                name: name.into(),
+                output,
+                inputs,
+            },
+        ));
+    }
+    Ok((cam, out))
+}
+
+/// Replace the cathode and cell layers by the LFP and NCM endpoint recipes
+/// (chokepoint/chemistry.py); returns the share bounds (lo, hi).
+fn chemistry(
+    network: &Value,
+    config: &Value,
+    finals: &[String],
+    requirement: &mut BTreeMap<String, f64>,
+    recipes: &mut BTreeMap<String, Vec<Recipe>>,
+    stock: &mut BTreeMap<(String, String), f64>,
+) -> Result<(f64, f64), String> {
+    if network["ncm"].as_f64() != Some(0.5) || !finals.iter().any(|p| p == "cell") {
+        return Err("Chemistry choice requires the 50% reference cell network".into());
+    }
+    let (lo, hi) = shares(config)?;
+    let bom = array(network, "recipe_bom")?;
+    if bom.len() != 2 {
+        return Err("Two endpoint recipe BOMs required".into());
+    }
+    let cam_req = *requirement.get("cam").ok_or("Missing cam requirement")?;
+    requirement.insert("cam_lfp".into(), cam_req);
+    requirement.insert("cam_ncm".into(), cam_req);
+    recipes.insert("cam".into(), Vec::new());
+    recipes.insert("cell".into(), Vec::new());
+    stock.retain(|(_, q), _| q != "cam" && q != "cell");
+    let blend_cam = (required(&bom[0], "cam_kg_kwh")? + required(&bom[1], "cam_kg_kwh")?) / 2.0;
+    for (name, b) in ["lfp", "ncm"].into_iter().zip(bom) {
+        let (cam, layers) = endpoint(b, name, requirement)?;
+        for (layer, recipe) in layers {
+            let weight = if layer == "cam" {
+                cam / (2.0 * blend_cam)
             } else {
-                1.0
-            })
-            .max(if *hi > 0.0 && *hi < 1.0 {
-                1.0 / (1.0 - hi)
-            } else {
-                1.0
-            })
+                0.5
+            };
+            for (p, &x) in &recipe.inputs {
+                *stock.entry((p.clone(), layer.to_owned())).or_default() += weight * x;
+            }
+            recipes.get_mut(layer).unwrap().push(recipe);
+        }
+    }
+    for rs in recipes.values_mut() {
+        rs.retain(|r| {
+            !(r.output == "cell"
+                && ((hi == 0.0 && r.name == "ncm") || (lo == 1.0 && r.name != "ncm")))
         });
-        let mut ends = BTreeSet::from([horizon]);
-        let durations = config
-            .get("durations")
+    }
+    Ok((lo, hi))
+}
+
+/// M_p: the largest rate of p that one unit of final demand can use, over the acyclic
+/// product graph in reverse topological order.
+fn bounds(
+    products: &BTreeSet<String>,
+    finals: &[String],
+    arcs: &[(String, String, f64)],
+) -> Result<BTreeMap<String, f64>, String> {
+    let mut remaining = products.clone();
+    let mut order = Vec::new();
+    while !remaining.is_empty() {
+        let next: Vec<String> = remaining
+            .iter()
+            .filter(|p| {
+                !arcs
+                    .iter()
+                    .any(|(r, q, _)| q == *p && remaining.contains(r))
+            })
             .cloned()
-            .unwrap_or(json!([3, 6, 12]));
-        let durations = durations.as_array().ok_or("Invalid durations")?;
-        if durations.is_empty() {
-            return Err("Nonempty duration grid required".into());
-        }
-        let mut previous = 0;
-        for d in durations {
-            let d = d
-                .as_u64()
-                .filter(|x| *x > 0)
-                .ok_or("Positive integer durations required")?;
-            if d <= previous || d > horizon as u64 {
-                return Err("Durations must increase strictly within the horizon".into());
-            }
-            previous = d;
-            if d < horizon as u64 {
-                ends.insert(d as usize);
-            }
-        }
-        if sigma != 0.0 {
-            ends.extend(1..=horizon.min(ramp_l.ceil() as usize));
-        }
-        let ends: Vec<usize> = ends.into_iter().collect();
-        let ell: Vec<f64> = ends
-            .iter()
-            .enumerate()
-            .map(|(t, &e)| (e - if t == 0 { 0 } else { ends[t - 1] }) as f64)
             .collect();
-        let ramp: Vec<f64> = ends
+        if next.is_empty() {
+            return Err("Product graph must be acyclic".into());
+        }
+        for p in next {
+            remaining.remove(&p);
+            order.push(p);
+        }
+    }
+    let mut bound: BTreeMap<String, f64> = products
+        .iter()
+        .map(|p| (p.clone(), if finals.contains(p) { 1.0 } else { 0.0 }))
+        .collect();
+    for p in order.iter().rev() {
+        let x = arcs
             .iter()
-            .map(|&e| 1.0 + sigma * (e as f64 / ramp_l).min(1.0))
-            .collect();
-        let (internal_v, internal_u) = if h == 0.0 && aggregate {
-            let mut u: BTreeMap<String, f64> = BTreeMap::new();
-            for ((_, p), &x) in v.iter().zip(&original_u) {
-                *u.entry(p.clone()).or_default() += x;
-            }
-            let internal_v = u.keys().map(|p| ("ALL".to_string(), p.clone())).collect();
-            (internal_v, u.values().copied().collect::<Vec<_>>())
+            .filter(|(r, _, _)| r == p)
+            .map(|(_, q, x)| bound[q] / x)
+            .fold(bound[p], f64::max);
+        bound.insert(p.clone(), x);
+    }
+    Ok(bound)
+}
+
+/// Dual-bound scale gamma: a share bound lo or hi can force 1/lo or 1/(1 - hi) times the rate.
+fn gamma(shares: &[(String, f64, f64)]) -> f64 {
+    shares.iter().fold(1.0_f64, |z, (_, lo, hi)| {
+        z.max(if *lo > 0.0 && *lo < 1.0 {
+            1.0 / lo
         } else {
-            (v.clone(), original_u.clone())
-        };
-        let n = internal_v.len();
-        let k = ends.len();
-        let finals_n = finals.len();
-        let products: Vec<String> = products.into_iter().collect();
+            1.0
+        })
+        .max(if *hi > 0.0 && *hi < 1.0 {
+            1.0 / (1.0 - hi)
+        } else {
+            1.0
+        })
+    })
+}
+
+/// Block ends on which capacity and demand are constant: disruption ends, ramp months, T.
+fn ends(config: &Value, r: &Recourse) -> Result<Vec<usize>, String> {
+    let mut ends = BTreeSet::from([r.horizon]);
+    let durations = config
+        .get("durations")
+        .cloned()
+        .unwrap_or(json!([3, 6, 12]));
+    let durations = durations.as_array().ok_or("Invalid durations")?;
+    if durations.is_empty() {
+        return Err("Nonempty duration grid required".into());
+    }
+    let mut previous = 0;
+    for d in durations {
+        let d = d
+            .as_u64()
+            .filter(|x| *x > 0)
+            .ok_or("Positive integer durations required")?;
+        if d <= previous || d > r.horizon as u64 {
+            return Err("Durations must increase strictly within the horizon".into());
+        }
+        previous = d;
+        if d < r.horizon as u64 {
+            ends.insert(d as usize);
+        }
+    }
+    if r.sigma != 0.0 {
+        ends.extend(1..=r.horizon.min(r.ramp_l.ceil() as usize));
+    }
+    Ok(ends.into_iter().collect())
+}
+
+/// One block's columns [y, x, I, g]: production (node, recipe), shipments and inventories on
+/// input edges (q, node), and final shortfalls; v/u are the LP's (possibly aggregated) nodes.
+struct Layout<'a> {
+    v: &'a [(String, String)],
+    u: &'a [f64],
+    production: Vec<(usize, Recipe)>,
+    edges: Vec<(String, usize)>,
+    products: &'a [String],
+    finals: &'a [String],
+    shares: &'a [(String, f64, f64)],
+}
+
+impl<'a> Layout<'a> {
+    fn new(
+        v: &'a [(String, String)],
+        u: &'a [f64],
+        recipes: &BTreeMap<String, Vec<Recipe>>,
+        products: &'a [String],
+        finals: &'a [String],
+        shares: &'a [(String, f64, f64)],
+    ) -> Self {
         let mut production = Vec::new();
         let mut edges = Vec::new();
-        for (i, (_, p)) in internal_v.iter().enumerate() {
+        for (i, (_, p)) in v.iter().enumerate() {
             for r in &recipes[p] {
                 production.push((i, r.clone()));
             }
@@ -381,11 +414,35 @@ impl Model {
                 edges.push((q, i));
             }
         }
+        Self {
+            v,
+            u,
+            production,
+            edges,
+            products,
+            finals,
+            shares,
+        }
+    }
+
+    /// Ax <= b, Ex = f and cost c over blocks of lengths ell, with capacity multipliers ramp
+    /// and initial inventories h * stock * u.
+    fn assemble(
+        &self,
+        h: f64,
+        stock: &BTreeMap<(String, String), f64>,
+        ell: &[f64],
+        ramp: &[f64],
+    ) -> (Matrix, Matrix, Vec<f64>, Vec<f64>, Vec<f64>) {
+        let (production, edges, products, finals) =
+            (&self.production, &self.edges, self.products, self.finals);
+        let (n, k, finals_n) = (self.v.len(), ell.len(), finals.len());
         let nr = production.len();
         let m = edges.len();
         let s = edges.len();
         let block_n = nr + m + s + finals_n;
-        let inequality_n = k * (n + products.len() + finals_n + shares.len()) + 2 * shares.len();
+        let inequality_n =
+            k * (n + products.len() + finals_n + self.shares.len()) + 2 * self.shares.len();
         let mut a = Matrix::new(inequality_n, k * block_n);
         let mut e = Matrix::new(k * s, k * block_n);
         let mut b = vec![0.0; inequality_n];
@@ -393,7 +450,7 @@ impl Model {
         let mut c = vec![0.0; k * block_n];
         for t in 0..k {
             let offset = t * block_n;
-            for (i, &u) in internal_u.iter().enumerate() {
+            for (i, &u) in self.u.iter().enumerate() {
                 b[t * n + i] = u * ramp[t];
             }
             for (i, (v, recipe)) in production.iter().enumerate() {
@@ -424,9 +481,9 @@ impl Model {
                     e.set(r, offset - block_n + nr + m + i, -1.0);
                 } else {
                     let coefficient = *stock
-                        .get(&(q.clone(), internal_v[*w].1.clone()))
+                        .get(&(q.clone(), self.v[*w].1.clone()))
                         .unwrap_or(&0.0);
-                    f[r] = h * coefficient * internal_u[*w];
+                    f[r] = h * coefficient * self.u[*w];
                 }
                 e.set(r, offset + nr + i, -ell[t]);
                 for (j, (v, recipe)) in production.iter().enumerate() {
@@ -435,13 +492,13 @@ impl Model {
                     }
                 }
             }
-            for (l, (q, lo, hi)) in shares.iter().enumerate() {
-                let r = k * (n + products.len() + finals_n) + t * shares.len() + l;
+            for (l, (q, lo, hi)) in self.shares.iter().enumerate() {
+                let r = k * (n + products.len() + finals_n) + t * self.shares.len() + l;
                 b[r] = 1.0 / 12.0;
                 for (i, (_, recipe)) in production.iter().enumerate() {
                     if &recipe.output == q {
                         a.set(r, offset + i, 1.0);
-                        let r0 = k * (n + products.len() + finals_n + shares.len()) + 2 * l;
+                        let r0 = k * (n + products.len() + finals_n + self.shares.len()) + 2 * l;
                         let ncm = if recipe.name == "ncm" { 1.0 } else { 0.0 };
                         a.set(r0, offset + i, ell[t] * (lo - ncm));
                         a.set(r0 + 1, offset + i, ell[t] * (ncm - hi));
@@ -449,18 +506,153 @@ impl Model {
                 }
             }
         }
+        (a, e, b, f, c)
+    }
+}
+
+/// The bounded dual of min c'x, Ax <= b, Ex = f, x >= 0: its columns are the multipliers of
+/// a's rows (>= 0, capacity rows <= mcap) and of e's (free).
+fn dual(
+    a: &Matrix,
+    e: &Matrix,
+    columns: usize,
+    cap: &[Vec<usize>],
+    mcap: &[Vec<f64>],
+) -> Result<Lp, String> {
+    let (ma, me) = (a.rows.len(), e.rows.len());
+    let mut at = Matrix::new(columns, ma + me);
+    for (i, row) in a.rows.iter().enumerate() {
+        for (&j, &x) in row {
+            at.set(j, i, -x);
+        }
+    }
+    for (i, row) in e.rows.iter().enumerate() {
+        for (&j, &x) in row {
+            at.set(j, ma + i, x);
+        }
+    }
+    let mut lower = vec![0.0; ma];
+    lower.extend(vec![f64::NEG_INFINITY; me]);
+    let mut upper = vec![f64::INFINITY; ma + me];
+    for (rows, bounds) in cap.iter().zip(mcap) {
+        for (&i, &x) in rows.iter().zip(bounds) {
+            upper[i] = x;
+        }
+    }
+    Lp::new(Csc::new(&at, &Matrix::new(0, ma + me))?, &lower, &upper)
+}
+
+impl Model {
+    pub fn nodes(&self) -> &[(String, String)] {
+        &self.v
+    }
+    pub fn ends(&self) -> &[usize] {
+        &self.ends
+    }
+    pub fn total(&self) -> f64 {
+        self.total
+    }
+
+    pub fn from_network(network: &Value, config: &Value) -> Result<Self, String> {
+        let r = recourse(config)?;
+        let horizon = r.horizon;
+        let (v, original_u) = nodes(network)?;
+        let (finals, mut requirement) = demand(network)?;
+        let coefficients = coefficients(network, &requirement)?;
+        let layers: BTreeSet<String> = v.iter().map(|(_, p)| p.clone()).collect();
+        let mut recipes: BTreeMap<String, Vec<Recipe>> = layers
+            .iter()
+            .map(|p| {
+                let inputs = coefficients
+                    .iter()
+                    .filter(|((_, q), _)| q == p)
+                    .map(|((q, _), &x)| (q.clone(), x))
+                    .collect();
+                (
+                    p.clone(),
+                    vec![Recipe {
+                        name: p.clone(),
+                        output: p.clone(),
+                        inputs,
+                    }],
+                )
+            })
+            .collect();
+        let mut stock = coefficients.clone();
+        let mut shares = Vec::new();
+        if r.choice {
+            let (lo, hi) = chemistry(
+                network,
+                config,
+                &finals,
+                &mut requirement,
+                &mut recipes,
+                &mut stock,
+            )?;
+            shares.push(("cell".to_string(), lo, hi));
+        }
+        let arcs: Vec<(String, String, f64)> = recipes
+            .values()
+            .flatten()
+            .flat_map(|r| {
+                r.inputs
+                    .iter()
+                    .map(|(p, &x)| (p.clone(), r.output.clone(), x))
+            })
+            .collect();
+        let products: BTreeSet<String> = recipes
+            .values()
+            .flatten()
+            .map(|r| r.output.clone())
+            .chain(arcs.iter().map(|(p, _, _)| p.clone()))
+            .chain(finals.iter().cloned())
+            .collect();
+        let bound = bounds(&products, &finals, &arcs)?;
+        let gamma = gamma(&shares);
+        let ends = ends(config, &r)?;
+        let ell: Vec<f64> = ends
+            .iter()
+            .enumerate()
+            .map(|(t, &e)| (e - if t == 0 { 0 } else { ends[t - 1] }) as f64)
+            .collect();
+        let ramp: Vec<f64> = ends
+            .iter()
+            .map(|&e| 1.0 + r.sigma * (e as f64 / r.ramp_l).min(1.0))
+            .collect();
+        let aggregate = r.h == 0.0 && r.aggregate;
+        let (internal_v, internal_u) = if aggregate {
+            let mut u: BTreeMap<String, f64> = BTreeMap::new();
+            for ((_, p), &x) in v.iter().zip(&original_u) {
+                *u.entry(p.clone()).or_default() += x;
+            }
+            let internal_v = u.keys().map(|p| ("ALL".to_string(), p.clone())).collect();
+            (internal_v, u.values().copied().collect::<Vec<_>>())
+        } else {
+            (v.clone(), original_u.clone())
+        };
+        let products: Vec<String> = products.into_iter().collect();
+        let layout = Layout::new(
+            &internal_v,
+            &internal_u,
+            &recipes,
+            &products,
+            &finals,
+            &shares,
+        );
+        let (a, e, b, f, c) = layout.assemble(r.h, &stock, &ell, &ramp);
+        let n = internal_v.len();
         let mapping: Vec<usize> = v
             .iter()
             .enumerate()
             .map(|(i, (_, p))| {
-                if h == 0.0 && aggregate {
+                if aggregate {
                     internal_v.iter().position(|(_, q)| q == p).unwrap()
                 } else {
                     i
                 }
             })
             .collect();
-        let cap: Vec<Vec<usize>> = (0..k)
+        let cap: Vec<Vec<usize>> = (0..ends.len())
             .map(|t| mapping.iter().map(|&i| t * n + i).collect())
             .collect();
         let u = ramp
@@ -481,37 +673,16 @@ impl Model {
             .iter()
             .map(|&t| mv.iter().map(|&x| t * x).collect())
             .collect();
-        let (ma, me) = (a.rows.len(), e.rows.len());
-        let mut at = Matrix::new(c.len(), ma + me);
-        for (i, row) in a.rows.iter().enumerate() {
-            for (&j, &x) in row {
-                at.set(j, i, -x);
-            }
-        }
-        for (i, row) in e.rows.iter().enumerate() {
-            for (&j, &x) in row {
-                at.set(j, ma + i, x);
-            }
-        }
         let primal = Lp::new(
             Csc::new(&a, &e)?,
             &vec![0.0; c.len()],
             &vec![f64::INFINITY; c.len()],
         )?;
-        // Dual columns are the multipliers of a's rows (>= 0, capacity rows <= mcap) and of e's (free).
-        let mut lower = vec![0.0; ma];
-        lower.extend(vec![f64::NEG_INFINITY; me]);
-        let mut upper = vec![f64::INFINITY; ma + me];
-        for t in 0..ends.len() {
-            for v in 0..mapping.len() {
-                upper[cap[t][v]] = mcap[t][v];
-            }
-        }
-        let dual = Lp::new(Csc::new(&at, &Matrix::new(0, ma + me))?, &lower, &upper)?;
+        let dual = dual(&a, &e, c.len(), &cap, &mcap)?;
         Ok(Self {
             v,
             ends,
-            total: finals_n as f64 * (horizon as f64 / 12.0),
+            total: finals.len() as f64 * (horizon as f64 / 12.0),
             a,
             b,
             e,
@@ -524,7 +695,8 @@ impl Model {
         })
     }
 
-    pub fn solve(&self, state: &[f64], dual: bool, loss: Option<&[f64]>) -> Result<Value, String> {
+    /// b(D): capacity rows (1 - f_v [t <= D_v]) U_tv for outage months D and loss fractions f.
+    fn rhs(&self, state: &[f64], loss: Option<&[f64]>) -> Result<Vec<f64>, String> {
         if state.len() != self.v.len()
             || state.iter().any(|x| {
                 !x.is_finite()
@@ -555,18 +727,19 @@ impl Model {
                 b[self.cap[t][v]] += self.u[t][v] * (1.0 - loss[v] * active);
             }
         }
-        let result = self.primal.borrow_mut().solve(&self.c, &b, &self.f)?;
-        if result.status != "optimal" {
-            return Ok(json!({"status": result.status}));
-        }
+        Ok(b)
+    }
+
+    /// Largest violation of Ax <= b, Ex = f and x >= 0, with Python's +0 on a zero maximum.
+    fn residual(&self, b: &[f64], x: &[f64]) -> f64 {
         let mut residual = 0.0_f64;
-        for (ax, &rhs) in self.a.mul(&result.x).iter().zip(&b) {
+        for (ax, &rhs) in self.a.mul(x).iter().zip(b) {
             residual = residual.max(ax - rhs);
         }
-        for (ex, &rhs) in self.e.mul(&result.x).iter().zip(&self.f) {
+        for (ex, &rhs) in self.e.mul(x).iter().zip(&self.f) {
             residual = residual.max((ex - rhs).abs());
         }
-        for &x in &result.x {
+        for &x in x {
             residual = residual.max(-x);
         }
         // Python max starts with +0 and retains its first operand on a zero tie.
@@ -574,6 +747,16 @@ impl Model {
         if residual == 0.0 {
             residual = 0.0;
         }
+        residual
+    }
+
+    pub fn solve(&self, state: &[f64], dual: bool, loss: Option<&[f64]>) -> Result<Value, String> {
+        let b = self.rhs(state, loss)?;
+        let result = self.primal.borrow_mut().solve(&self.c, &b, &self.f)?;
+        if result.status != "optimal" {
+            return Ok(json!({"status": result.status}));
+        }
+        let residual = self.residual(&b, &result.x);
         let mut out = json!({"status":"optimal", "message":"Optimization terminated successfully. (HiGHS Status 7: Optimal)",
             "phi":result.fun, "dual":null, "gap":null, "residual":residual});
         if dual {

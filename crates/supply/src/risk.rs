@@ -5,6 +5,66 @@ use serde_json::{Value, json};
 use std::collections::BTreeMap;
 use std::time::{Duration, Instant};
 
+/// Frozen onset rate p_v of each network node v, looked up in the law's node roster.
+fn rates(v: &[(String, String)], law: &Value) -> Result<Vec<f64>, String> {
+    let law_nodes: Vec<(String, String)> =
+        serde_json::from_value(law["nodes"].clone()).map_err(|e| e.to_string())?;
+    let probabilities: &Vec<Value> = law["rates"]["p"]
+        .as_array()
+        .ok_or("Frozen rates.p required")?;
+    if probabilities.len() != law_nodes.len() {
+        return Err("One frozen onset rate per law node required".into());
+    }
+    v.iter()
+        .map(|node| {
+            let i = law_nodes
+                .iter()
+                .position(|x| x == node)
+                .ok_or("Network node has no frozen onset rate")?;
+            probabilities[i]
+                .as_f64()
+                .ok_or_else(|| "Invalid frozen probability".to_string())
+        })
+        .collect()
+}
+
+/// Cut states as dense duration vectors over n nodes; a row is either sparse
+/// (node, duration) pairs, each node at most once, or already dense.
+fn states(cuts: &Value, n: usize) -> Result<Vec<Vec<i64>>, String> {
+    let rows = cuts
+        .get("cuts")
+        .unwrap_or(cuts)
+        .as_array()
+        .ok_or("Cut list required")?;
+    let mut dense = vec![];
+    for row in rows {
+        let row = row.as_array().ok_or("Invalid cut state")?;
+        if row.is_empty() || row[0].is_array() {
+            let mut d = vec![0; n];
+            let mut seen = std::collections::BTreeSet::new();
+            for pair in row {
+                let pair = pair
+                    .as_array()
+                    .ok_or("Sparse (node,duration) pairs required")?;
+                if pair.len() != 2 {
+                    return Err("Sparse pair needs node and duration".into());
+                }
+                let i = pair[0].as_u64().ok_or("Invalid node index")? as usize;
+                if i >= n || !seen.insert(i) {
+                    return Err("Cut node outside network".into());
+                }
+                d[i] = pair[1].as_i64().ok_or("Invalid outage duration")?;
+            }
+            dense.push(d);
+        } else {
+            dense.push(
+                serde_json::from_value(Value::Array(row.clone())).map_err(|e| e.to_string())?,
+            );
+        }
+    }
+    Ok(dense)
+}
+
 pub fn input(network: &Value, law: &Value, cuts: &Value) -> Result<Input, String> {
     let v: Vec<(String, String)> = network["nodes"]
         .as_array()
@@ -17,57 +77,8 @@ pub fn input(network: &Value, law: &Value, cuts: &Value) -> Result<Input, String
             ))
         })
         .collect::<Result<_, String>>()?;
-    let law_nodes: Vec<(String, String)> =
-        serde_json::from_value(law["nodes"].clone()).map_err(|e| e.to_string())?;
-    let probabilities: &Vec<Value> = law["rates"]["p"]
-        .as_array()
-        .ok_or("Frozen rates.p required")?;
-    if probabilities.len() != law_nodes.len() {
-        return Err("One frozen onset rate per law node required".into());
-    }
-    let p = v
-        .iter()
-        .map(|node| {
-            let i = law_nodes
-                .iter()
-                .position(|x| x == node)
-                .ok_or("Network node has no frozen onset rate")?;
-            probabilities[i]
-                .as_f64()
-                .ok_or("Invalid frozen probability")
-        })
-        .collect::<Result<Vec<_>, _>>()?;
-    let rows = cuts
-        .get("cuts")
-        .unwrap_or(cuts)
-        .as_array()
-        .ok_or("Cut list required")?;
-    let mut dense = vec![];
-    for row in rows {
-        let row = row.as_array().ok_or("Invalid cut state")?;
-        if row.is_empty() || row[0].is_array() {
-            let mut d = vec![0; v.len()];
-            let mut seen = std::collections::BTreeSet::new();
-            for pair in row {
-                let pair = pair
-                    .as_array()
-                    .ok_or("Sparse (node,duration) pairs required")?;
-                if pair.len() != 2 {
-                    return Err("Sparse pair needs node and duration".into());
-                }
-                let i = pair[0].as_u64().ok_or("Invalid node index")? as usize;
-                if i >= v.len() || !seen.insert(i) {
-                    return Err("Cut node outside network".into());
-                }
-                d[i] = pair[1].as_i64().ok_or("Invalid outage duration")?;
-            }
-            dense.push(d);
-        } else {
-            dense.push(
-                serde_json::from_value(Value::Array(row.clone())).map_err(|e| e.to_string())?,
-            );
-        }
-    }
+    let p = rates(&v, law)?;
+    let dense = states(cuts, v.len())?;
     if let Some(nodes) = cuts.get("nodes") {
         let expected = serde_json::to_value(&v).map_err(|e| e.to_string())?;
         if nodes != &expected {
@@ -88,14 +99,9 @@ pub fn input(network: &Value, law: &Value, cuts: &Value) -> Result<Input, String
     })
 }
 
-pub fn run(
-    network: &Value,
-    config: &Value,
-    law: &Value,
-    accepted: &crate::cuts::Accepted,
-) -> Result<Value, String> {
-    sc_data::config::validate(config)?;
-    let cuts = accepted.report();
+/// Accepts the cut report only as a complete native full-outage certificate for this network,
+/// certified under the selected configuration and the law's duration grid.
+fn certified(network: &Value, config: &Value, law: &Value, cuts: &Value) -> Result<(), String> {
     if cuts["complete"] != true {
         return Err("Risk requires a completed native cut search".into());
     }
@@ -105,23 +111,22 @@ pub fn run(
     if cuts["algorithm"] != "capacity_dominance_lattice" || cuts["network"] != *network {
         return Err("Risk requires a native cut certificate for this exact network".into());
     }
-    let defaults = json!({"alpha":0.25,"h":0,"sigma":0,"L":6,"T":24,"choice":false,
-        "shares":[0,1],"durations":[3,6,12],"aggregate":true,"k":3});
-    for (key, default) in defaults.as_object().unwrap() {
-        let selected = config.get(key).unwrap_or(default);
-        let certified = cuts["config"].get(key).unwrap_or(default);
-        let equal = if selected.is_number() && certified.is_number() {
-            selected.as_f64() == certified.as_f64()
-        } else {
-            selected == certified
-        };
-        if !equal {
-            return Err(format!("Cut certificate configuration mismatch: {key}"));
-        }
-    }
-    if config.get("durations").unwrap_or(&defaults["durations"]) != &law["durations"]["durations"] {
+    crate::cuts::certified_under(config, &cuts["config"])?;
+    if config.get("durations").unwrap_or(&json!([3, 6, 12])) != &law["durations"]["durations"] {
         return Err("The frozen law and certified cut duration grids must match".into());
     }
+    Ok(())
+}
+
+pub fn run(
+    network: &Value,
+    config: &Value,
+    law: &Value,
+    accepted: &crate::cuts::Accepted,
+) -> Result<Value, String> {
+    sc_data::config::validate(config)?;
+    let cuts = accepted.report();
+    certified(network, config, law, cuts)?;
     let k = config["k"].as_u64().unwrap_or(3) as usize;
     let input = input(network, law, cuts)?;
     let bounds = stats::bracket(&input, k, true).map_err(str::to_string)?;

@@ -125,10 +125,41 @@ pub fn verify(root: &Path) -> Result<Value, String> {
     Ok(json!({"count":verified.len(),"verified":verified}))
 }
 
-/// Observational context, independent of the historical network and cut results.
-pub fn context(root: &Path) -> Result<Value, String> {
-    let sources = Sources::open(root)?;
-    sources.read(X)?;
+/// USGS value text to (tonnes, missing label): the XML metadata defines an em dash as zero,
+/// W as withheld and NA as unavailable.
+fn tonnes(value: &str, unit: &str) -> Result<(Value, Value), String> {
+    if value == "—" {
+        return Ok((json!(0), Value::Null));
+    }
+    if ["W", "NA", "XX", "s", "E", ""].contains(&value) {
+        return Ok((
+            Value::Null,
+            json!(match value {
+                "W" => "withheld",
+                "NA" => "unavailable",
+                "s" => "small",
+                _ => "unquantified",
+            }),
+        ));
+    }
+    let mut n = num(&value.replace(',', ""))?;
+    if unit == "thousand metric tons" {
+        n *= 1000.0;
+    } else if unit != "metric tons" {
+        return Err(format!("Unexpected unit: {unit}"));
+    }
+    Ok((
+        if n.fract() == 0.0 {
+            json!(n as i64)
+        } else {
+            json!(n)
+        },
+        Value::Null,
+    ))
+}
+
+/// Country output of the seven battery commodities in 2024 and 2025, from USGS MCS 2026.
+fn production(sources: &Sources<'_>) -> Result<Vec<Value>, String> {
     let mut production = vec![];
     for r in sources.rows(U, true)? {
         if ![
@@ -148,34 +179,7 @@ pub fn context(root: &Path) -> Result<Value, String> {
             continue;
         }
         let value = r["Value"].trim();
-        let (tonnes, missing) = if value == "—" {
-            (json!(0), Value::Null)
-        } else if ["W", "NA", "XX", "s", "E", ""].contains(&value) {
-            (
-                Value::Null,
-                json!(match value {
-                    "W" => "withheld",
-                    "NA" => "unavailable",
-                    "s" => "small",
-                    _ => "unquantified",
-                }),
-            )
-        } else {
-            let mut n = num(&value.replace(',', ""))?;
-            if r["Unit"] == "thousand metric tons" {
-                n *= 1000.0;
-            } else if r["Unit"] != "metric tons" {
-                return Err(format!("Unexpected unit: {}", r["Unit"]));
-            }
-            (
-                if n.fract() == 0.0 {
-                    json!(n as i64)
-                } else {
-                    json!(n)
-                },
-                Value::Null,
-            )
-        };
+        let (tonnes, missing) = tonnes(value, &r["Unit"])?;
         let stage = r["Statistics_detail"]
             .split_whitespace()
             .next()
@@ -187,6 +191,12 @@ pub fn context(root: &Path) -> Result<Value, String> {
             "estimated":r["Notes"].contains("Estimated"),"aggregate":r["Country"]=="Other countries",
             "world":r["Country"]=="World total","missing":missing}));
     }
+    Ok(production)
+}
+
+/// Sort production rows, set each row's share of its published world total, and summarize
+/// each commodity-stage-year group.
+fn summaries(production: &mut [Value]) -> Result<Vec<Value>, String> {
     let key = |r: &Value| {
         (
             r["commodity"].as_str().unwrap().to_string(),
@@ -247,6 +257,15 @@ pub fn context(root: &Path) -> Result<Value, String> {
             "concentration_label":"Named-country shares; top-three sum is a lower bound when aggregate or withheld output is present, subject to rounded totals."}));
         start = end;
     }
+    Ok(summaries)
+}
+
+/// Observational context, independent of the historical network and cut results.
+pub fn context(root: &Path) -> Result<Value, String> {
+    let sources = Sources::open(root)?;
+    sources.read(X)?;
+    let mut production = production(&sources)?;
+    let summaries = summaries(&mut production)?;
     let chart: Value = serde_json::from_slice(&sources.read(I)?).map_err(|e| e.to_string())?;
     let mut refining = vec![];
     for series in chart["series"].as_array().ok_or("Missing IEA series")? {

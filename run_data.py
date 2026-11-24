@@ -20,6 +20,36 @@ def slim(N):
     return {k: N[k] for k in keep}
 
 
+def reconcile(voltage, eu):
+    """Cell, carbonate and refined-cobalt nodes whose trade proxy differs from production.
+
+    OUTPUT  rows {country, product, exports, production, ratio}, sorted by node
+    """
+    trade = build(basis="trade", cutoff=0)
+    prod = {(x["country"], x["product"]): x["annual"] for x in build(
+        cutoff=0, japan_voltage=voltage, eu_sold=eu)["nodes"]}
+    exports = {(x["country"], x["product"]): x["annual"] for x in trade["nodes"]
+               if x["basis"] == "trade"}
+    return [{"country": c, "product": p, "exports": e, "production": prod[c, p],
+             "ratio": e/prod[c, p]} for (c, p), e in sorted(exports.items())
+            if (c, p) in prod and p in ("cell", "li_carbonate", "refined_co")
+            and abs(prod[c, p] - e) > 1e-9]
+
+
+def events_vs_research(root, L):
+    """Onset node-years derived from events against the research CSV on Li-ion network L."""
+    research = {(r["country"], {"mine_graphite": "graphite", "li_hydroxide": "li_carbonate"}
+                 .get(r["product"], r["product"]), int(r["year"]))
+                for r in csv.DictReader((root / "data/events/observed_node_years.csv").open())
+                if r["restrictive_onset"] == "1"}
+    V = [(x["country"], x["product"]) for x in L["nodes"]]
+    _, ids, _ = node_years(V, root)
+    derived = {(c, p, int(y)) for c, p, y in (k.split(":") for k in ids)}
+    return {"only_derived": sorted(map(list, (derived - research) & {k for k in derived})),
+            "only_research_on_nodes": sorted(map(list, {x for x in research - derived
+                                                        if x[:2] in set(V)}))}
+
+
 def main():
     root, run = Path("."), Path("results") / sys.argv[1]
     run.mkdir(parents=True, exist_ok=True)
@@ -30,22 +60,7 @@ def main():
     L = nets["liion"]
     miit = {x["product"]: float(x["value"]) for x in csv.DictReader(
         (root / "data/raw/miit/production_2024.csv").open()) if x["statistic"] == "production"}
-    trade = build(basis="trade", cutoff=0)
-    prod = {(x["country"], x["product"]): x["annual"] for x in build(
-        cutoff=0, japan_voltage=voltage, eu_sold=eu)["nodes"]}
-    exports = {(x["country"], x["product"]): x["annual"] for x in trade["nodes"]
-               if x["basis"] == "trade"}
-    recon = [{"country": c, "product": p, "exports": e, "production": prod[c, p],
-              "ratio": e/prod[c, p]} for (c, p), e in sorted(exports.items())
-             if (c, p) in prod and p in ("cell", "li_carbonate", "refined_co")
-             and abs(prod[c, p] - e) > 1e-9]
-    research = {(r["country"], {"mine_graphite": "graphite", "li_hydroxide": "li_carbonate"}
-                 .get(r["product"], r["product"]), int(r["year"]))
-                for r in csv.DictReader((root / "data/events/observed_node_years.csv").open())
-                if r["restrictive_onset"] == "1"}
-    V = [(x["country"], x["product"]) for x in L["nodes"]]
-    _, ids, _ = node_years(V, root)
-    derived = {(c, p, int(y)) for c, p, y in (k.split(":") for k in ids)}
+    recon = reconcile(voltage, eu)
     sites = json.loads((root / "data/sites/coverage.json").read_text(encoding="utf-8"))
     checks = {
         "stamp": stamp(root),
@@ -58,10 +73,7 @@ def main():
         "german_sold_carbonate_proxy": eu,
         "bgs": "not used: licence unresolved",
         "reexport_flags": reexport_flags(L),
-        "events_vs_research_csv": {
-            "only_derived": sorted(map(list, (derived - research) & {k for k in derived})),
-            "only_research_on_nodes": sorted(map(list, {x for x in research - derived
-                                                        if x[:2] in set(V)}))},
+        "events_vs_research_csv": events_vs_research(root, L),
         "site_coverage": {"threshold": sites["threshold"], "passed": sites["coverage_test_passed"],
                           "mode": sites["natural_hazard_mode"],
                           "layers": {x["product"]: x["verified_located_capacity_share"]

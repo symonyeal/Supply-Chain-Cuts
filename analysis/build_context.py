@@ -59,13 +59,28 @@ def fetch_iea(root: Path = R) -> None:
     (root / I).write_bytes(data)
 
 
-def build(root: Path = R) -> dict:
-    """Extract country output and a separate refining cross-section."""
-    sources = json.loads((root / "SOURCES.lock").read_text(encoding="utf8"))["sources"]
-    raw = verified(root, U, sources).decode("cp1252")
-    # The XML metadata defines em dash as zero, W as withheld, and NA as unavailable.
-    verified(root, "data/raw/usgs/MCS2026_Commodities_Data.xml", sources)
-    production = []
+def tonnes(value: str, unit: str) -> tuple[float | None, str | None]:
+    """One USGS cell in tonnes, and why it has no number.
+
+    The XML metadata defines em dash as zero, W as withheld, and NA as unavailable.
+    """
+    if value == "—":
+        return 0, None
+    if value in {"W", "NA", "XX", "s", "E", ""}:
+        return None, {"W": "withheld", "NA": "unavailable", "s": "small"}.get(
+            value, "unquantified"
+        )
+    x = float(value.replace(",", ""))
+    if unit == "thousand metric tons":
+        x *= 1000
+    elif unit != "metric tons":
+        raise ValueError(f"Unexpected unit: {unit}")
+    return (int(x) if x.is_integer() else x), None
+
+
+def production(raw: str) -> list[dict]:
+    """World-section production rows of the selected commodities for 2024 and 2025, sorted."""
+    out = []
     for row in csv.DictReader(io.StringIO(raw)):
         if (
             row["Commodity"] not in C
@@ -75,29 +90,15 @@ def build(root: Path = R) -> dict:
         ):
             continue
         value = row["Value"].strip()
-        missing = None
-        if value == "—":
-            tonnes = 0
-        elif value in {"W", "NA", "XX", "s", "E", ""}:
-            tonnes = None
-            missing = {"W": "withheld", "NA": "unavailable", "s": "small"}.get(
-                value, "unquantified"
-            )
-        else:
-            tonnes = float(value.replace(",", ""))
-            if row["Unit"] == "thousand metric tons":
-                tonnes *= 1000
-            elif row["Unit"] != "metric tons":
-                raise ValueError(f"Unexpected unit: {row['Unit']}")
-            tonnes = int(tonnes) if tonnes.is_integer() else tonnes
+        t, missing = tonnes(value, row["Unit"])
         stage = row["Statistics_detail"].split()[0].lower()
-        production.append(
+        out.append(
             {
                 "commodity": row["Commodity"],
                 "stage": stage,
                 "year": int(row["Year"]),
                 "country": row["Country"],
-                "tonnes": tonnes,
+                "tonnes": t,
                 "raw": value,
                 "notes": row["Notes"],
                 "source_notes": row["Other notes"],
@@ -107,45 +108,53 @@ def build(root: Path = R) -> dict:
                 "missing": missing,
             }
         )
-    production.sort(key=lambda row: (row["commodity"], row["stage"], row["year"], row["country"]))
-    summaries = []
-    groups = sorted({(r["commodity"], r["stage"], r["year"]) for r in production})
-    for commodity, stage, year in groups:
-        rows = [
-            r
-            for r in production
-            if (r["commodity"], r["stage"], r["year"]) == (commodity, stage, year)
-        ]
-        world = next(r["tonnes"] for r in rows if r["world"])
-        for row in rows:
-            row["share"] = (
-                row["tonnes"] / world if row["tonnes"] is not None and not row["world"] else None
-            )
-        named = sorted(
-            (r for r in rows if not r["world"] and not r["aggregate"] and r["tonnes"] is not None),
-            key=lambda r: r["tonnes"],
-            reverse=True,
+    out.sort(key=lambda row: (row["commodity"], row["stage"], row["year"], row["country"]))
+    return out
+
+
+def summary(commodity: str, stage: str, year: int, rows: list[dict]) -> dict:
+    """Named-country concentration of one commodity-stage-year; sets each row's world share."""
+    world = next(r["tonnes"] for r in rows if r["world"])
+    for row in rows:
+        row["share"] = (
+            row["tonnes"] / world if row["tonnes"] is not None and not row["world"] else None
         )
-        summaries.append(
-            {
-                "commodity": commodity,
-                "stage": stage,
-                "year": year,
-                "world_tonnes": world,
-                "named_top_country": named[0]["country"],
-                "named_top_share": named[0]["share"],
-                "named_top3_share": sum(r["tonnes"] for r in named[:3]) / world,
-                "has_aggregate": any(r["aggregate"] for r in rows),
-                "has_missing": any(r["missing"] for r in rows),
-                "coverage_note": "Excludes withheld U.S. production."
-                if commodity == "Lithium"
-                else "Published world total; includes other countries where reported.",
-                "concentration_label": (
-                    "Named-country shares; top-three sum is a lower bound when aggregate "
-                    "or withheld output is present, subject to rounded totals."
-                ),
-            }
-        )
+    named = sorted(
+        (r for r in rows if not r["world"] and not r["aggregate"] and r["tonnes"] is not None),
+        key=lambda r: r["tonnes"],
+        reverse=True,
+    )
+    return {
+        "commodity": commodity,
+        "stage": stage,
+        "year": year,
+        "world_tonnes": world,
+        "named_top_country": named[0]["country"],
+        "named_top_share": named[0]["share"],
+        "named_top3_share": sum(r["tonnes"] for r in named[:3]) / world,
+        "has_aggregate": any(r["aggregate"] for r in rows),
+        "has_missing": any(r["missing"] for r in rows),
+        "coverage_note": "Excludes withheld U.S. production."
+        if commodity == "Lithium"
+        else "Published world total; includes other countries where reported.",
+        "concentration_label": (
+            "Named-country shares; top-three sum is a lower bound when aggregate "
+            "or withheld output is present, subject to rounded totals."
+        ),
+    }
+
+
+def build(root: Path = R) -> dict:
+    """Extract country output and a separate refining cross-section."""
+    sources = json.loads((root / "SOURCES.lock").read_text(encoding="utf8"))["sources"]
+    raw = verified(root, U, sources).decode("cp1252")
+    # The XML metadata defines the value codes that tonnes() reads.
+    verified(root, "data/raw/usgs/MCS2026_Commodities_Data.xml", sources)
+    rows = production(raw)
+    summaries = [
+        summary(*key, [r for r in rows if (r["commodity"], r["stage"], r["year"]) == key])
+        for key in sorted({(r["commodity"], r["stage"], r["year"]) for r in rows})
+    ]
     chart = json.loads(verified(root, I, sources))
     countries = {
         row['country_iso3']: row['country_name']
@@ -187,7 +196,7 @@ def build(root: Path = R) -> dict:
                 "cut sets or probabilities."
             ),
         },
-        "production": production,
+        "production": rows,
         "refining": refining,
         "summaries": summaries,
     }

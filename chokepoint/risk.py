@@ -154,6 +154,33 @@ def residual_sampling(M, p, rho, durations, weights, cuts, alpha=0.25, n=4000,
             "method": "lower_bound_plus_residual", "interval_method": "clopper_pearson_binomial"}
 
 
+def _paired(M, D, values, theta):
+    """Verdict and phi of every sample under the full loss and each named partial loss.
+
+    INPUT   D ....... sampled durations, int[n, |V|]
+            values .. name -> loss fractions [n, |V|] in [0,1]
+    OUTPUT  F[name] failure flags bool[n] ("full" first), distinct LP states, and the
+            maximum of phi[name] - phi["full"]; Blocked(status, i) at the first sample i
+            whose verdict is neither fail nor survive
+    """
+    names = ["full", *values]
+    F = {name: np.zeros(len(D), bool) for name in names}
+    cache, violation = {}, 0.0
+    for i, d in enumerate(D):
+        phi = {}
+        for name in names:
+            f = np.ones(len(d)) if name == "full" else values[name][i]
+            key = tuple((v, int(d[v]), float(f[v])) for v in np.flatnonzero(d))
+            if key not in cache:
+                call = verdict(M, d, theta, f=f)
+                if call not in ("fail", "survive"):
+                    raise Blocked(call, i)
+                cache[key] = solve(M, d, dual=False, f=f)["phi"], call == "fail"
+            phi[name], F[name][i] = cache[key]
+            violation = max(violation, phi[name] - phi["full"])
+    return F, len(cache), violation
+
+
 def partial_sampling(M, p, rho, durations, weights, mixtures, losses, alpha=0.25,
                      n=20000, seed=7):
     """Paired full and marked partial losses; samplewise monotonicity certifies S3.
@@ -172,28 +199,17 @@ def partial_sampling(M, p, rho, durations, weights, mixtures, losses, alpha=0.25
               for name, f in losses.items()}
     if any(not np.isfinite(f).all() or (f < 0).any() or (f > 1).any() for f in values.values()):
         raise ValueError("Loss fractions must lie in [0,1]")
-    names = ["full", *losses]
-    F = {name: np.zeros(n, bool) for name in names}
-    cache, violation = {}, 0.0
-    for i, d in enumerate(D):
-        phi = {}
-        for name in names:
-            f = np.ones(len(d)) if name == "full" else values[name][i]
-            key = tuple((v, int(d[v]), float(f[v])) for v in np.flatnonzero(d))
-            if key not in cache:
-                call = verdict(M, d, alpha*M["total"], f=f)
-                if call not in ("fail", "survive"):
-                    return {"status": call, "samples_completed": i}
-                cache[key] = solve(M, d, dual=False, f=f)["phi"], call == "fail"
-            phi[name], F[name][i] = cache[key]
-            violation = max(violation, phi[name] - phi["full"])
+    try:
+        F, states, violation = _paired(M, D, values, alpha*M["total"])
+    except Blocked as e:
+        return {"status": e.args[0], "samples_completed": e.args[1]}
     counts = Counter()
     for v, column in enumerate(marks):
         counts.update(column[onset[:, v]].tolist())
     out = {"status": "optimal", "n": n, "seed": seed, "alpha": alpha,
            "method": "paired_partial_loss_mc", "max_monotonicity_violation": violation,
            "monotone": violation <= 1e-7 and all(np.all(z <= F["full"]) for z in F.values()),
-           "lp_states": len(cache), "onsets_by_measure": dict(counts), "scenarios": {}}
+           "lp_states": states, "onsets_by_measure": dict(counts), "scenarios": {}}
     for name, z in F.items():
         m = int(z.sum())
         r = m/n

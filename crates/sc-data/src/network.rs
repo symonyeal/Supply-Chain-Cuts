@@ -17,6 +17,8 @@ const HS: [(&str, &str); 9] = [
 ];
 const PV: [&str; 4] = ["polysilicon", "wafer", "pv_cell", "module"];
 type Flows = BTreeMap<(String, String), f64>;
+// (country, product, tonnes) in first-seen order.
+type Production = Vec<(String, String, f64)>;
 
 // CPython 3.14 sum(float): Neumaier compensation; explicit += sites remain uncorrected.
 fn sum(values: impl IntoIterator<Item = f64>) -> f64 {
@@ -69,27 +71,6 @@ pub(super) fn bill(sources: &Sources<'_>, ncm: f64) -> Result<Value, String> {
     )
 }
 
-fn put(
-    nodes: &mut Vec<Value>,
-    exclude: &BTreeSet<(String, String)>,
-    c: &str,
-    p: &str,
-    annual: f64,
-    [basis, unit, source, note]: [&str; 4],
-) {
-    if annual <= 0.0 || exclude.contains(&(c.into(), p.into())) {
-        return;
-    }
-    let v = json!({"country":c,"product":p,"annual":annual,"basis":basis,"unit":unit,"source":source,"note":note});
-    if let Some(old) = nodes
-        .iter_mut()
-        .find(|r| r["country"] == c && r["product"] == p)
-    {
-        *old = v;
-    } else {
-        nodes.push(v);
-    }
-}
 fn val(r: &Value, k: &str) -> f64 {
     r[k].as_f64().unwrap()
 }
@@ -124,18 +105,10 @@ fn trade(c: &str, p: &str, e: &BTreeMap<&str, Flows>, scale: f64) -> f64 {
             .unwrap_or(0.0)
 }
 
-pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, String> {
-    crate::config::validate(opts)?;
-    let sector = opts["sector"].as_str().unwrap_or("liion");
-    let ncm = opts["ncm"].as_f64().unwrap_or(0.5);
-    let cutoff = opts["cutoff"].as_f64().unwrap_or(0.01);
-    let basis = opts["basis"].as_str().unwrap_or("production");
-    if !["liion", "pv", "joint"].contains(&sector) || !(0.0..1.0).contains(&cutoff) {
-        return Err("sector in liion,pv,joint and 0 <= cutoff < 1 required".into());
-    }
-    if !["production", "trade"].contains(&basis) {
-        return Err("basis in production,trade required".into());
-    }
+type Trade = BTreeMap<&'static str, Flows>;
+type Excluded = BTreeSet<(String, String)>;
+
+fn excluded(opts: &Value) -> Result<Excluded, String> {
     let mut excluded = BTreeSet::new();
     if let Some(ex) = opts["exclude"].as_array() {
         for pair in ex {
@@ -151,12 +124,11 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
             ));
         }
     }
-    let b = bill(sources, ncm)?;
-    let country_rows = sources.rows(crate::B, false)?;
-    let countries: BTreeMap<String, String> = country_rows
-        .iter()
-        .map(|r| (r["country_code"].clone(), r["country_iso3"].clone()))
-        .collect();
+    Ok(excluded)
+}
+
+/// USGS country names to ISO3, with the spellings BACI does not use.
+fn names(country_rows: &[crate::Row]) -> BTreeMap<String, String> {
     let mut names: BTreeMap<String, String> = country_rows
         .iter()
         .map(|r| (r["country_name"].to_lowercase(), r["country_iso3"].clone()))
@@ -178,6 +150,14 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
     ] {
         names.insert(name.into(), c.into());
     }
+    names
+}
+
+/// BACI 2024 exports E and imports I by revision, and the count of rows without a quantity.
+fn baci(
+    sources: &Sources<'_>,
+    countries: &BTreeMap<String, String>,
+) -> Result<(Trade, Trade, BTreeMap<&'static str, i32>), String> {
     let mut exports = BTreeMap::new();
     let mut imports = BTreeMap::new();
     let mut missing = BTreeMap::new();
@@ -214,6 +194,15 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
         imports.insert(hs, i);
         missing.insert(hs, gaps);
     }
+    Ok((exports, imports, missing))
+}
+
+/// USGS MCS 2026 world production for 2024 (copper at refinery stage) in tonnes, and the rows
+/// that name no country or give no number.
+fn usgs(
+    sources: &Sources<'_>,
+    names: &BTreeMap<String, String>,
+) -> Result<(Production, Vec<Value>), String> {
     let chapters = BTreeMap::from([
         ("LITHIUM", "mine_li"),
         ("COBALT", "mine_co"),
@@ -223,7 +212,7 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
         ("COPPER", "refined_cu"),
         ("ALUMINUM", "aluminium"),
     ]);
-    let mut prod: Vec<(String, String, f64)> = vec![];
+    let mut prod: Production = vec![];
     let mut unparsed = vec![];
     for r in sources.rows(crate::U, true)? {
         if r["Year"] != "2024"
@@ -258,32 +247,55 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
             prod.push((c.clone(), p.into(), value));
         }
     }
-    let miit: BTreeMap<String, f64> = sources
-        .rows("data/raw/miit/production_2024.csv", false)?
-        .iter()
-        .filter(|r| r["statistic"] == "production")
-        .map(|r| Ok((r["product"].clone(), num(&r["value"])?)))
-        .collect::<Result<_, String>>()?;
-    let iso3: BTreeSet<String> = countries.values().cloned().collect();
-    let mut nodes = vec![];
-    if sector == "liion" || sector == "joint" {
+    Ok((prod, unparsed))
+}
+
+/// Frozen inputs shared by the node builders; nodes are put in insertion order.
+struct Build<'a> {
+    sources: &'a Sources<'a>,
+    opts: &'a Value,
+    excluded: Excluded,
+    b: Value,
+    exports: Trade,
+    miit: BTreeMap<String, f64>,
+    iso3: BTreeSet<String>,
+    production: bool,
+    nodes: Vec<Value>,
+}
+
+impl Build<'_> {
+    /// Insert or replace node (c, p) unless it is excluded or has no output.
+    fn put(&mut self, c: &str, p: &str, annual: f64, [basis, unit, source, note]: [&str; 4]) {
+        if annual <= 0.0 || self.excluded.contains(&(c.into(), p.into())) {
+            return;
+        }
+        let v = json!({"country":c,"product":p,"annual":annual,"basis":basis,"unit":unit,"source":source,"note":note});
+        if let Some(old) = self
+            .nodes
+            .iter_mut()
+            .find(|r| r["country"] == c && r["product"] == p)
+        {
+            *old = v;
+        } else {
+            self.nodes.push(v);
+        }
+    }
+
+    /// Li-ion origins: USGS mine output, BACI export proxies, then production overrides.
+    fn liion(&mut self, prod: Production) -> Result<(), String> {
         for (c, p, value) in prod {
-            put(
-                &mut nodes,
-                &excluded,
+            self.put(
                 &c,
                 &p,
                 value / 1000.0,
                 ["production", "kt", "USGS MCS2026, 2024 production", ""],
             );
         }
-        for c in &iso3 {
-            put(
-                &mut nodes,
-                &excluded,
+        for c in &self.iso3.clone() {
+            self.put(
                 c,
                 "li_carbonate",
-                trade(c, "li_carbonate", &exports, 1e-3),
+                trade(c, "li_carbonate", &self.exports, 1e-3),
                 [
                     "trade",
                     "kt",
@@ -291,12 +303,10 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
                     "Export proxy, kt Li2CO3",
                 ],
             );
-            put(
-                &mut nodes,
-                &excluded,
+            self.put(
                 c,
                 "refined_ni",
-                trade(c, "refined_ni", &exports, 1e-3),
+                trade(c, "refined_ni", &self.exports, 1e-3),
                 [
                     "trade",
                     "kt",
@@ -304,12 +314,15 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
                     "Export proxy; omits domestically absorbed metal",
                 ],
             );
-            put(
-                &mut nodes,
-                &excluded,
+            self.put(
                 c,
                 "cell",
-                trade(c, "cell", &exports, val(&b, "specific_energy_wh_kg") / 1e6),
+                trade(
+                    c,
+                    "cell",
+                    &self.exports,
+                    val(&self.b, "specific_energy_wh_kg") / 1e6,
+                ),
                 [
                     "trade",
                     "GWh",
@@ -317,17 +330,16 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
                     "Pack Wh/kg applied to mixed cell/pack exports",
                 ],
             );
-            let synthetic = trade(c, "synthetic_graphite", &exports, 1e-3);
+            let synthetic = trade(c, "synthetic_graphite", &self.exports, 1e-3);
             if synthetic != 0.0 {
-                let annual = nodes
+                let annual = self
+                    .nodes
                     .iter()
                     .find(|r| r["country"] == c.as_str() && r["product"] == "graphite")
                     .map(|r| val(r, "annual"))
                     .unwrap_or(0.0)
                     + synthetic;
-                put(
-                    &mut nodes,
-                    &excluded,
+                self.put(
                     c,
                     "graphite",
                     annual,
@@ -340,121 +352,14 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
                 );
             }
         }
-        if basis == "production" {
-            for r in sources.rows("data/raw/usgs/myb2023_cobalt_refinery.csv", false)? {
-                if !r["value"].is_empty() {
-                    put(
-                        &mut nodes,
-                        &excluded,
-                        &r["iso3"],
-                        "refined_co",
-                        num(&r["value"])? / 1000.0,
-                        [
-                            "production",
-                            "kt",
-                            "USGS MYB 2023 Table 8",
-                            &format!("2023 refinery output, {}", r["qualifier"]),
-                        ],
-                    );
-                }
-            }
-            put(
-                &mut nodes,
-                &excluded,
-                "CHN",
-                "cell",
-                miit["li_ion_cell"],
-                ["production", "GWh", "MIIT 2024", ""],
-            );
-            put(
-                &mut nodes,
-                &excluded,
-                "CHN",
-                "li_carbonate",
-                (miit["battery_grade_lithium_carbonate"]
-                    + miit["battery_grade_lithium_hydroxide"] * (73.891 / (2.0 * 41.964)))
-                    / 1000.0,
-                [
-                    "production",
-                    "kt",
-                    "MIIT 2024",
-                    "Battery-grade carbonate + LiOH·H2O as LCE",
-                ],
-            );
-            for r in sources.rows("data/raw/cochilco/lithium_chemicals_2024.csv", false)? {
-                if r["product_source_label"] == "CARBONATO DE LITIO" {
-                    put(
-                        &mut nodes,
-                        &excluded,
-                        "CHL",
-                        "li_carbonate",
-                        num(&r["value"])? / 1000.0,
-                        [
-                            "production",
-                            "kt",
-                            "Cochilco Hoja1 AD21",
-                            "Carbonate only; sulfate excluded",
-                        ],
-                    );
-                }
-            }
-            if let Some(voltage) = opts["japan_voltage"].as_f64() {
-                let q = sum(sources
-                    .rows("data/raw/meti/liion_2024.csv", false)?
-                    .iter()
-                    .map(|r| num(&r["production_kAh"]).unwrap()));
-                let text = opts["japan_voltage"].to_string();
-                put(
-                    &mut nodes,
-                    &excluded,
-                    "JPN",
-                    "cell",
-                    q * voltage / 1e6,
-                    [
-                        "imputed",
-                        "GWh",
-                        "METI 2024 h2daa2024k, items 0108/0109",
-                        &format!(
-                            "Sealed Li-ion production kAh times assumed {text} V; not installed capacity; scope excludes unreported battery categories"
-                        ),
-                    ],
-                );
-            }
-            if opts["eu_sold"] == true {
-                let e: Value = serde_json::from_slice(
-                    &sources.read("data/raw/supplement/reconciliation.json")?,
-                )
-                .map_err(|e| e.to_string())?;
-                let q = e["eurostat"]["201343Z1"]["DE"]["PRODQNT"]
-                    .as_f64()
-                    .or_else(|| {
-                        e["eurostat"]["201343Z1"]["DE"]["PRODQNT"]
-                            .as_str()
-                            .and_then(|s| s.parse().ok())
-                    })
-                    .ok_or("Missing Eurostat quantity")?;
-                put(
-                    &mut nodes,
-                    &excluded,
-                    "DEU",
-                    "li_carbonate",
-                    q / 1e6,
-                    [
-                        "imputed",
-                        "kt",
-                        "Eurostat Prodcom 2024 201343Z1 sold quantity",
-                        "Sold-output proxy, both purity grades; not actual production or battery grade",
-                    ],
-                );
-            }
+        if self.production {
+            self.observed()
         } else {
-            for c in &iso3 {
-                put(
-                    &mut nodes,
-                    &excluded,
+            for c in &self.iso3.clone() {
+                self.put(
                     c,
                     "refined_co",
-                    trade(c, "refined_co", &exports, 1e-3),
+                    trade(c, "refined_co", &self.exports, 1e-3),
                     [
                         "trade",
                         "kt",
@@ -463,32 +368,135 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
                     ],
                 );
             }
+            Ok(())
         }
-        let cells: Vec<(String, f64)> = nodes
+    }
+
+    /// Production statistics that override the export proxies on the production basis:
+    /// USGS MYB cobalt, MIIT China, Cochilco Chile and the optional METI and Eurostat variants.
+    fn observed(&mut self) -> Result<(), String> {
+        let sources = self.sources;
+        for r in sources.rows("data/raw/usgs/myb2023_cobalt_refinery.csv", false)? {
+            if !r["value"].is_empty() {
+                self.put(
+                    &r["iso3"],
+                    "refined_co",
+                    num(&r["value"])? / 1000.0,
+                    [
+                        "production",
+                        "kt",
+                        "USGS MYB 2023 Table 8",
+                        &format!("2023 refinery output, {}", r["qualifier"]),
+                    ],
+                );
+            }
+        }
+        let cell = self.miit["li_ion_cell"];
+        self.put("CHN", "cell", cell, ["production", "GWh", "MIIT 2024", ""]);
+        let carbonate = (self.miit["battery_grade_lithium_carbonate"]
+            + self.miit["battery_grade_lithium_hydroxide"] * (73.891 / (2.0 * 41.964)))
+            / 1000.0;
+        self.put(
+            "CHN",
+            "li_carbonate",
+            carbonate,
+            [
+                "production",
+                "kt",
+                "MIIT 2024",
+                "Battery-grade carbonate + LiOH·H2O as LCE",
+            ],
+        );
+        for r in sources.rows("data/raw/cochilco/lithium_chemicals_2024.csv", false)? {
+            if r["product_source_label"] == "CARBONATO DE LITIO" {
+                self.put(
+                    "CHL",
+                    "li_carbonate",
+                    num(&r["value"])? / 1000.0,
+                    [
+                        "production",
+                        "kt",
+                        "Cochilco Hoja1 AD21",
+                        "Carbonate only; sulfate excluded",
+                    ],
+                );
+            }
+        }
+        if let Some(voltage) = self.opts["japan_voltage"].as_f64() {
+            let q = sum(sources
+                .rows("data/raw/meti/liion_2024.csv", false)?
+                .iter()
+                .map(|r| num(&r["production_kAh"]).unwrap()));
+            let text = self.opts["japan_voltage"].to_string();
+            self.put(
+                "JPN",
+                "cell",
+                q * voltage / 1e6,
+                [
+                    "imputed",
+                    "GWh",
+                    "METI 2024 h2daa2024k, items 0108/0109",
+                    &format!(
+                        "Sealed Li-ion production kAh times assumed {text} V; not installed capacity; scope excludes unreported battery categories"
+                    ),
+                ],
+            );
+        }
+        if self.opts["eu_sold"] == true {
+            let e: Value =
+                serde_json::from_slice(&sources.read("data/raw/supplement/reconciliation.json")?)
+                    .map_err(|e| e.to_string())?;
+            let q = e["eurostat"]["201343Z1"]["DE"]["PRODQNT"]
+                .as_f64()
+                .or_else(|| {
+                    e["eurostat"]["201343Z1"]["DE"]["PRODQNT"]
+                        .as_str()
+                        .and_then(|s| s.parse().ok())
+                })
+                .ok_or("Missing Eurostat quantity")?;
+            self.put(
+                "DEU",
+                "li_carbonate",
+                q / 1e6,
+                [
+                    "imputed",
+                    "kt",
+                    "Eurostat Prodcom 2024 201343Z1 sold quantity",
+                    "Sold-output proxy, both purity grades; not actual production or battery grade",
+                ],
+            );
+        }
+        Ok(())
+    }
+
+    /// Cathode, anode and precursor nodes imputed from each cell origin's output by the BOM;
+    /// China's cathode and anode come from MIIT on the production basis.
+    fn midstream(&mut self, ncm: f64) {
+        let cells: Vec<(String, f64)> = self
+            .nodes
             .iter()
             .filter(|r| r["product"] == "cell")
             .map(|r| (r["country"].as_str().unwrap().into(), val(r, "annual")))
             .collect();
         for (c, output) in cells {
-            let china = c == "CHN" && basis == "production";
+            let china = c == "CHN" && self.production;
             for (p, statistic, coefficient) in [
-                ("cam", "cathode_active_material", val(&b, "cam_kg_kwh")),
+                ("cam", "cathode_active_material", val(&self.b, "cam_kg_kwh")),
                 (
                     "aam",
                     "anode_active_material",
-                    val(&b["kg_kwh"], "Graphite"),
+                    val(&self.b["kg_kwh"], "Graphite"),
                 ),
             ] {
-                put(
-                    &mut nodes,
-                    &excluded,
+                let annual = if china {
+                    self.miit[statistic] / 1000.0
+                } else {
+                    output * coefficient
+                };
+                self.put(
                     &c,
                     p,
-                    if china {
-                        miit[statistic] / 1000.0
-                    } else {
-                        output * coefficient
-                    },
+                    annual,
                     [
                         if china { "production" } else { "imputed" },
                         "kt",
@@ -498,12 +506,11 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
                 );
             }
             if ncm != 0.0 {
-                put(
-                    &mut nodes,
-                    &excluded,
+                let annual = output * val(&self.b, "pcam_kg_kwh");
+                self.put(
                     &c,
                     "pcam",
-                    output * val(&b, "pcam_kg_kwh"),
+                    annual,
                     [
                         "imputed",
                         "kt",
@@ -514,7 +521,9 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
             }
         }
     }
-    if sector == "pv" || sector == "joint" {
+
+    /// PV origins: BACI HS22 exports scaled to MIIT China GW, with MIIT China production.
+    fn pv(&mut self) {
         for p in PV {
             let hs = HS.iter().find(|r| r.0 == p).unwrap().1;
             let factor = if p == "polysilicon" {
@@ -525,69 +534,57 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
                     "pv_cell" => 57.5,
                     _ => 238.8,
                 };
-                gw / exports["22"][&("CHN".into(), hs.into())]
+                gw / self.exports["22"][&("CHN".into(), hs.into())]
             };
-            for c in &iso3 {
-                let annual = exports["22"]
+            let unit = if p == "polysilicon" { "kt" } else { "GW" };
+            for c in &self.iso3.clone() {
+                let annual = self.exports["22"]
                     .get(&(c.clone(), hs.into()))
                     .copied()
                     .unwrap_or(0.0)
                     * factor;
-                put(
-                    &mut nodes,
-                    &excluded,
+                self.put(
                     c,
                     p,
                     annual,
                     [
                         "trade",
-                        if p == "polysilicon" { "kt" } else { "GW" },
+                        unit,
                         "BACI HS22 2024 / MIIT China exports",
                         "HS22 only; silicon and wafer codes include semiconductor products",
                     ],
                 );
             }
-            if basis == "production" {
+            if self.production {
                 let key = if p == "pv_cell" {
                     "pv_cell".to_string()
                 } else {
                     format!("pv_{p}")
                 };
-                put(
-                    &mut nodes,
-                    &excluded,
-                    "CHN",
-                    p,
-                    if p == "polysilicon" {
-                        miit[&key] / 1000.0
-                    } else {
-                        miit[&key]
-                    },
-                    [
-                        "production",
-                        if p == "polysilicon" { "kt" } else { "GW" },
-                        "MIIT 2024",
-                        if p == "polysilicon" {
-                            "Strict lower bound"
-                        } else {
-                            ""
-                        },
-                    ],
-                );
+                let (annual, note) = if p == "polysilicon" {
+                    (self.miit[&key] / 1000.0, "Strict lower bound")
+                } else {
+                    (self.miit[&key], "")
+                };
+                self.put("CHN", p, annual, ["production", unit, "MIIT 2024", note]);
             }
         }
     }
+}
+
+/// Physical coefficients a[p,q]: units of p per unit of q.
+fn arcs(liion: bool, pv: bool, ncm: f64, b: &Value) -> Vec<(String, String, f64)> {
     let mut a: Vec<(String, String, f64)> = vec![];
-    if sector == "liion" || sector == "joint" {
+    if liion {
         for (p, q, x) in [
             ("mine_li", "li_carbonate", 1.0 / 5.323),
             (
                 "li_carbonate",
                 "cam",
-                val(&b, "lce_kg_kwh") / val(&b, "cam_kg_kwh"),
+                val(b, "lce_kg_kwh") / val(b, "cam_kg_kwh"),
             ),
             ("graphite", "aam", 1.0),
-            ("cam", "cell", val(&b, "cam_kg_kwh")),
+            ("cam", "cell", val(b, "cam_kg_kwh")),
             ("aam", "cell", b["kg_kwh"]["Graphite"].as_f64().unwrap()),
             ("refined_cu", "cell", b["kg_kwh"]["Cu"].as_f64().unwrap()),
             ("aluminium", "cell", b["kg_kwh"]["Al"].as_f64().unwrap()),
@@ -596,11 +593,7 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
         }
         if ncm != 0.0 {
             for (p, q, x) in [
-                (
-                    "pcam",
-                    "cam",
-                    val(&b, "pcam_kg_kwh") / val(&b, "cam_kg_kwh"),
-                ),
+                ("pcam", "cam", val(b, "pcam_kg_kwh") / val(b, "cam_kg_kwh")),
                 ("mine_co", "refined_co", 1.0),
                 ("mine_ni", "refined_ni", 1.0),
             ] {
@@ -614,12 +607,12 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
                 a.push((
                     p.into(),
                     "pcam".into(),
-                    b["kg_kwh"][m].as_f64().unwrap() / val(&b, "pcam_kg_kwh"),
+                    b["kg_kwh"][m].as_f64().unwrap() / val(b, "pcam_kg_kwh"),
                 ));
             }
         }
     }
-    if sector == "pv" || sector == "joint" {
+    if pv {
         for (p, q, x) in [
             ("polysilicon", "wafer", 2.0),
             ("wafer", "pv_cell", 1.0),
@@ -628,7 +621,16 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
             a.push((p.into(), q.into(), x));
         }
     }
-    let used: BTreeSet<String> = a.iter().flat_map(|r| [r.0.clone(), r.1.clone()]).collect();
+    a
+}
+
+/// The origins at or above the cutoff share of a used layer, sorted by (product, country),
+/// with annual totals, HHI and top share over all origins and the retained coverage.
+fn shares(
+    mut nodes: Vec<Value>,
+    used: &BTreeSet<String>,
+    cutoff: f64,
+) -> (Vec<Value>, [BTreeMap<String, f64>; 4]) {
     let mut totals = BTreeMap::<String, f64>::new();
     for r in &nodes {
         *totals
@@ -646,6 +648,8 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
         let t = top.entry(p.into()).or_default();
         *t = t.max(share);
     }
+    hhi.retain(|p, _| used.contains(p));
+    top.retain(|p, _| used.contains(p));
     nodes.sort_by(|r, s| {
         (r["product"].as_str(), r["country"].as_str())
             .cmp(&(s["product"].as_str(), s["country"].as_str()))
@@ -661,17 +665,17 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
             *coverage.entry(p).or_default() += share;
         }
     }
-    let finals: Vec<String> = ["cell", "module"]
-        .iter()
-        .filter(|p| totals.contains_key(**p))
-        .map(|p| p.to_string())
-        .collect();
-    let mut order: Vec<String> = used
-        .iter()
-        .filter(|p| !finals.contains(p))
-        .cloned()
-        .collect();
-    order.sort_by_key(|p| depth(p, &a));
+    (selected, [totals, hhi, top, coverage])
+}
+
+/// Requirements R (two passes: demand is the undisrupted achievable output), supply ratios S
+/// and final demand scales.
+fn requirement(
+    selected: &[Value],
+    finals: &[String],
+    order: &[String],
+    a: &[(String, String, f64)],
+) -> Result<[BTreeMap<String, f64>; 3], String> {
     let mut scale: BTreeMap<String, f64> = finals.iter().map(|f| (f.clone(), 1.0)).collect();
     let (mut requirement, mut supply) = (
         BTreeMap::<String, f64>::new(),
@@ -680,9 +684,9 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
     for _ in 0..2 {
         requirement = finals
             .iter()
-            .map(|f| (f.clone(), scale[f] * total(&selected, f)))
+            .map(|f| (f.clone(), scale[f] * total(selected, f)))
             .collect();
-        for p in &order {
+        for p in order {
             let r = sum(a
                 .iter()
                 .filter(|r| r.0 == *p)
@@ -696,34 +700,107 @@ pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, Stri
         }
         supply = requirement
             .iter()
-            .map(|(p, r)| (p.clone(), total(&selected, p) / r))
+            .map(|(p, r)| (p.clone(), total(selected, p) / r))
             .collect();
-        for f in &finals {
+        for f in finals {
             scale.insert(
                 f.clone(),
-                scale[f] * closure(f, &a).iter().fold(1.0f64, |m, p| m.min(supply[p])),
+                scale[f] * closure(f, a).iter().fold(1.0f64, |m, p| m.min(supply[p])),
             );
         }
     }
+    Ok([requirement, supply, scale])
+}
+
+/// Nonzero exports and all imports in kt, keyed "country:product".
+fn flows(
+    iso3: &BTreeSet<String>,
+    exports: &Trade,
+    imports: &Trade,
+) -> (BTreeMap<String, f64>, BTreeMap<String, f64>) {
+    let mut export_out = BTreeMap::new();
+    let mut import_out = BTreeMap::new();
+    for c in iso3 {
+        for (p, _) in HS {
+            let e = trade(c, p, exports, 1e-3);
+            if e != 0.0 {
+                export_out.insert(format!("{c}:{p}"), e);
+            }
+            import_out.insert(format!("{c}:{p}"), trade(c, p, imports, 1e-3));
+        }
+    }
+    (export_out, import_out)
+}
+
+pub(super) fn network(sources: &Sources<'_>, opts: &Value) -> Result<Value, String> {
+    crate::config::validate(opts)?;
+    let sector = opts["sector"].as_str().unwrap_or("liion");
+    let ncm = opts["ncm"].as_f64().unwrap_or(0.5);
+    let cutoff = opts["cutoff"].as_f64().unwrap_or(0.01);
+    let basis = opts["basis"].as_str().unwrap_or("production");
+    if !["liion", "pv", "joint"].contains(&sector) || !(0.0..1.0).contains(&cutoff) {
+        return Err("sector in liion,pv,joint and 0 <= cutoff < 1 required".into());
+    }
+    if !["production", "trade"].contains(&basis) {
+        return Err("basis in production,trade required".into());
+    }
+    let excluded = excluded(opts)?;
+    let b = bill(sources, ncm)?;
+    let country_rows = sources.rows(crate::B, false)?;
+    let countries: BTreeMap<String, String> = country_rows
+        .iter()
+        .map(|r| (r["country_code"].clone(), r["country_iso3"].clone()))
+        .collect();
+    let (exports, imports, missing) = baci(sources, &countries)?;
+    let (prod, unparsed) = usgs(sources, &names(&country_rows))?;
+    let miit: BTreeMap<String, f64> = sources
+        .rows("data/raw/miit/production_2024.csv", false)?
+        .iter()
+        .filter(|r| r["statistic"] == "production")
+        .map(|r| Ok((r["product"].clone(), num(&r["value"])?)))
+        .collect::<Result<_, String>>()?;
+    let iso3: BTreeSet<String> = countries.values().cloned().collect();
+    let (liion, pv) = (sector != "pv", sector != "liion");
+    let mut x = Build {
+        sources,
+        opts,
+        excluded,
+        b,
+        exports,
+        miit,
+        iso3,
+        production: basis == "production",
+        nodes: vec![],
+    };
+    if liion {
+        x.liion(prod)?;
+        x.midstream(ncm);
+    }
+    if pv {
+        x.pv();
+    }
+    let a = arcs(liion, pv, ncm, &x.b);
+    let used: BTreeSet<String> = a.iter().flat_map(|r| [r.0.clone(), r.1.clone()]).collect();
+    let (mut selected, [totals, hhi, top, coverage]) = shares(x.nodes, &used, cutoff);
+    let finals: Vec<String> = ["cell", "module"]
+        .iter()
+        .filter(|p| totals.contains_key(**p))
+        .map(|p| p.to_string())
+        .collect();
+    let mut order: Vec<String> = used
+        .iter()
+        .filter(|p| !finals.contains(p))
+        .cloned()
+        .collect();
+    order.sort_by_key(|p| depth(p, &a));
+    let [requirement, supply, scale] = requirement(&selected, &finals, &order, &a)?;
     for r in &mut selected {
         r["capacity"] =
             json!(val(r, "annual") / (12.0 * requirement[r["product"].as_str().unwrap()]));
     }
-    hhi.retain(|p, _| used.contains(p));
-    top.retain(|p, _| used.contains(p));
-    let mut export_out = BTreeMap::new();
-    let mut import_out = BTreeMap::new();
-    for c in &iso3 {
-        for (p, _) in HS {
-            let e = trade(c, p, &exports, 1e-3);
-            if e != 0.0 {
-                export_out.insert(format!("{c}:{p}"), e);
-            }
-            import_out.insert(format!("{c}:{p}"), trade(c, p, &imports, 1e-3));
-        }
-    }
+    let (export_out, import_out) = flows(&x.iso3, &x.exports, &imports);
     Ok(
-        json!({"sector":sector,"nodes":selected,"a":a,"requirement":requirement,"supply_ratio":supply,"finals":finals,"demand_scale":scale,"annual_totals":totals,"coverage":coverage,"cutoff":cutoff,"hhi":hhi,"top_share":top,"ncm":ncm,"capacity_basis":basis,"excluded":excluded.into_iter().map(|(c,p)|vec![c,p]).collect::<Vec<_>>(),"bom":b,"missing_baci_quantities":missing,"unparsed_usgs":unparsed,"exports":export_out,"imports":import_out}),
+        json!({"sector":sector,"nodes":selected,"a":a,"requirement":requirement,"supply_ratio":supply,"finals":finals,"demand_scale":scale,"annual_totals":totals,"coverage":coverage,"cutoff":cutoff,"hhi":hhi,"top_share":top,"ncm":ncm,"capacity_basis":basis,"excluded":x.excluded.into_iter().map(|(c,p)|vec![c,p]).collect::<Vec<_>>(),"bom":x.b,"missing_baci_quantities":missing,"unparsed_usgs":unparsed,"exports":export_out,"imports":import_out}),
     )
 }
 

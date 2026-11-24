@@ -16,17 +16,12 @@ def _eb(N, K):
     return float(a), float(b), "empirical_bayes" if R.success else "fit_limit"
 
 
-def fit_rates(V, Y, fit_rho=True):
-    """Estimate node annual onset rates from Y[node,year] in {0,1,nan}.
+def _posterior(V, N, K):
+    """Posterior mean rates p_v = (K_v + a_p)/(N_v + a_p + b_p) under per-product priors.
 
-    p_v = (K_v + a_p)/(N_v + a_p + b_p), (a_p, b_p) by empirical Bayes over the nodes of
-    product p. A product without exposure borrows the prior fitted over all products,
-    labelled as such; missing exposure is never a zero count.
+    INPUT   N, K .. exposure years and onsets per node
+    OUTPUT  p, priors[product] = {a, b, basis}, basis per node
     """
-    Y = np.asarray(Y, float)
-    if Y.ndim != 2 or len(V) != Y.shape[0] or not np.isin(Y[np.isfinite(Y)], [0, 1]).all():
-        raise ValueError("Y must contain observed binary node-years and nan for missing exposure")
-    N, K = np.isfinite(Y).sum(axis=1), np.nansum(Y, axis=1)
     p, priors, basis = np.zeros(len(V)), {}, [""]*len(V)
     seen = N > 0
     pool = _eb(N[seen], K[seen]) if seen.any() else (0.5, 0.5, "unobserved_Jeffreys_scenario")
@@ -38,6 +33,21 @@ def fit_rates(V, Y, fit_rho=True):
         for i in I:
             p[i] = (K[i] + a)/(N[i] + a + b)
             basis[i] = prior_basis if N[i] else "pooled_no_exposure"
+    return p, priors, basis
+
+
+def fit_rates(V, Y, fit_rho=True):
+    """Estimate node annual onset rates from Y[node,year] in {0,1,nan}.
+
+    p_v = (K_v + a_p)/(N_v + a_p + b_p), (a_p, b_p) by empirical Bayes over the nodes of
+    product p. A product without exposure borrows the prior fitted over all products,
+    labelled as such; missing exposure is never a zero count.
+    """
+    Y = np.asarray(Y, float)
+    if Y.ndim != 2 or len(V) != Y.shape[0] or not np.isin(Y[np.isfinite(Y)], [0, 1]).all():
+        raise ValueError("Y must contain observed binary node-years and nan for missing exposure")
+    N, K = np.isfinite(Y).sum(axis=1), np.nansum(Y, axis=1)
+    p, priors, basis = _posterior(V, N, K)
     rho, pairs = 0.0, []
     for country in sorted({c for c, _ in V}):
         I = np.array([i for i, (c, _) in enumerate(V) if c == country])

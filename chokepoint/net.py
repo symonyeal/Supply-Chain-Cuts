@@ -70,6 +70,150 @@ def _usgs(root, names):
     return prod, unparsed
 
 
+def _origins(put, trade, nodes, prod, iso3, B):
+    """Li-ion origins: USGS 2024 output and BACI export proxies, with synthetic graphite exports
+    added to natural graphite."""
+    for (c, p), value in prod.items():
+        put(c, p, value/1000, "production", "kt", "USGS MCS2026, 2024 production")
+    for c in iso3:
+        put(c, "li_carbonate", trade(c, "li_carbonate"), "trade", "kt",
+            "BACI HS12 2024 283691", "Export proxy, kt Li2CO3")
+        put(c, "refined_ni", trade(c, "refined_ni"), "trade", "kt",
+            "BACI HS12 2024 750210", "Export proxy; omits domestically absorbed metal")
+        put(c, "cell", trade(c, "cell", B["specific_energy_wh_kg"]/1e6), "trade", "GWh",
+            "BACI HS12 2024 850760", "Pack Wh/kg applied to mixed cell/pack exports")
+        synthetic = trade(c, "synthetic_graphite")
+        if synthetic:
+            put(c, "graphite", nodes.get((c, "graphite"), {}).get("annual", 0) + synthetic,
+                "imputed", "kt", "USGS natural + BACI 380110 synthetic exports",
+                "Substitution assumed; synthetic exports include non-anode use")
+
+
+def _observed(root, put, miit, japan_voltage, eu_sold):
+    """Production statistics that override the export proxies on the production basis: USGS MYB
+    cobalt, MIIT China, Cochilco Chile and the optional METI and Eurostat variants."""
+    for x in csv.DictReader((root / "data/raw/usgs/myb2023_cobalt_refinery.csv").open()):
+        if x["value"]:
+            put(x["iso3"], "refined_co", float(x["value"])/1000, "production", "kt",
+                "USGS MYB 2023 Table 8", f"2023 refinery output, {x['qualifier']}")
+    put("CHN", "cell", miit["li_ion_cell"], "production", "GWh", "MIIT 2024")
+    put("CHN", "li_carbonate", (miit["battery_grade_lithium_carbonate"]
+        + miit["battery_grade_lithium_hydroxide"]*LCE_LIOH)/1000, "production", "kt",
+        "MIIT 2024", "Battery-grade carbonate + LiOH·H2O as LCE")
+    for x in csv.DictReader((root / "data/raw/cochilco/lithium_chemicals_2024.csv")
+                            .open()):
+        if x["product_source_label"] == "CARBONATO DE LITIO":
+            put("CHL", "li_carbonate", float(x["value"])/1000, "production", "kt",
+                "Cochilco Hoja1 AD21", "Carbonate only; sulfate excluded")
+    if japan_voltage is not None:
+        J = list(csv.DictReader((root / "data/raw/meti/liion_2024.csv").open()))
+        q = sum(float(x["production_kAh"]) for x in J)
+        put("JPN", "cell", q*japan_voltage/1e6, "imputed", "GWh",
+            "METI 2024 h2daa2024k, items 0108/0109",
+            f"Sealed Li-ion production kAh times assumed {japan_voltage} V; "
+            "not installed capacity; scope excludes unreported battery categories")
+    if eu_sold:
+        E = json.loads((root / "data/raw/supplement/reconciliation.json").read_text())
+        q = E['eurostat']['201343Z1']['DE']['PRODQNT']
+        put("DEU", "li_carbonate", float(q)/1e6, "imputed", "kt",
+            "Eurostat Prodcom 2024 201343Z1 sold quantity",
+            "Sold-output proxy, both purity grades; not actual production or battery grade")
+
+
+def _midstream(put, nodes, miit, B, observed, ncm):
+    """Cathode, anode and precursor nodes imputed from each cell origin's output by the BOM;
+    China's cathode and anode come from MIIT on the production basis."""
+    for c, output in [(c, x["annual"]) for (c, p), x in list(nodes.items()) if p == "cell"]:
+        china = c == "CHN" and observed
+        put(c, "cam", miit["cathode_active_material"]/1000 if china else output*B["cam_kg_kwh"],
+            "production" if china else "imputed", "kt", "MIIT 2024" if china else "BOM x cell")
+        put(c, "aam", miit["anode_active_material"]/1000 if china else output*B["kg_kwh"][
+            "Graphite"], "production" if china else "imputed", "kt",
+            "MIIT 2024" if china else "BOM x cell")
+        if ncm:
+            put(c, "pcam", output*B["pcam_kg_kwh"], "imputed", "kt", "BOM x cell",
+                "No pCAM production statistic; tariff-line coverage incomplete")
+
+
+def _pv(put, exports, miit, iso3, observed):
+    """PV origins: BACI HS22 exports scaled to MIIT China GW, with MIIT China production on the
+    production basis."""
+    gw = {"wafer": 60.9, "pv_cell": 57.5, "module": 238.8}     # MIIT China exports, GW
+    for p in PV:
+        hs = HS[p][0]
+        factor = 1e-3 if p == "polysilicon" else gw[p]/exports["22"]["CHN", hs]
+        for c in iso3:
+            put(c, p, exports["22"].get((c, hs), 0)*factor, "trade",
+                "kt" if p == "polysilicon" else "GW", "BACI HS22 2024 / MIIT China exports",
+                "HS22 only; silicon and wafer codes include semiconductor products")
+        if observed:
+            key = "pv_cell" if p == "pv_cell" else "pv_" + p
+            put("CHN", p, miit[key]/1000 if p == "polysilicon" else miit[key], "production",
+                "kt" if p == "polysilicon" else "GW", "MIIT 2024",
+                "Strict lower bound" if p == "polysilicon" else "")
+
+
+def _arcs(sector, ncm, B):
+    """Physical coefficients a[p, q]: units of p per unit of q."""
+    a = {}
+    if sector in ("liion", "joint"):
+        a.update({("mine_li", "li_carbonate"): 1/LCE_LI,
+                  ("li_carbonate", "cam"): B["lce_kg_kwh"]/B["cam_kg_kwh"],
+                  ("graphite", "aam"): 1.0, ("cam", "cell"): B["cam_kg_kwh"],
+                  ("aam", "cell"): B["kg_kwh"]["Graphite"],
+                  ("refined_cu", "cell"): B["kg_kwh"]["Cu"],
+                  ("aluminium", "cell"): B["kg_kwh"]["Al"]})
+        if ncm:
+            a.update({("pcam", "cam"): B["pcam_kg_kwh"]/B["cam_kg_kwh"],
+                      ("mine_co", "refined_co"): 1.0, ("mine_ni", "refined_ni"): 1.0})
+            for p, metal in (("refined_co", "Co"), ("refined_ni", "Ni"), ("mine_mn", "Mn")):
+                a[p, "pcam"] = B["kg_kwh"][metal]/B["pcam_kg_kwh"]
+    if sector in ("pv", "joint"):
+        a.update({("polysilicon", "wafer"): 2.0, ("wafer", "pv_cell"): 1.0,
+                  ("pv_cell", "module"): 1.0})    # Fraunhofer ISE 2026 p. 8: 2.0 g Si/Wp
+    return a
+
+
+def _shares(nodes, used, cutoff):
+    """Layer totals; the origins at or above the cutoff share of a used layer, sorted by
+    (product, country), with the coverage they retain; HHI and top share over all origins."""
+    totals = defaultdict(float)
+    for (_, p), x in nodes.items():
+        totals[p] += x["annual"]
+    hhi, top = defaultdict(float), defaultdict(float)       # over all origins, before cutoff
+    for (_, p), x in nodes.items():
+        hhi[p] += (x["annual"]/totals[p])**2
+        top[p] = max(top[p], x["annual"]/totals[p])
+    selected, coverage = [], defaultdict(float)
+    for x in sorted(nodes.values(), key=lambda x: (x["product"], x["country"])):
+        x["share"] = x["annual"]/totals[x["product"]]
+        if x["share"] >= cutoff and x["product"] in used:
+            selected.append(x)
+            coverage[x["product"]] += x["share"]
+    return (totals, selected, coverage, {p: hhi[p] for p in used if p in hhi},
+            {p: top[p] for p in used if p in top})
+
+
+def _requirement(selected, finals, order, a):
+    """Requirements R, supply ratios S and demand scales; the second pass sets demand to the
+    undisrupted achievable output."""
+    scale = {f: 1.0 for f in finals}
+    for _ in range(2):
+        R = {f: scale[f]*sum(x["annual"] for x in selected if x["product"] == f) for f in finals}
+        for p in order:                               # R_p = Σ_q a[p,q] R_q, top-down
+            R[p] = sum(x*R[q] for (r, q), x in a.items() if r == p)
+        S = {p: sum(x["annual"] for x in selected if x["product"] == p)/R[p] for p in R}
+        scale = {f: scale[f]*min(1.0, *(S[p] for p in _closure(f, a))) for f in finals}
+    return R, S, scale
+
+
+def _flows(iso3, trade, imports):
+    """Nonzero exports and all imports in kt, keyed "country:product"."""
+    return ({f"{c}:{p}": trade(c, p) for c in iso3 for p in HS if trade(c, p)},
+            {f"{c}:{p}": 1e-3*sum(imports["22" if p in PV else "12"].get((c, hs), 0)
+                                  for hs in HS[p]) for c in iso3 for p in HS})
+
+
 def build(root=Path("."), sector="liion", ncm=0.5, cutoff=0.01, basis="production",
           exclude=(), japan_voltage=None, eu_sold=False):
     """Build the physical network and its requirement-unit capacities.
@@ -101,6 +245,7 @@ def build(root=Path("."), sector="liion", ncm=0.5, cutoff=0.01, basis="productio
     miit = {x["product"]: float(x["value"]) for x in csv.DictReader(
         (root / "data/raw/miit/production_2024.csv").open()) if x["statistic"] == "production"}
     iso3 = sorted(set(countries.values()))
+    observed = basis == "production"
     nodes = {}
 
     def put(c, p, annual, label, unit, source, note=""):
@@ -112,127 +257,32 @@ def build(root=Path("."), sector="liion", ncm=0.5, cutoff=0.01, basis="productio
         return scale*sum(exports["22" if p in PV else "12"].get((c, hs), 0) for hs in HS[p])
 
     if sector in ("liion", "joint"):
-        for (c, p), value in prod.items():
-            put(c, p, value/1000, "production", "kt", "USGS MCS2026, 2024 production")
-        for c in iso3:
-            put(c, "li_carbonate", trade(c, "li_carbonate"), "trade", "kt",
-                "BACI HS12 2024 283691", "Export proxy, kt Li2CO3")
-            put(c, "refined_ni", trade(c, "refined_ni"), "trade", "kt",
-                "BACI HS12 2024 750210", "Export proxy; omits domestically absorbed metal")
-            put(c, "cell", trade(c, "cell", B["specific_energy_wh_kg"]/1e6), "trade", "GWh",
-                "BACI HS12 2024 850760", "Pack Wh/kg applied to mixed cell/pack exports")
-            synthetic = trade(c, "synthetic_graphite")
-            if synthetic:
-                put(c, "graphite", nodes.get((c, "graphite"), {}).get("annual", 0) + synthetic,
-                    "imputed", "kt", "USGS natural + BACI 380110 synthetic exports",
-                    "Substitution assumed; synthetic exports include non-anode use")
-        if basis == "production":
-            for x in csv.DictReader((root / "data/raw/usgs/myb2023_cobalt_refinery.csv").open()):
-                if x["value"]:
-                    put(x["iso3"], "refined_co", float(x["value"])/1000, "production", "kt",
-                        "USGS MYB 2023 Table 8", f"2023 refinery output, {x['qualifier']}")
-            put("CHN", "cell", miit["li_ion_cell"], "production", "GWh", "MIIT 2024")
-            put("CHN", "li_carbonate", (miit["battery_grade_lithium_carbonate"]
-                + miit["battery_grade_lithium_hydroxide"]*LCE_LIOH)/1000, "production", "kt",
-                "MIIT 2024", "Battery-grade carbonate + LiOH·H2O as LCE")
-            for x in csv.DictReader((root / "data/raw/cochilco/lithium_chemicals_2024.csv")
-                                    .open()):
-                if x["product_source_label"] == "CARBONATO DE LITIO":
-                    put("CHL", "li_carbonate", float(x["value"])/1000, "production", "kt",
-                        "Cochilco Hoja1 AD21", "Carbonate only; sulfate excluded")
-            if japan_voltage is not None:
-                J = list(csv.DictReader((root / "data/raw/meti/liion_2024.csv").open()))
-                q = sum(float(x["production_kAh"]) for x in J)
-                put("JPN", "cell", q*japan_voltage/1e6, "imputed", "GWh",
-                    "METI 2024 h2daa2024k, items 0108/0109",
-                    f"Sealed Li-ion production kAh times assumed {japan_voltage} V; "
-                    "not installed capacity; scope excludes unreported battery categories")
-            if eu_sold:
-                E = json.loads((root / "data/raw/supplement/reconciliation.json").read_text())
-                q = E['eurostat']['201343Z1']['DE']['PRODQNT']
-                put("DEU", "li_carbonate", float(q)/1e6, "imputed", "kt",
-                    "Eurostat Prodcom 2024 201343Z1 sold quantity",
-                    "Sold-output proxy, both purity grades; not actual production or battery grade")
+        _origins(put, trade, nodes, prod, iso3, B)
+        if observed:
+            _observed(root, put, miit, japan_voltage, eu_sold)
         else:
             for c in iso3:
                 put(c, "refined_co", trade(c, "refined_co"), "trade", "kt",
                     "BACI HS12 2024 810520", "Export proxy; HS810520 mixes intermediates")
-        observed = basis == "production"
-        for c, output in [(c, x["annual"]) for (c, p), x in list(nodes.items()) if p == "cell"]:
-            china = c == "CHN" and observed
-            put(c, "cam", miit["cathode_active_material"]/1000 if china else output*B["cam_kg_kwh"],
-                "production" if china else "imputed", "kt", "MIIT 2024" if china else "BOM x cell")
-            put(c, "aam", miit["anode_active_material"]/1000 if china else output*B["kg_kwh"][
-                "Graphite"], "production" if china else "imputed", "kt",
-                "MIIT 2024" if china else "BOM x cell")
-            if ncm:
-                put(c, "pcam", output*B["pcam_kg_kwh"], "imputed", "kt", "BOM x cell",
-                    "No pCAM production statistic; tariff-line coverage incomplete")
+        _midstream(put, nodes, miit, B, observed, ncm)
     if sector in ("pv", "joint"):
-        gw = {"wafer": 60.9, "pv_cell": 57.5, "module": 238.8}     # MIIT China exports, GW
-        for p in PV:
-            hs = HS[p][0]
-            factor = 1e-3 if p == "polysilicon" else gw[p]/exports["22"]["CHN", hs]
-            for c in iso3:
-                put(c, p, exports["22"].get((c, hs), 0)*factor, "trade",
-                    "kt" if p == "polysilicon" else "GW", "BACI HS22 2024 / MIIT China exports",
-                    "HS22 only; silicon and wafer codes include semiconductor products")
-            if basis == "production":
-                key = "pv_cell" if p == "pv_cell" else "pv_" + p
-                put("CHN", p, miit[key]/1000 if p == "polysilicon" else miit[key], "production",
-                    "kt" if p == "polysilicon" else "GW", "MIIT 2024",
-                    "Strict lower bound" if p == "polysilicon" else "")
-    a = {}
-    if sector in ("liion", "joint"):
-        a.update({("mine_li", "li_carbonate"): 1/LCE_LI,
-                  ("li_carbonate", "cam"): B["lce_kg_kwh"]/B["cam_kg_kwh"],
-                  ("graphite", "aam"): 1.0, ("cam", "cell"): B["cam_kg_kwh"],
-                  ("aam", "cell"): B["kg_kwh"]["Graphite"],
-                  ("refined_cu", "cell"): B["kg_kwh"]["Cu"],
-                  ("aluminium", "cell"): B["kg_kwh"]["Al"]})
-        if ncm:
-            a.update({("pcam", "cam"): B["pcam_kg_kwh"]/B["cam_kg_kwh"],
-                      ("mine_co", "refined_co"): 1.0, ("mine_ni", "refined_ni"): 1.0})
-            for p, metal in (("refined_co", "Co"), ("refined_ni", "Ni"), ("mine_mn", "Mn")):
-                a[p, "pcam"] = B["kg_kwh"][metal]/B["pcam_kg_kwh"]
-    if sector in ("pv", "joint"):
-        a.update({("polysilicon", "wafer"): 2.0, ("wafer", "pv_cell"): 1.0,
-                  ("pv_cell", "module"): 1.0})    # Fraunhofer ISE 2026 p. 8: 2.0 g Si/Wp
+        _pv(put, exports, miit, iso3, observed)
+    a = _arcs(sector, ncm, B)
     used = {p for edge in a for p in edge}
-    totals = defaultdict(float)
-    for (_, p), x in nodes.items():
-        totals[p] += x["annual"]
-    hhi, top = defaultdict(float), defaultdict(float)       # over all origins, before cutoff
-    for (_, p), x in nodes.items():
-        hhi[p] += (x["annual"]/totals[p])**2
-        top[p] = max(top[p], x["annual"]/totals[p])
-    selected, coverage = [], defaultdict(float)
-    for x in sorted(nodes.values(), key=lambda x: (x["product"], x["country"])):
-        x["share"] = x["annual"]/totals[x["product"]]
-        if x["share"] >= cutoff and x["product"] in used:
-            selected.append(x)
-            coverage[x["product"]] += x["share"]
+    totals, selected, coverage, hhi, top = _shares(nodes, used, cutoff)
     finals = [p for p in ("cell", "module") if p in totals]
     order = sorted(used - set(finals), key=lambda p: _depth(p, a))
-    scale = {f: 1.0 for f in finals}
-    for _ in range(2):                  # second pass: demand = undisrupted achievable output
-        R = {f: scale[f]*sum(x["annual"] for x in selected if x["product"] == f) for f in finals}
-        for p in order:                               # R_p = Σ_q a[p,q] R_q, top-down
-            R[p] = sum(x*R[q] for (r, q), x in a.items() if r == p)
-        S = {p: sum(x["annual"] for x in selected if x["product"] == p)/R[p] for p in R}
-        scale = {f: scale[f]*min(1.0, *(S[p] for p in _closure(f, a))) for f in finals}
+    R, S, scale = _requirement(selected, finals, order, a)
     for x in selected:
         x["capacity"] = x["annual"]/(12*R[x["product"]])
+    exported, imported = _flows(iso3, trade, imports)
     return {"sector": sector, "nodes": selected, "a": [[p, q, x] for (p, q), x in a.items()],
             "requirement": R, "supply_ratio": S, "finals": finals, "demand_scale": scale,
             "annual_totals": dict(totals), "coverage": dict(coverage), "cutoff": cutoff,
-            "hhi": {p: hhi[p] for p in used if p in hhi},
-            "top_share": {p: top[p] for p in used if p in top},
+            "hhi": hhi, "top_share": top,
             "ncm": ncm, "capacity_basis": basis, "excluded": sorted(map(list, exclude)),
             "bom": B, "missing_baci_quantities": missing, "unparsed_usgs": unparsed,
-            "exports": {f"{c}:{p}": trade(c, p) for c in iso3 for p in HS if trade(c, p)},
-            "imports": {f"{c}:{p}": 1e-3*sum(imports["22" if p in PV else "12"].get((c, hs), 0)
-                                             for hs in HS[p]) for c in iso3 for p in HS}}
+            "exports": exported, "imports": imported}
 
 
 def reexport_flags(network):

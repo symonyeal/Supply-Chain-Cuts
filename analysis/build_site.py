@@ -99,12 +99,21 @@ def certificates(R):
     return C
 
 
-def block(run):
-    """Nodes, certified cut lists with L, U and shortfalls, estimates and attribution."""
-    net, checks, risk, cuts = load(run)
-    N = net[risk["sector"]]
-    V = risk["nodes"]
-    assert V == [[x["country"], x["product"]] for x in N["nodes"]]
+def _unions(V, rates, weights, DJ, cuts, L):
+    """P(union of the cuts containing country c)/L for each country of the cuts, exact under
+    the onset law with durations truncated at D_J."""
+    D = [d for d in (3, 6, 12) if d <= DJ]
+    w = [sum(z for d, z in zip((3, 6, 12), weights, strict=True) if min(d, DJ) == e) for e in D]
+    by_country = {}
+    for country in sorted({V[v][0] for S in cuts for v, _ in S}):
+        C = [[dict(S).get(v, 0) for v in range(len(V))] for S in cuts
+             if any(V[v][0] == country for v, _ in S)]
+        by_country[country] = exact_union(V, rates["p"], rates["rho"], D, w, C)/L
+    return by_country
+
+
+def _audit(cuts):
+    """Every certificate is certified and every recorded cross-check agrees with the lattice."""
     for R in cuts.values():
         assert all(c["certified"] for c in R["certificates"]), R["task"]
         P, F, B = (R.get(k) for k in ("pruned", "milp_full", "brute_full"))
@@ -112,6 +121,28 @@ def block(run):
                                                        or not P["milp_complete"]), R["task"]
         assert not F or F["equals_lattice"] or not F["complete"], R["task"]
         assert not B or B["equals_lattice"], R["task"]
+
+
+def _estimates(risk):
+    """Each residual estimate is L plus residual events over n, with a Clopper-Pearson
+    interval that meets [L, U]."""
+    for a, e in risk["residual"].items():
+        c = risk["configs"][f"base_a{float(a)}_h0_s0_L6_D12"]
+        assert e["method"] == "lower_bound_plus_residual"
+        assert e["interval_method"] == "clopper_pearson_binomial"
+        assert e["L"] == c["L"] and e["estimate"] >= c["L"]
+        assert math.isclose(e["estimate"], e["L"] + e["residual_events"]/e["n"])
+        assert e["ci95"][0] <= c["U"] and e["ci95"][1] >= c["L"]
+        assert not e["zero_residuals"] or e["ci95"][1] > e["L"]
+
+
+def block(run):
+    """Nodes, certified cut lists with L, U and shortfalls, estimates and attribution."""
+    net, checks, risk, cuts = load(run)
+    N = net[risk["sector"]]
+    V = risk["nodes"]
+    assert V == [[x["country"], x["product"]] for x in N["nodes"]]
+    _audit(cuts)
     configs = {}
     for k, x in risk["configs"].items():
         assert 0 <= x["L"] <= x["U"] <= 1
@@ -128,16 +159,8 @@ def block(run):
             "L": x["L"], "U": x["U"], "cuts": x["cuts"], "attribution": x["attribution"],
             "phi": [cert[json.dumps(S)]["phi"]/R["total"] for S in x["cuts"]],
             "predecessors": witnesses}
-        countries = sorted({V[v][0] for S in x["cuts"] for v, _ in S})
-        D = [d for d in (3, 6, 12) if d <= x["DJ"]]
-        w = [sum(z for d, z in zip((3, 6, 12), risk["durations"]["weights"], strict=True)
-                 if min(d, x["DJ"]) == e) for e in D]
-        by_country = {}
-        for country in countries:
-            C = [[dict(S).get(v, 0) for v in range(len(V))] for S in x["cuts"]
-                 if any(V[v][0] == country for v, _ in S)]
-            by_country[country] = exact_union(V, risk["rates"]["p"], risk["rates"]["rho"],
-                                               D, w, C)/x["L"]
+        by_country = _unions(V, risk["rates"], risk["durations"]["weights"], x["DJ"],
+                             x["cuts"], x["L"])
         assert all(0 <= z <= 1 + 1e-9 for z in by_country.values())
         configs[k.replace("base_", "")]["country_union"] = by_country
     head = configs["a0.25_h0_s0_L6_D12"]["country_union"]
@@ -148,14 +171,7 @@ def block(run):
              "annual": [x["annual"] for x in N["nodes"]], "unit": [x["unit"] for x in N["nodes"]],
              "source": [x["source"] for x in N["nodes"]], "p": risk["rates"]["p"],
              "exposure": risk["rates"]["exposure"], "onsets": risk["rates"]["onsets"]}
-    for a, e in risk["residual"].items():
-        c = risk["configs"][f"base_a{float(a)}_h0_s0_L6_D12"]
-        assert e["method"] == "lower_bound_plus_residual"
-        assert e["interval_method"] == "clopper_pearson_binomial"
-        assert e["L"] == c["L"] and e["estimate"] >= c["L"]
-        assert math.isclose(e["estimate"], e["L"] + e["residual_events"]/e["n"])
-        assert e["ci95"][0] <= c["U"] and e["ci95"][1] >= c["L"]
-        assert not e["zero_residuals"] or e["ci95"][1] > e["L"]
+    _estimates(risk)
     est = {f"{float(a)}": {k: risk[k][a] for k in ("IS", "MC", "residual")}
            for a in risk["residual"]}
     out = {"meta": {"run": run, "revision": risk["stamp"]["revision"],
@@ -212,16 +228,7 @@ def chemistry(cut_run, risk_run, sector, reference, law):
             assert c["phi"] > R["config"]["alpha"]*R["total"] + 1e-7
             assert all(p["phi"] <= R["config"]["alpha"]*R["total"] + 1e-7
                        for p in c["predecessors"])
-        D = [t for t in (3, 6, 12) if t <= int(DJ)]
-        w = [sum(z for t, z in zip((3, 6, 12), law["durations"]["weights"], strict=True)
-                 if min(t, int(DJ)) == e) for e in D]
-        countries = sorted({V[v][0] for s in S for v, _ in s})
-        by_country = {}
-        for country in countries:
-            cuts = [[dict(s).get(v, 0) for v in range(len(V))] for s in S
-                    if any(V[v][0] == country for v, _ in s)]
-            by_country[country] = exact_union(V, law["rates"]["p"], law["rates"]["rho"],
-                                               D, w, cuts)/x["L"]
+        by_country = _unions(V, law["rates"], law["durations"]["weights"], int(DJ), S, x["L"])
         configs[key] = {**x, "cuts": S, "country_union": by_country,
                         "phi": [C[json.dumps(s)]["phi"]/R["total"] for s in S],
                         "predecessors": [[[p["v"], p["D"], p["phi"]/R["total"]]

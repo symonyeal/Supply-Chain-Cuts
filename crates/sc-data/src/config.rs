@@ -4,47 +4,62 @@ use serde_json::Value;
 pub fn validate(c: &Value) -> Result<(), String> {
     let c = c.as_object().ok_or("Config must be an object")?;
     for (key, value) in c {
-        let valid = match key.as_str() {
-            "sector" => value
-                .as_str()
-                .is_some_and(|x| ["liion", "pv", "joint"].contains(&x)),
-            "basis" => value
-                .as_str()
-                .is_some_and(|x| ["production", "trade"].contains(&x)),
-            "choice" | "aggregate" | "dual" | "eu_sold" => value.is_boolean(),
-            "k" | "seed" => value.as_u64().is_some(),
-            "n" => value.as_u64().is_some_and(|n| n >= 2),
-            "T" => value.as_u64().is_some_and(|n| n > 0),
-            "h" | "sigma" => value.as_f64().is_some_and(|x| x.is_finite() && x >= 0.0),
-            "L" | "time_limit" | "japan_voltage" => {
-                value.as_f64().is_some_and(|x| x.is_finite() && x > 0.0)
-            }
-            "alpha" | "ncm" => value.as_f64().is_some_and(|x| (0.0..=1.0).contains(&x)),
-            "cutoff" => value.as_f64().is_some_and(|x| (0.0..1.0).contains(&x)),
-            "durations" => value.as_array().is_some_and(|a| {
-                !a.is_empty()
-                    && a.iter().all(|x| x.as_u64().is_some_and(|x| x > 0))
-                    && a.windows(2).all(|w| w[0].as_u64() < w[1].as_u64())
-            }),
-            "shares" | "f" => value.as_array().is_some_and(|a| {
-                !a.is_empty()
-                    && a.iter()
-                        .all(|x| x.as_f64().is_some_and(|x| (0.0..=1.0).contains(&x)))
-            }),
-            "exclude" => value.as_array().is_some_and(|a| {
-                a.iter().all(|p| {
-                    p.as_array().is_some_and(|p| {
-                        p.len() == 2 && p.iter().all(|x| x.as_str().is_some_and(|x| !x.is_empty()))
-                    })
-                })
-            }),
-            _ => return Err(format!("Unknown scenario field: {key}")),
+        let Some(valid) = admissible(key, value) else {
+            return Err(format!("Unknown scenario field: {key}"));
         };
         if !valid {
             return Err(format!("Invalid scenario field: {key}"));
         }
     }
     Ok(())
+}
+
+/// Whether `value` is admissible for scenario field `key`; None for an unknown field.
+fn admissible(key: &str, value: &Value) -> Option<bool> {
+    Some(match key {
+        "sector" => value
+            .as_str()
+            .is_some_and(|x| ["liion", "pv", "joint"].contains(&x)),
+        "basis" => value
+            .as_str()
+            .is_some_and(|x| ["production", "trade"].contains(&x)),
+        "choice" | "aggregate" | "dual" | "eu_sold" => value.is_boolean(),
+        "k" | "seed" => value.as_u64().is_some(),
+        "n" => value.as_u64().is_some_and(|n| n >= 2),
+        "T" => value.as_u64().is_some_and(|n| n > 0),
+        "h" | "sigma" => value.as_f64().is_some_and(|x| x.is_finite() && x >= 0.0),
+        "L" | "time_limit" | "japan_voltage" => {
+            value.as_f64().is_some_and(|x| x.is_finite() && x > 0.0)
+        }
+        "alpha" | "ncm" => value.as_f64().is_some_and(|x| (0.0..=1.0).contains(&x)),
+        "cutoff" => value.as_f64().is_some_and(|x| (0.0..1.0).contains(&x)),
+        "durations" | "shares" | "f" | "exclude" => {
+            value.as_array().is_some_and(|a| admissible_list(key, a))
+        }
+        _ => return None,
+    })
+}
+
+/// List fields: strictly increasing positive integer durations, fractions in [0,1], and
+/// (country, product) pairs of nonempty strings.
+fn admissible_list(key: &str, a: &[Value]) -> bool {
+    match key {
+        "durations" => {
+            !a.is_empty()
+                && a.iter().all(|x| x.as_u64().is_some_and(|x| x > 0))
+                && a.windows(2).all(|w| w[0].as_u64() < w[1].as_u64())
+        }
+        "exclude" => a.iter().all(|p| {
+            p.as_array().is_some_and(|p| {
+                p.len() == 2 && p.iter().all(|x| x.as_str().is_some_and(|x| !x.is_empty()))
+            })
+        }),
+        _ => {
+            !a.is_empty()
+                && a.iter()
+                    .all(|x| x.as_f64().is_some_and(|x| (0.0..=1.0).contains(&x)))
+        }
+    }
 }
 
 #[cfg(test)]

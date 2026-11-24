@@ -58,8 +58,8 @@ def number(x):
     return float(x) if re.fullmatch(r"\d+(?:\.\d+)?", x) else None
 
 
-def network():
-    """Construct annual country-product capacities and sector requirements."""
+def countries():
+    """BACI numeric country code -> ISO3, and case-folded country name -> ISO3."""
     Z = rows("data/raw/baci/country_codes_V202601.csv")
     iso = {int(r["country_code"]): r["country_iso3"] for r in Z}
     names = {r["country_name"].casefold(): r["country_iso3"] for r in Z}
@@ -77,6 +77,11 @@ def network():
             "tanzania": "TZA",
         }
     )
+    return iso, names
+
+
+def usgs(names):
+    """USGS MCS 2026 world output for 2024 in kt: A[product][country], basis, unparsed rows."""
     X = rows("data/raw/usgs/MCS2026_Commodities_Data.csv", "cp1252")
     A, basis = defaultdict(dict), {}
     specs = {
@@ -101,6 +106,11 @@ def network():
             continue
         A[p][c] = x * (1 if r["Unit"] == "thousand metric tons" else 0.001)
         basis[c, p] = "production"
+    return A, basis, unparsed
+
+
+def baci(iso):
+    """BACI 2024 export mass Q[rev][HS6][ISO3] for HS12 and HS22; rows without mass counted."""
     Q, missing = {}, {}
     for rev in (12, 22):
         Q[rev] = defaultdict(lambda: defaultdict(float))
@@ -111,6 +121,15 @@ def network():
                 missing[rev] += 1
                 continue
             Q[rev][r["k"]][iso[int(r["i"])]] += x
+    return Q, missing
+
+
+def bom():
+    """Fixed 50/50 LFP/NCM622 pack from Xu et al. (2020).
+
+    OUTPUT  b (material kg/kWh), C (cathode active material kg/kWh), P (precursor kg/kWh),
+            E (pack Wh/kg, harmonic mean)
+    """
     Z = rows("data/raw/xu2020/bom_mid_size_bev.csv")
     b0 = {
         ch: {
@@ -137,8 +156,12 @@ def network():
     Z = rows("data/raw/xu2020/specific_energy.csv")
     E0 = {r["chemistry"]: float(r["wh_per_kg"]) for r in Z}
     E = 1 / (0.5 / E0["LFP"] + 0.5 / E0["NCM622"])
-    Z = rows("data/raw/miit/production_2024.csv")
-    M = {(r["product"], r["statistic"]): float(r["value"]) for r in Z}
+    return b, C, P, E
+
+
+def battery(A, basis, Q, M, b, C, P, E):
+    """Add the battery layers to A and basis: cells from export energy, imputed CAM, pCAM and
+    AAM, trade proxies, and national production (MIIT, Cochilco, USGS cobalt refinery)."""
     A["cell"] = {c: q * E / 1e6 for c, q in Q[12]["850760"].items()}
     A["cell"]["CHN"] = M["li_ion_cell", "production"]
     for c in A["cell"]:
@@ -168,6 +191,48 @@ def network():
     for c, q in Q[12]["380110"].items():
         A["graphite"][c] = A["graphite"].get(c, 0) + q / 1000
         basis[c, "graphite"] = "imputed"
+
+
+def solar(A, basis, Q, M):
+    """Add the PV layers: HS22 exports scaled to MIIT export totals, MIIT production for CHN."""
+    for p, k, key in (
+        ("polysilicon", "280461", "pv_polysilicon"),
+        ("wafer", "381800", "pv_wafer"),
+        ("pv_cell", "854142", "pv_cell"),
+        ("module", "854143", "pv_module"),
+    ):
+        a = 1 / 1000 if p == "polysilicon" else M[key, "export"] / Q[22][k]["CHN"]
+        A[p] = {c: q * a for c, q in Q[22][k].items()}
+        A[p]["CHN"] = M[key, "production"] * (0.001 if p == "polysilicon" else 1)
+        for c in A[p]:
+            basis[c, p] = "production" if c == "CHN" else "trade"
+
+
+def requirements(A, edges):
+    """Requirement R_p of each layer upstream of a final f, with demand scaled to the least
+    supply ratio min(1, S_p) on f's chain; returns R and the scales."""
+    req, scales = {}, {}
+    for f in ("cell", "module"):
+        r = {f: sum(A[f].values())}
+        while any(q in r and p not in r for p, q, a in edges):
+            for p, q, a in edges:
+                if q in r:
+                    r[p] = a * r[q]
+        s = min(1, *(sum(A[p].values()) / r[p] for p in r))
+        req.update({p: a * s for p, a in r.items()})
+        scales[f] = s
+    return req, scales
+
+
+def network():
+    """Construct annual country-product capacities and sector requirements."""
+    iso, names = countries()
+    A, basis, unparsed = usgs(names)
+    Q, missing = baci(iso)
+    b, C, P, E = bom()
+    Z = rows("data/raw/miit/production_2024.csv")
+    M = {(r["product"], r["statistic"]): float(r["value"]) for r in Z}
+    battery(A, basis, Q, M, b, C, P, E)
     si = float(rows("data/raw/fraunhofer/silicon_usage_2024.csv")[0]["value"])
     edges = [
         ("mine_li", "li_carbonate", 1 / 5.323),
@@ -187,30 +252,11 @@ def network():
         ("wafer", "pv_cell", 1),
         ("pv_cell", "module", 1),
     ]
-    for p, k, key in (
-        ("polysilicon", "280461", "pv_polysilicon"),
-        ("wafer", "381800", "pv_wafer"),
-        ("pv_cell", "854142", "pv_cell"),
-        ("module", "854143", "pv_module"),
-    ):
-        a = 1 / 1000 if p == "polysilicon" else M[key, "export"] / Q[22][k]["CHN"]
-        A[p] = {c: q * a for c, q in Q[22][k].items()}
-        A[p]["CHN"] = M[key, "production"] * (0.001 if p == "polysilicon" else 1)
-        for c in A[p]:
-            basis[c, p] = "production" if c == "CHN" else "trade"
+    solar(A, basis, Q, M)
     totals = {p: sum(q for q in x.values() if q > 0) for p, x in A.items()}
     hhi = {p: sum((q / totals[p]) ** 2 for q in x.values() if q > 0) for p, x in A.items()}
     A = {p: {c: q for c, q in x.items() if q > 0 and q / totals[p] >= 0.01} for p, x in A.items()}
-    req, scales = {}, {}
-    for f in ("cell", "module"):
-        r = {f: sum(A[f].values())}
-        while any(q in r and p not in r for p, q, a in edges):
-            for p, q, a in edges:
-                if q in r:
-                    r[p] = a * r[q]
-        s = min(1, *(sum(A[p].values()) / r[p] for p in r))
-        req.update({p: a * s for p, a in r.items()})
-        scales[f] = s
+    req, scales = requirements(A, edges)
     nodes = [
         {"country": c, "product": p, "annual": q, "basis": basis[c, p], "S": q / req[p]}
         for p in sorted(A)
@@ -252,14 +298,16 @@ def day(x):
     return None
 
 
-def events(nodes):
-    """Derive OECD spells from raw SDMX and onsets on surveyed node-years."""
-    pm = json.loads(read("data/events/product_map.json"))
-    ps = pm["hs6_to_products"]
+def product(p):
+    return "graphite" if p == "mine_graphite" else p
 
-    def product(p):
-        return "graphite" if p == "mine_graphite" else p
 
+def spells(ps):
+    """OECD raw SDMX rows grouped into spells by country, HS6, measure, variation and start.
+
+    INPUT   ps .. HS6 -> mapped products
+    OUTPUT  O (row values by country-HS-measure-variation-year), G (spells), E (spell events)
+    """
     O = defaultdict(dict)
     for r in rows("data/events/raw/oecd-battery-pv-2012-2024.csv"):
         k = (
@@ -302,6 +350,11 @@ def events(nodes):
             "source": "raw_OECD",
         }
         E.append(e)
+    return O, G, E
+
+
+def reconcile(E):
+    """Link each raw spell to its derived fact; OUTPUT facts by key and field discrepancies."""
     F = json.loads(read("data/events/policy_events.json"))["events"]
 
     def key(e):
@@ -325,6 +378,11 @@ def events(nodes):
         )
         if e["days"] != ndays:
             diffs.append({"key": key(e), "field": "days", "raw": e["days"], "derived": ndays})
+    return F, diffs
+
+
+def national(E):
+    """Append in-window restrictive national acts to E; return the OECD ids they deduplicate."""
     acts = json.loads(read("data/events/acts.yaml"))["acts"]
     dedup = {
         v for e in acts if e.get("in_estimation_window") for v in e.get("deduplicate_oecd_ids", [])
@@ -346,13 +404,12 @@ def events(nodes):
                 "fact_id": e["id"],
             }
         )
-    obs = set()
-    for r in rows("data/events/oecd_coverage.csv"):
-        if r["surveyed"] == "1":
-            obs.update(
-                (r["country"], product(p), int(r["year"]))
-                for p in pm["coverage_commodity_to_products"][r["commodity"]]
-            )
+    return dedup
+
+
+def onsets(E, obs):
+    """Onset node-years on surveyed node-years, and duration bins of 3, 6 or 12 months; a
+    censored spell of at most 6 months is excluded from the bins."""
     onset = set()
     bins, excluded = Counter(), []
     for e in E:
@@ -368,6 +425,23 @@ def events(nodes):
             excluded.append(e)
             continue
         bins[next((t for t in (3, 6, 12) if d <= t), 12)] += 1
+    return onset, bins, excluded
+
+
+def events(nodes):
+    """Derive OECD spells from raw SDMX and onsets on surveyed node-years."""
+    pm = json.loads(read("data/events/product_map.json"))
+    O, G, E = spells(pm["hs6_to_products"])
+    F, diffs = reconcile(E)
+    dedup = national(E)
+    obs = set()
+    for r in rows("data/events/oecd_coverage.csv"):
+        if r["surveyed"] == "1":
+            obs.update(
+                (r["country"], product(p), int(r["year"]))
+                for p in pm["coverage_commodity_to_products"][r["commodity"]]
+            )
+    onset, bins, excluded = onsets(E, obs)
     years = {
         (v["country"], v["product"]): {
             y: int((v["country"], v["product"], y) in onset)
@@ -403,47 +477,61 @@ def events(nodes):
     )
 
 
-def fit(nodes, years):
-    """Fit the stated beta-binomial priors and country-year shock parameter."""
-    K = {i: sum(y.values()) for i, y in years.items()}
-    N = {i: len(y) for i, y in years.items()}
+def prior(I, K, N):
+    """Beta-binomial empirical Bayes prior (a, b) over nodes I, by L-BFGS-B on log a, log b."""
+    k, n = np.array([K[i] for i in I]), np.array([N[i] for i in I])
+    m = (sum(k) + 0.5) / (sum(n) + 1)
 
-    def prior(I):
-        k, n = np.array([K[i] for i in I]), np.array([N[i] for i in I])
-        m = (sum(k) + 0.5) / (sum(n) + 1)
+    def f(x):
+        a, b = np.exp(x)
+        return -np.sum(betaln(k + a, n - k + b) - betaln(a, b))
 
-        def f(x):
-            a, b = np.exp(x)
-            return -np.sum(betaln(k + a, n - k + b) - betaln(a, b))
+    r = minimize(f, np.log([10 * m, 10 * (1 - m)]), method="L-BFGS-B", bounds=[(-7, 14)] * 2)
+    a, b = np.exp(r.x)
+    return {
+        "a": float(a),
+        "b": float(b),
+        "objective": float(r.fun),
+        "success": bool(r.success),
+        "message": str(r.message),
+        "exposed_nodes": len(I),
+        "N": int(sum(n)),
+        "K": int(sum(k)),
+    }
 
-        r = minimize(f, np.log([10 * m, 10 * (1 - m)]), method="L-BFGS-B", bounds=[(-7, 14)] * 2)
-        a, b = np.exp(r.x)
-        return {
-            "a": float(a),
-            "b": float(b),
-            "objective": float(r.fun),
-            "success": bool(r.success),
-            "message": str(r.message),
-            "exposed_nodes": len(I),
-            "N": int(sum(n)),
-            "K": int(sum(k)),
-        }
 
-    pooled = prior([i for i in years if N[i]])
+def posterior(years, K, N):
+    """Product priors, pooled over all exposed nodes when a product has none, and posterior
+    mean rates p_i = (K_i + a)/(N_i + a + b)."""
+    pooled = prior([i for i in years if N[i]], K, N)
     products = sorted({p for c, p in years})
     priors, p = {}, {}
     for t in products:
         I = [i for i in years if i[1] == t and N[i]]
-        priors[t] = prior(I) if I else {**pooled, "fallback": "all_exposed_joint_nodes"}
+        priors[t] = prior(I, K, N) if I else {**pooled, "fallback": "all_exposed_joint_nodes"}
         a, b = priors[t]["a"], priors[t]["b"]
         p.update({i: (K[i] + a) / (N[i] + a + b) for i in years if i[1] == t})
-    cmin = {c: min(v for i, v in p.items() if i[0] == c) for c, t in p}
+    return pooled, priors, p
+
+
+def country_years(years, cmin):
+    """Country-years with at least two surveyed nodes, flagged when two or more had onsets."""
     cy = []
     for c in cmin:
         for y in range(2012, 2025):
             I = [i for i in years if i[0] == c and y in years[i]]
             if len(I) >= 2:
                 cy.append((c, y, I, int(sum(years[i][y] for i in I) >= 2)))
+    return cy
+
+
+def fit(nodes, years):
+    """Fit the stated beta-binomial priors and country-year shock parameter."""
+    K = {i: sum(y.values()) for i, y in years.items()}
+    N = {i: len(y) for i, y in years.items()}
+    pooled, priors, p = posterior(years, K, N)
+    cmin = {c: min(v for i, v in p.items() if i[0] == c) for c, t in p}
+    cy = country_years(years, cmin)
 
     def loss(rho):
         value = 0.0
@@ -478,6 +566,17 @@ def fit(nodes, years):
     )
 
 
+def capacity(nodes, products, states):
+    """Remaining monthly capacity U[p][i, t] of product p in state i, month t < 12."""
+    n = len(states)
+    U = {p: np.full((n, 12), sum(v["S"] for v in nodes if v["product"] == p)) for p in products}
+    for i, z in enumerate(states):
+        for j, d in z:
+            v = nodes[j]
+            U[v["product"]][i, :d] -= v["S"]
+    return U
+
+
 def evaluate(nodes, edges, states, final):
     """Maximal cumulative production on a merging tree; 12 affected months.
 
@@ -490,12 +589,7 @@ def evaluate(nodes, edges, states, final):
     order = []
     while len(order) < len(products):
         order.extend(p for p in products if p not in order and all(q in order for q in inp[p]))
-    n = len(states)
-    U = {p: np.full((n, 12), sum(v["S"] for v in nodes if v["product"] == p)) for p in products}
-    for i, z in enumerate(states):
-        for j, d in z:
-            v = nodes[j]
-            U[v["product"]][i, :d] -= v["S"]
+    U = capacity(nodes, products, states)
     C = {}
     for p in order:
         u = U[p]
@@ -541,6 +635,68 @@ def lp_value(nodes, edges, z, final):
     return {"status": int(r.status), "phi": float(2 * len(final) + r.fun) if r.success else None}
 
 
+def certificate(nodes, edges, z, phi, finals, theta, names):
+    """Named cut z with recurrence value phi, its LP value, and each immediate predecessor
+    (one node's duration one grid step shorter) with its recurrence and LP values.
+
+    OUTPUT  certificate; |recurrence - LP| for z, then for each predecessor in order
+    """
+    pred = []
+    lp = lp_value(nodes, edges, z, finals)
+    gaps = [abs(phi - lp["phi"])]
+    for i, d in z:
+        d0 = {3: 0, 6: 3, 12: 6}[d]
+        z0 = tuple((j, d0 if i == j else e) for j, e in z if i != j or d0 > 0)
+        phi0 = float(evaluate(nodes, edges, [z0], finals)[0])
+        lp0 = lp_value(nodes, edges, z0, finals)
+        gaps.append(abs(phi0 - lp0["phi"]))
+        pred.append(
+            {
+                "node": names[i],
+                "duration_from": d,
+                "duration_to": d0,
+                "phi": phi0,
+                "lp": lp0,
+                "survives": bool(phi0 <= theta + 1e-9),
+            }
+        )
+    return {
+        "losses": [
+            {"country": nodes[i]["country"], "product": nodes[i]["product"], "duration": d}
+            for i, d in z
+        ],
+        "phi": float(phi),
+        "lp": lp,
+        "fails": bool(phi > theta + 1e-9),
+        "predecessors": pred,
+    }, gaps
+
+
+def singletons(nodes, edges, sector, finals, theta):
+    """Recurrence value of every single-node outage of 3, 6 or 12 months in the sector."""
+    I = (
+        list(range(len(nodes)))
+        if sector == "joint"
+        else [
+            i
+            for i, v in enumerate(nodes)
+            if v["product"] in {"polysilicon", "wafer", "pv_cell", "module"}
+        ]
+    )
+    singles = [(i, d) for i in I for d in (3, 6, 12)]
+    vals = evaluate(nodes, edges, [[z] for z in singles], finals)
+    return [
+        {
+            "country": nodes[i]["country"],
+            "product": nodes[i]["product"],
+            "duration": d,
+            "phi": float(v),
+            "fails": bool(v > theta + 1e-9),
+        }
+        for (i, d), v in zip(singles, vals)
+    ]
+
+
 def cuts(nodes, edges, sector):
     """Check every named cut, every duration predecessor, and all singletons."""
     data = json.loads(read(C[sector]))
@@ -554,60 +710,12 @@ def cuts(nodes, edges, sector):
     V = evaluate(nodes, edges, Z, finals)
     cert, maxgap, lpcount = [], 0.0, 0
     for z, phi in zip(Z, V):
-        pred = []
-        lp = lp_value(nodes, edges, z, finals)
-        lpcount += 1
-        maxgap = max(maxgap, abs(phi - lp["phi"]))
-        for i, d in z:
-            d0 = {3: 0, 6: 3, 12: 6}[d]
-            z0 = tuple((j, d0 if i == j else e) for j, e in z if i != j or d0 > 0)
-            phi0 = float(evaluate(nodes, edges, [z0], finals)[0])
-            lp0 = lp_value(nodes, edges, z0, finals)
-            lpcount += 1
-            maxgap = max(maxgap, abs(phi0 - lp0["phi"]))
-            pred.append(
-                {
-                    "node": list(idx)[i],
-                    "duration_from": d,
-                    "duration_to": d0,
-                    "phi": phi0,
-                    "lp": lp0,
-                    "survives": bool(phi0 <= theta + 1e-9),
-                }
-            )
-        cert.append(
-            {
-                "losses": [
-                    {"country": nodes[i]["country"], "product": nodes[i]["product"], "duration": d}
-                    for i, d in z
-                ],
-                "phi": float(phi),
-                "lp": lp,
-                "fails": bool(phi > theta + 1e-9),
-                "predecessors": pred,
-            }
-        )
-    I = (
-        list(range(len(nodes)))
-        if sector == "joint"
-        else [
-            i
-            for i, v in enumerate(nodes)
-            if v["product"] in {"polysilicon", "wafer", "pv_cell", "module"}
-        ]
-    )
-    singles = [(i, d) for i in I for d in (3, 6, 12)]
-    vals = evaluate(nodes, edges, [[z] for z in singles], finals)
-    single = [
-        {
-            "country": nodes[i]["country"],
-            "product": nodes[i]["product"],
-            "duration": d,
-            "phi": float(v),
-            "fails": bool(v > theta + 1e-9),
-        }
-        for (i, d), v in zip(singles, vals)
-    ]
+        c, gaps = certificate(nodes, edges, z, phi, finals, theta, list(idx))
+        for g in gaps:
+            maxgap = max(maxgap, g)
+        lpcount += len(gaps)
+        cert.append(c)
+    single = singletons(nodes, edges, sector, finals, theta)
     out = {
         "sector": sector,
         "alpha": 0.25,
@@ -698,18 +806,12 @@ def union_probability(nodes, Z, p, rho, durations):
     }
 
 
-def enumerate_cuts(nodes, edges, named):
-    """Exhaust all duration states of support <=3 by sector decomposition.
+def sector_states(nodes, edges, I):
+    """Every PV state of support <= 3 and Li-ion state of support <= 2 on its own final.
 
-    A sector's 12-month loss is <=1, so a joint cut at theta=1 must
-    contain both sectors. Enumerate sector singles/pairs, then add losses.
+    OUTPUT  Z[sector, k] states, V[sector, k] shortfalls, pred[sector, k] the largest
+            shortfall among each state's immediate predecessors
     """
-    t = perf_counter()
-    pv = {"polysilicon", "wafer", "pv_cell", "module"}
-    I = {
-        "pv": [i for i, v in enumerate(nodes) if v["product"] in pv],
-        "liion": [i for i, v in enumerate(nodes) if v["product"] not in pv],
-    }
     Z, V, pred, lookup = {}, {}, {}, {}
     for sector in ("pv", "liion"):
         finals = ["module"] if sector == "pv" else ["cell"]
@@ -731,12 +833,12 @@ def enumerate_cuts(nodes, edges, named):
                     v.append(lookup[sector][a0])
                 predecessor.append(max(v))
             Z[sector, k], V[sector, k], pred[sector, k] = z, value, np.array(predecessor)
-    found_pv = {
-        z
-        for k in (1, 2, 3)
-        for z, v, v0 in zip(Z["pv", k], V["pv", k], pred["pv", k])
-        if v > 0.5 + 1e-9 and v0 <= 0.5 + 1e-9
-    }
+    return Z, V, pred
+
+
+def joint(Z, V, pred):
+    """Minimal joint cuts mixing Li-ion and PV states: their shortfalls sum above theta = 1
+    while each one-step predecessor's sum does not; OUTPUT cuts and counts by support split."""
     found_joint, counts = set(), {}
     for a, b in ((1, 1), (1, 2), (2, 1)):
         x, y = V["liion", a], V["pv", b]
@@ -749,6 +851,29 @@ def enumerate_cuts(nodes, edges, named):
         ix, iy = np.nonzero(minimal)
         found_joint.update(tuple(sorted(Z["liion", a][i] + Z["pv", b][j])) for i, j in zip(ix, iy))
         counts[f"{a}_Liion_{b}_PV"] = {"states": len(x) * len(y), "minimal": len(ix)}
+    return found_joint, counts
+
+
+def enumerate_cuts(nodes, edges, named):
+    """Exhaust all duration states of support <=3 by sector decomposition.
+
+    A sector's 12-month loss is <=1, so a joint cut at theta=1 must
+    contain both sectors. Enumerate sector singles/pairs, then add losses.
+    """
+    t = perf_counter()
+    pv = {"polysilicon", "wafer", "pv_cell", "module"}
+    I = {
+        "pv": [i for i, v in enumerate(nodes) if v["product"] in pv],
+        "liion": [i for i, v in enumerate(nodes) if v["product"] not in pv],
+    }
+    Z, V, pred = sector_states(nodes, edges, I)
+    found_pv = {
+        z
+        for k in (1, 2, 3)
+        for z, v, v0 in zip(Z["pv", k], V["pv", k], pred["pv", k])
+        if v > 0.5 + 1e-9 and v0 <= 0.5 + 1e-9
+    }
+    found_joint, counts = joint(Z, V, pred)
     out = {
         "elapsed_seconds": perf_counter() - t,
         "epsilon": 1e-9,

@@ -4,24 +4,8 @@ from scipy.optimize import linprog
 from scipy.sparse import hstack, lil_matrix
 
 
-def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, ends=None,
-             recipes=None, stock=None, shares=None):
-    """Build min c'x, Ax <= b(D), Ex = f, x >= 0 over blocks of months.
-
-    INPUT V: (country, product); u: monthly capacity; a[p,q]: input/output units;
-          d: monthly demand vector or {final: vector}; h: months of stock;
-          sigma: spare fraction; L: ramp months; ends: block end months (default monthly);
-          recipes[layer][name] = (output, {input: coefficient}); shares[final] = (lo, hi);
-          stock[input, layer]: reference input per unit capacity for initial inventory.
-    OUTPUT shared primal matrices and valid capacity-dual bounds.
-    Block aggregation is exact when all data are constant on each block: averaging a
-    feasible solution over a block keeps every linear row, and inventory moves linearly
-    between nonnegative endpoints (docs/MODEL.md).
-    """
-    V, u = list(map(tuple, V)), np.asarray(u, float)
-    d = {final: np.asarray(d, float)} if not isinstance(d, dict) else {
-        p: np.asarray(x, float) for p, x in d.items()
-    }
+def _check(V, u, d, a, h, sigma, L):
+    """Validate nodes, capacities, recourse, demand vectors and coefficients; return T."""
     if len(set(V)) != len(V) or u.shape != (len(V),):
         raise ValueError("Distinct nodes and one capacity per node required")
     if not np.isfinite(u).all() or (u < 0).any() or h < 0 or sigma < 0 or L <= 0:
@@ -32,16 +16,26 @@ def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, 
         raise ValueError("Demand vectors must have equal positive length and nonnegative values")
     if any(not np.isfinite(x) or x <= 0 for x in a.values()):
         raise ValueError("Input coefficients must be finite and positive")
+    return T
+
+
+def _recipes(V, a, recipes, shares):
+    """recipes[layer][name] = (output, inputs): each layer's recipe from a, replaced by any given
+    alternatives, without the endpoint that a share bound of 0 or 1 excludes."""
     layers = {p for _, p in V}
     recipes = {p: {p: (p, {q: x for (q, r), x in a.items() if r == p})}
                for p in layers} | (recipes or {})
-    shares = shares or {}
     if any(not 0 <= lo <= hi <= 1 for lo, hi in shares.values()):
         raise ValueError("Chemistry shares require 0 <= lo <= hi <= 1")
-    recipes = {p: {r: (q, b) for r, (q, b) in rs.items()
-                   if not (q in shares and ((shares[q][1] == 0 and r == 'ncm') or
-                                            (shares[q][0] == 1 and r != 'ncm')))}
-               for p, rs in recipes.items()}
+    return {p: {r: (q, b) for r, (q, b) in rs.items()
+                if not (q in shares and ((shares[q][1] == 0 and r == 'ncm') or
+                                         (shares[q][0] == 1 and r != 'ncm')))}
+            for p, rs in recipes.items()}
+
+
+def _stock(recipes, h, stock):
+    """Reference inputs per unit capacity stock[input, layer] (default: every recipe's) and the
+    arcs (q, p, x) of all recipes."""
     if h and stock is None and any(len(rs) > 1 for rs in recipes.values()):
         raise ValueError("Alternative recipes with stock need reference input coefficients")
     stock = stock if stock is not None else {
@@ -49,6 +43,12 @@ def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, 
     arcs = [(q, p, x) for rs in recipes.values() for p, b in rs.values() for q, x in b.items()]
     if any(not np.isfinite(x) or x <= 0 for _, _, x in arcs):
         raise ValueError("Recipe coefficients must be finite and positive")
+    return stock, arcs
+
+
+def _blocks(T, ends, d, sigma, L):
+    """Block ends and starts (default monthly) and the monthly ramp multipliers; demand and
+    ramp must be constant on every block."""
     ends = np.arange(1, T + 1) if ends is None else np.array(sorted(set(ends)), int)
     if ends[0] < 1 or ends[-1] != T:
         raise ValueError("Block ends must lie in 1..T and end at T")
@@ -57,6 +57,12 @@ def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, 
     if any(np.ptp(x[s - 1:e]) > 0 for s, e in zip(starts, ends, strict=True)
            for x in [ramp, *d.values()]):
         raise ValueError("Demand and ramp must be constant on every block")
+    return ends, starts, ramp
+
+
+def _bounds(recipes, arcs, d):
+    """Sorted products and M[p], the largest rate of p that one unit of final demand can use,
+    over the acyclic product graph in reverse topological order."""
     products = {p for rs in recipes.values() for p, _ in rs.values()} | {
         q for q, _, _ in arcs} | set(d)
     order, remaining = [], set(products)
@@ -70,26 +76,37 @@ def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, 
     M = {p: float(p in d) for p in products}
     for p in reversed(order):
         M[p] = max([M[p], *(M[q]/x for r, q, x in arcs if r == p)])
-    gamma = max([1, *(1/lo for lo, hi in shares.values() if 0 < lo < 1),
-                  *(1/(1-hi) for lo, hi in shares.values() if 0 < hi < 1)])
-    original_V, original_u = V, u
-    if h == 0 and aggregate:
-        V = [("ALL", p) for p in sorted({p for _, p in V})]
-        u = np.array([sum(x for (_, q), x in zip(original_V, original_u, strict=True) if q == p)
-                      for _, p in V])
-    n, F, K, ell = len(V), list(d), len(ends), ends - starts + 1
-    p = [v[1] for v in V]
-    R = [(v, r, q, b) for v in range(n) for r, (q, b) in recipes[p[v]].items()]
-    edges = [(q, v) for v in range(n)
+    return sorted(products), M                       # a supplier-less q keeps Σx ≤ 0
+
+
+def _pool(V, u):
+    """One ("ALL", p) node per layer with the summed capacity: exact when h = 0."""
+    W = [("ALL", p) for p in sorted({p for _, p in V})]
+    return W, np.array([sum(x for (_, q), x in zip(V, u, strict=True) if q == p) for _, p in W])
+
+
+def _columns(p, recipes):
+    """Production columns R = (node, name, output, inputs) and input edges (q, node) for nodes
+    of layers p."""
+    R = [(v, r, q, b) for v in range(len(p)) for r, (q, b) in recipes[p[v]].items()]
+    edges = [(q, v) for v in range(len(p))
              for q in sorted({q for _, b in recipes[p[v]].values() for q in b})]
-    products = sorted(products)                      # a supplier-less q keeps Σx ≤ 0
+    return R, edges
+
+
+def _assemble(p, R, edges, products, d, shares, ends, ell, U, f0):
+    """A, b, E, f, c over K blocks of N columns [y, x, I, g] for nodes of layers p: production
+    R = (node, name, output, inputs), shipments x and inventories I on edges (q, node), final
+    shortfalls g; capacity U per block and node, initial inventories f0 per edge.
+    OUTPUT A, b, E, f, c, the capacity rows cap[t, v] and N.
+    """
+    n, F, K = len(p), list(d), len(ends)
     stocks = [(v, q) for q, v in edges]
     nr, m, s, j = len(R), len(edges), len(stocks), len(F)
     N = nr + m + s + j
     A = lil_matrix((K*(n + len(products) + j + len(shares)) + 2*len(shares), K*N))
     E = lil_matrix((K*s, K*N))
     b, f, c = np.zeros(A.shape[0]), np.zeros(K*s), np.zeros(K*N)
-    U = u[None, :] * ramp[ends - 1][:, None]
     cap = np.arange(K*n).reshape(K, n)
     for t in range(K):
         offset = t*N
@@ -116,7 +133,7 @@ def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, 
             if t:
                 E[r, offset - N + nr + m + i] = -1
             else:
-                f[r] = h*stock.get((q, p[w]), 0)*u[w]
+                f[r] = f0[i]
             for e, (q2, w2) in enumerate(edges):
                 if w2 == w and q2 == q:
                     E[r, offset + nr + e] = -ell[t]
@@ -132,13 +149,48 @@ def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, 
                     r0 = K*(n + len(products) + j + len(shares)) + 2*l
                     A[r0, offset + i] = ell[t]*(lo - (name == 'ncm'))
                     A[r0+1, offset + i] = ell[t]*((name == 'ncm') - hi)
-    original_cap = cap[:, [V.index(("ALL", q)) for _, q in original_V]] if (
-        h == 0 and aggregate) else cap
-    original_U = original_u[None, :] * ramp[ends - 1][:, None]
-    Mv = np.array([gamma*max(M[q] for q, _ in recipes[p].values()) for _, p in original_V])
-    return {"V": original_V, "u": original_u, "a": a, "d": d, "T": T, "N": N,
+    return A, b, E, f, c, cap, N
+
+
+def matrices(V, u, a, d, h=0.0, sigma=0.0, L=1.0, final="cell", aggregate=True, ends=None,
+             recipes=None, stock=None, shares=None):
+    """Build min c'x, Ax <= b(D), Ex = f, x >= 0 over blocks of months.
+
+    INPUT V: (country, product); u: monthly capacity; a[p,q]: input/output units;
+          d: monthly demand vector or {final: vector}; h: months of stock;
+          sigma: spare fraction; L: ramp months; ends: block end months (default monthly);
+          recipes[layer][name] = (output, {input: coefficient}); shares[final] = (lo, hi);
+          stock[input, layer]: reference input per unit capacity for initial inventory.
+    OUTPUT shared primal matrices and valid capacity-dual bounds.
+    Block aggregation is exact when all data are constant on each block: averaging a
+    feasible solution over a block keeps every linear row, and inventory moves linearly
+    between nonnegative endpoints (docs/MODEL.md).
+    """
+    V, u = list(map(tuple, V)), np.asarray(u, float)
+    d = {final: np.asarray(d, float)} if not isinstance(d, dict) else {
+        p: np.asarray(x, float) for p, x in d.items()
+    }
+    T = _check(V, u, d, a, h, sigma, L)
+    shares = shares or {}
+    recipes = _recipes(V, a, recipes, shares)
+    stock, arcs = _stock(recipes, h, stock)
+    ends, starts, ramp = _blocks(T, ends, d, sigma, L)
+    products, M = _bounds(recipes, arcs, d)
+    gamma = max([1, *(1/lo for lo, hi in shares.values() if 0 < lo < 1),
+                  *(1/(1-hi) for lo, hi in shares.values() if 0 < hi < 1)])
+    pooled = h == 0 and aggregate
+    W, w = _pool(V, u) if pooled else (V, u)
+    p = [v[1] for v in W]
+    R, edges = _columns(p, recipes)
+    ell = ends - starts + 1
+    f0 = [h*stock.get((q, p[v]), 0)*w[v] for q, v in edges]
+    A, b, E, f, c, cap, N = _assemble(p, R, edges, products, d, shares, ends, ell,
+                                      w[None, :] * ramp[ends - 1][:, None], f0)
+    Mv = np.array([gamma*max(M[q] for q, _ in recipes[p].values()) for _, p in V])
+    return {"V": V, "u": u, "a": a, "d": d, "T": T, "N": N,
             "A": A.tocsr(), "b": b, "E": E.tocsr(), "f": f, "c": c,
-            "cap": original_cap, "U": original_U, "ends": ends, "ell": ell,
+            "cap": cap[:, [W.index(("ALL", q)) for _, q in V]] if pooled else cap,
+            "U": u[None, :] * ramp[ends - 1][:, None], "ends": ends, "ell": ell,
             "M": Mv, "Mcap": ell[:, None]*Mv[None, :],       # one unit of rate lasts ℓ_t months
             "total": float(sum(x.sum() for x in d.values())),
             "recipes": recipes, "shares": shares, "stock": stock,

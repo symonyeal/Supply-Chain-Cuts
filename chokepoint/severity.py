@@ -26,21 +26,18 @@ def exports(root=Path(".")):
     return Q, missing
 
 
-def cohorts(root=Path(".")):
-    """Isolated surveyed onsets with complete normalized volume and untreated controls."""
-    root = Path(root)
-    pm = json.loads((root / "data/events/product_map.json").read_text(encoding="utf-8"))
-    concordance = json.loads((root / "data/events/hs07_hs12.json").read_text(encoding="utf-8"))
-    E = json.loads((root / "data/events/policy_events.json").read_text(encoding="utf-8"))["events"]
-    _, _, used = node_years([], root)
-    ids = {e["id"] for e in used}
-    Q, missing = exports(root)
-    available = {h for _, h, _ in Q}
+def _surveyed(root, pm):
+    """(country, product, year) cells the OECD inventory surveyed."""
     surveyed = set()
     for x in csv.DictReader((root / "data/events/oecd_coverage.csv").open(encoding="utf-8")):
         if x["surveyed"] == "1":
             for p in pm["coverage_commodity_to_products"].get(x["commodity"], []):
                 surveyed.add((x["country"], p, int(x["year"])))
+    return surveyed
+
+
+def _active(E, concordance):
+    """active[country, HS12] = (start year, end year, measure type) of every mapped measure."""
     active = defaultdict(list)
     for e in E:
         h = concordance["one_to_one"].get(e["hs6"])
@@ -48,6 +45,12 @@ def cohorts(root=Path(".")):
             start = int(e["effective_date"][:4]) if e.get("effective_date") else 0
             end = int(e["end_date"][:4]) if e.get("end_date") else 2024
             active[e["country"], h].append((start, end, e["measure_type"]))
+    return active
+
+
+def _candidates(E, ids, concordance, available):
+    """Used onsets in 2014-2022 with a one-to-one HS12 code in the frozen selection, grouped by
+    (country, HS07, HS12, measure, year), and the count of each exclusion."""
     candidates = defaultdict(list)
     excluded = Counter()
     for e in E:
@@ -64,15 +67,37 @@ def cohorts(root=Path(".")):
             excluded["HS12_not_in_frozen_selection"] += 1
         else:
             candidates[e["country"], e["hs6"], h, e["measure_type"], t].append(e["id"])
+    return candidates, excluded
+
+
+def _observed(countries, surveyed, missing, Q, products, h, t, years):
+    """Countries surveyed for every product in every year, with complete exports of HS12 h and
+    positive volume in the baseline year t - 1."""
+    return {d for d in countries if all(any((d, p, y) in surveyed
+            for p in products) for y in years)
+            and not any((d, h, y) in missing for y in years) and Q[d, h, t-1] > 0}
+
+
+def cohorts(root=Path(".")):
+    """Isolated surveyed onsets with complete normalized volume and untreated controls."""
+    root = Path(root)
+    pm = json.loads((root / "data/events/product_map.json").read_text(encoding="utf-8"))
+    concordance = json.loads((root / "data/events/hs07_hs12.json").read_text(encoding="utf-8"))
+    E = json.loads((root / "data/events/policy_events.json").read_text(encoding="utf-8"))["events"]
+    _, _, used = node_years([], root)
+    ids = {e["id"] for e in used}
+    Q, missing = exports(root)
+    available = {h for _, h, _ in Q}
+    surveyed = _surveyed(root, pm)
+    active = _active(E, concordance)
+    candidates, excluded = _candidates(E, ids, concordance, available)
     excluded["national_act_without_verified_HS6"] = len(ids - {e["id"] for e in E})
     countries = sorted({c for c, _, _ in surveyed})
     events, overlapping = [], []
     for (c, h07, h, m, t), ids in sorted(candidates.items()):
         years = list(range(t-2, t+2))
-
-        observed = {d for d in countries if all(any((d, p, y) in surveyed
-                    for p in pm["hs6_to_products"][h07]) for y in years)
-                    and not any((d, h, y) in missing for y in years) and Q[d, h, t-1] > 0}
+        observed = _observed(countries, surveyed, missing, Q, pm["hs6_to_products"][h07], h, t,
+                             years)
         if c not in observed:
             excluded["treated_incomplete_or_zero_baseline"] += 1
             continue
@@ -103,12 +128,9 @@ def effect(e, counts=None):
     return d[0] - np.average(d[1:], axis=0, weights=w[1:])
 
 
-def estimate(events, B=2000, seed=6):
-    """Stacked exporter/year FE DiD; country-cluster bootstrap, registered W2 design."""
-    groups = {m: [e for e in events if e["measure"] == m] for m in sorted(
-        {e["measure"] for e in events} | {"M1", "M3", "M4", "M6", "M14"})}
-    groups["M3_M4"] = [e for e in events if e["measure"] in ("M3", "M4")]
-    countries = sorted({c for e in events for c in e["countries"]})
+def _bootstrap(groups, countries, B, seed):
+    """B country-cluster resamples of each group's mean effect, weighted by the resample count
+    of each event's treated country."""
     rng, samples = np.random.default_rng(seed), {m: [] for m in groups}
     for _ in range(B):
         counts = Counter(rng.choice(countries, len(countries))) if countries else Counter()
@@ -118,28 +140,44 @@ def estimate(events, B=2000, seed=6):
             if values:
                 samples[m].append(np.average([x for x, _ in values], axis=0,
                                              weights=[w for _, w in values]))
-    out = {}
-    for m, E in groups.items():
-        n, C = len(E), len({e["country"] for e in E})
-        b = np.mean([effect(e) for e in E], axis=0).tolist() if E else None
-        ci = np.quantile(samples[m], [0.025, 0.975], axis=0).T.tolist() if samples[m] else None
-        pretrend = bool(ci and not ci[0][0] <= 0 <= ci[0][1])
-        identified = n >= 5 and not pretrend and ci is not None
-        loss = -b[2] if b else None
-        interval = [-ci[2][1], -ci[2][0]] if ci else None
-        threshold = 0.2 if m == "M1" else 0.5
-        verdict = "untestable"
-        if identified and m in ("M1", "M3", "M4", "M3_M4"):
-            lo, hi = interval
-            verdict = ("supported" if hi < threshold else "killed" if lo >= threshold
-                       else "inconclusive") if m == "M1" else (
-                       "supported" if lo >= threshold else "killed" if hi < threshold
-                       else "inconclusive")
-        out[m] = {"events": n, "treated_countries": C, "HS6": len({e["hs12"] for e in E}),
-                  "relative_years": [-2, 0, 1], "beta": b, "ci95": ci, "loss": loss,
-                  "loss_ci95": interval, "pretrend": pretrend, "weak_inference": C < 10,
-                  "identified": identified, "verdict": verdict,
-                  "f": float(np.clip(loss, 0, 1)) if identified else 1.0,
-                  "f_basis": "export_response_scenario" if identified else "full_loss_fallback",
-                  "bootstrap_draws": len(samples[m])}
-    return out
+    return samples
+
+
+def _verdict(m, interval):
+    """Registered decision on the loss interval: M1 is supported below 0.2 and killed at or
+    above it; the other measures are supported at or above 0.5 and killed below it."""
+    lo, hi = interval
+    threshold = 0.2 if m == "M1" else 0.5
+    if m == "M1":
+        return "supported" if hi < threshold else "killed" if lo >= threshold else "inconclusive"
+    return "supported" if lo >= threshold else "killed" if hi < threshold else "inconclusive"
+
+
+def _summary(m, E, draws):
+    """Point estimate, bootstrap interval, pretrend check, loss and verdict of group m."""
+    n, C = len(E), len({e["country"] for e in E})
+    b = np.mean([effect(e) for e in E], axis=0).tolist() if E else None
+    ci = np.quantile(draws, [0.025, 0.975], axis=0).T.tolist() if draws else None
+    pretrend = bool(ci and not ci[0][0] <= 0 <= ci[0][1])
+    identified = n >= 5 and not pretrend and ci is not None
+    loss = -b[2] if b else None
+    interval = [-ci[2][1], -ci[2][0]] if ci else None
+    verdict = (_verdict(m, interval) if identified and m in ("M1", "M3", "M4", "M3_M4")
+               else "untestable")
+    return {"events": n, "treated_countries": C, "HS6": len({e["hs12"] for e in E}),
+            "relative_years": [-2, 0, 1], "beta": b, "ci95": ci, "loss": loss,
+            "loss_ci95": interval, "pretrend": pretrend, "weak_inference": C < 10,
+            "identified": identified, "verdict": verdict,
+            "f": float(np.clip(loss, 0, 1)) if identified else 1.0,
+            "f_basis": "export_response_scenario" if identified else "full_loss_fallback",
+            "bootstrap_draws": len(draws)}
+
+
+def estimate(events, B=2000, seed=6):
+    """Stacked exporter/year FE DiD; country-cluster bootstrap, registered W2 design."""
+    groups = {m: [e for e in events if e["measure"] == m] for m in sorted(
+        {e["measure"] for e in events} | {"M1", "M3", "M4", "M6", "M14"})}
+    groups["M3_M4"] = [e for e in events if e["measure"] in ("M3", "M4")]
+    countries = sorted({c for e in events for c in e["countries"]})
+    samples = _bootstrap(groups, countries, B, seed)
+    return {m: _summary(m, E, samples[m]) for m, E in groups.items()}

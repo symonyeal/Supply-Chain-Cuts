@@ -140,6 +140,46 @@ impl Search<'_> {
         }
         Ok(())
     }
+    /// Minimal failing states of support <= k over n nodes, support by support (Lemma B):
+    /// true when complete, false at the time limit with the candidates left in cuts and found.
+    fn lattice(&mut self, k: usize, n: usize) -> Result<bool, String> {
+        if self.fails(&vec![0; n])? {
+            self.cuts.push(vec![0; n]);
+            return Ok(true);
+        }
+        let names: Vec<String> = self.layers.keys().cloned().collect();
+        for support in 1..=k.min(n) {
+            self.found.clear();
+            let mut all = vec![];
+            patterns(&names, support, 0, &mut vec![], &mut all);
+            for pattern in all {
+                if pattern
+                    .iter()
+                    .any(|p| pattern.iter().filter(|q| *q == p).count() > self.layers[p].len())
+                {
+                    continue;
+                }
+                match self.visit(&pattern, &vec![0; n], 0, -1) {
+                    Err(error) if error == "time_limit" => return Ok(false),
+                    result => result?,
+                }
+            }
+            self.cuts = minimal([std::mem::take(&mut self.cuts), self.found.clone()].concat());
+            if support == 1 {
+                for s in &self.cuts {
+                    let v = s.iter().position(|&d| d > 0).unwrap();
+                    self.dmax[v] = self
+                        .ds
+                        .iter()
+                        .copied()
+                        .filter(|&d| d < s[v])
+                        .max()
+                        .unwrap_or(0);
+                }
+            }
+        }
+        Ok(true)
+    }
 }
 fn patterns(
     names: &[String],
@@ -157,6 +197,66 @@ fn patterns(
         patterns(names, k, i, current, out);
         current.pop();
     }
+}
+
+/// Node indices by layer p, each layer in descending capacity (rank r), ties by index.
+fn layers(model: &Model, network: &Value) -> Result<BTreeMap<String, Vec<usize>>, String> {
+    let nodes = network["nodes"].as_array().ok_or("Missing network nodes")?;
+    let mut order: Vec<usize> = (0..model.nodes().len()).collect();
+    order.sort_by(|&a, &b| {
+        model.nodes()[a]
+            .1
+            .cmp(&model.nodes()[b].1)
+            .then_with(|| {
+                nodes[b]["capacity"]
+                    .as_f64()
+                    .unwrap()
+                    .total_cmp(&nodes[a]["capacity"].as_f64().unwrap())
+            })
+            .then(a.cmp(&b))
+    });
+    let mut layers: BTreeMap<String, Vec<usize>> = BTreeMap::new();
+    for v in order {
+        layers
+            .entry(model.nodes()[v].1.clone())
+            .or_default()
+            .push(v);
+    }
+    Ok(layers)
+}
+
+/// Each cut's failure certificate (dual value above theta, small gap) and, for every
+/// disrupted node, the surviving predecessor with that node's duration one grid step shorter.
+fn certificates(
+    model: &Model,
+    cuts: &[Vec<i64>],
+    ds: &[i64],
+    theta: f64,
+) -> Result<Vec<Value>, String> {
+    let mut certificates = vec![];
+    for d in cuts {
+        let state: Vec<f64> = d.iter().map(|&x| x as f64).collect();
+        let solved = model.solve(&state, true, None)?;
+        if solved["status"] != "optimal" {
+            return Err(format!("Cut certificate solve: {solved}"));
+        }
+        if !certified_failure(&solved, theta) {
+            return Err("Invalid failing-state or dual-gap certificate".into());
+        }
+        let mut pred = vec![];
+        for (v, &t) in d.iter().enumerate().filter(|(_, d)| **d > 0) {
+            let previous = ds.iter().copied().filter(|&x| x < t).max().unwrap_or(0);
+            let mut p = state.clone();
+            p[v] = previous as f64;
+            let solved = model.solve(&p, false, None)?;
+            if !survives(&solved, theta) {
+                return Err("Nonminimal cut certificate".into());
+            }
+            pred.push(json!({"v":v,"D":previous,"phi":solved["phi"]}));
+        }
+        certificates.push(json!({"state":d,"phi":solved["phi"],"dual":solved["dual"],"gap":solved["gap"],"predecessors":pred}));
+    }
+    Ok(certificates)
 }
 
 fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
@@ -191,31 +291,10 @@ fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
     {
         return Err("Durations must be positive model block ends".into());
     }
-    let nodes = network["nodes"].as_array().ok_or("Missing network nodes")?;
-    let mut order: Vec<usize> = (0..n).collect();
-    order.sort_by(|&a, &b| {
-        model.nodes()[a]
-            .1
-            .cmp(&model.nodes()[b].1)
-            .then_with(|| {
-                nodes[b]["capacity"]
-                    .as_f64()
-                    .unwrap()
-                    .total_cmp(&nodes[a]["capacity"].as_f64().unwrap())
-            })
-            .then(a.cmp(&b))
-    });
-    let mut layers: BTreeMap<String, Vec<usize>> = BTreeMap::new();
-    for v in order {
-        layers
-            .entry(model.nodes()[v].1.clone())
-            .or_default()
-            .push(v);
-    }
     let start = Instant::now();
     let mut search = Search {
         model: &model,
-        layers,
+        layers: layers(&model, network)?,
         ds: ds.clone(),
         cache: BTreeMap::new(),
         cuts: vec![],
@@ -224,63 +303,13 @@ fn enumerate(network: &Value, config: &Value) -> Result<Value, String> {
         theta: alpha * model.total(),
         deadline: start + Duration::from_secs_f64(seconds),
     };
-    if search.fails(&vec![0; n])? {
-        search.cuts.push(vec![0; n]);
-    } else {
-        let names: Vec<String> = search.layers.keys().cloned().collect();
-        for support in 1..=k.min(n) {
-            search.found.clear();
-            let mut all = vec![];
-            patterns(&names, support, 0, &mut vec![], &mut all);
-            for pattern in all {
-                if pattern
-                    .iter()
-                    .any(|p| pattern.iter().filter(|q| *q == p).count() > search.layers[p].len())
-                {
-                    continue;
-                }
-                if let Err(error) = search.visit(&pattern, &vec![0; n], 0, -1) {
-                    if error == "time_limit" {
-                        return Ok(json!({"complete":false,"status":"limit",
-                        "candidate_failing_states":minimal([search.cuts,search.found].concat()),
-                        "lp_calls":search.cache.len(),"seconds":start.elapsed().as_secs_f64()}));
-                    }
-                    return Err(error);
-                }
-            }
-            search.cuts = minimal([search.cuts, search.found.clone()].concat());
-            if support == 1 {
-                for s in &search.cuts {
-                    let v = s.iter().position(|&d| d > 0).unwrap();
-                    search.dmax[v] = ds.iter().copied().filter(|&d| d < s[v]).max().unwrap_or(0);
-                }
-            }
-        }
+    if !search.lattice(k, n)? {
+        return Ok(json!({"complete":false,"status":"limit",
+        "candidate_failing_states":minimal([search.cuts,search.found].concat()),
+        "lp_calls":search.cache.len(),"seconds":start.elapsed().as_secs_f64()}));
     }
     search.cuts.sort();
-    let mut certificates = vec![];
-    for d in &search.cuts {
-        let state: Vec<f64> = d.iter().map(|&x| x as f64).collect();
-        let solved = model.solve(&state, true, None)?;
-        if solved["status"] != "optimal" {
-            return Err(format!("Cut certificate solve: {solved}"));
-        }
-        if !certified_failure(&solved, search.theta) {
-            return Err("Invalid failing-state or dual-gap certificate".into());
-        }
-        let mut pred = vec![];
-        for (v, &t) in d.iter().enumerate().filter(|(_, d)| **d > 0) {
-            let previous = ds.iter().copied().filter(|&x| x < t).max().unwrap_or(0);
-            let mut p = state.clone();
-            p[v] = previous as f64;
-            let solved = model.solve(&p, false, None)?;
-            if !survives(&solved, search.theta) {
-                return Err("Nonminimal cut certificate".into());
-            }
-            pred.push(json!({"v":v,"D":previous,"phi":solved["phi"]}));
-        }
-        certificates.push(json!({"state":d,"phi":solved["phi"],"dual":solved["dual"],"gap":solved["gap"],"predecessors":pred}));
-    }
+    let certificates = certificates(&model, &search.cuts, &ds, search.theta)?;
     Ok(
         json!({"complete":true,"status":"optimal","algorithm":"capacity_dominance_lattice",
         "network":network,
@@ -316,18 +345,13 @@ pub fn search(network: &Value, config: &Value) -> Result<Outcome, String> {
         Outcome::Incomplete(value)
     })
 }
-/// Individual witnesses cannot establish exhaustion. Re-enumerate imported families.
-pub fn admit(network: &Value, config: &Value, supplied: &Value) -> Result<Accepted, String> {
-    if supplied["complete"] != true {
-        return Err("Risk requires a complete cut family".into());
-    }
-    if supplied["network"] != *network {
-        return Err("Cut certificate requires this exact network".into());
-    }
+/// Errors unless every model key of the selected config equals the certified one, both read
+/// with the model defaults and numbers compared as f64.
+pub fn certified_under(config: &Value, certified: &Value) -> Result<(), String> {
     let defaults = json!({"alpha":0.25,"h":0,"sigma":0,"L":6,"T":24,"choice":false,"shares":[0,1],"durations":[3,6,12],"aggregate":true,"k":3});
     for (key, default) in defaults.as_object().unwrap() {
         let selected = config.get(key).unwrap_or(default);
-        let certified = supplied["config"].get(key).unwrap_or(default);
+        let certified = certified.get(key).unwrap_or(default);
         if !(selected == certified
             || selected.is_number()
                 && certified.is_number()
@@ -336,6 +360,17 @@ pub fn admit(network: &Value, config: &Value, supplied: &Value) -> Result<Accept
             return Err(format!("Cut certificate configuration mismatch: {key}"));
         }
     }
+    Ok(())
+}
+/// Individual witnesses cannot establish exhaustion. Re-enumerate imported families.
+pub fn admit(network: &Value, config: &Value, supplied: &Value) -> Result<Accepted, String> {
+    if supplied["complete"] != true {
+        return Err("Risk requires a complete cut family".into());
+    }
+    if supplied["network"] != *network {
+        return Err("Cut certificate requires this exact network".into());
+    }
+    certified_under(config, &supplied["config"])?;
     let Outcome::Complete(fresh) = search(network, config)? else {
         return Err("Imported cut admission requires a completed independent search".into());
     };

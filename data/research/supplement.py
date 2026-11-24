@@ -25,8 +25,8 @@ def frozen(path, data):
         path.write_bytes(data)
 
 
-def main():
-    raw = ROOT / 'data/raw'
+def meti(raw):
+    """Transcribe METI monthly 2024 Li-ion charge output (items 0108, 0109); total kAh."""
     W = load_workbook(raw / 'meti/h2daa2024k.xlsx', read_only=True, data_only=True)
     s = W['実数表']
     rows = list(s.iter_rows(min_row=3488, max_row=3498, values_only=True))
@@ -42,7 +42,11 @@ def main():
             writer.writerow([item, k, f'2024-{month:02}', q])
             total += q
     frozen(raw / 'meti/liion_2024.csv', out.getvalue().encode())
+    return total
 
+
+def prodcom(raw):
+    """Select EU production indicators of five PRODCOM codes; code -> country -> indicator."""
     eurostat = {}
     for code in ['20121955', '20134351', '20134352', '201343Z1', '20134281']:
         rows = list(csv.DictReader((raw / f'eurostat/unfiltered/prodcom-{code}.csv')
@@ -58,37 +62,56 @@ def main():
         eurostat[code] = {c: {x['indicators']: x['OBS_VALUE'] for x in selected
                              if x['reporter'] == c} for c in sorted(EU)}
         assert not any(x['indicators'] == 'APRODQNT' for x in selected)
+    return eurostat
 
+
+def comtrade(raw, code):
+    """Comtrade preview rows of one tariff line, checked to be complete Chinese 2024 exports."""
+    x = json.loads((raw / f'comtrade/{code}.json').read_text())
+    rows = x['data']
+    assert x['count'] == len(rows) < 500
+    assert all(r['cmdCode'] == code and r['reporterCode'] == 156 and
+               r['period'] == 2024 and r['flowCode'] == 'X' for r in rows)
+    return rows
+
+
+def tariff(raw, code, baci, parents, chunks):
+    """Row-sum diagnostic of one Chinese 2024 export tariff line against its BACI parent.
+
+    INPUT   baci .. BACI HS22 rows; parents .. the HS6 codes BACI selected
+    """
+    rows = comtrade(raw, code)
+    dims = ('period', 'reporterCode', 'flowCode', 'partnerCode', 'partner2Code',
+            'classificationCode', 'cmdCode', 'customsCode', 'mosCode', 'motCode')
+    counts = Counter(tuple(r[k] for k in dims) for r in rows)
+    q = sum(float(r['q']) for r in baci if r['i'] == '156' and r['k'] == code[:6]
+            and r['q'])  # BACI q is tonnes; preview netWgt is kg.
+    if code[:6] not in parents:
+        q = None
+    z = sum(r['netWgt'] or 0 for r in rows)/1000
+    check = next((a for a in chunks if a['code'] == code), None)
+    return {'code': code, 'rows': len(rows),
+            'partners': len({r['partnerCode'] for r in rows}),
+            'duplicate_reporting_keys': sum(n-1 for n in counts.values()),
+            'returned_row_mass_t': z, 'BACI_HS22_parent': code[:6],
+            'BACI_parent_export_t': q,
+            'diagnostic_row_sum_to_parent': z/q if rows and q else None,
+            'partner_chunks_match': check['known_partner_chunks_match'] if check
+            else None,
+            'status': 'overlap_and_completeness_unverified' if rows else
+            'no_rows_returned_not_evidence_of_zero_trade'}
+
+
+def main():
+    raw = ROOT / 'data/raw'
+    total = meti(raw)
+    eurostat = prodcom(raw)
     baci = list(csv.DictReader((raw / 'baci/BACI_HS22_Y2024_V202601_selected.csv').open()))
-    selected_codes = {r['k'] for r in baci}
+    parents = {r['k'] for r in baci}
     chunks = json.loads((raw / 'comtrade/chunks.json').read_text())
-    tariffs = []
-    for code in ['28429040', '28539030', '28539050', '2504101000', '2504109100',
-                 '3801100030', '3824999940']:
-        x = json.loads((raw / f'comtrade/{code}.json').read_text())
-        rows = x['data']
-        assert x['count'] == len(rows) < 500
-        assert all(r['cmdCode'] == code and r['reporterCode'] == 156 and
-                   r['period'] == 2024 and r['flowCode'] == 'X' for r in rows)
-        dims = ('period', 'reporterCode', 'flowCode', 'partnerCode', 'partner2Code',
-                'classificationCode', 'cmdCode', 'customsCode', 'mosCode', 'motCode')
-        counts = Counter(tuple(r[k] for k in dims) for r in rows)
-        q = sum(float(r['q']) for r in baci if r['i'] == '156' and r['k'] == code[:6]
-                and r['q'])  # BACI q is tonnes; preview netWgt is kg.
-        if code[:6] not in selected_codes:
-            q = None
-        z = sum(r['netWgt'] or 0 for r in rows)/1000
-        check = next((a for a in chunks if a['code'] == code), None)
-        tariffs.append({'code': code, 'rows': len(rows),
-                        'partners': len({r['partnerCode'] for r in rows}),
-                        'duplicate_reporting_keys': sum(n-1 for n in counts.values()),
-                        'returned_row_mass_t': z, 'BACI_HS22_parent': code[:6],
-                        'BACI_parent_export_t': q,
-                        'diagnostic_row_sum_to_parent': z/q if rows and q else None,
-                        'partner_chunks_match': check['known_partner_chunks_match'] if check
-                        else None,
-                        'status': 'overlap_and_completeness_unverified' if rows else
-                        'no_rows_returned_not_evidence_of_zero_trade'})
+    tariffs = [tariff(raw, code, baci, parents, chunks)
+               for code in ['28429040', '28539030', '28539050', '2504101000', '2504109100',
+                            '3801100030', '3824999940']]
     result = {'period': 2024, 'japan_kAh': total, 'eurostat': eurostat,
               'eurostat_basis': 'sold quantity; no APRODQNT observations; flags retained verbatim',
               'eurostat_attribution': 'Source: Eurostat DS-059358, extracted 2026-10-16; '

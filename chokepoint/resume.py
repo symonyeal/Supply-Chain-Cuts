@@ -31,6 +31,64 @@ def identity(task, root, durations, k, eps):
     ).hexdigest()
 
 
+def _support(cut, n):
+    """A cut is a list of (node, months) integer pairs on distinct nodes 0 <= node < n with
+    positive months."""
+    if not isinstance(cut, list) or any(
+        not isinstance(p, list)
+        or len(p) != 2
+        or type(p[0]) is not int
+        or not 0 <= p[0] < n
+        or type(p[1]) is not int
+        or p[1] <= 0
+        for p in cut
+    ):
+        return False
+    return len({p[0] for p in cut}) == len(cut)
+
+
+def _certified(cert, cut, theta):
+    """A certified failure: finite phi, dual and gap, dual above theta, gap and phi - dual
+    within 1e-6, and one surviving predecessor per cut node."""
+    if cert.get("certified") is not True:
+        return False
+    if not all(
+        type(cert.get(k)) in (int, float) and math.isfinite(cert[k])
+        for k in ("phi", "dual", "gap")
+    ):
+        return False
+    if (
+        not cert["dual"] > theta + 1e-7
+        or not 0 <= cert["gap"] <= 1e-6
+        or abs(cert["phi"] - cert["dual"]) > 1e-6
+    ):
+        return False
+    predecessors = cert.get("predecessors")
+    return (
+        isinstance(predecessors, list)
+        and len(predecessors) == len(cut)
+        and not any(p.get("phi", float("inf")) > theta + 1e-7 for p in predecessors)
+    )
+
+
+def _agrees(value):
+    """Each recorded cross-check agrees with the lattice; the MILP ones are complete."""
+    for name in ("pruned", "milp_full", "brute_full"):
+        if name in value:
+            check = value[name]
+            if name == "pruned" and not (
+                check.get("brute_equals_lattice") is True
+                and check.get("milp_equals_brute") is True
+                and check.get("milp_complete") is True
+            ):
+                return False
+            if name != "pruned" and check.get("equals_lattice") is not True:
+                return False
+            if name == "milp_full" and check.get("complete") is not True:
+                return False
+    return True
+
+
 def reusable(path, fingerprint):
     """A file's existence is not a completed, certified task."""
     try:
@@ -57,53 +115,12 @@ def reusable(path, fingerprint):
             return False
         keys = []
         for cut, cert in zip(cuts, certs, strict=True):
-            if not isinstance(cut, list) or any(
-                not isinstance(p, list)
-                or len(p) != 2
-                or type(p[0]) is not int
-                or not 0 <= p[0] < len(nodes)
-                or type(p[1]) is not int
-                or p[1] <= 0
-                for p in cut
-            ):
-                return False
-            if len({p[0] for p in cut}) != len(cut) or cert.get("certified") is not True:
-                return False
-            if not all(
-                type(cert.get(k)) in (int, float) and math.isfinite(cert[k])
-                for k in ("phi", "dual", "gap")
-            ):
-                return False
-            if (
-                not cert["dual"] > theta + 1e-7
-                or not 0 <= cert["gap"] <= 1e-6
-                or abs(cert["phi"] - cert["dual"]) > 1e-6
-            ):
-                return False
-            predecessors = cert.get("predecessors")
-            if (
-                not isinstance(predecessors, list)
-                or len(predecessors) != len(cut)
-                or any(p.get("phi", float("inf")) > theta + 1e-7 for p in predecessors)
-            ):
+            if not _support(cut, len(nodes)) or not _certified(cert, cut, theta):
                 return False
             keys.append(json.dumps(cut))
         if len(set(keys)) != len(keys):
             return False
-        for name in ("pruned", "milp_full", "brute_full"):
-            if name in value:
-                check = value[name]
-                if name == "pruned" and not (
-                    check.get("brute_equals_lattice") is True
-                    and check.get("milp_equals_brute") is True
-                    and check.get("milp_complete") is True
-                ):
-                    return False
-                if name != "pruned" and check.get("equals_lattice") is not True:
-                    return False
-                if name == "milp_full" and check.get("complete") is not True:
-                    return False
-        return True
+        return _agrees(value)
     except (OSError, ValueError, TypeError, KeyError, AttributeError):
         return False
 

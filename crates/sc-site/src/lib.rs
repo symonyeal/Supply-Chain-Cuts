@@ -218,24 +218,11 @@ fn country_union(law: &Value, cuts: &Value, dj: i64, l: f64) -> Result<Value, St
     Ok(Value::Object(out))
 }
 
-fn block(root: &Path, run: &str) -> Result<(Value, Value, Value, Value), String> {
-    let d = root.join("results").join(run);
-    let net = read(&d.join("network.json"))?;
-    let checks = read(&d.join("data_checks.json"))?;
-    let risk = read(&d.join("risk.json"))?;
-    let n = &net[s(&risk["sector"])];
-    check!(
-        risk["nodes"]
-            == Value::Array(
-                a(&n["nodes"])
-                    .iter()
-                    .map(|x| json!([x["country"], x["product"]]))
-                    .collect()
-            ),
-        "Network roster differs"
-    );
+/// Cut bundles of one run by task, each certified and agreeing with every cross-check it carries
+/// (pruned and full brute force, MILP where complete).
+fn bundles(dir: &Path) -> Result<BTreeMap<String, CutBundle>, String> {
     let mut cuts = BTreeMap::new();
-    for path in files(&d.join("cuts"))? {
+    for path in files(dir)? {
         let bundle = CutBundle::load(&path)?;
         let r = &bundle.row;
         check!(
@@ -267,55 +254,60 @@ fn block(root: &Path, run: &str) -> Result<(Value, Value, Value, Value), String>
             bundle,
         );
     }
-    let mut configs = Map::new();
-    for (key, x) in obj(&risk["configs"])? {
-        check!(
-            0.0 <= f(&x["L"]) && f(&x["L"]) <= f(&x["U"]) && f(&x["U"]) <= 1.0,
-            "Invalid probability bracket"
-        );
-        let task = key
-            .rsplit_once('_')
-            .ok_or("Configuration missing duration")?
-            .0;
-        let bundle = cuts
-            .get(task)
-            .ok_or_else(|| format!("Missing task {task}"))?;
-        let r = &bundle.row;
-        let mut phi = Vec::new();
-        let mut predecessors = Vec::new();
-        for cut in a(&x["cuts"]) {
-            let c = bundle.certificate(cut)?;
-            check!(
-                len(&c["predecessors"]) == len(cut),
-                "Predecessor count differs"
-            );
-            check!(
-                a(&c["predecessors"])
-                    .iter()
-                    .all(|p| f(&p["phi"]) <= f(&r["theta"]) + 1e-7),
-                "Predecessor exceeds failure threshold"
-            );
-            phi.push(f(&c["phi"]) / f(&r["total"]));
-            predecessors.push(witness(c, f(&r["total"])));
-        }
-        let mut out = select(x, &["L", "U", "cuts", "attribution"]);
-        out["phi"] = json!(phi);
-        out["predecessors"] = json!(predecessors);
-        out["country_union"] = country_union(
-            &risk,
-            &x["cuts"],
-            x["DJ"].as_i64().ok_or("Invalid maximum outage")?,
-            f(&x["L"]),
-        )?;
-        configs.insert(key.replace("base_", ""), out);
-    }
-    let head = &configs["a0.25_h0_s0_L6_D12"]["country_union"];
+    Ok(cuts)
+}
+
+/// One configuration x of the risk file: its bracket, cuts with phi and surviving predecessor
+/// witnesses from the task's bundle, and per-country unions.
+fn configuration(
+    key: &str,
+    x: &Value,
+    cuts: &BTreeMap<String, CutBundle>,
+    risk: &Value,
+) -> Result<Value, String> {
     check!(
-        obj(&risk["attribution"]["country_union"])?
-            .iter()
-            .all(|(c, z)| close(f(&head[c]), f(z))),
-        "Saved headline country unions differ"
+        0.0 <= f(&x["L"]) && f(&x["L"]) <= f(&x["U"]) && f(&x["U"]) <= 1.0,
+        "Invalid probability bracket"
     );
+    let task = key
+        .rsplit_once('_')
+        .ok_or("Configuration missing duration")?
+        .0;
+    let bundle = cuts
+        .get(task)
+        .ok_or_else(|| format!("Missing task {task}"))?;
+    let r = &bundle.row;
+    let mut phi = Vec::new();
+    let mut predecessors = Vec::new();
+    for cut in a(&x["cuts"]) {
+        let c = bundle.certificate(cut)?;
+        check!(
+            len(&c["predecessors"]) == len(cut),
+            "Predecessor count differs"
+        );
+        check!(
+            a(&c["predecessors"])
+                .iter()
+                .all(|p| f(&p["phi"]) <= f(&r["theta"]) + 1e-7),
+            "Predecessor exceeds failure threshold"
+        );
+        phi.push(f(&c["phi"]) / f(&r["total"]));
+        predecessors.push(witness(c, f(&r["total"])));
+    }
+    let mut out = select(x, &["L", "U", "cuts", "attribution"]);
+    out["phi"] = json!(phi);
+    out["predecessors"] = json!(predecessors);
+    out["country_union"] = country_union(
+        risk,
+        &x["cuts"],
+        x["DJ"].as_i64().ok_or("Invalid maximum outage")?,
+        f(&x["L"]),
+    )?;
+    Ok(out)
+}
+
+/// Node columns: roster, capacity basis and source, years of requirement, fitted rates.
+fn columns(risk: &Value, n: &Value) -> Map<String, Value> {
     let mut nodes = Map::new();
     for key in ["country", "product"] {
         let i = if key == "country" { 0 } else { 1 };
@@ -342,6 +334,12 @@ fn block(root: &Path, run: &str) -> Result<(Value, Value, Value, Value), String>
     for key in ["p", "exposure", "onsets"] {
         nodes.insert(key.into(), risk["rates"][key].clone());
     }
+    nodes
+}
+
+/// IS, MC and residual estimates by alpha; each residual estimate must be the exact lower
+/// bound L plus the sampled residual rate, with an interval meeting the bracket [L, U].
+fn estimates(risk: &Value) -> Result<Map<String, Value>, String> {
     let mut estimates = Map::new();
     for (alpha, e) in obj(&risk["residual"])? {
         let alpha = alpha.parse::<f64>().map_err(|e| e.to_string())?.to_string();
@@ -376,11 +374,64 @@ fn block(root: &Path, run: &str) -> Result<(Value, Value, Value, Value), String>
             "residual":risk["residual"][&alpha]}),
         );
     }
+    Ok(estimates)
+}
+
+fn block(root: &Path, run: &str) -> Result<(Value, Value, Value, Value), String> {
+    let d = root.join("results").join(run);
+    let net = read(&d.join("network.json"))?;
+    let checks = read(&d.join("data_checks.json"))?;
+    let risk = read(&d.join("risk.json"))?;
+    let n = &net[s(&risk["sector"])];
+    check!(
+        risk["nodes"]
+            == Value::Array(
+                a(&n["nodes"])
+                    .iter()
+                    .map(|x| json!([x["country"], x["product"]]))
+                    .collect()
+            ),
+        "Network roster differs"
+    );
+    let cuts = bundles(&d.join("cuts"))?;
+    let mut configs = Map::new();
+    for (key, x) in obj(&risk["configs"])? {
+        configs.insert(
+            key.replace("base_", ""),
+            configuration(key, x, &cuts, &risk)?,
+        );
+    }
+    let head = &configs["a0.25_h0_s0_L6_D12"]["country_union"];
+    check!(
+        obj(&risk["attribution"]["country_union"])?
+            .iter()
+            .all(|(c, z)| close(f(&head[c]), f(z))),
+        "Saved headline country unions differ"
+    );
+    let nodes = columns(&risk, n);
+    let estimates = estimates(&risk)?;
     let out = json!({"meta":{"run":run,"revision":risk["stamp"]["revision"],
         "lock":risk["stamp"]["lock_sha256"],"rho":risk["rates"]["rho"],
         "durations":risk["durations"],"D1":risk["D1"]},"nodes":nodes,"configs":configs,
         "estimates":estimates,"attribution":risk["attribution"]});
     Ok((out, n.clone(), risk, checks))
+}
+
+/// The free-share cut bundle of one chemistry task, complete, clean, on the law's roster, and
+/// with the same cuts as the bounded-share list.
+fn free_bundle(dir: &Path, sector: &str, task: &str, law: &Value) -> Result<CutBundle, String> {
+    let bundle = CutBundle::load(&dir.join(format!("{sector}_free_{task}.json")))?;
+    let r = &bundle.row;
+    let bounded = read(&dir.join(format!("{sector}_bounded_{task}.json")))?;
+    check!(
+        b(&r["complete"]) && b(&bounded["complete"]) && r["cuts"] == bounded["cuts"],
+        "Chemistry free/bounded lists differ or are incomplete"
+    );
+    check!(
+        clean(&r["stamp"]) && r["nodes"] == law["nodes"],
+        "Dirty chemistry or roster differs"
+    );
+    Ok(bundle)
 }
 
 fn chemistry(
@@ -405,25 +456,7 @@ fn chemistry(
             .ok_or("Invalid chemistry configuration")?;
         let dj = dj.parse::<i64>().map_err(|e| e.to_string())?;
         if !bundles.contains_key(task) {
-            let bundle = CutBundle::load(
-                &d.join(cut_run)
-                    .join("cuts")
-                    .join(format!("{sector}_free_{task}.json")),
-            )?;
-            let r = &bundle.row;
-            let bounded = read(
-                &d.join(cut_run)
-                    .join("cuts")
-                    .join(format!("{sector}_bounded_{task}.json")),
-            )?;
-            check!(
-                b(&r["complete"]) && b(&bounded["complete"]) && r["cuts"] == bounded["cuts"],
-                "Chemistry free/bounded lists differ or are incomplete"
-            );
-            check!(
-                clean(&r["stamp"]) && r["nodes"] == law["nodes"],
-                "Dirty chemistry or roster differs"
-            );
+            let bundle = free_bundle(&d.join(cut_run).join("cuts"), sector, task, law)?;
             bundles.insert(task.to_string(), bundle);
         }
         let bundle = &bundles[task];
