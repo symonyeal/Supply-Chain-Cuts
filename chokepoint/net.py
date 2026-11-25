@@ -70,87 +70,131 @@ def _usgs(root, names):
     return prod, unparsed
 
 
-def _origins(put, trade, nodes, prod, iso3, B):
-    """Li-ion origins: USGS 2024 output and BACI export proxies, with synthetic graphite exports
-    added to natural graphite."""
-    for (c, p), value in prod.items():
-        put(c, p, value/1000, "production", "kt", "USGS MCS2026, 2024 production")
-    for c in iso3:
-        put(c, "li_carbonate", trade(c, "li_carbonate"), "trade", "kt",
-            "BACI HS12 2024 283691", "Export proxy, kt Li2CO3")
-        put(c, "refined_ni", trade(c, "refined_ni"), "trade", "kt",
-            "BACI HS12 2024 750210", "Export proxy; omits domestically absorbed metal")
-        put(c, "cell", trade(c, "cell", B["specific_energy_wh_kg"]/1e6), "trade", "GWh",
-            "BACI HS12 2024 850760", "Pack Wh/kg applied to mixed cell/pack exports")
-        synthetic = trade(c, "synthetic_graphite")
-        if synthetic:
-            put(c, "graphite", nodes.get((c, "graphite"), {}).get("annual", 0) + synthetic,
-                "imputed", "kt", "USGS natural + BACI 380110 synthetic exports",
-                "Substitution assumed; synthetic exports include non-anode use")
+class _Nodes:
+    """The country-product nodes of one network, filled from the frozen source tables.
 
+    INPUT  root: input tree; B: bill of materials; exports[HS rev][country, HS6]: BACI tonnes;
+           iso3: origins; observed: production basis (statistics override the export proxies);
+           exclude: (country, product) pairs never admitted.
+    nodes[c, p] holds annual output with its basis, unit, source and note; trade(c, p) is the
+    BACI export proxy in kt.
+    """
 
-def _observed(root, put, miit, japan_voltage, eu_sold):
-    """Production statistics that override the export proxies on the production basis: USGS MYB
-    cobalt, MIIT China, Cochilco Chile and the optional METI and Eurostat variants."""
-    for x in csv.DictReader((root / "data/raw/usgs/myb2023_cobalt_refinery.csv").open()):
-        if x["value"]:
-            put(x["iso3"], "refined_co", float(x["value"])/1000, "production", "kt",
-                "USGS MYB 2023 Table 8", f"2023 refinery output, {x['qualifier']}")
-    put("CHN", "cell", miit["li_ion_cell"], "production", "GWh", "MIIT 2024")
-    put("CHN", "li_carbonate", (miit["battery_grade_lithium_carbonate"]
-        + miit["battery_grade_lithium_hydroxide"]*LCE_LIOH)/1000, "production", "kt",
-        "MIIT 2024", "Battery-grade carbonate + LiOH·H2O as LCE")
-    for x in csv.DictReader((root / "data/raw/cochilco/lithium_chemicals_2024.csv")
-                            .open()):
-        if x["product_source_label"] == "CARBONATO DE LITIO":
-            put("CHL", "li_carbonate", float(x["value"])/1000, "production", "kt",
-                "Cochilco Hoja1 AD21", "Carbonate only; sulfate excluded")
-    if japan_voltage is not None:
-        J = list(csv.DictReader((root / "data/raw/meti/liion_2024.csv").open()))
-        q = sum(float(x["production_kAh"]) for x in J)
-        put("JPN", "cell", q*japan_voltage/1e6, "imputed", "GWh",
-            "METI 2024 h2daa2024k, items 0108/0109",
-            f"Sealed Li-ion production kAh times assumed {japan_voltage} V; "
-            "not installed capacity; scope excludes unreported battery categories")
-    if eu_sold:
-        E = json.loads((root / "data/raw/supplement/reconciliation.json").read_text())
-        q = E['eurostat']['201343Z1']['DE']['PRODQNT']
-        put("DEU", "li_carbonate", float(q)/1e6, "imputed", "kt",
-            "Eurostat Prodcom 2024 201343Z1 sold quantity",
-            "Sold-output proxy, both purity grades; not actual production or battery grade")
+    def __init__(self, root, B, exports, iso3, observed, exclude):
+        self.root, self.B, self.exports, self.iso3 = root, B, exports, iso3
+        self.observed, self.exclude, self.nodes = observed, exclude, {}
+        self.miit = {x["product"]: float(x["value"]) for x in csv.DictReader(
+            (root / "data/raw/miit/production_2024.csv").open()) if x["statistic"] == "production"}
 
+    def put(self, c, p, annual, label, unit, source, note=""):
+        """Set node (c, p) unless it has no output or is excluded."""
+        if annual > 0 and (c, p) not in self.exclude:
+            self.nodes[c, p] = {"country": c, "product": p, "annual": annual, "basis": label,
+                                "unit": unit, "source": source, "note": note}
 
-def _midstream(put, nodes, miit, B, observed, ncm):
-    """Cathode, anode and precursor nodes imputed from each cell origin's output by the BOM;
-    China's cathode and anode come from MIIT on the production basis."""
-    for c, output in [(c, x["annual"]) for (c, p), x in list(nodes.items()) if p == "cell"]:
-        china = c == "CHN" and observed
-        put(c, "cam", miit["cathode_active_material"]/1000 if china else output*B["cam_kg_kwh"],
-            "production" if china else "imputed", "kt", "MIIT 2024" if china else "BOM x cell")
-        put(c, "aam", miit["anode_active_material"]/1000 if china else output*B["kg_kwh"][
-            "Graphite"], "production" if china else "imputed", "kt",
-            "MIIT 2024" if china else "BOM x cell")
-        if ncm:
-            put(c, "pcam", output*B["pcam_kg_kwh"], "imputed", "kt", "BOM x cell",
-                "No pCAM production statistic; tariff-line coverage incomplete")
+    def trade(self, c, p, scale=1e-3):
+        return scale*sum(self.exports["22" if p in PV else "12"].get((c, hs), 0) for hs in HS[p])
 
+    def fill(self, sector, ncm, prod, japan_voltage, eu_sold):
+        """Put the origins of `sector`: Li-ion (USGS output, BACI proxies, production overrides,
+        BOM-imputed midstream) and PV; prod[c, p] is USGS output in t."""
+        if sector in ("liion", "joint"):
+            self._origins(prod)
+            if self.observed:
+                self._observed(japan_voltage, eu_sold)
+            else:
+                for c in self.iso3:
+                    self.put(c, "refined_co", self.trade(c, "refined_co"), "trade", "kt",
+                             "BACI HS12 2024 810520", "Export proxy; HS810520 mixes intermediates")
+            self._midstream(ncm)
+        if sector in ("pv", "joint"):
+            self._pv()
 
-def _pv(put, exports, miit, iso3, observed):
-    """PV origins: BACI HS22 exports scaled to MIIT China GW, with MIIT China production on the
-    production basis."""
-    gw = {"wafer": 60.9, "pv_cell": 57.5, "module": 238.8}     # MIIT China exports, GW
-    for p in PV:
-        hs = HS[p][0]
-        factor = 1e-3 if p == "polysilicon" else gw[p]/exports["22"]["CHN", hs]
-        for c in iso3:
-            put(c, p, exports["22"].get((c, hs), 0)*factor, "trade",
-                "kt" if p == "polysilicon" else "GW", "BACI HS22 2024 / MIIT China exports",
-                "HS22 only; silicon and wafer codes include semiconductor products")
-        if observed:
-            key = "pv_cell" if p == "pv_cell" else "pv_" + p
-            put("CHN", p, miit[key]/1000 if p == "polysilicon" else miit[key], "production",
-                "kt" if p == "polysilicon" else "GW", "MIIT 2024",
-                "Strict lower bound" if p == "polysilicon" else "")
+    def _origins(self, prod):
+        """Li-ion origins: USGS 2024 output and BACI export proxies, with synthetic graphite
+        exports added to natural graphite."""
+        put, trade = self.put, self.trade
+        for (c, p), value in prod.items():
+            put(c, p, value/1000, "production", "kt", "USGS MCS2026, 2024 production")
+        for c in self.iso3:
+            put(c, "li_carbonate", trade(c, "li_carbonate"), "trade", "kt",
+                "BACI HS12 2024 283691", "Export proxy, kt Li2CO3")
+            put(c, "refined_ni", trade(c, "refined_ni"), "trade", "kt",
+                "BACI HS12 2024 750210", "Export proxy; omits domestically absorbed metal")
+            put(c, "cell", trade(c, "cell", self.B["specific_energy_wh_kg"]/1e6), "trade", "GWh",
+                "BACI HS12 2024 850760", "Pack Wh/kg applied to mixed cell/pack exports")
+            synthetic = trade(c, "synthetic_graphite")
+            if synthetic:
+                put(c, "graphite",
+                    self.nodes.get((c, "graphite"), {}).get("annual", 0) + synthetic,
+                    "imputed", "kt", "USGS natural + BACI 380110 synthetic exports",
+                    "Substitution assumed; synthetic exports include non-anode use")
+
+    def _observed(self, japan_voltage, eu_sold):
+        """Production statistics that override the export proxies on the production basis: USGS
+        MYB cobalt, MIIT China, Cochilco Chile and the optional METI and Eurostat variants."""
+        root, put, miit = self.root, self.put, self.miit
+        for x in csv.DictReader((root / "data/raw/usgs/myb2023_cobalt_refinery.csv").open()):
+            if x["value"]:
+                put(x["iso3"], "refined_co", float(x["value"])/1000, "production", "kt",
+                    "USGS MYB 2023 Table 8", f"2023 refinery output, {x['qualifier']}")
+        put("CHN", "cell", miit["li_ion_cell"], "production", "GWh", "MIIT 2024")
+        put("CHN", "li_carbonate", (miit["battery_grade_lithium_carbonate"]
+            + miit["battery_grade_lithium_hydroxide"]*LCE_LIOH)/1000, "production", "kt",
+            "MIIT 2024", "Battery-grade carbonate + LiOH·H2O as LCE")
+        for x in csv.DictReader((root / "data/raw/cochilco/lithium_chemicals_2024.csv")
+                                .open()):
+            if x["product_source_label"] == "CARBONATO DE LITIO":
+                put("CHL", "li_carbonate", float(x["value"])/1000, "production", "kt",
+                    "Cochilco Hoja1 AD21", "Carbonate only; sulfate excluded")
+        if japan_voltage is not None:
+            J = list(csv.DictReader((root / "data/raw/meti/liion_2024.csv").open()))
+            q = sum(float(x["production_kAh"]) for x in J)
+            put("JPN", "cell", q*japan_voltage/1e6, "imputed", "GWh",
+                "METI 2024 h2daa2024k, items 0108/0109",
+                f"Sealed Li-ion production kAh times assumed {japan_voltage} V; "
+                "not installed capacity; scope excludes unreported battery categories")
+        if eu_sold:
+            E = json.loads((root / "data/raw/supplement/reconciliation.json").read_text())
+            q = E['eurostat']['201343Z1']['DE']['PRODQNT']
+            put("DEU", "li_carbonate", float(q)/1e6, "imputed", "kt",
+                "Eurostat Prodcom 2024 201343Z1 sold quantity",
+                "Sold-output proxy, both purity grades; not actual production or battery grade")
+
+    def _midstream(self, ncm):
+        """Cathode, anode and precursor nodes imputed from each cell origin's output by the BOM;
+        China's cathode and anode come from MIIT on the production basis."""
+        put, miit, B = self.put, self.miit, self.B
+        for c, output in [(c, x["annual"]) for (c, p), x in list(self.nodes.items())
+                          if p == "cell"]:
+            china = c == "CHN" and self.observed
+            put(c, "cam",
+                miit["cathode_active_material"]/1000 if china else output*B["cam_kg_kwh"],
+                "production" if china else "imputed", "kt", "MIIT 2024" if china else "BOM x cell")
+            put(c, "aam", miit["anode_active_material"]/1000 if china else output*B["kg_kwh"][
+                "Graphite"], "production" if china else "imputed", "kt",
+                "MIIT 2024" if china else "BOM x cell")
+            if ncm:
+                put(c, "pcam", output*B["pcam_kg_kwh"], "imputed", "kt", "BOM x cell",
+                    "No pCAM production statistic; tariff-line coverage incomplete")
+
+    def _pv(self):
+        """PV origins: BACI HS22 exports scaled to MIIT China GW, with MIIT China production on
+        the production basis."""
+        put, miit, exports = self.put, self.miit, self.exports
+        gw = {"wafer": 60.9, "pv_cell": 57.5, "module": 238.8}     # MIIT China exports, GW
+        for p in PV:
+            hs = HS[p][0]
+            factor = 1e-3 if p == "polysilicon" else gw[p]/exports["22"]["CHN", hs]
+            for c in self.iso3:
+                put(c, p, exports["22"].get((c, hs), 0)*factor, "trade",
+                    "kt" if p == "polysilicon" else "GW", "BACI HS22 2024 / MIIT China exports",
+                    "HS22 only; silicon and wafer codes include semiconductor products")
+            if self.observed:
+                key = "pv_cell" if p == "pv_cell" else "pv_" + p
+                put("CHN", p, miit[key]/1000 if p == "polysilicon" else miit[key], "production",
+                    "kt" if p == "polysilicon" else "GW", "MIIT 2024",
+                    "Strict lower bound" if p == "polysilicon" else "")
 
 
 def _arcs(sector, ncm, B):
@@ -242,40 +286,18 @@ def build(root=Path("."), sector="liion", ncm=0.5, cutoff=0.01, basis="productio
                   "united states": "USA", "tanzania": "TZA", "bolivia": "BOL",
                   "burma": "MMR", "laos": "LAO"})
     prod, unparsed = _usgs(root, names)
-    miit = {x["product"]: float(x["value"]) for x in csv.DictReader(
-        (root / "data/raw/miit/production_2024.csv").open()) if x["statistic"] == "production"}
     iso3 = sorted(set(countries.values()))
-    observed = basis == "production"
-    nodes = {}
-
-    def put(c, p, annual, label, unit, source, note=""):
-        if annual > 0 and (c, p) not in exclude:
-            nodes[c, p] = {"country": c, "product": p, "annual": annual, "basis": label,
-                           "unit": unit, "source": source, "note": note}
-
-    def trade(c, p, scale=1e-3):
-        return scale*sum(exports["22" if p in PV else "12"].get((c, hs), 0) for hs in HS[p])
-
-    if sector in ("liion", "joint"):
-        _origins(put, trade, nodes, prod, iso3, B)
-        if observed:
-            _observed(root, put, miit, japan_voltage, eu_sold)
-        else:
-            for c in iso3:
-                put(c, "refined_co", trade(c, "refined_co"), "trade", "kt",
-                    "BACI HS12 2024 810520", "Export proxy; HS810520 mixes intermediates")
-        _midstream(put, nodes, miit, B, observed, ncm)
-    if sector in ("pv", "joint"):
-        _pv(put, exports, miit, iso3, observed)
+    origins = _Nodes(root, B, exports, iso3, basis == "production", exclude)
+    origins.fill(sector, ncm, prod, japan_voltage, eu_sold)
     a = _arcs(sector, ncm, B)
     used = {p for edge in a for p in edge}
-    totals, selected, coverage, hhi, top = _shares(nodes, used, cutoff)
+    totals, selected, coverage, hhi, top = _shares(origins.nodes, used, cutoff)
     finals = [p for p in ("cell", "module") if p in totals]
     order = sorted(used - set(finals), key=lambda p: _depth(p, a))
     R, S, scale = _requirement(selected, finals, order, a)
     for x in selected:
         x["capacity"] = x["annual"]/(12*R[x["product"]])
-    exported, imported = _flows(iso3, trade, imports)
+    exported, imported = _flows(iso3, origins.trade, imports)
     return {"sector": sector, "nodes": selected, "a": [[p, q, x] for (p, q), x in a.items()],
             "requirement": R, "supply_ratio": S, "finals": finals, "demand_scale": scale,
             "annual_totals": dict(totals), "coverage": dict(coverage), "cutoff": cutoff,

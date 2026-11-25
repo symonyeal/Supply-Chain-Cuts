@@ -242,52 +242,96 @@ fn endpoint(
     Ok((cam, out))
 }
 
-/// Replace the cathode and cell layers by the LFP and NCM endpoint recipes
-/// (chokepoint/chemistry.py); returns the share bounds (lo, hi).
-fn chemistry(
-    network: &Value,
-    config: &Value,
-    finals: &[String],
-    requirement: &mut BTreeMap<String, f64>,
-    recipes: &mut BTreeMap<String, Vec<Recipe>>,
-    stock: &mut BTreeMap<(String, String), f64>,
-) -> Result<(f64, f64), String> {
-    if network["ncm"].as_f64() != Some(0.5) || !finals.iter().any(|p| p == "cell") {
-        return Err("Chemistry choice requires the 50% reference cell network".into());
-    }
-    let (lo, hi) = shares(config)?;
-    let bom = array(network, "recipe_bom")?;
-    if bom.len() != 2 {
-        return Err("Two endpoint recipe BOMs required".into());
-    }
-    let cam_req = *requirement.get("cam").ok_or("Missing cam requirement")?;
-    requirement.insert("cam_lfp".into(), cam_req);
-    requirement.insert("cam_ncm".into(), cam_req);
-    recipes.insert("cam".into(), Vec::new());
-    recipes.insert("cell".into(), Vec::new());
-    stock.retain(|(_, q), _| q != "cam" && q != "cell");
-    let blend_cam = (required(&bom[0], "cam_kg_kwh")? + required(&bom[1], "cam_kg_kwh")?) / 2.0;
-    for (name, b) in ["lfp", "ncm"].into_iter().zip(bom) {
-        let (cam, layers) = endpoint(b, name, requirement)?;
-        for (layer, recipe) in layers {
-            let weight = if layer == "cam" {
-                cam / (2.0 * blend_cam)
-            } else {
-                0.5
-            };
-            for (p, &x) in &recipe.inputs {
-                *stock.entry((p.clone(), layer.to_owned())).or_default() += weight * x;
-            }
-            recipes.get_mut(layer).unwrap().push(recipe);
+/// Recipes by layer, the requirements R_p they are written in and the reference stock inputs
+/// (input, layer) per unit of layer capacity.
+struct Chain {
+    requirement: BTreeMap<String, f64>,
+    recipes: BTreeMap<String, Vec<Recipe>>,
+    stock: BTreeMap<(String, String), f64>,
+}
+
+impl Chain {
+    /// One recipe per layer of the nodes v from the input coefficients, which are also the
+    /// reference stock.
+    fn new(
+        v: &[Node],
+        requirement: BTreeMap<String, f64>,
+        coefficients: &BTreeMap<(String, String), f64>,
+    ) -> Self {
+        let layers: BTreeSet<&String> = v.iter().map(|(_, p)| p).collect();
+        let recipes = layers
+            .into_iter()
+            .map(|p| {
+                let inputs = coefficients
+                    .iter()
+                    .filter(|((_, q), _)| q == p)
+                    .map(|((q, _), &x)| (q.clone(), x))
+                    .collect();
+                (
+                    p.clone(),
+                    vec![Recipe {
+                        name: p.clone(),
+                        output: p.clone(),
+                        inputs,
+                    }],
+                )
+            })
+            .collect();
+        Self {
+            requirement,
+            recipes,
+            stock: coefficients.clone(),
         }
     }
-    for rs in recipes.values_mut() {
-        rs.retain(|r| {
-            !(r.output == "cell"
-                && ((hi == 0.0 && r.name == "ncm") || (lo == 1.0 && r.name != "ncm")))
-        });
+
+    /// Replace the cathode and cell layers by the LFP and NCM endpoint recipes
+    /// (chokepoint/chemistry.py); returns the share bounds (lo, hi).
+    fn chemistry(
+        &mut self,
+        network: &Value,
+        config: &Value,
+        finals: &[String],
+    ) -> Result<(f64, f64), String> {
+        if network["ncm"].as_f64() != Some(0.5) || !finals.iter().any(|p| p == "cell") {
+            return Err("Chemistry choice requires the 50% reference cell network".into());
+        }
+        let (lo, hi) = shares(config)?;
+        let bom = array(network, "recipe_bom")?;
+        if bom.len() != 2 {
+            return Err("Two endpoint recipe BOMs required".into());
+        }
+        let cam_req = *self
+            .requirement
+            .get("cam")
+            .ok_or("Missing cam requirement")?;
+        self.requirement.insert("cam_lfp".into(), cam_req);
+        self.requirement.insert("cam_ncm".into(), cam_req);
+        self.recipes.insert("cam".into(), Vec::new());
+        self.recipes.insert("cell".into(), Vec::new());
+        self.stock.retain(|(_, q), _| q != "cam" && q != "cell");
+        let blend_cam = (required(&bom[0], "cam_kg_kwh")? + required(&bom[1], "cam_kg_kwh")?) / 2.0;
+        for (name, b) in ["lfp", "ncm"].into_iter().zip(bom) {
+            let (cam, layers) = endpoint(b, name, &self.requirement)?;
+            for (layer, recipe) in layers {
+                let weight = if layer == "cam" {
+                    cam / (2.0 * blend_cam)
+                } else {
+                    0.5
+                };
+                for (p, &x) in &recipe.inputs {
+                    *self.stock.entry((p.clone(), layer.to_owned())).or_default() += weight * x;
+                }
+                self.recipes.get_mut(layer).unwrap().push(recipe);
+            }
+        }
+        for rs in self.recipes.values_mut() {
+            rs.retain(|r| {
+                !(r.output == "cell"
+                    && ((hi == 0.0 && r.name == "ncm") || (lo == 1.0 && r.name != "ncm")))
+            });
+        }
+        Ok((lo, hi))
     }
-    Ok((lo, hi))
 }
 
 /// M_p: the largest rate of p that one unit of final demand can use, over the acyclic
@@ -557,40 +601,15 @@ impl Model {
         let r = recourse(config)?;
         let horizon = r.horizon;
         let (v, original_u) = nodes(network)?;
-        let (finals, mut requirement) = demand(network)?;
+        let (finals, requirement) = demand(network)?;
         let coefficients = coefficients(network, &requirement)?;
-        let layers: BTreeSet<String> = v.iter().map(|(_, p)| p.clone()).collect();
-        let mut recipes: BTreeMap<String, Vec<Recipe>> = layers
-            .iter()
-            .map(|p| {
-                let inputs = coefficients
-                    .iter()
-                    .filter(|((_, q), _)| q == p)
-                    .map(|((q, _), &x)| (q.clone(), x))
-                    .collect();
-                (
-                    p.clone(),
-                    vec![Recipe {
-                        name: p.clone(),
-                        output: p.clone(),
-                        inputs,
-                    }],
-                )
-            })
-            .collect();
-        let mut stock = coefficients.clone();
+        let mut chain = Chain::new(&v, requirement, &coefficients);
         let mut shares = Vec::new();
         if r.choice {
-            let (lo, hi) = chemistry(
-                network,
-                config,
-                &finals,
-                &mut requirement,
-                &mut recipes,
-                &mut stock,
-            )?;
+            let (lo, hi) = chain.chemistry(network, config, &finals)?;
             shares.push(("cell".to_string(), lo, hi));
         }
+        let Chain { recipes, stock, .. } = chain;
         let arcs: Vec<(String, String, f64)> = recipes
             .values()
             .flatten()

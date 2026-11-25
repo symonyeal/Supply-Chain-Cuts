@@ -159,53 +159,69 @@ def bom():
     return b, C, P, E
 
 
-def battery(A, basis, Q, M, b, C, P, E):
-    """Add the battery layers to A and basis: cells from export energy, imputed CAM, pCAM and
-    AAM, trade proxies, and national production (MIIT, Cochilco, USGS cobalt refinery)."""
-    A["cell"] = {c: q * E / 1e6 for c, q in Q[12]["850760"].items()}
-    A["cell"]["CHN"] = M["li_ion_cell", "production"]
-    for c in A["cell"]:
-        basis[c, "cell"] = "production" if c == "CHN" else "trade"
-    for p, a in (("cam", C), ("pcam", P), ("aam", b["Graphite"])):
-        A[p] = {c: q * a for c, q in A["cell"].items()}
-        for c in A[p]:
-            basis[c, p] = "imputed"
-    for p, key in (("cam", "cathode_active_material"), ("aam", "anode_active_material")):
-        A[p]["CHN"] = M[key, "production"] / 1000
-        basis["CHN", p] = "production"
-    for p, k in (("li_carbonate", "283691"), ("refined_ni", "750210")):
-        A[p] = {c: q / 1000 for c, q in Q[12][k].items()}
-        for c in A[p]:
-            basis[c, p] = "trade"
-    A["li_carbonate"]["CHN"] = (
-        M["battery_grade_lithium_carbonate", "production"]
-        + M["battery_grade_lithium_hydroxide", "production"] * 73.891 / (2 * 41.964)
-    ) / 1000
-    Z = rows("data/raw/cochilco/lithium_chemicals_2024.csv")
-    A["li_carbonate"]["CHL"] = next(float(r["value"]) / 1000 for r in Z if r["cell"] == "AD21")
-    basis["CHN", "li_carbonate"] = basis["CHL", "li_carbonate"] = "production"
-    for r in rows("data/raw/usgs/myb2023_cobalt_refinery.csv"):
-        if r["value"] and float(r["value"]) > 0:
-            A["refined_co"][r["iso3"]] = float(r["value"]) / 1000
-            basis[r["iso3"], "refined_co"] = "production"
-    for c, q in Q[12]["380110"].items():
-        A["graphite"][c] = A["graphite"].get(c, 0) + q / 1000
-        basis[c, "graphite"] = "imputed"
+class Supply:
+    """Annual supply A[p][c] of layer p in origin c (kt; GWh for cells; GW for PV) and its
+    basis[c, p]: production, trade or imputed.
 
+    Layers: USGS output, BACI exports, cells from export energy, imputed CAM, pCAM and AAM,
+    trade proxies, national production (MIIT, Cochilco, USGS cobalt refinery), and the PV layers
+    from HS22 exports scaled to MIIT export totals. Also unparsed (MCS rows), missing (BACI rows
+    without mass) and the bill of materials b, C, P, E of bom().
+    """
 
-def solar(A, basis, Q, M):
-    """Add the PV layers: HS22 exports scaled to MIIT export totals, MIIT production for CHN."""
-    for p, k, key in (
-        ("polysilicon", "280461", "pv_polysilicon"),
-        ("wafer", "381800", "pv_wafer"),
-        ("pv_cell", "854142", "pv_cell"),
-        ("module", "854143", "pv_module"),
-    ):
-        a = 1 / 1000 if p == "polysilicon" else M[key, "export"] / Q[22][k]["CHN"]
-        A[p] = {c: q * a for c, q in Q[22][k].items()}
-        A[p]["CHN"] = M[key, "production"] * (0.001 if p == "polysilicon" else 1)
-        for c in A[p]:
-            basis[c, p] = "production" if c == "CHN" else "trade"
+    def __init__(self, iso, names):
+        self.A, self.basis, self.unparsed = usgs(names)
+        Q, self.missing = baci(iso)
+        self.b, self.C, self.P, self.E = bom()
+        b, C, P, E = self.b, self.C, self.P, self.E
+        Z = rows("data/raw/miit/production_2024.csv")
+        M = {(r["product"], r["statistic"]): float(r["value"]) for r in Z}
+        for c, q in Q[12]["850760"].items():
+            self.put("cell", c, q * E / 1e6, "trade")
+        self.put("cell", "CHN", M["li_ion_cell", "production"], "production")
+        for p, a in (("cam", C), ("pcam", P), ("aam", b["Graphite"])):
+            for c, q in list(self.A["cell"].items()):
+                self.put(p, c, q * a, "imputed")
+        for p, key in (("cam", "cathode_active_material"), ("aam", "anode_active_material")):
+            self.put(p, "CHN", M[key, "production"] / 1000, "production")
+        for p, k in (("li_carbonate", "283691"), ("refined_ni", "750210")):
+            for c, q in Q[12][k].items():
+                self.put(p, c, q / 1000, "trade")
+        self.put(
+            "li_carbonate",
+            "CHN",
+            (
+                M["battery_grade_lithium_carbonate", "production"]
+                + M["battery_grade_lithium_hydroxide", "production"] * 73.891 / (2 * 41.964)
+            )
+            / 1000,
+            "production",
+        )
+        Z = rows("data/raw/cochilco/lithium_chemicals_2024.csv")
+        chile = next(float(r["value"]) / 1000 for r in Z if r["cell"] == "AD21")
+        self.put("li_carbonate", "CHL", chile, "production")
+        for r in rows("data/raw/usgs/myb2023_cobalt_refinery.csv"):
+            if r["value"] and float(r["value"]) > 0:
+                self.put("refined_co", r["iso3"], float(r["value"]) / 1000, "production")
+        for c, q in Q[12]["380110"].items():
+            self.put("graphite", c, self.A["graphite"].get(c, 0) + q / 1000, "imputed")
+        for p, k, key in (
+            ("polysilicon", "280461", "pv_polysilicon"),
+            ("wafer", "381800", "pv_wafer"),
+            ("pv_cell", "854142", "pv_cell"),
+            ("module", "854143", "pv_module"),
+        ):
+            a = 1 / 1000 if p == "polysilicon" else M[key, "export"] / Q[22][k]["CHN"]
+            for c, q in Q[22][k].items():
+                self.put(p, c, q * a, "trade")
+            self.put(
+                p, "CHN", M[key, "production"] * (0.001 if p == "polysilicon" else 1), "production"
+            )
+
+    def put(self, p, c, q, label):
+        """Set the supply of layer p in origin c to q, on the given basis."""
+        self.A[p][c] = q
+        self.basis[c, p] = label
 
 
 def requirements(A, edges):
@@ -227,12 +243,8 @@ def requirements(A, edges):
 def network():
     """Construct annual country-product capacities and sector requirements."""
     iso, names = countries()
-    A, basis, unparsed = usgs(names)
-    Q, missing = baci(iso)
-    b, C, P, E = bom()
-    Z = rows("data/raw/miit/production_2024.csv")
-    M = {(r["product"], r["statistic"]): float(r["value"]) for r in Z}
-    battery(A, basis, Q, M, b, C, P, E)
+    supply = Supply(iso, names)
+    A, basis, b, C, P, E = supply.A, supply.basis, supply.b, supply.C, supply.P, supply.E
     si = float(rows("data/raw/fraunhofer/silicon_usage_2024.csv")[0]["value"])
     edges = [
         ("mine_li", "li_carbonate", 1 / 5.323),
@@ -252,7 +264,6 @@ def network():
         ("wafer", "pv_cell", 1),
         ("pv_cell", "module", 1),
     ]
-    solar(A, basis, Q, M)
     totals = {p: sum(q for q in x.values() if q > 0) for p, x in A.items()}
     hhi = {p: sum((q / totals[p]) ** 2 for q in x.values() if q > 0) for p, x in A.items()}
     A = {p: {c: q for c, q in x.items() if q > 0 and q / totals[p] >= 0.01} for p, x in A.items()}
@@ -284,8 +295,8 @@ def network():
         "requirements": req,
         "demand_scale": scales,
         "layers": layers,
-        "missing_BACI_mass": missing,
-        "unparsed_MCS": unparsed,
+        "missing_BACI_mass": supply.missing,
+        "unparsed_MCS": supply.unparsed,
     }
     dump("network.json", {"nodes": nodes, **meta})
     return nodes, edges, meta
@@ -635,41 +646,12 @@ def lp_value(nodes, edges, z, final):
     return {"status": int(r.status), "phi": float(2 * len(final) + r.fun) if r.success else None}
 
 
-def certificate(nodes, edges, z, phi, finals, theta, names):
-    """Named cut z with recurrence value phi, its LP value, and each immediate predecessor
-    (one node's duration one grid step shorter) with its recurrence and LP values.
-
-    OUTPUT  certificate; |recurrence - LP| for z, then for each predecessor in order
-    """
-    pred = []
-    lp = lp_value(nodes, edges, z, finals)
-    gaps = [abs(phi - lp["phi"])]
+def predecessors(z):
+    """Immediate predecessors of the state z: for each (i, d) in z, node i's duration one grid
+    step shorter (3 -> 0, 6 -> 3, 12 -> 6; 0 drops the node), as (i, d, d0, z0)."""
     for i, d in z:
         d0 = {3: 0, 6: 3, 12: 6}[d]
-        z0 = tuple((j, d0 if i == j else e) for j, e in z if i != j or d0 > 0)
-        phi0 = float(evaluate(nodes, edges, [z0], finals)[0])
-        lp0 = lp_value(nodes, edges, z0, finals)
-        gaps.append(abs(phi0 - lp0["phi"]))
-        pred.append(
-            {
-                "node": names[i],
-                "duration_from": d,
-                "duration_to": d0,
-                "phi": phi0,
-                "lp": lp0,
-                "survives": bool(phi0 <= theta + 1e-9),
-            }
-        )
-    return {
-        "losses": [
-            {"country": nodes[i]["country"], "product": nodes[i]["product"], "duration": d}
-            for i, d in z
-        ],
-        "phi": float(phi),
-        "lp": lp,
-        "fails": bool(phi > theta + 1e-9),
-        "predecessors": pred,
-    }, gaps
+        yield i, d, d0, tuple((j, d0 if i == j else e) for j, e in z if i != j or d0 > 0)
 
 
 def singletons(nodes, edges, sector, finals, theta):
@@ -701,6 +683,7 @@ def cuts(nodes, edges, sector):
     """Check every named cut, every duration predecessor, and all singletons."""
     data = json.loads(read(C[sector]))
     idx = {(v["country"], v["product"]): i for i, v in enumerate(nodes)}
+    names = list(idx)
     Z = [
         tuple(sorted((idx[v["country"], v["product"]], v["duration"]) for v in c["losses"]))
         for c in data["cuts"]
@@ -710,11 +693,36 @@ def cuts(nodes, edges, sector):
     V = evaluate(nodes, edges, Z, finals)
     cert, maxgap, lpcount = [], 0.0, 0
     for z, phi in zip(Z, V):
-        c, gaps = certificate(nodes, edges, z, phi, finals, theta, list(idx))
-        for g in gaps:
-            maxgap = max(maxgap, g)
+        lp = lp_value(nodes, edges, z, finals)
+        gaps, pred = [abs(phi - lp["phi"])], []
+        for i, d, d0, z0 in predecessors(z):
+            phi0 = float(evaluate(nodes, edges, [z0], finals)[0])
+            lp0 = lp_value(nodes, edges, z0, finals)
+            gaps.append(abs(phi0 - lp0["phi"]))
+            pred.append(
+                {
+                    "node": names[i],
+                    "duration_from": d,
+                    "duration_to": d0,
+                    "phi": phi0,
+                    "lp": lp0,
+                    "survives": bool(phi0 <= theta + 1e-9),
+                }
+            )
+        maxgap = max(maxgap, *gaps)
         lpcount += len(gaps)
-        cert.append(c)
+        cert.append(
+            {
+                "losses": [
+                    {"country": nodes[i]["country"], "product": nodes[i]["product"], "duration": d}
+                    for i, d in z
+                ],
+                "phi": float(phi),
+                "lp": lp,
+                "fails": bool(phi > theta + 1e-9),
+                "predecessors": pred,
+            }
+        )
     single = singletons(nodes, edges, sector, finals, theta)
     out = {
         "sector": sector,
@@ -824,14 +832,7 @@ def sector_states(nodes, edges, I):
             ]
             value = evaluate(nodes, edges, z, finals)
             lookup[sector].update(zip(z, value))
-            predecessor = []
-            for a in z:
-                v = []
-                for i, d in a:
-                    d0 = {3: 0, 6: 3, 12: 6}[d]
-                    a0 = tuple((j, d0 if j == i else e) for j, e in a if j != i or d0)
-                    v.append(lookup[sector][a0])
-                predecessor.append(max(v))
+            predecessor = [max(lookup[sector][a0] for _, _, _, a0 in predecessors(a)) for a in z]
             Z[sector, k], V[sector, k], pred[sector, k] = z, value, np.array(predecessor)
     return Z, V, pred
 

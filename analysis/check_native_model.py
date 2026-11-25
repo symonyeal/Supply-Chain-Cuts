@@ -75,62 +75,71 @@ def oracle(case):
             'states': [dict(D=D, **solve(M, D, f=f)) for D in case['states']]}
 
 
-def _state(key, D, x, y, tolerance):
-    """Differences between one state D solved by Python (x) and by Rust (y).
+class _Diff:
+    """Differences between the Python (p) and Rust (r) solves of the same configurations.
 
-    OUTPUT  structural rows (status, a field present on one side only), numeric rows,
-            count of bit-identical fields, max |x - y| over the fields present on both
+    structural: rows for a state, status or field present on one side only, or a classification
+    flip; numeric: bit-different fields; exact: count of bit-identical fields; maximum: max
+    |u - v| over the fields present on both sides.
     """
-    structural, numeric, exact, maximum = [], [], 0, 0.0
-    if x['status'] != y['status']:
-        structural.append({'key': key, 'D': D, 'column': 'status',
-                           'python': x['status'], 'rust': y['status']})
-    for name in ('phi', 'dual', 'gap', 'residual'):
-        u, v = x.get(name), y.get(name)
-        if u is None or v is None:
-            if u != v:
-                structural.append({'key': key, 'D': D, 'column': name})
-            continue
-        delta = abs(u - v)
-        maximum = max(maximum, delta)
-        if struct.pack('d', u) == struct.pack('d', v):
-            exact += 1
-        else:
-            numeric.append({'key': key, 'D': D, 'column': name, 'python': u, 'rust': v,
-                            'absolute_difference': delta, 'exceeds_tolerance': delta > tolerance})
-    return structural, numeric, exact, maximum
+
+    def __init__(self, tolerance):
+        self.tolerance, self.structural, self.numeric = tolerance, [], []
+        self.exact, self.maximum = 0, 0.0
+
+    def configuration(self, key, p, r):
+        """Add the differences between configuration rows p and r that share `key`."""
+        for name in ('ends', 'shape'):
+            if p[name] != r[name]:
+                self.structural.append({'key': key, 'column': name})
+        ps = {tuple(row['D']): row for row in p['states']}
+        rs = {tuple(row['D']): row for row in r['states']}
+        if len(ps) != len(p['states']) or len(rs) != len(r['states']):
+            raise ValueError('Duplicate state keys')
+        match = re.search(r'_a([0-9.]+)_', key)
+        alpha = float(match[1]) if match else 0.25
+        for D in sorted(ps.keys() | rs.keys()):
+            if D not in ps or D not in rs:
+                self.structural.append({'key': key, 'D': D, 'column': 'missing state'})
+                continue
+            self._state(key, D, ps[D], rs[D])
+            if ((ps[D].get('phi', 0) > alpha * p['total'] + 1e-7)
+                    != (rs[D].get('phi', 0) > alpha * r['total'] + 1e-7)):
+                self.structural.append({'key': key, 'D': D, 'column': f'{alpha:g} classification'})
+
+    def _state(self, key, D, x, y):
+        """One state D solved by Python (x) and by Rust (y): status, then each field."""
+        if x['status'] != y['status']:
+            self.structural.append({'key': key, 'D': D, 'column': 'status',
+                                    'python': x['status'], 'rust': y['status']})
+        for name in ('phi', 'dual', 'gap', 'residual'):
+            u, v = x.get(name), y.get(name)
+            if u is None or v is None:
+                if u != v:
+                    self.structural.append({'key': key, 'D': D, 'column': name})
+                continue
+            delta = abs(u - v)
+            self.maximum = max(self.maximum, delta)
+            if struct.pack('d', u) == struct.pack('d', v):
+                self.exact += 1
+            else:
+                self.numeric.append({'key': key, 'D': D, 'column': name, 'python': u, 'rust': v,
+                                     'absolute_difference': delta,
+                                     'exceeds_tolerance': delta > self.tolerance})
 
 
 def compare(old, new, tolerance):
     a, b = ({row['key']: row for row in rows} for rows in (old, new))
     if len(a) != len(old) or len(b) != len(new):
         raise ValueError('Duplicate configuration keys')
-    diff = {'only_python': sorted(a.keys() - b.keys()),
-            'only_rust': sorted(b.keys() - a.keys()), 'structural': [], 'numeric': []}
-    exact, numeric, maximum = 0, 0, 0.0
+    d = _Diff(tolerance)
     for key in sorted(a.keys() & b.keys()):
-        for name in ('ends', 'shape'):
-            if a[key][name] != b[key][name]:
-                diff['structural'].append({'key': key, 'column': name})
-        ar = {tuple(row['D']): row for row in a[key]['states']}
-        br = {tuple(row['D']): row for row in b[key]['states']}
-        if len(ar) != len(a[key]['states']) or len(br) != len(b[key]['states']):
-            raise ValueError('Duplicate state keys')
-        for D in sorted(ar.keys() | br.keys()):
-            if D not in ar or D not in br:
-                diff['structural'].append({'key': key, 'D': D, 'column': 'missing state'})
-                continue
-            s, z, e, m = _state(key, D, ar[D], br[D], tolerance)
-            match = re.search(r'_a([0-9.]+)_', key)
-            alpha = float(match[1]) if match else 0.25
-            if ((ar[D].get('phi', 0) > alpha * a[key]['total'] + 1e-7)
-                    != (br[D].get('phi', 0) > alpha * b[key]['total'] + 1e-7)):
-                s.append({'key': key, 'D': D, 'column': f'{alpha:g} classification'})
-            diff['structural'] += s
-            diff['numeric'] += z
-            exact, numeric, maximum = exact + e, numeric + len(z), max(maximum, m)
-    return {'diff': diff, 'exact_numeric_fields': exact, 'different_numeric_fields': numeric,
-            'max_absolute_difference': maximum, 'tolerance': tolerance,
+        d.configuration(key, a[key], b[key])
+    diff = {'only_python': sorted(a.keys() - b.keys()), 'only_rust': sorted(b.keys() - a.keys()),
+            'structural': d.structural, 'numeric': d.numeric}
+    return {'diff': diff, 'exact_numeric_fields': d.exact,
+            'different_numeric_fields': len(d.numeric),
+            'max_absolute_difference': d.maximum, 'tolerance': tolerance,
             'within_tolerance': not any(diff[k] for k in ('only_python', 'only_rust', 'structural'))
             and not any(row['exceeds_tolerance'] for row in diff['numeric'])}
 

@@ -33,33 +33,28 @@ fn admissible(key: &str, value: &Value) -> Option<bool> {
         }
         "alpha" | "ncm" => value.as_f64().is_some_and(|x| (0.0..=1.0).contains(&x)),
         "cutoff" => value.as_f64().is_some_and(|x| (0.0..1.0).contains(&x)),
-        "durations" | "shares" | "f" | "exclude" => {
-            value.as_array().is_some_and(|a| admissible_list(key, a))
-        }
-        _ => return None,
-    })
-}
-
-/// List fields: strictly increasing positive integer durations, fractions in [0,1], and
-/// (country, product) pairs of nonempty strings.
-fn admissible_list(key: &str, a: &[Value]) -> bool {
-    match key {
-        "durations" => {
+        // Strictly increasing positive integer durations.
+        "durations" => value.as_array().is_some_and(|a| {
             !a.is_empty()
                 && a.iter().all(|x| x.as_u64().is_some_and(|x| x > 0))
                 && a.windows(2).all(|w| w[0].as_u64() < w[1].as_u64())
-        }
-        "exclude" => a.iter().all(|p| {
-            p.as_array().is_some_and(|p| {
-                p.len() == 2 && p.iter().all(|x| x.as_str().is_some_and(|x| !x.is_empty()))
-            })
         }),
-        _ => {
+        // Fractions in [0,1].
+        "shares" | "f" => value.as_array().is_some_and(|a| {
             !a.is_empty()
                 && a.iter()
                     .all(|x| x.as_f64().is_some_and(|x| (0.0..=1.0).contains(&x)))
-        }
-    }
+        }),
+        // (country, product) pairs of nonempty strings.
+        "exclude" => value.as_array().is_some_and(|a| {
+            a.iter().all(|p| {
+                p.as_array().is_some_and(|p| {
+                    p.len() == 2 && p.iter().all(|x| x.as_str().is_some_and(|x| !x.is_empty()))
+                })
+            })
+        }),
+        _ => return None,
+    })
 }
 
 #[cfg(test)]

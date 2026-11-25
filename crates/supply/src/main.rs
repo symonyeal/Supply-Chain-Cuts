@@ -125,10 +125,6 @@ fn scenario(opts: &Options) -> Result<Value, String> {
     Ok(config)
 }
 
-fn required<'a>(opts: &'a Options, key: &str, message: &str) -> Result<&'a String, String> {
-    opts.get(key).ok_or_else(|| message.to_string())
-}
-
 fn site(root: &Path, opts: &Options) -> PathBuf {
     opts.get("out")
         .map(PathBuf::from)
@@ -192,11 +188,11 @@ fn manifest(
 
 /// Network, cut certificate, risk and a manifest of their digests in a new directory.
 fn run(root: &Path, opts: &Options, config: &Value) -> Result<(), String> {
-    let out = PathBuf::from(required(opts, "out", "--out DIRECTORY required")?);
+    let out = PathBuf::from(opts.get("out").ok_or("--out DIRECTORY required")?);
     let generation = publication::Generation::new(&out, "run")?;
     generation.require_new()?;
     let out = generation.root();
-    let law_path = Path::new(required(opts, "law", "--law FILE required")?);
+    let law_path = Path::new(opts.get("law").ok_or("--law FILE required")?);
     let law_bytes = fs::read(law_path).map_err(|e| e.to_string())?;
     let law: Value = serde_json::from_slice(&law_bytes).map_err(|e| e.to_string())?;
     let checked = sc_data::verify(root)?;
@@ -283,11 +279,9 @@ fn context(root: &Path, opts: &Options) -> Result<(), String> {
 
 /// `evaluate`: recourse certificates for the dense outage states in --states FILE.
 fn evaluate(root: &Path, opts: &Options, config: &Value) -> Result<(), String> {
-    let states = read(Path::new(required(
-        opts,
-        "states",
-        "--states FILE required",
-    )?))?;
+    let states = read(Path::new(
+        opts.get("states").ok_or("--states FILE required")?,
+    ))?;
     let states: Vec<Vec<f64>> = serde_json::from_value(states).map_err(|e| e.to_string())?;
     let n = network(root, opts, config)?;
     emit(&sc_model::evaluate(&n, config, &states)?, opts.get("out"))
@@ -295,8 +289,8 @@ fn evaluate(root: &Path, opts: &Options, config: &Value) -> Result<(), String> {
 
 /// `risk`: bracket and residual estimate for an admitted cut family under a frozen law.
 fn assess(root: &Path, opts: &Options, config: &Value) -> Result<(), String> {
-    let law = read(Path::new(required(opts, "law", "--law FILE required")?))?;
-    let cuts = read(Path::new(required(opts, "cuts", "--cuts FILE required")?))?;
+    let law = read(Path::new(opts.get("law").ok_or("--law FILE required")?))?;
+    let cuts = read(Path::new(opts.get("cuts").ok_or("--cuts FILE required")?))?;
     let n = network(root, opts, config)?;
     let accepted = cuts::admit(&n, config, &cuts)?;
     emit(&risk::run(&n, config, &law, &accepted)?, opts.get("out"))
@@ -304,7 +298,7 @@ fn assess(root: &Path, opts: &Options, config: &Value) -> Result<(), String> {
 
 /// `sample-law`: dense outage states drawn from the frozen onset law.
 fn sample_law(root: &Path, opts: &Options, config: &Value) -> Result<(), String> {
-    let law = read(Path::new(required(opts, "law", "--law FILE required")?))?;
+    let law = read(Path::new(opts.get("law").ok_or("--law FILE required")?))?;
     let input = risk::input(&network(root, opts, config)?, &law, &json!({"cuts":[]}))?;
     let n = config["n"].as_u64().unwrap_or(4000) as usize;
     let seed = config["seed"].as_u64().unwrap_or(0);

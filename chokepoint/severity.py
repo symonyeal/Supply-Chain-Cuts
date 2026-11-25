@@ -26,14 +26,51 @@ def exports(root=Path(".")):
     return Q, missing
 
 
-def _surveyed(root, pm):
-    """(country, product, year) cells the OECD inventory surveyed."""
-    surveyed = set()
-    for x in csv.DictReader((root / "data/events/oecd_coverage.csv").open(encoding="utf-8")):
-        if x["surveyed"] == "1":
-            for p in pm["coverage_commodity_to_products"].get(x["commodity"], []):
-                surveyed.add((x["country"], p, int(x["year"])))
-    return surveyed
+class _Excluded(Exception):
+    """An onset the study cannot use; args[0] is the exclusion reason."""
+
+
+class _Panel:
+    """BACI HS12 export tonnes, the OECD inventory's survey and the measures in force.
+
+    Q[country, HS12, year]: tonnes; missing: cells with an empty q; available: HS12 codes in Q;
+    surveyed: (country, product, year) cells the inventory surveyed, of the listed countries;
+    active[country, HS12]: (start year, end year, measure type) of every mapped measure.
+    """
+
+    def __init__(self, root, pm, active):
+        self.Q, self.missing = exports(root)
+        self.available = {h for _, h, _ in self.Q}
+        self.products, self.active = pm["hs6_to_products"], active
+        self.surveyed = set()
+        for x in csv.DictReader((root / "data/events/oecd_coverage.csv").open(encoding="utf-8")):
+            if x["surveyed"] == "1":
+                for p in pm["coverage_commodity_to_products"].get(x["commodity"], []):
+                    self.surveyed.add((x["country"], p, int(x["year"])))
+        self.countries = sorted({c for c, _, _ in self.surveyed})
+
+    def cohort(self, c, h07, h, t):
+        """Treated country c and its untreated controls with their HS12 h export tonnes in
+        years t-2..t+1 relative to t-1: (countries, Y), c first.
+
+        A country is observed when it is surveyed for every product of HS07 h07 in every year,
+        with complete exports and positive volume in t - 1; a control is observed and has no
+        measure of h in force in the window. Raises _Excluded when c is not observed or no
+        control remains.
+        """
+        years = list(range(t-2, t+2))
+        observed = {d for d in self.countries if all(any((d, p, y) in self.surveyed
+                    for p in self.products[h07]) for y in years)
+                    and not any((d, h, y) in self.missing for y in years)
+                    and self.Q[d, h, t-1] > 0}
+        if c not in observed:
+            raise _Excluded("treated_incomplete_or_zero_baseline")
+        controls = [d for d in sorted(observed) if d != c and not any(
+            a <= t+1 and b >= t-2 for a, b, _ in self.active[d, h])]
+        if not controls:
+            raise _Excluded("no_surveyed_untreated_controls")
+        C = [c, *controls]
+        return C, [[self.Q[d, h, y]/self.Q[d, h, t-1] for y in years] for d in C]
 
 
 def _active(E, concordance):
@@ -70,14 +107,6 @@ def _candidates(E, ids, concordance, available):
     return candidates, excluded
 
 
-def _observed(countries, surveyed, missing, Q, products, h, t, years):
-    """Countries surveyed for every product in every year, with complete exports of HS12 h and
-    positive volume in the baseline year t - 1."""
-    return {d for d in countries if all(any((d, p, y) in surveyed
-            for p in products) for y in years)
-            and not any((d, h, y) in missing for y in years) and Q[d, h, t-1] > 0}
-
-
 def cohorts(root=Path(".")):
     """Isolated surveyed onsets with complete normalized volume and untreated controls."""
     root = Path(root)
@@ -86,30 +115,19 @@ def cohorts(root=Path(".")):
     E = json.loads((root / "data/events/policy_events.json").read_text(encoding="utf-8"))["events"]
     _, _, used = node_years([], root)
     ids = {e["id"] for e in used}
-    Q, missing = exports(root)
-    available = {h for _, h, _ in Q}
-    surveyed = _surveyed(root, pm)
     active = _active(E, concordance)
-    candidates, excluded = _candidates(E, ids, concordance, available)
+    panel = _Panel(root, pm, active)
+    candidates, excluded = _candidates(E, ids, concordance, panel.available)
     excluded["national_act_without_verified_HS6"] = len(ids - {e["id"] for e in E})
-    countries = sorted({c for c, _, _ in surveyed})
     events, overlapping = [], []
     for (c, h07, h, m, t), ids in sorted(candidates.items()):
-        years = list(range(t-2, t+2))
-        observed = _observed(countries, surveyed, missing, Q, pm["hs6_to_products"][h07], h, t,
-                             years)
-        if c not in observed:
-            excluded["treated_incomplete_or_zero_baseline"] += 1
+        try:
+            C, Y = panel.cohort(c, h07, h, t)
+        except _Excluded as why:
+            excluded[why.args[0]] += 1
             continue
-        controls = [d for d in sorted(observed) if d != c and not any(
-            a <= t+1 and b >= t-2 for a, b, _ in active[d, h])]
-        if not controls:
-            excluded["no_surveyed_untreated_controls"] += 1
-            continue
-        C = [c, *controls]
         row = {"country": c, "hs07": h07, "hs12": h, "measure": m, "onset_year": t,
-               "ids": ids, "countries": C,
-               "Y": [[Q[d, h, y]/Q[d, h, t-1] for y in years] for d in C]}
+               "ids": ids, "countries": C, "Y": Y}
         if any(a <= t+1 and b >= t-2 and kind != m for a, b, kind in active[c, h]):
             overlapping.append(row)
             excluded["overlapping_measure_type"] += 1

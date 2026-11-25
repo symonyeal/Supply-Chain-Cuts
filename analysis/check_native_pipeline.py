@@ -86,18 +86,17 @@ def streams(binary, out):
     return draws
 
 
-def cuts(binary, out, i, sector, choice, recourse, resume):
+def cuts(binary, out, i, cfg, resume):
     """Native minimal cut list C equal to the Python lattice enumeration for case i.
 
+    cfg is the case's scenario configuration (sector, choice, alpha, k, time_limit, recourse).
     With resume, a stored Python list is reused once its network and configuration match.
     """
-    N = build(sector=sector)
-    cfg = {'sector': sector, 'choice': choice, 'alpha': .25, 'k': 3,
-           'time_limit': 180, **recourse}
+    N = build(sector=cfg['sector'])
     options = {key: cfg[key] for key in ('h', 'sigma', 'L') if key in cfg}
-    M = choice_model(N, **options) if choice else model(N, **options)
+    M = choice_model(N, **options) if cfg['choice'] else model(N, **options)
     net_path, cfg_path = out / f'network-{i}.json', out / f'config-{i}.json'
-    if choice:
+    if cfg['choice']:
         N['recipe_bom'] = [bill(0), bill(1)]
     baseline = out / f'cuts-python-{i}.json'
     reuse = resume and baseline.exists() and net_path.exists() and cfg_path.exists()
@@ -124,7 +123,7 @@ def cuts(binary, out, i, sector, choice, recourse, resume):
     a, b = {tuple(d) for d in old['cuts']}, {tuple(d) for d in new['cuts']}
     assert a == b and len(a) == len(old['cuts']) == len(new['cuts'])
     assert all(c['gap'] <= 1e-6 for c in new['certificates'])
-    return {'sector': sector, 'choice': choice, 'config': cfg,
+    return {'sector': cfg['sector'], 'choice': cfg['choice'], 'config': cfg,
             'cuts': len(a), 'two_way_difference': [],
             'python_seconds': python_seconds, 'rust_seconds': native_seconds,
             'reused_oracle_after_network_and_config_check': reuse}
@@ -153,7 +152,9 @@ def check(binary, out, full_cuts, resume=False):
         ('pv', False, {}), ('liion', True, {}), ('liion', False, {}),
         ('joint', True, {}), ('pv', False, {'h': 1, 'sigma': .1, 'k': 2}),
     ] if full_cuts else [('pv', False, {})]
-    report['cuts'] = [cuts(binary, out, i, *case, resume) for i, case in enumerate(cut_cases)]
+    report['cuts'] = [cuts(binary, out, i, {'sector': sector, 'choice': choice, 'alpha': .25,
+                                            'k': 3, 'time_limit': 180, **recourse}, resume)
+                      for i, (sector, choice, recourse) in enumerate(cut_cases)]
     report['build'] = site(binary, out)
     report['passed'] = True
     (out/'pipeline.json').write_text(json.dumps(report, indent=2), encoding='utf8')
